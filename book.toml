@@ -1,0 +1,8 @@
+[book]
+authors = ["Oscar Aspelin"]
+language = "en"
+src = "src"
+title = "Bioinformatics with Rust"
+
+[rust]
+edition = "2024"
