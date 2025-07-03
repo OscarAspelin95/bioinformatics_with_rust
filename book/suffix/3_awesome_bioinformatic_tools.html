@@ -3,8 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Bioinformatics with Rust</title>
-        <meta name="robots" content="noindex">
+        <title>Awesome bioinformatic tools - Bioinformatics with Rust</title>
 
 
         <!-- Custom HTML head -->
@@ -13,33 +12,33 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
 
-        <link rel="icon" href="favicon.svg">
-        <link rel="shortcut icon" href="favicon.png">
-        <link rel="stylesheet" href="css/variables.css">
-        <link rel="stylesheet" href="css/general.css">
-        <link rel="stylesheet" href="css/chrome.css">
-        <link rel="stylesheet" href="css/print.css" media="print">
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
-        <link rel="stylesheet" href="fonts/fonts.css">
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" id="highlight-css" href="highlight.css">
-        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
-        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
 
 
         <!-- Provide site root and default themes to javascript -->
         <script>
-            const path_to_root = "";
+            const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc.js"></script>
+        <script src="../toc.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -103,7 +102,7 @@
             <!-- populated by js -->
             <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
             <noscript>
-                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
             </noscript>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -138,7 +137,7 @@
                     <h1 class="menu-title">Bioinformatics with Rust</h1>
 
                     <div class="right-buttons">
-                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
 
@@ -167,93 +166,7 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
-<p>Welcome to Bioinformatics with Rust! An unofficial book aimed at introducing the Rust programming language for bioinformatic applications. Before we start:</p>
-<ul>
-<li>
-<p>This book is <strong>not</strong> in any way, shape or form, an official introduction to neither the Rust programming language, nor bioinformatics.</p>
-</li>
-<li>
-<p>The <strong>purpose</strong> of this book is to simply give some inspiration on how the Rust programming language
-can be used to create fast and memory safe bioinformatics pipelines.</p>
-</li>
-<li>
-<p>For any issues related to this book, please file a <a href="https://github.com/OscarAspelin95/bioinformatics_with_rust/issues">GitHub issue</a>.</p>
-</li>
-<li>
-<p>Contributions are very welcome!</p>
-</li>
-</ul>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="prerequisites"><a class="header" href="#prerequisites">Prerequisites</a></h1>
-<p>If you have never heard of the Rust programming language or bioinformatics, this book is probably not for you.</p>
-<p>If you have a lot of experience with both Rust and bioinformatics, this book is probably not for you.</p>
-<p>However, if you know a bit about bioinformatics and have worked with programming languages such as Python or C++ then this book will give you an introduction to the Rust ecosystem for building bioinformatic pipelines!</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="getting-started"><a class="header" href="#getting-started">Getting Started</a></h1>
-<p>First and foremost, we need to install Rust and its package manager Cargo. The easiest way to do this is to use <a href="https://rustup.rs/">Rustup</a> and follow the installation instructions.</p>
-<p>Second, we need a code editor. For running Rust in hardcode mode, use notepad. However, then we are missing some important stuff, like syntax highlighting, code formatting and much more. Here are some examples of code editors that can get the job done:</p>
-<ul>
-<li><a href="https://code.visualstudio.com/">VScode</a> - Easy to use with lots of plugins to make your life easier.</li>
-<li><a href="https://helix-editor.com/">Helix</a> - A text editor written in Rust!</li>
-<li><a href="https://www.vim.org/">Vim</a> - For hardcore programmers.</li>
-<li><a href="https://neovim.io/">NeoVim</a> - For modern, hardcore programmers.</li>
-</ul>
-<p>If using VScode, there are some handy plugins that will make your Rust programming journey more pleasant:</p>
-<ul>
-<li><a href="https://github.com/rust-lang/rust-analyzer">Rust-analyzer</a> - Trust me, you want this.</li>
-<li><a href="https://github.com/astral-sh/ruff">Ruff</a> - Code formatter and linter written in Rust.</li>
-<li><a href="https://marketplace.visualstudio.com/items?itemName=tamasfe.even-better-toml">Even Better TOML</a> - TOML file support.</li>
-<li><a href="https://github.com/features/copilot">GitHub Copilot</a> - Copilot is relatively good at Rust, but use with caution and be aware of hallucinations.</li>
-<li><a href="https://marketplace.visualstudio.com/items?itemName=mechatroner.rainbow-csv">Rainbow CSV</a> - If working with CSV files, this plugin provides highlighting and interactive querying.</li>
-</ul>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="example-code"><a class="header" href="#example-code">Example Code</a></h1>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="rust-code"><a class="header" href="#rust-code">Rust Code</a></h1>
-<pre><pre class="playground"><code class="language-rust edition2024">/// This is just some example code.
-fn main(){
-    let number: usize = 5;
-    println!("{number}");
-}</code></pre></pre>
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">// This is a comment that is shown when clicking the eye icon.
-</span>/// This is some other example code.
-fn main(){
-    let number: usize = 5;
-    println!("{number}");
-}</code></pre></pre>
-<p>See <a href="https://rust-lang.github.io/mdBook/format/mdbook.html">this link</a> for including a separate .rs file in the book.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="nucleotides"><a class="header" href="#nucleotides">Nucleotides</a></h1>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="create-nucleotide-sequence"><a class="header" href="#create-nucleotide-sequence">Create nucleotide sequence</a></h1>
-<pre><pre class="playground"><code class="language-rust edition2024">fn main(){
-    let nt_string: String = "ATCG".to_string();
-
-    println!("{nt_string}");
-}</code></pre></pre>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="count-nucleotides"><a class="header" href="#count-nucleotides">Count nucleotides</a></h1>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="reverse-complement"><a class="header" href="#reverse-complement">Reverse complement</a></h1>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="resources"><a class="header" href="#resources">Resources</a></h1>
-<p>The following sections list some really good resources. Feel free to browse and check them out!</p>
-<p>Here are some resources related to the Rust programming language:</p>
-<ul>
-<li><a href="https://doc.rust-lang.org/book/">The Rust Programming Language</a> - Official Rust book.</li>
-<li><a href="https://practice.course.rs/">Rust By Practice</a> - Practice Rust.</li>
-<li><a href="https://doc.rust-lang.org/nomicon/intro.html">The Rustonomicon</a> - Even more Rust!</li>
-</ul>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="awesome-rust-crates"><a class="header" href="#awesome-rust-crates">Awesome Rust crates</a></h1>
-<p>General purpose awesome Rust crates!
-For a mega list of even more crates, see <a href="https://github.com/rust-unofficial/awesome-rust">Awesome Rust</a>.</p>
-<ul>
-<li><a href="https://docs.rs/clap/latest/clap/">Clap</a> - Command line argument parsing.</li>
-<li><a href="https://docs.rs/rayon/latest/rayon/">Rayon</a> - Multithreading library for iterators.</li>
-<li><a href="https://docs.rs/serde/latest/serde/">Serde</a> - Serialization/Deserialization.</li>
-<li><a href="https://docs.rs/thiserror/latest/thiserror/">Thiserror</a> - Easily create custom error types.</li>
-<li><a href="https://docs.rs/log/latest/log/">Log</a> and <a href="https://docs.rs/simple_logger/latest/simple_logger/">SimpleLogger</a> - Switch those pesky println! macros for proper logging.</li>
-<li><a href="https://docs.rs/flate2/latest/flate2/">Flate2</a> - Compression/Decompression library.</li>
-<li><a href="https://docs.rs/bindgen/latest/bindgen/">Bindgen</a> - Rust bindings for C and C++.</li>
-<li><a href="https://docs.rs/polars/latest/polars/">Polars</a> - Blazingly fast dataframes. <strong>NOTE</strong> - Using polars with native Rust can be a bit cumbersome. An alternative is to use the <a href="https://docs.pola.rs/api/python/stable/reference/index.html">Python bindings</a>.</li>
-<li><a href="https://docs.rs/pyo3/latest/pyo3/">Pyo3</a> - Generate Rust bindings to Python or vice versa.</li>
-<li><a href="https://github.com/plotly/plotly.rs">Plotly-rs</a> - Rust bindings for the popular Plotly plotting library.</li>
-<li><a href="https://docs.rs/linfa/latest/linfa/">Linfa</a> - Closely resembles Pythons scikit-learn for Machine Learning applications.</li>
-<li><a href="https://github.com/DioxusLabs/dioxus">Dioxus</a> - Fullstack framework in Rust that resembles React. Build you own (bioinformatic) web or desktop applications!</li>
-</ul>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="awesome-bioinformatic-tools"><a class="header" href="#awesome-bioinformatic-tools">Awesome bioinformatic tools</a></h1>
+                        <h1 id="awesome-bioinformatic-tools"><a class="header" href="#awesome-bioinformatic-tools">Awesome bioinformatic tools</a></h1>
 <p>Alignment related:</p>
 <ul>
 <li><a href="https://github.com/lh3/minimap2">Minimap2</a> - Pairwise aligner. Written by the legendary <a href="https://github.com/lh3">Heng Li</a>. The go-to for Oxford Nanopore and PacBio data.</li>
@@ -293,6 +206,9 @@ For a mega list of even more crates, see <a href="https://github.com/rust-unoffi
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../suffix/2_awesome_rust_crates.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
 
 
                         <div style="clear: both"></div>
@@ -301,6 +217,9 @@ For a mega list of even more crates, see <a href="https://github.com/rust-unoffi
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../suffix/2_awesome_rust_crates.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
 
             </nav>
 
@@ -330,21 +249,16 @@ For a mega list of even more crates, see <a href="https://github.com/rust-unoffi
         </script>
 
 
-        <script src="elasticlunr.min.js"></script>
-        <script src="mark.min.js"></script>
-        <script src="searcher.js"></script>
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
 
-        <script src="clipboard.min.js"></script>
-        <script src="highlight.js"></script>
-        <script src="book.js"></script>
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
 
         <!-- Custom JS scripts -->
 
-        <script>
-        window.addEventListener('load', function() {
-            window.setTimeout(window.print, 100);
-        });
-        </script>
 
     </div>
     </body>
