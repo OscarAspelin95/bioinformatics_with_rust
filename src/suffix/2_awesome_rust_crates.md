@@ -3,6 +3,7 @@ General purpose awesome Rust crates!
 For a mega list of even more crates, see [Awesome Rust](https://github.com/rust-unofficial/awesome-rust).
 
 - [Clap](https://docs.rs/clap/latest/clap/) - Command line argument parsing.
+- [Rstest](https://docs.rs/rstest/latest/rstest/) - Rust test fixtures.
 - [Rayon](https://docs.rs/rayon/latest/rayon/) - Multithreading library for iterators.
 - [Serde](https://docs.rs/serde/latest/serde/) - Serialization/Deserialization.
 - [Thiserror](https://docs.rs/thiserror/latest/thiserror/) - Easily create custom error types.
