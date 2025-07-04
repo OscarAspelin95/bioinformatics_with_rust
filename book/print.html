@@ -171,7 +171,7 @@
 <p>Welcome to Bioinformatics with Rust! An unofficial book aimed at introducing the Rust programming language for bioinformatic applications. Before we start:</p>
 <ul>
 <li>
-<p>This book is <strong>not</strong> in any way, shape or form, an official introduction to neither the Rust programming language, nor bioinformatics.</p>
+<p>This book is <strong>not</strong> in any way, shape or form, an official introduction to neither the Rust programming language, nor bioinformatics. For an introduction to Rust, please visit <a href="prefix/../../suffix/1_resources.html#resources">resources</a>.</p>
 </li>
 <li>
 <p>The <strong>purpose</strong> of this book is to simply give some inspiration on how the Rust programming language
@@ -220,14 +220,303 @@ fn main(){
 }</code></pre></pre>
 <p>See <a href="https://rust-lang.github.io/mdBook/format/mdbook.html">this link</a> for including a separate .rs file in the book.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="nucleotides"><a class="header" href="#nucleotides">Nucleotides</a></h1>
+<p>When dealing with DNA sequences, nucleotides are everything. Fundamentally, we are usually dealing with four canonical bases:</p>
+<ul>
+<li>A - Adenosine.</li>
+<li>C - Cytosine.</li>
+<li>G - Guanine.</li>
+<li>T - Thymine.</li>
+</ul>
+<p>However, there are some important concepts to be aware of:</p>
+<ul>
+<li>
+<p><strong>Soft masking</strong>: A lower case nucleotide indicates <em>soft masking</em> and is used to indicate a soft clipped alignment or a region which is low complexity or repetitive.</p>
+<p>Example of soft masked, highly repetitive sequence:</p>
+<ul>
+<li>ATCGatatatatatatatatatat[...]AGCGAGT</li>
+</ul>
+<p>Example of soft clipped alignment:</p>
+  <pre>
+  * AAAGTGCCAGTGACGCTTagtcgatcgatg
+    ||||||||||||||||||
+    AAAGTGCCAGTGACGCTT
+  <pre>
+
+</li>
+<li>
+<p><strong>Hard masking</strong>: A capital "N" indicates <em>hard masking</em>. This means there is probably a base here, but we don't know exactly what it is. This is usually for indicating uncertainty or gaps in a sequence.</p>
+</li>
+</ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="create-nucleotide-sequence"><a class="header" href="#create-nucleotide-sequence">Create nucleotide sequence</a></h1>
+<p>To start off, we just create a nucleotide sequence as a String.</p>
 <pre><pre class="playground"><code class="language-rust edition2024">fn main(){
-    let nt_string: String = "ATCG".to_string();
+    let nt_string: String = "ACGT".to_string();
 
     println!("{nt_string}");
+}
+</code></pre></pre>
+<p>However, usually when reading nucleotide sequences from a FASTA/Q parser, we get it in binary form &amp;[u8] which is a more convenient format.</p>
+<pre><pre class="playground"><code class="language-rust edition2024">fn main(){
+    let nt_string_binary: &amp;[u8] = b"ACGT";
+
+    // Here, we need to print in debug mode.
+    println!("{:?}", nt_string_binary);
 }</code></pre></pre>
+<p>Run the code and examine the output. We get a bunch of numbers. This is the ASCII representation of our nucleotides, where A/T/C/G corresponds to a 8-bit representation. For more information, visit <a href="https://www.ascii-code.com/">this link</a>.</p>
+<p>We can check that the following representations are equivalent:</p>
+<pre><pre class="playground"><code class="language-rust edition2024">fn main(){
+    // Note that here we use single quotes
+    // because we are dealing with single chars.
+    assert_eq!(b'A', 65);
+    assert_eq!(b'C', 67);
+    assert_eq!(b'G', 71);
+    assert_eq!(b'T', 84);
+}</code></pre></pre>
+<p>Onwards, we'll mostly deal with nucleotides in binary form.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="count-nucleotides"><a class="header" href="#count-nucleotides">Count nucleotides</a></h1>
+<p>We can implement a simple script for calculating nucleotides.</p>
+<pre><pre class="playground"><code class="language-rust edition2024">fn main(){
+    let nt_string: &amp;[u8] = b"AAACGTGACGT";
+
+    // Variables must be mutable for us to increment the count.
+    let mut a = 0;
+    let mut c = 0;
+    let mut g = 0;
+    let mut t = 0;
+
+    // Iterate over each nucleotide.
+    nt_string.iter().for_each(|nt| match nt {
+        b'A' =&gt; a += 1,
+        b'C' =&gt; c += 1,
+        b'G' =&gt; g += 1,
+        b'T' =&gt; t += 1,
+        // We only allow canonical, non masked bases.
+        _ =&gt; panic!("Invalid nt {nt}"),
+    });
+
+    assert_eq!(a + c + g + c, nt_string.len());
+    println!("A: {a}, C: {c}, G: {g}, T: {t}");
+}</code></pre></pre>
+<p>This approach is not that elegant, because we initialize four different variables, one for each nucleotide. An alternative approach is to use a HashMap.</p>
+<pre><pre class="playground"><code class="language-rust edition2024">use std::collections::HashMap;
+
+fn main() {
+    let nt_string: &amp;[u8] = b"AAACGTGACGT";
+
+    // HashMap must be mutable for us to modify it.
+    let mut map: HashMap&lt;&amp;u8, usize&gt; = HashMap::new();
+
+    // Iterate over each nucleotide.
+    nt_string.iter().for_each(|nt| match nt {
+        // If we have a canonical nucleotide, we bind it to the variable c.
+        c @ (b'A' | b'C' | b'G' | b'T') =&gt; match map.contains_key(c) {
+            // If nucleotide is already in HashMap, increment its count.
+            true =&gt; {
+                let v = map.get_mut(c).unwrap();
+                *v += 1;
+            }
+            // Otherwise, add it.
+            false =&gt; {
+                map.insert(c, 1);
+            }
+        },
+        _ =&gt; panic!("Invalid nt {nt}"),
+    });
+
+    assert_eq!(map.values().sum::&lt;usize&gt;(), nt_string.len());
+    println!("{:?}", map);
+}</code></pre></pre>
+<p>Run the code and inspect the output. The resulting HashMap will have the ASCII encoded nucleotides as keys.</p>
+<p>Note that there are lots of alternative solutions and further optimizations we can do.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="reverse-complement"><a class="header" href="#reverse-complement">Reverse complement</a></h1>
+<p>Next, we cover a fundamental topic, which is reverse complementing. Why is this important?</p>
+<p>DNA is (generally) double stranded, where bases are paired:</p>
+<ul>
+<li>A pairs with T and vice versa.</li>
+<li>G pairs with C and vice versa.</li>
+</ul>
+<pre>
+5' [...]ACGAGCTTTGTGACGCGATGCGACGAGCTGCAGCGT[...] 3'
+3' [...]TGCTCGAAACACTGCGCTACGCTGCTCGACGTCGCA[...] 5'
+</pre>
+<p>Pretend this is a bacterial genome we want to sequence. Before sequencing, we need to separate the strands and break this molecule into smaller pieces. When doing this, we don't know which pieces are from which strand.</p>
+<p>When we want to align the pieces back to a reference sequence (which is defined in the 5' to 3' direction), we need to take both strands into consideration. Otherwise, we loose out on information. We do this by reverse complementing, in which we first reverse the sequence, and then replace each base with the corresponding matching base.</p>
+<p>For example, the reverse complement of ATCG would be CGAT.</p>
+<p>We can relatively easily write a Rust function for reverse complementing a nucleotide sequence:</p>
+<pre><pre class="playground"><code class="language-rust edition2024">fn reverse(nt: char) -&gt; char {
+    match nt {
+        'A' =&gt; 'T',
+        'C' =&gt; 'G',
+        'G' =&gt; 'C',
+        'T' =&gt; 'A',
+        _ =&gt; panic!("Invalid nt {nt}"),
+    }
+}
+
+fn reverse_complement(nt_string: &amp;'static str) -&gt; String {
+    let rev_comp: String = nt_string
+        // Iterate over each character.
+        .chars()
+        // Reverse the iteration order.
+        .rev()
+        .map(|nt| {
+            return reverse(nt);
+        })
+        .collect();
+
+    return rev_comp;
+}
+fn main() {
+    // Note that we use strings and not &amp;[u8].
+    // &amp;[u8] will be covered in a future topic.
+    assert_eq!(reverse_complement("AAA"), "TTT");
+    assert_eq!(reverse_complement("GGG"), "CCC");
+    assert_eq!(reverse_complement("ATCG"), "CGAT");
+    assert_eq!(reverse_complement("ACACGT"), "ACGTGT");
+}</code></pre></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="encoding"><a class="header" href="#encoding">Encoding</a></h1>
+<p>Being able to encode and decode nucletides is a vital part of writing high performance bioinformatic code. What it means is essentially converting nucleotides into a more compact form. There are multiple ways of doing nucleotide encoding. However if we assume we only have to deal with A/C/G/T, then there is a straightforward way for this:</p>
+<ul>
+<li>A is encoded as 0 (binary 00).</li>
+<li>C is encoded as 1 (binary 01).</li>
+<li>G is encoded as 2 (binary 10).</li>
+<li>T is encoded as 3 (binary 11).</li>
+</ul>
+<p>The advantages of this approach are:</p>
+<ul>
+<li>Each nucleotides only takes up 2 bits.</li>
+<li>Reverse complementing a base is as easy as:
+<ul>
+<li>rev_nt = 3 - nt</li>
+</ul>
+</li>
+<li>With some bit-shifting, we can very efficiently generate kmers from our sequences (covered in a later topic).</li>
+</ul>
+<p>The following code is just a very straightforward encoding/decoding protocol. However, this enables us to do some more advanced stuff in future topics.</p>
+<pre><pre class="playground"><code class="language-rust edition2024">/// Convert ASCII to our own 2-bit encoded nt.
+fn encode(nt_decoded: u8) -&gt; u8 {
+    match nt_decoded {
+        b'A' =&gt; 0,
+        b'C' =&gt; 1,
+        b'G' =&gt; 2,
+        b'T' =&gt; 3,
+        _ =&gt; panic!("Invalid nt {nt_decoded}"),
+    }
+}
+
+/// Convert our own 2-bit encoded nt to ASCII.
+fn decode(nt_encoded: u8) -&gt; u8 {
+    match nt_encoded {
+        0 =&gt; b'A',
+        1 =&gt; b'C',
+        2 =&gt; b'G',
+        3 =&gt; b'T',
+        _ =&gt; panic!("Invalid nt {nt_encoded}"),
+    }
+}
+
+/// Reverse complement an ASCII base.
+fn reverse(nt: u8) -&gt; u8 {
+    return decode(3 - encode(nt));
+}
+
+/// Reverse complement a nucleotide sequence.
+fn reverse_complement(nt_string: &amp;[u8]) -&gt; Vec&lt;u8&gt; {
+    nt_string.iter().rev().map(|nt| reverse(*nt)).collect()
+}
+
+fn main() {
+    // Reverse complement a single nucleotide.
+    assert_eq!(reverse(b'A'), b'T');
+    assert_eq!(reverse(b'T'), b'A');
+    assert_eq!(reverse(b'C'), b'G');
+    assert_eq!(reverse(b'G'), b'C');
+
+    // We can also reverse complement a nucleotide sequence.
+    assert_eq!(reverse_complement(b"AAAA").as_slice(), b"TTTT");
+    assert_eq!(reverse_complement(b"ATCG").as_slice(), b"CGAT");
+}
+</code></pre></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="basics-of-alignment"><a class="header" href="#basics-of-alignment">Basics Of Alignment</a></h1>
+<h2 id="introduction-1"><a class="header" href="#introduction-1">Introduction</a></h2>
+<p>In bioinformatics, alignment is the process of determining how well biological sequences match to each other. Usually, we refer to the sequences as the <em>query</em> and <em>subject</em> respectively. For simplicity, we'll assume that the query and subject both are single sequences.</p>
+<p>There are three important alignment features to understand:</p>
+<ul>
+<li>Match.</li>
+<li>Mismatch.</li>
+<li>Insertion/Deletion.</li>
+</ul>
+<p>In the following alignment, matches are shown with a vertical bar (|), mismatches as asterisks (*) and insertions or deletions as hyphens (-).</p>
+<pre>
+query   AGCGACTCGTGCTCGA-CTT
+        | |||||||*|||||| |||
+subject A-CGACTCGAGCTCGAGCTT
+</pre>
+<h2 id="definitions"><a class="header" href="#definitions">Definitions</a></h2>
+<ul>
+<li>
+<p><em>Query length</em> = The length of the query sequence.</p>
+</li>
+<li>
+<p><em>Subject length</em> = The length of the subject sequence.</p>
+</li>
+<li>
+<p><em>Alignment length</em> = The length of the aligned part between the query and subject.</p>
+</li>
+<li>
+<p><em>Percent Identity</em> = 100 * (num_matches / alignment_length).</p>
+</li>
+<li>
+<p><em>Fraction Aligned (Query)</em> = query_length / alignment_length (how much of the query is aligned).</p>
+</li>
+<li>
+<p><em>Fraction Aligned (Subject)</em> = subject_length / alignment_length (how much of the subject is aligned).</p>
+</li>
+</ul>
+<h2 id="types-of-alignments"><a class="header" href="#types-of-alignments">Types Of Alignments</a></h2>
+<p>There are three basic types of alignments:</p>
+<ul>
+<li>
+<p><em>Global Alignment</em> - Aligns the entire query against the entire subject. Suitable if query and subject are of similar length, or one expects the entire query to align against the entire subject. An example is aligning two very similar genomes of roughly the same length.</p>
+</li>
+<li>
+<p><em>Semi Global Alignment</em> - Fully aligns the shorter of query/subject. An example is trying to align a gene (shorter) against an entire genome (longer).</p>
+</li>
+<li>
+<p><em>Local Alignment</em> - Allows partial alignment of the query against the subject.</p>
+</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="hamming-distance"><a class="header" href="#hamming-distance">Hamming Distance</a></h1>
+<p>The <a href="https://en.wikipedia.org/wiki/Hamming_distance">Hamming distance</a> is defined as the number of positions between two strings of equal length that are different. Hence, it measures the number of substitutions needed to convert one string to the other.</p>
+<p>In the example below, the Hamming distance is 1.</p>
+<pre>
+query   ATCTACCG
+        |||||*||
+subject ATCGATCG
+</pre>
+<p>We can pretty easily write a Rust function for calculating the Hamming distance:</p>
+<pre><pre class="playground"><code class="language-rust edition2024">use std::iter::zip;
+
+fn hamming_distance(query: &amp;str, subject: &amp;str) -&gt; usize {
+    assert_eq!(query.len(), subject.len());
+
+    let mut distance = 0;
+
+    for (query_nt, subject_nt) in zip(query.chars(), subject.chars()) {
+        if query_nt != subject_nt {
+            distance += 1;
+        }
+    }
+
+    return distance;
+}
+fn main() {
+    assert_eq!(hamming_distance("ATCG", "ATCG"), 0);
+    assert_eq!(hamming_distance("ATCG", "TTCG"), 1);
+    // Our function can actually handle non-nucleotide strings.
+    assert_eq!(hamming_distance("Hello", "Heiol"), 3);
+}</code></pre></pre>
+<p>By implementing the Hamming distance, we have kind of almost implemented a <em>global aligner</em> (that only handles matches and mismatches).</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="resources"><a class="header" href="#resources">Resources</a></h1>
 <p>The following sections list some really good resources. Feel free to browse and check them out!</p>
 <p>Here are some resources related to the Rust programming language:</p>
@@ -241,6 +530,7 @@ fn main(){
 For a mega list of even more crates, see <a href="https://github.com/rust-unofficial/awesome-rust">Awesome Rust</a>.</p>
 <ul>
 <li><a href="https://docs.rs/clap/latest/clap/">Clap</a> - Command line argument parsing.</li>
+<li><a href="https://docs.rs/rstest/latest/rstest/">Rstest</a> - Rust test fixtures.</li>
 <li><a href="https://docs.rs/rayon/latest/rayon/">Rayon</a> - Multithreading library for iterators.</li>
 <li><a href="https://docs.rs/serde/latest/serde/">Serde</a> - Serialization/Deserialization.</li>
 <li><a href="https://docs.rs/thiserror/latest/thiserror/">Thiserror</a> - Easily create custom error types.</li>
