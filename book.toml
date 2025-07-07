@@ -6,3 +6,6 @@ title = "Bioinformatics with Rust"
 
 [rust]
 edition = "2024"
+
+[output.html.playground]
+editable = true

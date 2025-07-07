@@ -171,19 +171,80 @@
 <p>Welcome to Bioinformatics with Rust! An unofficial book aimed at introducing the Rust programming language for bioinformatic applications. Before we start:</p>
 <ul>
 <li>
-<p>This book is <strong>not</strong> in any way, shape or form, an official introduction to neither the Rust programming language, nor bioinformatics. For an introduction to Rust, please visit <a href="prefix/../../suffix/1_resources.html#resources">resources</a>.</p>
+<p>This book is <strong>not</strong> in any way, shape or form, an official introduction to neither the Rust programming language, nor bioinformatics.</p>
+<ul>
+<li>For an introduction to Rust, please visit <a href="prefix/../../suffix/1_resources.html#resources">resources</a>.</li>
+<li>For learning bioinformatics, please visit your favorite university.</li>
+</ul>
 </li>
 <li>
 <p>The <strong>purpose</strong> of this book is to simply give some inspiration on how the Rust programming language
 can be used to create fast and memory safe bioinformatics pipelines.</p>
 </li>
 <li>
+<p>We'll mostly deal with DNA sequences and canonical nucleotides. However, feel free to request additional topics by filing a <a href="https://doc.rust-lang.org/nomicon/meet-safe-and-unsafe.html">GitHub issue</a>.</p>
+</li>
+<li>
 <p>For any issues related to this book, please file a <a href="https://github.com/OscarAspelin95/bioinformatics_with_rust/issues">GitHub issue</a>.</p>
 </li>
 <li>
-<p>Contributions are very welcome!</p>
+<p>Currently, I'm a single person working on this project. If this project grows, I most likely need help from other people. Contributions are welcome!</p>
 </li>
 </ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="why-rust"><a class="header" href="#why-rust">Why Rust?</a></h1>
+<h2 id="the-different-kinds-of-bioinformaticians"><a class="header" href="#the-different-kinds-of-bioinformaticians">The different kinds of bioinformaticians</a></h2>
+<p>Bioinformatics encompasses lots of programming languages, from high level languages such as Python and R, to low level languages such as C and C++. The choice of language depends entirely on the target application. Below, I'll list my interpretation of the different kinds of bioinformaticians I know of:</p>
+<ul>
+<li>
+<p><strong>The tool developer</strong> - usually has a strong background in computer science and writes high-performance, open source tools for others to use. A name that comes to mind is <a href="https://github.com/lh3">Heng Li</a>.</p>
+<ul>
+<li>Language of choice is usually C or C++.</li>
+</ul>
+</li>
+<li>
+<p><strong>The pipeline developer</strong> - has a strong sense of what bioinformatic tools are suitable for which task. They are experts in chaining multiple tools together to create complete pipelines for a given application.</p>
+<ul>
+<li>Language of choice is usually Python, R and/or Bash, preferably in combination with ChatGPT.</li>
+</ul>
+</li>
+<li>
+<p><strong>The yak-shaver</strong> - is interested in the details of things. Does not hesitate to spend weeks or months building custom databases and reading through literature. Usually start digging into things and has troubles stopping.</p>
+<ul>
+<li>Language of choice is usually Python and/or Bash.</li>
+</ul>
+</li>
+<li>
+<p><strong>The jack-of-all-trades</strong> - has no prominent strengths nor weaknesses. Good at multi-tasking and knows a bit about everything. Might not have the strongest background in bioinformatics or programming, but has very high versatility.</p>
+<ul>
+<li>Language of choice is whatever gets the job done.</li>
+</ul>
+</li>
+</ul>
+<h2 id="where-the-rust-programming-language-fits-in"><a class="header" href="#where-the-rust-programming-language-fits-in">Where the Rust programming language fits in</a></h2>
+<p>In my own experience, programming is complex and difficult. In addition, there are almost countless programming languages to choose from, each with their own pros and cons.</p>
+<p>Traditionally, C and C++ have been used for high-performance code because they are low level languages. You have to manage a lot of things, such as memory, manually. However, this comes with advantage of experienced developers being able to write blazingly fast programs.</p>
+<p>There is a fundamental problem with manual memory management - it is easy to introduce bugs and security vulnerabilities that can be hard to debug. This can be detrimental for performance-critical applications. Check out this <a href="https://security.googleblog.com/2024/10/safer-with-google-advancing-memory.html">blogpost</a> as an example.</p>
+<p>What is different about Rust? It prioritizes <a href="https://doc.rust-lang.org/nomicon/meet-safe-and-unsafe.html">memory safety</a> in order to reduce the accidental introduction of bugs and security vulnerabilities, whilst maintaining high performance. In my opinion (coming from a Python background), this comes with a cost of added complexity. I want to reference my favorite quote from some random person from the internet - "The Rust compiler is stricter than my highschool chemistry teacher". When I started learning Rust, I'd agree with this statement. However, today I'd say it is a blessing rather than a curse.</p>
+<p>To conclude, use Rust for bioinformatics if:</p>
+<ul>
+<li>You are interested in learning a high performance language for bioinformatic applications.</li>
+<li>You want to create memory safe and performance critical bioinformatic pipelines.</li>
+<li>You want to traverse a steep learning curve, especially if coming from the Python world.</li>
+</ul>
+<p>Probably do not use Rust for bioinformatics if:</p>
+<ul>
+<li>You want to run a single open-source bioinformatics tool. I'd advice using Bash or Python.</li>
+<li>You want to quickly start developing bioinformatic piplines.</li>
+</ul>
+<h2 id="bioinformatic-tools-written-in-rust"><a class="header" href="#bioinformatic-tools-written-in-rust">Bioinformatic tools written in Rust</a></h2>
+<p>Finally, I just want to give a quick shoutout to some awesome bioinformatic tools written in Rust:</p>
+<ul>
+<li><a href="http://docs.rs/bio/latest/bio/">Bio</a> - General purpose bioinformatic tool for alignment, file processing and much more.</li>
+<li><a href="https://github.com/bluenote-1577/sylph">Sylph</a> - Metagenomic classification tool.</li>
+<li><a href="https://github.com/nextstrain/nextclade">NextClade</a> - Virus specific tool for alignment, SNP calling, clade assignment and more.</li>
+<li><a href="https://github.com/lbcb-sci/herro">Herro</a> - Deep-learning based error correction tool for Oxford Nanopore data.</li>
+</ul>
+<p>For a more exhaustive list, visit <a href="prefix/../suffix/3_awesome_bioinformatic_tools.html">resources</a>.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="prerequisites"><a class="header" href="#prerequisites">Prerequisites</a></h1>
 <p>If you have never heard of the Rust programming language or bioinformatics, this book is probably not for you.</p>
 <p>If you have a lot of experience with both Rust and bioinformatics, this book is probably not for you.</p>
@@ -205,20 +266,6 @@ can be used to create fast and memory safe bioinformatics pipelines.</p>
 <li><a href="https://github.com/features/copilot">GitHub Copilot</a> - Copilot is relatively good at Rust, but use with caution and be aware of hallucinations.</li>
 <li><a href="https://marketplace.visualstudio.com/items?itemName=mechatroner.rainbow-csv">Rainbow CSV</a> - If working with CSV files, this plugin provides highlighting and interactive querying.</li>
 </ul>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="example-code"><a class="header" href="#example-code">Example Code</a></h1>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="rust-code"><a class="header" href="#rust-code">Rust Code</a></h1>
-<pre><pre class="playground"><code class="language-rust edition2024">/// This is just some example code.
-fn main(){
-    let number: usize = 5;
-    println!("{number}");
-}</code></pre></pre>
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">// This is a comment that is shown when clicking the eye icon.
-</span>/// This is some other example code.
-fn main(){
-    let number: usize = 5;
-    println!("{number}");
-}</code></pre></pre>
-<p>See <a href="https://rust-lang.github.io/mdBook/format/mdbook.html">this link</a> for including a separate .rs file in the book.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="nucleotides"><a class="header" href="#nucleotides">Nucleotides</a></h1>
 <p>When dealing with DNA sequences, nucleotides are everything. Fundamentally, we are usually dealing with four canonical bases:</p>
 <ul>
@@ -262,7 +309,7 @@ fn main(){
     // Here, we need to print in debug mode.
     println!("{:?}", nt_string_binary);
 }</code></pre></pre>
-<p>Run the code and examine the output. We get a bunch of numbers. This is the ASCII representation of our nucleotides, where A/T/C/G corresponds to a 8-bit representation. For more information, visit <a href="https://www.ascii-code.com/">this link</a>.</p>
+<p>Run the code and examine the output. We get a bunch of numbers. This is the ASCII representation of our nucleotides, where A/T/C/G corresponds to an 8-bit representation. For more information, visit <a href="https://www.ascii-code.com/">this link</a>.</p>
 <p>We can check that the following representations are equivalent:</p>
 <pre><pre class="playground"><code class="language-rust edition2024">fn main(){
     // Note that here we use single quotes
@@ -272,7 +319,12 @@ fn main(){
     assert_eq!(b'G', 71);
     assert_eq!(b'T', 84);
 }</code></pre></pre>
-<p>Onwards, we'll mostly deal with nucleotides in binary form.</p>
+<p>Onwards, we'll work with nucleotide sequences in both binary and string representations. Remember:</p>
+<ul>
+<li>Binary form looks like b"[...]" and has the type &amp;[u8].</li>
+<li>String form looks like "[...]" (&amp;str) or "[...]".to_string() (String).</li>
+</ul>
+<p>For more information about string types in Rust, click <a href="https://doc.rust-lang.org/rust-by-example/std/str.html">here</a>.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="count-nucleotides"><a class="header" href="#count-nucleotides">Count nucleotides</a></h1>
 <p>We can implement a simple script for calculating nucleotides.</p>
 <pre><pre class="playground"><code class="language-rust edition2024">fn main(){
@@ -487,12 +539,12 @@ subject A-CGACTCGAGCTCGAGCTT
 </li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="hamming-distance"><a class="header" href="#hamming-distance">Hamming Distance</a></h1>
-<p>The <a href="https://en.wikipedia.org/wiki/Hamming_distance">Hamming distance</a> is defined as the number of positions between two strings of equal length that are different. Hence, it measures the number of substitutions needed to convert one string to the other.</p>
+<p>The <a href="https://en.wikipedia.org/wiki/Hamming_distance">Hamming distance</a> is defined as the number of positions between two strings of equal length that are different. Hence, it measures the number of substitutions needed to convert one string to the other. This also means that it is a kind of <em>global alignment</em> that only supports substitutions.</p>
 <p>In the example below, the Hamming distance is 1.</p>
 <pre>
 query   ATCTACCG
         |||||*||
-subject ATCGATCG
+subject ATCTATCG
 </pre>
 <p>We can pretty easily write a Rust function for calculating the Hamming distance:</p>
 <pre><pre class="playground"><code class="language-rust edition2024">use std::iter::zip;
@@ -516,14 +568,759 @@ fn main() {
     // Our function can actually handle non-nucleotide strings.
     assert_eq!(hamming_distance("Hello", "Heiol"), 3);
 }</code></pre></pre>
-<p>By implementing the Hamming distance, we have kind of almost implemented a <em>global aligner</em> (that only handles matches and mismatches).</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="edit-distance"><a class="header" href="#edit-distance">Edit Distance</a></h1>
+<h2 id="introduction-2"><a class="header" href="#introduction-2">Introduction</a></h2>
+<p>In contrast to the Hamming distance, the <a href="https://en.wikipedia.org/wiki/Edit_distance">Edit distance</a> allows for the query and subject to be different lengths. There are multiple kinds of Edit distances, of which the <a href="https://en.wikipedia.org/wiki/Levenshtein_distance">Levenshtein distance</a> is probably the most common. This distance allows for insertions, deletions and substitutions, which is highly suitable for alignment of biological sequences.</p>
+<p>The implementation of the Levenshtein distance is more complex than the Hamming distance and requires us to use some dynamic programming. The goal is to use as few insertions, deletions and substitutions as possible to turn one string into the other. We need to be <em>exhaustive</em> since we do not know beforehand what is the optimal solution to this problem. I.e., we need to allow for insertions, deletions and substitutions in every position.</p>
+<h2 id="setup"><a class="header" href="#setup">Setup</a></h2>
+<p>To solve this problem, we need a two dimensional array (two dimensions because we have two sequences). The layout will look something like this:</p>
+<pre>
+    A   T   C   G (query)
+
+A   -   -   -   -
+
+T   -   -   -   -
+
+C   -   -   -   -
+
+G   -   -   -   -
+
+(subject)
+</pre>
+<p>We want to traverse this array from the start, until we have used up the entire query and subject. We can do this in three different ways:</p>
+<ul>
+<li>A diagonal step means we take a step in both the query and subject (we "consume" both the query and the subject). Depending on the nucleotide we have in the current column (query) and row (subject), this is either a <em>match</em> or a <em>mismatch</em>.</li>
+<li>A step to the right means we take a step only in the query direction (we "consume" the query). This signifies a <em>deletion</em> in the subject sequence (we don't consume it).</li>
+<li>A step downwards means we take a step only in the subject direction (we "consume" the subject). This signifies a <em>deletion</em> in the query sequence (we don't consume it).</li>
+</ul>
+<hr />
+<p>The following path corresponds only to matches between the query and the subject:</p>
+<pre>
+    A   T   C   G
+
+A   *   -   -   -
+
+T   -   *   -   -
+
+C   -   -   *   -
+
+G   -   -   -   *
+</pre>
+<p>With the equivalent alignment:</p>
+<pre>
+query   ATCG
+        ||||
+subject ATCG
+</pre>
+<hr />
+<p>The following path corresponds to another alignment between the query and the subject:</p>
+<pre>
+    A   T   C   G
+
+A   *   -   -   -
+
+T   *   -   -   -
+
+C   *   -   -   -
+
+G   *   *   *   *
+</pre>
+<p>With the equivalent alignment:</p>
+<pre>
+query   A---TCG
+        |
+subject ATCG---
+</pre>
+<hr />
+<p>With this in mind, how do we choose the best alignment? We clearly see that the first alignment is a lot better than the second. However, we need to quantify this somehow. The solution is to associate costs:</p>
+<ul>
+<li>Match costs 0.</li>
+<li>Mismatch costs 1.</li>
+<li>Insertion/Deletion costs 1.</li>
+</ul>
+<p>The goal is to minimize this cost to generate the best alignment possible.</p>
+<p>We can make another observation, which is that for a given position (i, j) the value in this position, array[i][j], is dependent on the three adjacent values array[i-1][j-1], array[i][j-1] and array[i-1][j]. Namely, we want the minimum value from either of these three values, plus the additional cost to get to (i, j), which can be match, mismatch, insertion or deletion:</p>
+<pre>
+- array[i][j] = min(array[i-1][j-1] + cost_of_match_or_mismatch,
+                    array[i][j-1] + cost_of_insertion_deletion,
+                    array[i-1,j] + cost_of_insertion_deletion)
+</pre>
+<p>Finally, it also makes sense to initialize a starting position outside of the query and the subject because we could potentially have insertions and deletions at the start. Our final array will look like:</p>
+<pre>
+            A   T   C   G (query)
+
+        -   -   -   -   -
+
+    A   -   -   -   -   -
+
+    T   -   -   -   -   -
+
+    C   -   -   -   -   -
+
+    G   -   -   -   -   -
+
+(subject)
+</pre>
+<h2 id="implementation"><a class="header" href="#implementation">Implementation</a></h2>
+<p>Here is a very naive implementation of the Levenshtein distance. There are many, many ways to optimize this, however it is out of scope in this book.</p>
+<pre><pre class="playground"><code class="language-rust editable edition2024">#[derive(Clone, Copy)]
+enum AlignmentType {
+    Match,
+    Mismatch,
+    DeletionQuery,
+    DeletionSubject,
+}
+
+fn print_array(array: &amp;Vec&lt;Vec&lt;usize&gt;&gt;) {
+    for v in array {
+        let values: String = v
+            .iter()
+            .map(|v| v.to_string())
+            .collect::&lt;Vec&lt;_&gt;&gt;()
+            .join("\t");
+        println!("{values}");
+    }
+    println!("\n");
+}
+
+/// We could modify these if we want.
+fn get_alignment_cost(aln: AlignmentType) -&gt; usize {
+    match aln {
+        AlignmentType::Match =&gt; 0,
+        AlignmentType::Mismatch =&gt; 1,
+        AlignmentType::DeletionQuery =&gt; 1,
+        AlignmentType::DeletionSubject =&gt; 1,
+    }
+}
+
+fn levenshtein_distance(s1: &amp;str, s2: &amp;str) -&gt; usize {
+    // We take the number of rows from the subject.
+    let m = s2.len();
+
+    // We take the number of columns from the query.
+    let n = s1.len();
+
+    // Store array as a vector of vectors.
+    let mut array: Vec&lt;Vec&lt;usize&gt;&gt; = Vec::new();
+
+    // Initialize array.
+    for _ in 0..m + 1 {
+        array.push(vec![0; n + 1]);
+    }
+
+    assert!(array[0].len() == s1.len() + 1);
+    assert!(array.len() == s2.len() + 1);
+
+    // We move in the i direction (down), subject is consumed and query is deleted.
+    for i in 1..m + 1 {
+        array[i][0] = i * get_alignment_cost(AlignmentType::DeletionQuery);
+    }
+    // We move in the j direction (right), query is consumed and subject is deleted.
+    for j in 1..n + 1 {
+        array[0][j] = j * get_alignment_cost(AlignmentType::DeletionSubject);
+    }
+
+    for i in 1..m + 1 {
+        for j in 1..n + 1 {
+            // For a diagonal move, we need to check if we have a match or mismatch.
+            let match_or_mismatch = match s1.chars().nth(j - 1) == s2.chars().nth(i - 1) {
+                true =&gt; array[i - 1][j - 1] + get_alignment_cost(AlignmentType::Match),
+                false =&gt; array[i - 1][j - 1] + get_alignment_cost(AlignmentType::Mismatch),
+            };
+
+            // We have moved in the j direction so query is consumed and subject is deleted
+            let deletion_subject =
+                array[i][j - 1] + get_alignment_cost(AlignmentType::DeletionSubject);
+
+            // We have moved in the j direction so subject is consumed and query is deleted
+            let deletion_query = array[i - 1][j] + get_alignment_cost(AlignmentType::DeletionQuery);
+
+            // Collect these into a vector.
+            let previous_values: Vec&lt;usize&gt; =
+                vec![match_or_mismatch, deletion_query, deletion_subject];
+
+            // NOTE - depending on how we define the order of previous_values
+            // and our alignment costs, we might get different alignment results.
+            let previous_min_value = previous_values.iter().min().unwrap();
+
+            // Update array for current value.
+            array[i][j] = *previous_min_value;
+        }
+    }
+
+    return array[m][n];
+}
+
+fn main() {
+    assert_eq!(levenshtein_distance("ATCG", "ATCG"), 0);
+    assert_eq!(levenshtein_distance("AAAAA", "A"), 4);
+    assert_eq!(levenshtein_distance("ATATAT", "GGGGGG"), 6);
+    assert_eq!(levenshtein_distance("ATCGATCG", "ATCGTTCG"), 1);
+}</code></pre></pre>
+<p>Yay! We have now implemented another kind of <em>global aligner</em> that supports matches, mismatches, insertions and deletions.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="adding-traceback"><a class="header" href="#adding-traceback">Adding Traceback</a></h1>
+<h2 id="introduction-3"><a class="header" href="#introduction-3">Introduction</a></h2>
+<p>We have successfully created a basic edit distance aligner! However, we don't just want to return a simple usize of the distance between two strings. We also want to <em>visualize</em> the alignment.</p>
+<p>To make this work, we need to implement a traceback that enables us to generate the optimal alignment after we are done filling out the array. Let's look at the final array after aligning "ATCG" to "ATCG":</p>
+<pre>
+            A   T   C   G (query)
+
+        0   1   2   3   4
+
+    A   1   0   1   2   3
+
+    T   2   1   0   1   2
+
+    C   3   2   1   0   1
+
+    G   4   3   2   1   0 last value (m,n)
+
+(subject)
+</pre>
+<p>In this example, we clearly see that the traceback should be just traversing diagonally. But how do we implement this programmatically? Especially if there are potentially multiple paths that generate the same alignment? For now, we'll just assume that we have "best" alignment.</p>
+<p>We know the origin for each cell in the array, because we have defined it as array[i][j] = min(diagonal, left, up). We can store the origin of each cell in a hashmap and the start the traceback from the last cell (m, n) until we reach the start. This is rather inefficient, but it'll work for now.</p>
+<p>For simplicity, we'll save each cells origin along with the alignment type.</p>
+<h2 id="implementation-1"><a class="header" href="#implementation-1">Implementation</a></h2>
+<pre><pre class="playground"><code class="language-rust edition2024">
+use std::collections::HashMap;
+
+#[derive(Clone, Copy)]
+enum AlignmentType {
+    Match,
+    Mismatch,
+    DeletionQuery,
+    DeletionSubject,
+}
+
+fn print_array(array: &amp;Vec&lt;Vec&lt;usize&gt;&gt;) {
+    for v in array {
+        let values: String = v
+            .iter()
+            .map(|v| v.to_string())
+            .collect::&lt;Vec&lt;_&gt;&gt;()
+            .join("\t");
+        println!("{values}");
+    }
+    println!("\n");
+}
+
+/// We could modify these if we want.
+fn get_alignment_cost(aln: AlignmentType) -&gt; usize {
+    match aln {
+        AlignmentType::Match =&gt; 0,
+        AlignmentType::Mismatch =&gt; 1,
+        AlignmentType::DeletionQuery =&gt; 1,
+        AlignmentType::DeletionSubject =&gt; 1,
+    }
+}
+
+fn levenshtein_distance(
+    s1: &amp;str,
+    s2: &amp;str,
+) -&gt; (
+    Vec&lt;Vec&lt;usize&gt;&gt;,
+    HashMap&lt;(usize, usize), ((usize, usize), AlignmentType)&gt;,
+) {
+    // We take the number of rows from the subject.
+    let m = s2.len();
+
+    // We take the number of columns from the query.
+    let n = s1.len();
+
+    // Store array as a vector of vectors.
+    let mut array: Vec&lt;Vec&lt;usize&gt;&gt; = Vec::new();
+
+    // Initialize array.
+    for _ in 0..m + 1 {
+        array.push(vec![0; n + 1]);
+    }
+
+    assert!(array[0].len() == s1.len() + 1);
+    assert!(array.len() == s2.len() + 1);
+
+    // We store the origin of each element in the array.
+    let mut traceback: HashMap&lt;(usize, usize), ((usize, usize), AlignmentType)&gt; = HashMap::new();
+
+    // We move in the i direction (down), subject is consumed and query is deleted.
+    for i in 1..m + 1 {
+        array[i][0] = i * get_alignment_cost(AlignmentType::DeletionQuery);
+        // Remeber to add trace.
+        traceback.insert((i, 0), ((i - 1, 0), AlignmentType::DeletionQuery));
+    }
+    // We move in the j direction (right), query is consumed and subject is deleted.
+    for j in 1..n + 1 {
+        array[0][j] = j * get_alignment_cost(AlignmentType::DeletionSubject);
+        // Remember to add trace.
+        traceback.insert((0, j), ((0, j - 1), AlignmentType::DeletionSubject));
+    }
+
+    for i in 1..m + 1 {
+        for j in 1..n + 1 {
+            // For a diagonal move, we need to check if we have a match or mismatch.
+            let match_or_mismatch = match s1.chars().nth(j - 1) == s2.chars().nth(i - 1) {
+                true =&gt; (
+                    (i - 1, j - 1),
+                    array[i - 1][j - 1] + get_alignment_cost(AlignmentType::Match),
+                    AlignmentType::Match,
+                ),
+                false =&gt; (
+                    (i - 1, j - 1),
+                    array[i - 1][j - 1] + get_alignment_cost(AlignmentType::Mismatch),
+                    AlignmentType::Mismatch,
+                ),
+            };
+
+            // We have moved in the j direction so query is consumed and subject is deleted
+            let deletion_subject = (
+                (i, j - 1),
+                array[i][j - 1] + get_alignment_cost(AlignmentType::DeletionSubject),
+                AlignmentType::DeletionSubject,
+            );
+
+            // We have moved in the j direction so subject is consumed and query is deleted
+            let deletion_query = (
+                (i - 1, j),
+                array[i - 1][j] + get_alignment_cost(AlignmentType::DeletionQuery),
+                AlignmentType::DeletionQuery,
+            );
+
+            // Collect these into a vector.
+            let previous_values: Vec&lt;((usize, usize), usize, AlignmentType)&gt; =
+                vec![match_or_mismatch, deletion_query, deletion_subject];
+
+            // NOTE - depending on how we define the order of previous_values
+            // and our alignment costs, we might get different alignment results.
+            let (previous_index, previous_value, alignment_type) =
+                previous_values.iter().min_by_key(|x| x.1).unwrap();
+
+            // Add trace for current element.
+            traceback.insert((i, j), (*previous_index, *alignment_type));
+
+            // Update array for current value.
+            array[i][j] = *previous_value;
+        }
+    }
+
+    return (array, traceback);
+}
+
+fn get_traceback(
+    traceback: HashMap&lt;(usize, usize), ((usize, usize), AlignmentType)&gt;,
+    s1: &amp;str,
+    s2: &amp;str,
+) {
+    let mut m = s2.len();
+    let mut n = s1.len();
+
+    // Aligned part of s1 and s2 (including deletions).
+    let mut s1_aln: Vec&lt;char&gt; = Vec::new();
+    let mut s2_aln: Vec&lt;char&gt; = Vec::new();
+
+    // We'll use "|" for match, "*" for mismatch and " " for deletion.
+    let mut matches_aln: Vec&lt;char&gt; = Vec::new();
+
+    loop {
+        if (m, n) == (0, 0) {
+            break;
+        }
+
+        let ((i, j), aln_type) = traceback.get(&amp;(m, n)).unwrap();
+
+        match aln_type {
+            AlignmentType::Match =&gt; {
+                let s1_char = s1.chars().nth(*j).unwrap();
+                let s2_char = s2.chars().nth(*i).unwrap();
+                s1_aln.push(s1_char);
+                s2_aln.push(s2_char);
+                matches_aln.push('|');
+            }
+            AlignmentType::Mismatch =&gt; {
+                let s1_char = s1.chars().nth(*j).unwrap();
+                let s2_char = s2.chars().nth(*i).unwrap();
+                s1_aln.push(s1_char);
+                s2_aln.push(s2_char);
+                matches_aln.push('*');
+            }
+            AlignmentType::DeletionQuery =&gt; {
+                s1_aln.push('-');
+                s2_aln.push(s2.chars().nth(*i).unwrap());
+                matches_aln.push(' ');
+            }
+            AlignmentType::DeletionSubject =&gt; {
+                s1_aln.push(s1.chars().nth(*j).unwrap());
+                s2_aln.push('-');
+                matches_aln.push(' ');
+            }
+        }
+        m = *i;
+        n = *j;
+    }
+
+    let s1_aln_fwd: String = s1_aln.iter().rev().collect();
+    let s2_aln_fwd: String = s2_aln.iter().rev().collect();
+    let matches_aln_fwd: String = matches_aln.iter().rev().collect();
+
+    println!("{}", s1_aln_fwd);
+    println!("{}", matches_aln_fwd);
+    println!("{}\n", s2_aln_fwd);
+}
+
+fn align(s1: &amp;str, s2: &amp;str) {
+    let (_, traceback) = levenshtein_distance(s1, s2);
+
+    get_traceback(traceback, s1, s2);
+    // print_array(&amp;array);
+}
+fn main() {
+    // Run a few alignments.
+    align("ATCG", "ATCG");
+    align("A", "T");
+    align("ATCG", "ATCGATCG");
+    align("TTTTTTTTTTTTTTTTA", "ATTTTTTTTTTTTT");
+}
+
+</code></pre></pre>
+<p>This is awesome! We have created a basic aligner that uses the Levenshtein distance and supports non-equal length strings. Some good excercises (left up to the reader) would be:</p>
+<ul>
+<li>Calculating percent identity and other relevant alignment metrics.</li>
+<li>Thinking about how the code can be optimized (trust me, it is not).
+<ul>
+<li>For example, we actually only need to keep track of two rows of the array at once.</li>
+</ul>
+</li>
+<li>Writing a bunch of tests to make sure our code works (and fix it if it doesn't).</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="kmers"><a class="header" href="#kmers">Kmers</a></h1>
+<p>The concept of kmers is widely used in bioinformatics and is applied is concepts such as alignment and genome assembly. Here, we'll just go through the basics.</p>
+<p>Basically, kmers are just subsequences of a specific length. For example, in the following sequence we generate all consecutive kmers of length 3:</p>
+<pre>
+5' ATCGATCGATCG 3'
+
+   ATC ATC ATC
+    TCG TCG TCG
+     CGA CGA
+      GAT GAT
+</pre>
+<p>Note that our sequence length is 12 and the kmer length is 3. How many consecutive kmers can we generate? The answer is <em>len(sequence) - kmer_size + 1</em>, which in our case would 12 - 3 + 1 = 10. But why this exact formula?</p>
+<p>If we had kmer_size = 1, the number of kmers would be equal to the sequence length. We just slide along the sequence with a window size of 1. We are loosing out on <em>zero</em> nucleotides.</p>
+<p>If we had kmer_size = 2, we use a sliding window of length 2. However, we cannot use the last nucleotide in the sequence, because we need two nucleotides for our sliding window. We are loosing out on <em>one</em> nucleotide.</p>
+<p>We see a pattern here, which is that the number of kmers we can generate is the length of our sequence minus how many nucleotides in the end we are missing out on (which is one less than our kmer size).</p>
+<p>num_kmers = len(sequence) - (kmer_size - 1) = len(sequence) + kmer_size - 1.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="naive-implementation"><a class="header" href="#naive-implementation">Naive Implementation</a></h1>
+<p>For the naive implementation of kmers, we just use a sliding window of the specified kmer size in the forward direction. For now, we skip the reverse complement.</p>
+<pre><pre class="playground"><code class="language-rust edition2024">fn kmerize(nt_string: &amp;[u8], kmer_size: usize) -&gt; Vec&lt;&amp;[u8]&gt; {
+    assert!(kmer_size &lt;= nt_string.len());
+
+    // Rust has a very handy windows function that works perfectly here.
+    let kmers: Vec&lt;&amp;[u8]&gt; = nt_string.windows(kmer_size).collect();
+
+    // Make sure we generated the correct number of kmers.
+    assert_eq!(kmers.len(), nt_string.len() - kmer_size + 1);
+    return kmers;
+}
+
+fn main() {
+    assert_eq!(kmerize(b"AAAA", 2), vec![b"AA", b"AA", b"AA"]);
+    assert_eq!(kmerize(b"ATCGATCG", 7), vec![b"ATCGATC", b"TCGATCG"]);
+    assert_eq!(
+        kmerize(b"AATTCCGG", 2),
+        vec![b"AA", b"AT", b"TT", b"TC", b"CC", b"CG", b"GG"]
+    );
+}
+</code></pre></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="bit-shift-encoding"><a class="header" href="#bit-shift-encoding">Bit Shift Encoding</a></h1>
+<h2 id="introduction-4"><a class="header" href="#introduction-4">Introduction</a></h2>
+<p>Our naive implementation works, but it is not very efficient because:</p>
+<ul>
+<li>We are using ASCII encoding for our bases, which takes up unecessary amounts of storage.</li>
+<li>Using a iterative sliding window approach is not feasible for long sequences.</li>
+</ul>
+<p>To streamline our kmer generation function, we need to understand a bit about bit shifting and how computers interpret data. Computers are ridiculously fast at <a href="https://www.geeksforgeeks.org/dsa/all-about-bit-manipulation/">bitwise operations</a>. We won't cover the details in this book, but we'll go over the things we need in order for our kmer script to work properly.</p>
+<p>A <em>left shift</em> is defined as an operation in which the bits in a binary number are shifted to the left. The most significant bit (leftmost) is lost, and the least significant bit (righmost) is shifted after which a zero is added.</p>
+<ul>
+<li>Example: 0010 &lt;&lt; 1 = 0100</li>
+</ul>
+<p>A <em>right shift</em> does the opposite.</p>
+<ul>
+<li>Example: 0100 &gt;&gt; 1 = 0010</li>
+</ul>
+<pre><pre class="playground"><code class="language-rust edition2024">fn main() {
+    // Perform a left shift.
+    assert_eq!(0b0010 &lt;&lt; 1, 0b0100);
+
+    // Perform a right shift.
+    assert_eq!(0b0100 &gt;&gt; 1, 0b0010);
+}</code></pre></pre>
+<p>In our case, we'll use 2-bit encoding for our nucleotides:</p>
+<ul>
+<li>A =&gt; 0b00</li>
+<li>C =&gt; 0b01</li>
+<li>G =&gt; 0b10</li>
+<li>T =&gt; 0b11</li>
+</ul>
+<h2 id="choosing-storage-size"><a class="header" href="#choosing-storage-size">Choosing storage size</a></h2>
+<p>We use unsigned integers to store our kmers. Remember that each nucleotide occupies two bits. The following types are available in Rust:</p>
+<ul>
+<li>u8 - can store kmers of max size 8/2 = 4.</li>
+<li>u16 - can store kmers of max size 16/2 = 8.</li>
+<li>u32 - can store kmers of max size 32 / 2 = 16.</li>
+<li>u64 - can store kmers of max size 64/2 = 32.</li>
+<li>u128 - can store kmers of max size 128/2 = 64.</li>
+</ul>
+<p>Can we store a kmer size of length 2 in, say a u16? Yes we can, but we'll waste space. In the following examples, we'll mostly deal with u32.</p>
+<h2 id="handling-the-forward-strand"><a class="header" href="#handling-the-forward-strand">Handling the forward strand</a></h2>
+<p>In order to insert a nucleotide, we need two things:</p>
+<ul>
+<li>A left shift by two to make room for the two new bits.</li>
+<li>Insert the actual nucleotide, which is done with the "|" operator (BitOR).</li>
+</ul>
+<p>Hence, we add nucleotides from the <strong>right side</strong>.</p>
+<pre><pre class="playground"><code class="language-rust edition2024">fn main() {
+    let mut storage: u32 = 0b0;
+
+    // Insert a T.
+    storage = storage &lt;&lt; 2 | 0b11;
+    assert_eq!(storage, 0b11);
+
+    // Insert another T.
+    storage = storage &lt;&lt; 2 | 0b11;
+    assert_eq!(storage, 0b1111);
+
+    // Insert a G.
+    storage = storage &lt;&lt; 2 | 0b10;
+    assert_eq!(storage, 0b111110);
+
+    println!("{:032b}", storage);
+}</code></pre></pre>
+<p><strong>Note</strong> - it seems like new digits magically appear in our example above. However, when we print the full u32, we see the leading zeros.</p>
+<h4 id="what-actually-happens-is-something-more-like-this"><a class="header" href="#what-actually-happens-is-something-more-like-this">What actually happens is something more like this:</a></h4>
+<ol>
+<li>Add a "T":</li>
+</ol>
+<pre>
+0b0[...]000000 << 2 = 0b0[...]000000 # shift by two nts, all zeros so not much happens.
+
+    0b0[...]000000
+    0b0[...]000011
+    BitOR # insert the actual nt.
+=   0b0[...]000011
+</pre>
+<ol start="2">
+<li>Add another "T":</li>
+</ol>
+<pre>
+0b0[...]000011 << 2 = 0b0[...]001100 # shift by two nts, move first "T" two bits.
+
+    0b0[...]001100
+    0b0[...]000011
+    BitOR # insert the actual nt.
+=   0b0[...]001111
+</pre>
+<ol start="3">
+<li>Add a "G":</li>
+</ol>
+<pre>
+0b0[...]001111 << 2 = 0b0[...]111100 # shift by two nts, move both "T"s two bits.
+
+    0b0[...]111100
+    0b0[...]000010
+    BitOR # insert the actual nt.
+=   0b0[...]111110
+</pre>
+<h2 id="handling-the-reverse-complement"><a class="header" href="#handling-the-reverse-complement">Handling the reverse complement</a></h2>
+<p>As mentioned in a previous section, we also need to handle the reverse complement. How do we do this in an efficient way? We insert the reverse complement from the left side instead of the right.</p>
+<p>Lets go back to our example of "AGT". What we want to add is its reverse complement, which is "ACT". Remember that to reverse complement, we:</p>
+<ul>
+<li>
+<p>Reverse the order of the sequence.</p>
+<ul>
+<li>Handled by the right shift, which will insert a nucleotide from the left side.</li>
+</ul>
+</li>
+<li>
+<p>Convert to the complementary base.</p>
+<ul>
+<li>Handled by complementing before inserting.</li>
+</ul>
+</li>
+</ul>
+<p><strong>NOTE</strong> - here we need to take the kmer size into consideration, otherwise we might run into problems. Assume we have the following storage:</p>
+<pre>
+0b00[...]00
+</pre>
+<p>and, as an example, we want to insert a "T" (0b00[...]11) from the left. We first need to shift our nucleotide to the most significant two bits:</p>
+<pre>
+0b00[...]11
+    to
+0b11[...]00
+</pre>
+<p>After this, we can use our BitOR:</p>
+<pre>
+    0b00[...]00 # storage (empty at the moment)
+    0b11[...]00
+    BitOR #
+=   0b11[...]00 # storage now contains our "T".
+</pre>
+<h4 id="how-do-we-shift-our-two-nucleotide-bits-to-the-two-most-significant-bits"><a class="header" href="#how-do-we-shift-our-two-nucleotide-bits-to-the-two-most-significant-bits">How do we shift our two nucleotide bits to the two most significant bits?</a></h4>
+<p>We use the following formula:</p>
+<pre>
+shift = (k-1) * 2 # where k is the kmer size.
+nt = nt << shift # Shifts the two least significant bits to the most significant bits.
+</pre>
+<pre><pre class="playground"><code class="language-rust edition2024">fn main() {
+    let k: u8 = 4;
+
+    let shift = ((k - 1) * 2) as usize;
+
+    // Nucleotide "T".
+    let mut nt = 0b11;
+
+    nt = nt &lt;&lt; shift;
+
+    println!("{:08b}", nt);
+}</code></pre></pre>
+<p>With a kmer size of 4, we get 0b11000000. In our case, the value (k-1) * 2 equals 6, which means that we have shifted our nucletide 6 bits to the left.</p>
+<p>This is our final implementation of handling reverse complements:</p>
+<pre><pre class="playground"><code class="language-rust edition2024">fn main() {
+    let mut storage: u32 = 0b0;
+
+    // Use kmer size 3 to exactly fit our three nucleotides
+    // In the least significant bits.
+    let k: u32 = 3;
+
+    let forward = b"AGT";
+
+    let shift: u32 = (k - 1) * 2;
+
+    forward.iter().for_each(|nt| {
+        let nt_encoded = match nt {
+            b'A' =&gt; 0 as u32,
+            b'C' =&gt; 1 as u32,
+            b'G' =&gt; 2 as u32,
+            b'T' =&gt; 3 as u32,
+            _ =&gt; panic!(""),
+        };
+        // Use 3 - nt_encoded to get the reverse base.
+        storage = storage &gt;&gt; 2 | (3 - nt_encoded) &lt;&lt; shift;
+    });
+
+    // Print the full u32-bit.
+    println!("{:032b}", &amp;storage);
+}</code></pre></pre>
+<p>Run the code and inspect the result. Our output is:</p>
+<pre>
+00 [...] 00 01 11
+         A  C  T
+
+</pre>
+<p>Which is the reverse complement of "AGT", inserted in the correct order.</p>
+<h2 id="implementation-2"><a class="header" href="#implementation-2">Implementation</a></h2>
+<pre><pre class="playground"><code class="language-rust edition2024">fn encode(nt: &amp;u8) -&gt; u64 {
+    match nt {
+        b'A' =&gt; 0,
+        b'C' =&gt; 1,
+        b'G' =&gt; 2,
+        b'T' =&gt; 3,
+        _ =&gt; panic!("invalid nt {nt}"),
+    }
+}
+
+fn decode(nt: &amp;u64) -&gt; u8 {
+    match nt {
+        0 =&gt; b'A',
+        1 =&gt; b'C',
+        2 =&gt; b'G',
+        3 =&gt; b'T',
+        _ =&gt; panic!("Invalid nt {nt}"),
+    }
+}
+
+pub fn u64_kmer_to_string(kmer: &amp;u64, k: usize) -&gt; Vec&lt;u8&gt; {
+    let mut bytes: Vec&lt;u8&gt; = vec![];
+
+    let mask = 3;
+
+    for i in 0..k {
+        let val = kmer &gt;&gt; 2 * i;
+        let val = val &amp; mask;
+        bytes.push(decode(&amp;val));
+    }
+
+    let kmer_as_string = bytes.into_iter().rev().collect::&lt;Vec&lt;u8&gt;&gt;();
+
+    return kmer_as_string;
+}
+
+fn kmerize(k: usize, nt_string: &amp;[u8]) -&gt; Vec&lt;u64&gt; {
+    // Our kmer size cannot be larger then the sequence length.
+    assert!(k &lt;= nt_string.len());
+
+    // This is where we store our "rolling" kmer.
+    let mut kmer: u64 = 0;
+
+    // This is where we store the generated kmers.
+    let mut kmers: Vec&lt;u64&gt; = Vec::new();
+
+    // Iterate over each nucleotide in the sequence.
+    for i in 0..nt_string.len() {
+        // Convert ASCII to u64 (A/T/C/G to 0/1/2/3).
+        let nt = encode(&amp;nt_string[i]);
+
+        // Make room for nucleotide and then insert it.
+        kmer = (kmer &lt;&lt; 2) | nt;
+
+        // For the first k-1 nt insertions, we don't have a full kmer yet.
+        // However, note that index i starts at 0 (0-based) whilst our kmer size
+        // is 1-based (we don't count 0). Hence, when i &gt;= k-1, we have actually
+        // inserted k nucleotides, which is our target.
+        //
+        // Example - a kmer_size of 3 means we push after inserting three nucleotides.
+        // Since i starts at 0, we have inserted three nucleotides when i reaches 2 (index 0, 1 and 2).
+        if i &gt;= k - 1 {
+            kmers.push(kmer);
+        }
+    }
+
+    return kmers;
+}
+
+fn kmerize_wrapper(kmer_size: usize, nt_string: &amp;[u8]) -&gt; Vec&lt;Vec&lt;u8&gt;&gt; {
+    let kmers = kmerize(kmer_size, nt_string);
+
+    let kmers_as_strings: Vec&lt;Vec&lt;u8&gt;&gt; = kmers
+        .iter()
+        .map(|kmer| u64_kmer_to_string(kmer, kmer_size))
+        .collect();
+
+    return kmers_as_strings;
+}
+fn main() {
+    let kmers = kmerize_wrapper(4, b"ATCGATCG");
+    let formatted_kmers: Vec&lt;&amp;[u8]&gt; = kmers.iter().map(|kmer| kmer.as_slice()).collect();
+    assert_eq!(
+        formatted_kmers,
+        vec![b"ATCG", b"TCGA", b"CGAT", b"GATC", b"ATCG"]
+    );
+}</code></pre></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="simd-vectorization"><a class="header" href="#simd-vectorization">SIMD Vectorization</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="frac-min-hash"><a class="header" href="#frac-min-hash">Frac Min Hash</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="resources"><a class="header" href="#resources">Resources</a></h1>
-<p>The following sections list some really good resources. Feel free to browse and check them out!</p>
-<p>Here are some resources related to the Rust programming language:</p>
+<h2 id="reading-references"><a class="header" href="#reading-references">Reading References</a></h2>
 <ul>
 <li><a href="https://doc.rust-lang.org/book/">The Rust Programming Language</a> - Official Rust book.</li>
 <li><a href="https://practice.course.rs/">Rust By Practice</a> - Practice Rust.</li>
 <li><a href="https://doc.rust-lang.org/nomicon/intro.html">The Rustonomicon</a> - Even more Rust!</li>
+</ul>
+<h2 id="viewing-references"><a class="header" href="#viewing-references">Viewing References</a></h2>
+<ul>
+<li><a href="https://www.youtube.com/@jonhoo">Jon Gjengset</a></li>
+<li><a href="https://www.youtube.com/@jonhoo">Bogdan from Let's Get Rusty</a></li>
+<li><a href="https://www.youtube.com/@yousuckatprogramming">Dave from You Suck at Programming</a></li>
+<li><a href="https://www.youtube.com/@maxtaylordev">Max Taylor</a></li>
+</ul>
+<h2 id="listening-references"><a class="header" href="#listening-references">Listening References</a></h2>
+<ul>
+<li><a href="https://open.spotify.com/show/0Hf6gWrzpSzXp1X0cebbsT?si=db39249cb66b4d9b">Rust in Production</a></li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="awesome-rust-crates"><a class="header" href="#awesome-rust-crates">Awesome Rust crates</a></h1>
 <p>General purpose awesome Rust crates!
@@ -532,6 +1329,7 @@ For a mega list of even more crates, see <a href="https://github.com/rust-unoffi
 <li><a href="https://docs.rs/clap/latest/clap/">Clap</a> - Command line argument parsing.</li>
 <li><a href="https://docs.rs/rstest/latest/rstest/">Rstest</a> - Rust test fixtures.</li>
 <li><a href="https://docs.rs/rayon/latest/rayon/">Rayon</a> - Multithreading library for iterators.</li>
+<li><a href="https://github.com/xacrimon/dashmap">Dashmap</a> - Concurrent HashMaps.</li>
 <li><a href="https://docs.rs/serde/latest/serde/">Serde</a> - Serialization/Deserialization.</li>
 <li><a href="https://docs.rs/thiserror/latest/thiserror/">Thiserror</a> - Easily create custom error types.</li>
 <li><a href="https://docs.rs/log/latest/log/">Log</a> and <a href="https://docs.rs/simple_logger/latest/simple_logger/">SimpleLogger</a> - Switch those pesky println! macros for proper logging.</li>
@@ -546,37 +1344,39 @@ For a mega list of even more crates, see <a href="https://github.com/rust-unoffi
 <div style="break-before: page; page-break-before: always;"></div><h1 id="awesome-bioinformatic-tools"><a class="header" href="#awesome-bioinformatic-tools">Awesome bioinformatic tools</a></h1>
 <p>Alignment related:</p>
 <ul>
-<li><a href="https://github.com/lh3/minimap2">Minimap2</a> - Pairwise aligner. Written by the legendary <a href="https://github.com/lh3">Heng Li</a>. The go-to for Oxford Nanopore and PacBio data.</li>
-<li><a href="https://github.com/lh3/bwa">BWA-MEM</a> - Pairwise aligner suitable for Illumina data.</li>
-<li><a href="https://github.com/jeffdaily/parasail">Parasail</a> - General purpose pairwise aligner.</li>
-<li><a href="https://docs.rs/parasail-rs/latest/parasail_rs/">Parasail-rs</a> - Rust bindings for the parasail library.</li>
-<li><a href="https://blast.ncbi.nlm.nih.gov/Blast.cgi">BLAST</a> - The usual go-to for local sequence alignment.</li>
+<li><a href="https://github.com/lh3/minimap2">Minimap2</a> [C] - Pairwise aligner. Written by the legendary <a href="https://github.com/lh3">Heng Li</a>. The go-to for Oxford Nanopore and PacBio data.</li>
+<li><a href="https://github.com/lh3/bwa">BWA-MEM</a> [C] - Pairwise aligner suitable for Illumina data.</li>
+<li><a href="https://github.com/jeffdaily/parasail">Parasail</a> [C] - General purpose pairwise aligner.</li>
+<li><a href="https://docs.rs/parasail-rs/latest/parasail_rs/">Parasail-rs</a> [Rust] - Rust bindings for the parasail library.</li>
+<li><a href="https://blast.ncbi.nlm.nih.gov/Blast.cgi">BLAST</a> [C++] - The usual go-to for local sequence alignment.</li>
 </ul>
 <p>Assembly related:</p>
 <ul>
-<li><a href="https://github.com/mikolmogorov/Flye">Flye</a> - Genome assembler for Oxford Nanopore or PacBio data.</li>
-<li><a href="https://github.com/loneknightpy/idba">IDBA</a> - Illumina specific genome assembler.</li>
-<li><a href="https://github.com/ablab/spades">SPAdes</a> - Genome assembler suitable for Illumina or IonTorrent data.</li>
+<li><a href="https://github.com/mikolmogorov/Flye">Flye</a> [C/C++] - Genome assembler for Oxford Nanopore or PacBio data.</li>
+<li><a href="https://github.com/loneknightpy/idba">IDBA</a> [C++] - Illumina specific genome assembler.</li>
+<li><a href="https://github.com/ablab/spades">SPAdes</a> [C++] - Genome assembler suitable for Illumina or IonTorrent data.</li>
 </ul>
 <p>Variant calling related:</p>
 <ul>
-<li><a href="https://github.com/HKU-BAL/Clair3">Clair3</a> - Variant caller suitable for Illumina, Oxford Nanopore or PacBio data.</li>
-<li><a href="https://github.com/nanoporetech/medaka">Medaka</a> - Variant caller and polishing tool specifically for Oxford Nanopore data.</li>
-<li><a href="https://github.com/freebayes/freebayes">Freebayes</a> - Variant caller suitable for Illumina and IonTorrent data. Questionable use for Oxford Nanopore data.</li>
+<li><a href="https://github.com/HKU-BAL/Clair3">Clair3</a> [Python] - Variant caller suitable for Illumina, Oxford Nanopore or PacBio data.</li>
+<li><a href="https://github.com/nanoporetech/medaka">Medaka</a> [Python] - Variant caller and polishing tool specifically for Oxford Nanopore data.</li>
+<li><a href="https://github.com/freebayes/freebayes">Freebayes</a> [C++] - Variant caller suitable for Illumina and IonTorrent data. Questionable use for Oxford Nanopore data.</li>
 </ul>
 <p>Misc:</p>
 <ul>
-<li><a href="https://github.com/samtools/samtools">SAMtools</a> - SAM file manipulation.</li>
-<li><a href="https://github.com/samtools/bcftools">BCFtools</a> - VCF file manipulation.</li>
-<li><a href="https://github.com/lh3/kmer-cnt">Kmer-cnt</a> - Several kmer counting algorithms.</li>
+<li><a href="https://github.com/samtools/samtools">SAMtools</a> [C] - SAM file manipulation.</li>
+<li><a href="https://github.com/samtools/bcftools">BCFtools</a> [C] - VCF file manipulation.</li>
+<li><a href="https://github.com/lh3/kmer-cnt">Kmer-cnt</a> [C] - Several kmer counting algorithms.</li>
+<li><a href="https://github.com/shenwei356/seqkit">SeqKit</a> [Go] - Parsing and processing FASTA/Q files.</li>
 </ul>
 <p>Tools written in Rust:</p>
 <ul>
-<li><a href="https://docs.rs/needletail/latest/needletail/">Needletail</a> - Parsing and processing FASTA/Q files.</li>
-<li><a href="http://docs.rs/bio/latest/bio/">Bio</a> - General purpose bioinformatic tool for alignment, file processing and much more.</li>
-<li><a href="https://github.com/bluenote-1577/sylph">Sylph</a> - Metagenomic classification tool.</li>
-<li><a href="https://docs.rs/rust-htslib/latest/rust_htslib/">Rust Htslib</a> - Rust bindings for Htslib.</li>
-<li><a href="https://github.com/nextstrain/nextclade">NextClade</a> - Virus specific tool for alignment, SNP calling, clade assignment and more.</li>
+<li><a href="https://docs.rs/needletail/latest/needletail/">Needletail</a> [Rust] - Parsing and processing FASTA/Q files.</li>
+<li><a href="http://docs.rs/bio/latest/bio/">Bio</a> [Rust] - General purpose bioinformatic tool for alignment, file processing and much more.</li>
+<li><a href="https://github.com/bluenote-1577/sylph">Sylph</a> [Rust] - Metagenomic classification tool.</li>
+<li><a href="https://docs.rs/rust-htslib/latest/rust_htslib/">Rust Htslib</a> [Rust] - Rust bindings for Htslib.</li>
+<li><a href="https://github.com/nextstrain/nextclade">NextClade</a> [Rust] - Virus specific tool for alignment, SNP calling, clade assignment and more.</li>
+<li><a href="https://github.com/lbcb-sci/herro">Herro</a> [Rust] - Deep-learning based error correction tool for Oxford Nanopore data.</li>
 </ul>
 
                     </main>
@@ -619,6 +1419,11 @@ For a mega list of even more crates, see <a href="https://github.com/rust-unoffi
             window.playground_copyable = true;
         </script>
 
+        <script src="ace.js"></script>
+        <script src="mode-rust.js"></script>
+        <script src="editor.js"></script>
+        <script src="theme-dawn.js"></script>
+        <script src="theme-tomorrow_night.js"></script>
 
         <script src="elasticlunr.min.js"></script>
         <script src="mark.min.js"></script>
