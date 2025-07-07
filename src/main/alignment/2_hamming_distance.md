@@ -1,11 +1,11 @@
 # Hamming Distance
-The [Hamming distance](https://en.wikipedia.org/wiki/Hamming_distance) is defined as the number of positions between two strings of equal length that are different. Hence, it measures the number of substitutions needed to convert one string to the other.
+The [Hamming distance](https://en.wikipedia.org/wiki/Hamming_distance) is defined as the number of positions between two strings of equal length that are different. Hence, it measures the number of substitutions needed to convert one string to the other. This also means that it is a kind of *global alignment* that only supports substitutions.
 
 In the example below, the Hamming distance is 1.
 <pre>
 query   ATCTACCG
         |||||*||
-subject ATCGATCG
+subject ATCTATCG
 </pre>
 
 We can pretty easily write a Rust function for calculating the Hamming distance:
@@ -33,4 +33,3 @@ fn main() {
     assert_eq!(hamming_distance("Hello", "Heiol"), 3);
 }
 ```
-By implementing the Hamming distance, we have kind of almost implemented a *global aligner* (that only handles matches and mismatches).

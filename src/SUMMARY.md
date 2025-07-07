@@ -1,14 +1,14 @@
 # Summary
 
 [Introduction](./prefix/1_introduction.md)
-[Prerequisites](./prefix/2_prerequisites.md)
+[Why Rust?](./prefix/2_why_rust.md)
+[Prerequisites](./prefix/3_prerequisites.md)
 
 ---
 
 - [Getting Started](./main/getting_started/getting_started.md)
-- [Example Code](./main/example_code/1_example_code.md)
-    - [Rust Code](./main/example_code/2_rust_code.md)
 
+---
 
 - [Nucleotides](./main/nucleotides/1_nucleotides.md)
     - [Create A Nucleotide Sequence](./main/nucleotides/2_create_nucleotide_sequence.md)
@@ -16,8 +16,20 @@
     - [Reverse Complement](./main/nucleotides/4_reverse_complement.md)
     - [Encoding](./main/nucleotides/5_nucleotide_encoding.md)
 
+---
+
 - [The Basics Of Alignment](./main/alignment/1_basics_of_alignment.md)
     - [Hamming Distance](./main/alignment/2_hamming_distance.md)
+    - [Edit Distance](./main/alignment/3_edit_distance.md)
+        - [Adding Traceback](./main/alignment/3_1_adding_traceback.md)
+
+---
+
+- [Kmers](./main/kmers/1_kmers.md)
+    - [Naive Implementation](./main/kmers/2_naive_implementation.md)
+    - [Bit Shift Encoding](./main/kmers/3_bit_shift_encoding.md)
+    - [SIMD Vectorization](./main/kmers/4_simd_vectorization.md)
+    - [Frac Min Hash](./main/kmers/5_min_frac_hash.md)
 ---
 - [Resources](./suffix/1_resources.md)
     - [Awesome Rust Crates](./suffix/2_awesome_rust_crates.md)
