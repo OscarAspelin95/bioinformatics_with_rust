@@ -1,10 +1,12 @@
 # TODO list
 Here are some things I'd want to add to this book, in no particular order:
 - Misc:
+    - Width of book, the end of some lines disappear to the right.
     - GC content for a sliding window of a long nucleotide string (with plot).
+    - Break kmer bit shift into separate sections?
 
 - Alignment:
-    - Implement a local aligner (with traceback).
+    - Implement a local aligner (Smith-Waterman, with traceback).
     - Add support for finding all alignments from a local aligner?
     - Create a simple multiple sequence alignment?
 
