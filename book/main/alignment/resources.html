@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Reverse Complement - Bioinformatics with Rust</title>
+        <title>Resources - Bioinformatics with Rust</title>
 
 
         <!-- Custom HTML head -->
@@ -166,62 +166,22 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="reverse-complement"><a class="header" href="#reverse-complement">Reverse complement</a></h1>
-<p>Next, we cover a fundamental topic, which is reverse complementing. Why is this important?</p>
-<p>DNA is (generally) double stranded, where bases are paired:</p>
+                        <h1 id="resources"><a class="header" href="#resources">Resources</a></h1>
+<p>Understanding the details of alignment can be tricky. However, here are some good resources for further reading:</p>
 <ul>
-<li>A pairs with T and vice versa.</li>
-<li>G pairs with C and vice versa.</li>
+<li><a href="https://www.youtube.com/@BenLangmead">Ben Langmead</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Sequence_alignment">Wikipedia</a></li>
 </ul>
-<pre>
-5' [...]ACGAGCTTTGTGACGCGATGCGACGAGCTGCAGCGT[...] 3'
-3' [...]TGCTCGAAACACTGCGCTACGCTGCTCGACGTCGCA[...] 5'
-</pre>
-<p>Pretend this is a bacterial genome we want to sequence. Before sequencing, we need to separate the strands and break this molecule into smaller pieces. When doing this, we don't know which pieces are from which strand.</p>
-<p>When we want to align the pieces back to a reference sequence (which is defined in the 5' to 3' direction), we need to take both strands into consideration. Otherwise, we loose out on information. We do this by reverse complementing, in which we first reverse the sequence, and then replace each base with the corresponding matching base.</p>
-<p>For example, the reverse complement of ATCG would be CGAT.</p>
-<p>We can relatively easily write a Rust function for reverse complementing a nucleotide sequence:</p>
-<pre><pre class="playground"><code class="language-rust edition2024">fn reverse(nt: char) -&gt; char {
-    match nt {
-        'A' =&gt; 'T',
-        'C' =&gt; 'G',
-        'G' =&gt; 'C',
-        'T' =&gt; 'A',
-        _ =&gt; panic!("Invalid nt {nt}"),
-    }
-}
-
-fn reverse_complement(nt_string: &amp;'static str) -&gt; String {
-    let rev_comp: String = nt_string
-        // Iterate over each character.
-        .chars()
-        // Reverse the iteration order.
-        .rev()
-        .map(|nt| {
-            return reverse(nt);
-        })
-        .collect();
-
-    return rev_comp;
-}
-fn main() {
-    // Note that we use strings and not &amp;[u8].
-    // &amp;[u8] will be covered in a future topic.
-    assert_eq!(reverse_complement("AAA"), "TTT");
-    assert_eq!(reverse_complement("GGG"), "CCC");
-    assert_eq!(reverse_complement("ATCG"), "CGAT");
-    assert_eq!(reverse_complement("ACACGT"), "ACGTGT");
-}</code></pre></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../../main/nucleotides/3_1_gc_content.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../../main/alignment/3_1_adding_traceback.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../../main/nucleotides/5_nucleotide_encoding.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../../main/kmers/1_kmers.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -231,11 +191,11 @@ fn main() {
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../../main/nucleotides/3_1_gc_content.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../../main/alignment/3_1_adding_traceback.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../../main/nucleotides/5_nucleotide_encoding.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../../main/kmers/1_kmers.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

@@ -232,5 +232,6 @@ fn main() {
 This is awesome! We have created a basic aligner that uses the Levenshtein distance and supports non-equal length strings. Some good excercises (left up to the reader) would be:
 - Calculating percent identity and other relevant alignment metrics.
 - Thinking about how the code can be optimized (trust me, it is not).
-    - For example, we actually only need to keep track of two rows of the array at once.
+    - For example, do we really need to keep track of all rows and columns at the same time?
+    - How can we optimize the traceback strategy?
 - Writing a bunch of tests to make sure our code works (and fix it if it doesn't).

@@ -167,7 +167,49 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
+                        <h1 id="todo-list"><a class="header" href="#todo-list">TODO list</a></h1>
+<p>Here are some things I'd want to add to this book, in no particular order:</p>
+<ul>
+<li>
+<p>Misc:</p>
+<ul>
+<li>GC content for a sliding window of a long nucleotide string (with plot).</li>
+</ul>
+</li>
+<li>
+<p>Alignment:</p>
+<ul>
+<li>Implement a local aligner (with traceback).</li>
+<li>Add support for finding all alignments from a local aligner?</li>
+<li>Create a simple multiple sequence alignment?</li>
+</ul>
+</li>
+<li>
+<p>Assembly:</p>
+<ul>
+<li>The basics of assembly.</li>
+<li>Build a De-Bruijn graph.</li>
+<li>Build an overlap graph.</li>
+<li>Eularian walk?</li>
+<li>Section about the difficulties and challenges with assembly.</li>
+</ul>
+</li>
+<li>
+<p>Pipelines (how do we solve dependencies in mdbook?):</p>
+<ul>
+<li>Basic BLAST pipeline.</li>
+<li>Basic read alignment pipeline.</li>
+<li>Basic assembly pipeline.</li>
+<li>Kmer coverage pipeline from scratch:
+<ul>
+<li>Input is fastq and fasta file.</li>
+<li>Outputs the kmer coverage for each contig in fasta file, based on kmers in fastq file.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
 <p>Welcome to Bioinformatics with Rust! An unofficial book aimed at introducing the Rust programming language for bioinformatic applications. Before we start:</p>
 <ul>
 <li>
@@ -380,6 +422,23 @@ fn main() {
 }</code></pre></pre>
 <p>Run the code and inspect the output. The resulting HashMap will have the ASCII encoded nucleotides as keys.</p>
 <p>Note that there are lots of alternative solutions and further optimizations we can do.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="gc-content"><a class="header" href="#gc-content">GC content</a></h1>
+<p>With the previous section in mind, it is relatively straightforward to implement a function that calculates the GC-content for a nucleotide string.</p>
+<pre><pre class="playground"><code class="language-rust edition2024">fn gc_content(nt_string: &amp;[u8]) -&gt; f32{
+    let gc_count = nt_string.iter().filter(|&amp;&amp;nt| {
+        nt == b'C' || nt == b'G'
+    }).count();
+
+    return gc_count as f32 / nt_string.len() as f32;
+
+}
+fn main(){
+   assert_eq!(gc_content(b"ATCG"), 0.5);
+   assert_eq!(gc_content(b"ATTC"), 0.25);
+   assert_eq!(gc_content(b"AAAA"), 0.0);
+   assert_eq!(gc_content(b"CGCGCG"), 1.0);
+}
+</code></pre></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="reverse-complement"><a class="header" href="#reverse-complement">Reverse complement</a></h1>
 <p>Next, we cover a fundamental topic, which is reverse complementing. Why is this important?</p>
 <p>DNA is (generally) double stranded, where bases are paired:</p>
@@ -985,10 +1044,17 @@ fn main() {
 <li>Calculating percent identity and other relevant alignment metrics.</li>
 <li>Thinking about how the code can be optimized (trust me, it is not).
 <ul>
-<li>For example, we actually only need to keep track of two rows of the array at once.</li>
+<li>For example, do we really need to keep track of all rows and columns at the same time?</li>
+<li>How can we optimize the traceback strategy?</li>
 </ul>
 </li>
 <li>Writing a bunch of tests to make sure our code works (and fix it if it doesn't).</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="resources"><a class="header" href="#resources">Resources</a></h1>
+<p>Understanding the details of alignment can be tricky. However, here are some good resources for further reading:</p>
+<ul>
+<li><a href="https://www.youtube.com/@BenLangmead">Ben Langmead</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Sequence_alignment">Wikipedia</a></li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="kmers"><a class="header" href="#kmers">Kmers</a></h1>
 <p>The concept of kmers is widely used in bioinformatics and is applied is concepts such as alignment and genome assembly. Here, we'll just go through the basics.</p>
@@ -1304,7 +1370,7 @@ fn main() {
 }</code></pre></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="simd-vectorization"><a class="header" href="#simd-vectorization">SIMD Vectorization</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="frac-min-hash"><a class="header" href="#frac-min-hash">Frac Min Hash</a></h1>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="resources"><a class="header" href="#resources">Resources</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="resources-1"><a class="header" href="#resources-1">Resources</a></h1>
 <h2 id="reading-references"><a class="header" href="#reading-references">Reading References</a></h2>
 <ul>
 <li><a href="https://doc.rust-lang.org/book/">The Rust Programming Language</a> - Official Rust book.</li>

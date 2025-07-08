@@ -1,5 +1,6 @@
 # Summary
 
+[TODO list](./prefix/0_todo_list.md)
 [Introduction](./prefix/1_introduction.md)
 [Why Rust?](./prefix/2_why_rust.md)
 [Prerequisites](./prefix/3_prerequisites.md)
@@ -12,7 +13,8 @@
 
 - [Nucleotides](./main/nucleotides/1_nucleotides.md)
     - [Create A Nucleotide Sequence](./main/nucleotides/2_create_nucleotide_sequence.md)
-    - [Count Nucleotides](./main/nucleotides/3_count_nucleotides.md)
+    - [Counting Nucleotides](./main/nucleotides/3_count_nucleotides.md)
+        - [GC content](./main/nucleotides/3_1_gc_content.md)
     - [Reverse Complement](./main/nucleotides/4_reverse_complement.md)
     - [Encoding](./main/nucleotides/5_nucleotide_encoding.md)
 
@@ -22,6 +24,7 @@
     - [Hamming Distance](./main/alignment/2_hamming_distance.md)
     - [Edit Distance](./main/alignment/3_edit_distance.md)
         - [Adding Traceback](./main/alignment/3_1_adding_traceback.md)
+    - [Resources](./main/alignment/resources.md)
 
 ---
 
