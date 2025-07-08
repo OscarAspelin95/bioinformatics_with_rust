@@ -15,20 +15,20 @@ To make this work, we need to implement a traceback that enables us to generate 
 
     C   3   2   1   0   1
 
-    G   4   3   2   1   0 last value (m,n)
+    G   4   3   2   1   0 last cell
 
 (subject)
 </pre>
 
-In this example, we clearly see that the traceback should be just traversing diagonally. But how do we implement this programmatically? Especially if there are potentially multiple paths that generate the same alignment? For now, we'll just assume that we have "best" alignment.
+In this example, we clearly see that the traceback should be just traversing diagonally. But how do we implement this programmatically?
 
-We know the origin for each cell in the array, because we have defined it as array[i][j] = min(diagonal, left, up). We can store the origin of each cell in a hashmap and the start the traceback from the last cell (m, n) until we reach the start. This is rather inefficient, but it'll work for now.
+We know the origin for each cell in the array, because we have defined it as array[i][j] = min(diagonal, left, up). We can store the origin of each cell in a hashmap and start the traceback from the last cell until we reach the start. This is rather inefficient, but it'll work for now.
 
 For simplicity, we'll save each cells origin along with the alignment type.
 
 ## Implementation
 
-```rust
+```rust,editable
 
 use std::collections::HashMap;
 
@@ -132,12 +132,12 @@ fn levenshtein_distance(
                 AlignmentType::DeletionQuery,
             );
 
-            // Collect these into a vector.
+            // EDIT ME! Try switching the order of the
+            // elements and see if this changes the traceback.
             let previous_values: Vec<((usize, usize), usize, AlignmentType)> =
                 vec![match_or_mismatch, deletion_query, deletion_subject];
 
-            // NOTE - depending on how we define the order of previous_values
-            // and our alignment costs, we might get different alignment results.
+
             let (previous_index, previous_value, alignment_type) =
                 previous_values.iter().min_by_key(|x| x.1).unwrap();
 

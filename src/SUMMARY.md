@@ -24,6 +24,7 @@
     - [Hamming Distance](./main/alignment/2_hamming_distance.md)
     - [Edit Distance](./main/alignment/3_edit_distance.md)
         - [Adding Traceback](./main/alignment/3_1_adding_traceback.md)
+    - [Smith-Waterman algorithm](./main/alignment/4_smith_waterman.md)
     - [Resources](./main/alignment/resources.md)
 
 ---
