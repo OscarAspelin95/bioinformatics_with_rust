@@ -11,6 +11,10 @@ Here are some things I'd want to add to this book, in no particular order:
     - Create a simple multiple sequence alignment?
 
 
+- Visualization
+    - Alignment visualization.
+    - How to generate nice plots in Rust.
+
 - Assembly:
     - The basics of assembly.
     - Build a De-Bruijn graph.
@@ -22,6 +26,8 @@ Here are some things I'd want to add to this book, in no particular order:
     - Basic BLAST pipeline.
     - Basic read alignment pipeline.
     - Basic assembly pipeline.
+    - Metagenomic classification with sylph.
     - Kmer coverage pipeline from scratch:
         - Input is fastq and fasta file.
         - Outputs the kmer coverage for each contig in fasta file, based on kmers in fastq file.
+    - [Based on previous point] - SINTAX classifier in Rust.

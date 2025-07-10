@@ -34,7 +34,12 @@
     - [Bit Shift Encoding](./main/kmers/3_bit_shift_encoding.md)
     - [SIMD Vectorization](./main/kmers/4_simd_vectorization.md)
     - [Frac Min Hash](./main/kmers/5_min_frac_hash.md)
+
 ---
+
 - [Resources](./suffix/1_resources.md)
     - [Awesome Rust Crates](./suffix/2_awesome_rust_crates.md)
     - [Awesome Bioinformatic Tools](./suffix/3_awesome_bioinformatic_tools.md)
+
+---
+- [Thank You](./suffix/4_thank_you.md)

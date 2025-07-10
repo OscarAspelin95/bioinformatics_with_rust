@@ -83,15 +83,15 @@ We can make another observation, which is that for a given position (i, j) the v
                     array[i-1,j] + cost_of_insertion_deletion)
 </pre>
 
-Here, we might realize something. What if there are multiple alignments that generate the same final score? This depends on how we define the costs for matches, mismatches and insertions/deletions AND actually on the order of the elements in the min function. Min functions usually return the first minimum value if there is a tie. This is something to keep in mind. For now however, we'll just ignore this.
+Here, we might realize something. What if there are multiple alignments that generate the same final score? This depends on how we define the costs for matches, mismatches and insertions/deletions AND actually on the order of the arguments in the min function. Min functions usually return the first minimum value if there is a tie. This is something to keep in mind. For now however, we'll just ignore this.
 
 
-Finally, it also makes sense to initialize a starting position outside of the query and the subject because we could potentially have insertions and deletions at the start. Our final array will look like:
+Finally, it also makes sense to initialize a starting position outside of the query and the subject because we could potentially have insertions and deletions at the start. We'll set this value to 0, because there is a match of nothing against nothing. Our final array will look like:
 
 <pre>
             A   T   C   G (query)
 
-        -   -   -   -   -
+        0   -   -   -   -
 
     A   -   -   -   -   -
 

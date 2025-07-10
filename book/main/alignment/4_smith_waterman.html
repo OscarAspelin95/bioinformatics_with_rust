@@ -169,11 +169,11 @@
                         <h1 id="smith-waterman-algorithm"><a class="header" href="#smith-waterman-algorithm">Smith-Waterman algorithm</a></h1>
 <h2 id="introduction"><a class="header" href="#introduction">Introduction</a></h2>
 <p>In the previous section, we implemented a global aligner with traceback. Now, we want to improve on this approach to handle local alignment. The difference here is that we do not require the entire query and subject to be aligned end-to-end.</p>
-<p>In the example below, we just align the middle part of the query and subject and ignore the surrounding regions because we have no significant match there.</p>
+<p>In the example below, we just align the middle part of the query and subject and ignore (soft mask) the surrounding regions because we have no significant match there.</p>
 <pre>
-query   TTATCGTT
+query   ttATCGtt
           ||||
-subject GGATCGGG
+subject ggATCGgg
 </pre>
 <h2 id="modifications"><a class="header" href="#modifications">Modifications</a></h2>
 <p>We need to make some changes to our global aligner in order for it to handle local alignments. We'll change the concept of cost and instead call it a score.</p>
@@ -400,8 +400,7 @@ fn get_traceback(
     let mut m_c = m.clone();
     let mut n_c = n.clone();
 
-    // Fill the left unaligned.
-    // We do this first because we iterate the alignment backwards.
+    // Fill the left unaligned, we do this first because we iterate the alignment backwards.
     while m_c &lt;= s2.len() - 1 || n_c &lt;= s1.len() - 1 {
         match s1.chars().nth(n_c) {
             // We are still within s1, so we push the soft masked base.
@@ -462,11 +461,11 @@ fn get_traceback(
         n = *j;
     }
 
-    // Fill the right unaligned part.
-    // We do this last because we iterate the alignment backwards.
+    // Fill the right unaligned part, we do this last because we iterate the alignment backwards.
     let mut m = m as i32;
     let mut n = n as i32;
 
+    // We iterate until we have reached the end of both s1 and s2.
     while m &gt;= 1 || n &gt;= 1 {
         // We are still within s1, so we push the soft masked base.
         if n &gt;= 1 {
@@ -519,9 +518,13 @@ fn main() {
     align("ATCG", "CCCATCGTTT");
 
 
-}
-
-</code></pre></pre>
+}</code></pre></pre>
+<p>This is a very simple implementation of a local aligner. In practice, as a bioinformatician, one would use a highly optimized and widely established tool. Some examples are:</p>
+<ul>
+<li><a href="https://github.com/jeffdaily/parasail">Parasail</a> - A SIMD accelerated C library.</li>
+<li><a href="https://blast.ncbi.nlm.nih.gov/Blast.cgi">BLAST</a> - Uses the seed-and-extend approach.</li>
+<li><a href="https://github.com/lh3/minimap2">Minimap2</a> - One of the fastest aligners out there.</li>
+</ul>
 
                     </main>
 

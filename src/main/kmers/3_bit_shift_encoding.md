@@ -67,7 +67,7 @@ fn main() {
     println!("{:032b}", storage);
 }
 ```
-**Note** - it seems like new digits magically appear in our example above. However, when we print the full u32, we see the leading zeros.
+**Note** - it seems like new digits magically appear in our test cases. However, when we print the full u32, we see the leading zeros.
 
 #### What actually happens is something more like this:
 
@@ -100,6 +100,129 @@ fn main() {
     BitOR # insert the actual nt.
 =   0b0[...]111110
 </pre>
+
+### Handling the kmer size
+Our approach kinda works, but it has a fundamental flaw. We want our storage variable to only contain k nucleotides at one time, all other leading bits should be zero. As as example:
+
+<pre>
+nt_string = "GTGT"
+kmer_size = 2
+
+# start
+0b00000000
+
+# insert G
+0b00000010
+
+# insert T
+0b00001011
+
+# When inserting the third nt G, we want this
+# because our kmer size is 2.
+0b00001110
+
+If we don't account for the kmer size, we'd get
+a kmer of size 3, which is not what we want.
+0b00101110
+</pre>
+
+
+We solve this by applying a bit-mask. The example below handles this, and also handles nucleotides that are not A/T/C/T by just ignoring those kmers.
+
+```rust
+
+# const LOOKUP: [u8; 256] = [
+#     0, 1, 2, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+#     4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+#     4, 0, 4, 1, 4, 4, 4, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+#     4, 0, 4, 1, 4, 4, 4, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+#     4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+#     4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+#     4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+#     4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+# ];
+
+
+# fn decode(byte: u64) -> char {
+#     match byte {
+#         0 => return 'A',
+#         1 => return 'C',
+#         2 => return 'G',
+#         3 => return 'T',
+#         _ => panic!("Invalid nucleotide."),
+#     };
+# }
+
+// [...]
+
+/// Print a u64 encoded nucleotide with some bit manipulation.
+pub fn print_nt_string(kmer: u64, k: usize) {
+    let mut result = String::with_capacity(k);
+    for i in 0..k {
+        // Shift to extract the 2 bits corresponding to the current nucleotide
+        let shift = 2 * (k - i - 1);
+        let bits = (kmer >> shift) & 0b11;
+
+        result.push(decode(bits));
+    }
+    println!("{}", result);
+}
+
+fn kmerize(kmer_size: usize, nt_string: &[u8]){
+    assert!(kmer_size <= nt_string.len());
+
+    // Forward related kmer stuff
+    let mut storage: u64 = 0;
+
+    // Mask for bits above kmer size.
+    let nbits = kmer_size << 1;
+    let mask: u64 = (1 << nbits) - 1;
+
+    let mut valid_kmer_index: usize = 0;
+
+    nt_string.iter().for_each(|nt_char| {
+        // Forward kmer.
+        let nt = LOOKUP[*nt_char as usize] as u64;
+
+        if nt >= 4 {
+            valid_kmer_index = 0;
+            storage = 0;
+            return;
+        }
+        storage = (storage << 2 | nt) & mask;
+
+
+
+        if valid_kmer_index >= kmer_size - 1 {
+            print_nt_string(storage, kmer_size);
+        }
+
+        valid_kmer_index += 1;
+    });
+}
+
+fn main(){
+    // We expect just one kmer.
+    kmerize(5, b"AAAAA");
+
+    // We expect no kmers.
+    kmerize(5, b"AAAANAAAA");
+
+    // We expect AAA, AAT, ATT, TTT.
+    kmerize(3, b"AAATTT");
+}
+
+```
+
+
+
+
+
+
+
+
+
+
 ## Handling the reverse complement
 As mentioned in a previous section, we also need to handle the reverse complement. How do we do this in an efficient way? We insert the reverse complement from the left side instead of the right.
 
@@ -195,91 +318,93 @@ Which is the reverse complement of "AGT", inserted in the correct order.
 
 ## Implementation
 ```rust
-fn encode(nt: &u8) -> u64 {
-    match nt {
-        b'A' => 0,
-        b'C' => 1,
-        b'G' => 2,
-        b'T' => 3,
-        _ => panic!("invalid nt {nt}"),
-    }
-}
 
-fn decode(nt: &u64) -> u8 {
-    match nt {
-        0 => b'A',
-        1 => b'C',
-        2 => b'G',
-        3 => b'T',
-        _ => panic!("Invalid nt {nt}"),
-    }
-}
+# const LOOKUP: [u8; 256] = [
+#     0, 1, 2, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+#     4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+#     4, 0, 4, 1, 4, 4, 4, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+#     4, 0, 4, 1, 4, 4, 4, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+#     4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+#     4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+#     4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+#     4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+# ];
 
-pub fn u64_kmer_to_string(kmer: &u64, k: usize) -> Vec<u8> {
-    let mut bytes: Vec<u8> = vec![];
 
-    let mask = 3;
+# fn decode(byte: u64) -> char {
+#     match byte {
+#         0 => return 'A',
+#         1 => return 'C',
+#         2 => return 'G',
+#         3 => return 'T',
+#         _ => panic!("Invalid nucleotide."),
+#     };
+# }
 
-    for i in 0..k {
-        let val = kmer >> 2 * i;
-        let val = val & mask;
-        bytes.push(decode(&val));
-    }
+# /// Print a u64 encoded nucleotide with some bit manipulation.
+# pub fn print_nt_string(kmer: u64, k: usize) {
+#     let mut result = String::with_capacity(k);
+#     for i in 0..k {
+#         // Shift to extract the 2 bits corresponding to the current nucleotide
+#         let shift = 2 * (k - i - 1);
+#         let bits = (kmer >> shift) & 0b11;
+#
+#         result.push(decode(bits));
+#     }
+#     println!("{}", result);
+# }
 
-    let kmer_as_string = bytes.into_iter().rev().collect::<Vec<u8>>();
+// [...]
 
-    return kmer_as_string;
-}
-
-fn kmerize(k: usize, nt_string: &[u8]) -> Vec<u64> {
-    // Our kmer size cannot be larger then the sequence length.
+pub fn kmerize(k: usize, nt_string: &[u8]){
     assert!(k <= nt_string.len());
 
-    // This is where we store our "rolling" kmer.
-    let mut kmer: u64 = 0;
+    // Forward related kmer stuff
+    let mut kmer_forward: u64 = 0;
 
-    // This is where we store the generated kmers.
-    let mut kmers: Vec<u64> = Vec::new();
+    let nbits = k << 1;
+    let mask: u64 = (1 << nbits) - 1;
 
-    // Iterate over each nucleotide in the sequence.
-    for i in 0..nt_string.len() {
-        // Convert ASCII to u64 (A/T/C/G to 0/1/2/3).
-        let nt = encode(&nt_string[i]);
+    // Reverse related kmer stuff.
+    let mut kmer_reverse: u64 = 0;
+    let shift = ((k - 1) * 2) as u64;
 
-        // Make room for nucleotide and then insert it.
-        kmer = (kmer << 2) | nt;
+    let mut valid_kmer_index: usize = 0;
 
-        // For the first k-1 nt insertions, we don't have a full kmer yet.
-        // However, note that index i starts at 0 (0-based) whilst our kmer size
-        // is 1-based (we don't count 0). Hence, when i >= k-1, we have actually
-        // inserted k nucleotides, which is our target.
-        //
-        // Example - a kmer_size of 3 means we push after inserting three nucleotides.
-        // Since i starts at 0, we have inserted three nucleotides when i reaches 2 (index 0, 1 and 2).
-        if i >= k - 1 {
-            kmers.push(kmer);
+    nt_string.iter().for_each(|nt_char| {
+        // Forward kmer.
+        let nt = LOOKUP[*nt_char as usize] as u64;
+
+        if nt >= 4 {
+            valid_kmer_index = 0;
+            kmer_forward = 0;
+            kmer_reverse = 0;
+            return;
         }
-    }
+        // Forward kmer.
+        kmer_forward = (kmer_forward << 2 | nt) & mask;
 
-    return kmers;
+        // Reverse kmer.
+        let nt_rev = 3 - nt;
+        kmer_reverse = kmer_reverse >> 2 | nt_rev << shift;
+
+        if valid_kmer_index >= k - 1 {
+            let canonical = match kmer_forward < kmer_reverse {
+                true => kmer_forward,
+                false => kmer_reverse,
+            };
+
+            print_nt_string(canonical, k);
+        }
+
+        valid_kmer_index += 1;
+    });
+
 }
 
-fn kmerize_wrapper(kmer_size: usize, nt_string: &[u8]) -> Vec<Vec<u8>> {
-    let kmers = kmerize(kmer_size, nt_string);
-
-    let kmers_as_strings: Vec<Vec<u8>> = kmers
-        .iter()
-        .map(|kmer| u64_kmer_to_string(kmer, kmer_size))
-        .collect();
-
-    return kmers_as_strings;
-}
-fn main() {
-    let kmers = kmerize_wrapper(4, b"ATCGATCG");
-    let formatted_kmers: Vec<&[u8]> = kmers.iter().map(|kmer| kmer.as_slice()).collect();
-    assert_eq!(
-        formatted_kmers,
-        vec![b"ATCG", b"TCGA", b"CGAT", b"GATC", b"ATCG"]
-    );
+fn main(){
+    kmerize(5, b"AAAAAA");
+    kmerize(5, b"TTTTTT");
+    kmerize(5, b"AAAANTTTT");
 }
 ```
