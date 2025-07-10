@@ -187,6 +187,13 @@
 </ul>
 </li>
 <li>
+<p>Visualization</p>
+<ul>
+<li>Alignment visualization.</li>
+<li>How to generate nice plots in Rust.</li>
+</ul>
+</li>
+<li>
 <p>Assembly:</p>
 <ul>
 <li>The basics of assembly.</li>
@@ -202,12 +209,14 @@
 <li>Basic BLAST pipeline.</li>
 <li>Basic read alignment pipeline.</li>
 <li>Basic assembly pipeline.</li>
+<li>Metagenomic classification with sylph.</li>
 <li>Kmer coverage pipeline from scratch:
 <ul>
 <li>Input is fastq and fasta file.</li>
 <li>Outputs the kmer coverage for each contig in fasta file, based on kmers in fastq file.</li>
 </ul>
 </li>
+<li>[Based on previous point] - SINTAX classifier in Rust.</li>
 </ul>
 </li>
 </ul>
@@ -291,11 +300,11 @@ can be used to create fast and memory safe bioinformatics pipelines.</p>
 <p>For a more exhaustive list, visit <a href="prefix/../suffix/3_awesome_bioinformatic_tools.html">resources</a>.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="prerequisites"><a class="header" href="#prerequisites">Prerequisites</a></h1>
 <p>If you have never heard of the Rust programming language or bioinformatics, this book is probably not for you.</p>
-<p>If you have a lot of experience with both Rust and bioinformatics, this book is probably not for you.</p>
+<p>If you have a lot of experience with both Rust and bioinformatics, this book is probably not for you (and you probably have more knowledge than me).</p>
 <p>However, if you know a bit about bioinformatics and have worked with programming languages such as Python or C++ then this book will give you an introduction to the Rust ecosystem for building bioinformatic pipelines!</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="getting-started"><a class="header" href="#getting-started">Getting Started</a></h1>
 <p>First and foremost, we need to install Rust and its package manager Cargo. The easiest way to do this is to use <a href="https://rustup.rs/">Rustup</a> and follow the installation instructions.</p>
-<p>Second, we need a code editor. For running Rust in hardcode mode, use notepad. However, then we are missing some important stuff, like syntax highlighting, code formatting and much more. Here are some examples of code editors that can get the job done:</p>
+<p>Second, we need a code editor. If you want to make your life a living hell, you can use notepad. However, then we are missing some important stuff, like syntax highlighting, code formatting and much more. Here are some examples of code editors that can get the job done:</p>
 <ul>
 <li><a href="https://code.visualstudio.com/">VScode</a> - Easy to use with lots of plugins to make your life easier.</li>
 <li><a href="https://helix-editor.com/">Helix</a> - A text editor written in Rust!</li>
@@ -666,16 +675,29 @@ subject A-CGACTCGAGCTCGAGCTT
 <h2 id="types-of-alignments"><a class="header" href="#types-of-alignments">Types Of Alignments</a></h2>
 <p>There are three basic types of alignments:</p>
 <ul>
-<li>
-<p><em>Global Alignment</em> - Aligns the entire query against the entire subject. Suitable if query and subject are of similar length, or one expects the entire query to align against the entire subject. An example is aligning two very similar genomes of roughly the same length.</p>
-</li>
-<li>
-<p><em>Semi Global Alignment</em> - Fully aligns the shorter of query/subject. An example is trying to align a gene (shorter) against an entire genome (longer).</p>
-</li>
-<li>
-<p><em>Local Alignment</em> - Allows partial alignment of the query against the subject.</p>
-</li>
+<li><em>Global Alignment</em> - Aligns the entire query against the entire subject. Suitable if query and subject are of similar length, or one expects the entire query to align against the entire subject. An example is aligning two very similar genomes of roughly the same length.</li>
 </ul>
+<pre>
+        ATCGATCG
+        ||||||||
+        ATCGATCG
+</pre>
+<ul>
+<li><em>Semi Global Alignment</em> - Fully aligns the shorter of query/subject. An example is trying to align a gene (shorter) against an entire genome (longer).</li>
+</ul>
+<pre>
+        CCCATCGTTT
+           ||||
+           ATCG
+</pre>
+<ul>
+<li><em>Local Alignment</em> - Allows partial alignment of the query against the subject.</li>
+</ul>
+<pre>
+        CCCATCGTTT
+           ||||
+        GGGATCGAAA
+</pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="hamming-distance"><a class="header" href="#hamming-distance">Hamming Distance</a></h1>
 <p>The <a href="https://en.wikipedia.org/wiki/Hamming_distance">Hamming distance</a> is defined as the number of positions between two strings of equal length that are different. Hence, it measures the number of substitutions needed to convert one string to the other. This also means that it is a kind of <em>global alignment</em> that only supports substitutions.</p>
 <p>In the example below, the Hamming distance is 1.</p>
@@ -783,12 +805,12 @@ subject ATCG---
                     array[i][j-1] + cost_of_insertion_deletion,
                     array[i-1,j] + cost_of_insertion_deletion)
 </pre>
-<p>Here, we might realize something. What if there are multiple alignments that generate the same final score? This depends on how we define the costs for matches, mismatches and insertions/deletions AND actually on the order of the elements in the min function. Min functions usually return the first minimum value if there is a tie. This is something to keep in mind. For now however, we'll just ignore this.</p>
-<p>Finally, it also makes sense to initialize a starting position outside of the query and the subject because we could potentially have insertions and deletions at the start. Our final array will look like:</p>
+<p>Here, we might realize something. What if there are multiple alignments that generate the same final score? This depends on how we define the costs for matches, mismatches and insertions/deletions AND actually on the order of the arguments in the min function. Min functions usually return the first minimum value if there is a tie. This is something to keep in mind. For now however, we'll just ignore this.</p>
+<p>Finally, it also makes sense to initialize a starting position outside of the query and the subject because we could potentially have insertions and deletions at the start. We'll set this value to 0, because there is a match of nothing against nothing. Our final array will look like:</p>
 <pre>
             A   T   C   G (query)
 
-        -   -   -   -   -
+        0   -   -   -   -
 
     A   -   -   -   -   -
 
@@ -1133,11 +1155,11 @@ fn main() {
 <div style="break-before: page; page-break-before: always;"></div><h1 id="smith-waterman-algorithm"><a class="header" href="#smith-waterman-algorithm">Smith-Waterman algorithm</a></h1>
 <h2 id="introduction-4"><a class="header" href="#introduction-4">Introduction</a></h2>
 <p>In the previous section, we implemented a global aligner with traceback. Now, we want to improve on this approach to handle local alignment. The difference here is that we do not require the entire query and subject to be aligned end-to-end.</p>
-<p>In the example below, we just align the middle part of the query and subject and ignore the surrounding regions because we have no significant match there.</p>
+<p>In the example below, we just align the middle part of the query and subject and ignore (soft mask) the surrounding regions because we have no significant match there.</p>
 <pre>
-query   TTATCGTT
+query   ttATCGtt
           ||||
-subject GGATCGGG
+subject ggATCGgg
 </pre>
 <h2 id="modifications"><a class="header" href="#modifications">Modifications</a></h2>
 <p>We need to make some changes to our global aligner in order for it to handle local alignments. We'll change the concept of cost and instead call it a score.</p>
@@ -1364,8 +1386,7 @@ fn get_traceback(
     let mut m_c = m.clone();
     let mut n_c = n.clone();
 
-    // Fill the left unaligned.
-    // We do this first because we iterate the alignment backwards.
+    // Fill the left unaligned, we do this first because we iterate the alignment backwards.
     while m_c &lt;= s2.len() - 1 || n_c &lt;= s1.len() - 1 {
         match s1.chars().nth(n_c) {
             // We are still within s1, so we push the soft masked base.
@@ -1426,11 +1447,11 @@ fn get_traceback(
         n = *j;
     }
 
-    // Fill the right unaligned part.
-    // We do this last because we iterate the alignment backwards.
+    // Fill the right unaligned part, we do this last because we iterate the alignment backwards.
     let mut m = m as i32;
     let mut n = n as i32;
 
+    // We iterate until we have reached the end of both s1 and s2.
     while m &gt;= 1 || n &gt;= 1 {
         // We are still within s1, so we push the soft masked base.
         if n &gt;= 1 {
@@ -1483,9 +1504,13 @@ fn main() {
     align("ATCG", "CCCATCGTTT");
 
 
-}
-
-</code></pre></pre>
+}</code></pre></pre>
+<p>This is a very simple implementation of a local aligner. In practice, as a bioinformatician, one would use a highly optimized and widely established tool. Some examples are:</p>
+<ul>
+<li><a href="https://github.com/jeffdaily/parasail">Parasail</a> - A SIMD accelerated C library.</li>
+<li><a href="https://blast.ncbi.nlm.nih.gov/Blast.cgi">BLAST</a> - Uses the seed-and-extend approach.</li>
+<li><a href="https://github.com/lh3/minimap2">Minimap2</a> - One of the fastest aligners out there.</li>
+</ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="resources"><a class="header" href="#resources">Resources</a></h1>
 <p>Understanding the details of alignment can be tricky. However, here are some good resources for further reading:</p>
 <ul>
@@ -1594,7 +1619,7 @@ fn main() {
 
     println!("{:032b}", storage);
 }</code></pre></pre>
-<p><strong>Note</strong> - it seems like new digits magically appear in our example above. However, when we print the full u32, we see the leading zeros.</p>
+<p><strong>Note</strong> - it seems like new digits magically appear in our test cases. However, when we print the full u32, we see the leading zeros.</p>
 <h4 id="what-actually-happens-is-something-more-like-this"><a class="header" href="#what-actually-happens-is-something-more-like-this">What actually happens is something more like this:</a></h4>
 <ol>
 <li>Add a "T":</li>
@@ -1629,6 +1654,112 @@ fn main() {
     BitOR # insert the actual nt.
 =   0b0[...]111110
 </pre>
+<h3 id="handling-the-kmer-size"><a class="header" href="#handling-the-kmer-size">Handling the kmer size</a></h3>
+<p>Our approach kinda works, but it has a fundamental flaw. We want our storage variable to only contain k nucleotides at one time, all other leading bits should be zero. As as example:</p>
+<pre>
+nt_string = "GTGT"
+kmer_size = 2
+
+# start
+0b00000000
+
+# insert G
+0b00000010
+
+# insert T
+0b00001011
+
+# When inserting the third nt G, we want this
+# because our kmer size is 2.
+0b00001110
+
+If we don't account for the kmer size, we'd get
+a kmer of size 3, which is not what we want.
+0b00101110
+</pre>
+<p>We solve this by applying a bit-mask. The example below handles this, and also handles nucleotides that are not A/T/C/T by just ignoring those kmers.</p>
+<pre><pre class="playground"><code class="language-rust edition2024">
+<span class="boring">const LOOKUP: [u8; 256] = [
+</span><span class="boring">    0, 1, 2, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+</span><span class="boring">    4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+</span><span class="boring">    4, 0, 4, 1, 4, 4, 4, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+</span><span class="boring">    4, 0, 4, 1, 4, 4, 4, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+</span><span class="boring">    4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+</span><span class="boring">    4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+</span><span class="boring">    4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+</span><span class="boring">    4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+</span><span class="boring">];
+</span>
+
+<span class="boring">fn decode(byte: u64) -&gt; char {
+</span><span class="boring">    match byte {
+</span><span class="boring">        0 =&gt; return 'A',
+</span><span class="boring">        1 =&gt; return 'C',
+</span><span class="boring">        2 =&gt; return 'G',
+</span><span class="boring">        3 =&gt; return 'T',
+</span><span class="boring">        _ =&gt; panic!("Invalid nucleotide."),
+</span><span class="boring">    };
+</span><span class="boring">}
+</span>
+// [...]
+
+/// Print a u64 encoded nucleotide with some bit manipulation.
+pub fn print_nt_string(kmer: u64, k: usize) {
+    let mut result = String::with_capacity(k);
+    for i in 0..k {
+        // Shift to extract the 2 bits corresponding to the current nucleotide
+        let shift = 2 * (k - i - 1);
+        let bits = (kmer &gt;&gt; shift) &amp; 0b11;
+
+        result.push(decode(bits));
+    }
+    println!("{}", result);
+}
+
+fn kmerize(kmer_size: usize, nt_string: &amp;[u8]){
+    assert!(kmer_size &lt;= nt_string.len());
+
+    // Forward related kmer stuff
+    let mut storage: u64 = 0;
+
+    // Mask for bits above kmer size.
+    let nbits = kmer_size &lt;&lt; 1;
+    let mask: u64 = (1 &lt;&lt; nbits) - 1;
+
+    let mut valid_kmer_index: usize = 0;
+
+    nt_string.iter().for_each(|nt_char| {
+        // Forward kmer.
+        let nt = LOOKUP[*nt_char as usize] as u64;
+
+        if nt &gt;= 4 {
+            valid_kmer_index = 0;
+            storage = 0;
+            return;
+        }
+        storage = (storage &lt;&lt; 2 | nt) &amp; mask;
+
+
+
+        if valid_kmer_index &gt;= kmer_size - 1 {
+            print_nt_string(storage, kmer_size);
+        }
+
+        valid_kmer_index += 1;
+    });
+}
+
+fn main(){
+    // We expect just one kmer.
+    kmerize(5, b"AAAAA");
+
+    // We expect no kmers.
+    kmerize(5, b"AAAANAAAA");
+
+    // We expect AAA, AAT, ATT, TTT.
+    kmerize(3, b"AAATTT");
+}
+</code></pre></pre>
 <h2 id="handling-the-reverse-complement"><a class="header" href="#handling-the-reverse-complement">Handling the reverse complement</a></h2>
 <p>As mentioned in a previous section, we also need to handle the reverse complement. How do we do this in an efficient way? We insert the reverse complement from the left side instead of the right.</p>
 <p>Lets go back to our example of "AGT". What we want to add is its reverse complement, which is "ACT". Remember that to reverse complement, we:</p>
@@ -1717,96 +1848,210 @@ nt = nt << shift # Shifts the two least significant bits to the most significant
 </pre>
 <p>Which is the reverse complement of "AGT", inserted in the correct order.</p>
 <h2 id="implementation-3"><a class="header" href="#implementation-3">Implementation</a></h2>
-<pre><pre class="playground"><code class="language-rust edition2024">fn encode(nt: &amp;u8) -&gt; u64 {
-    match nt {
-        b'A' =&gt; 0,
-        b'C' =&gt; 1,
-        b'G' =&gt; 2,
-        b'T' =&gt; 3,
-        _ =&gt; panic!("invalid nt {nt}"),
-    }
-}
+<pre><pre class="playground"><code class="language-rust edition2024">
+<span class="boring">const LOOKUP: [u8; 256] = [
+</span><span class="boring">    0, 1, 2, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+</span><span class="boring">    4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+</span><span class="boring">    4, 0, 4, 1, 4, 4, 4, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+</span><span class="boring">    4, 0, 4, 1, 4, 4, 4, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+</span><span class="boring">    4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+</span><span class="boring">    4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+</span><span class="boring">    4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+</span><span class="boring">    4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+</span><span class="boring">];
+</span>
 
-fn decode(nt: &amp;u64) -&gt; u8 {
-    match nt {
-        0 =&gt; b'A',
-        1 =&gt; b'C',
-        2 =&gt; b'G',
-        3 =&gt; b'T',
-        _ =&gt; panic!("Invalid nt {nt}"),
-    }
-}
+<span class="boring">fn decode(byte: u64) -&gt; char {
+</span><span class="boring">    match byte {
+</span><span class="boring">        0 =&gt; return 'A',
+</span><span class="boring">        1 =&gt; return 'C',
+</span><span class="boring">        2 =&gt; return 'G',
+</span><span class="boring">        3 =&gt; return 'T',
+</span><span class="boring">        _ =&gt; panic!("Invalid nucleotide."),
+</span><span class="boring">    };
+</span><span class="boring">}
+</span>
+<span class="boring">/// Print a u64 encoded nucleotide with some bit manipulation.
+</span><span class="boring">pub fn print_nt_string(kmer: u64, k: usize) {
+</span><span class="boring">    let mut result = String::with_capacity(k);
+</span><span class="boring">    for i in 0..k {
+</span><span class="boring">        // Shift to extract the 2 bits corresponding to the current nucleotide
+</span><span class="boring">        let shift = 2 * (k - i - 1);
+</span><span class="boring">        let bits = (kmer &gt;&gt; shift) &amp; 0b11;
+</span><span class="boring">
+</span><span class="boring">        result.push(decode(bits));
+</span><span class="boring">    }
+</span><span class="boring">    println!("{}", result);
+</span><span class="boring">}
+</span>
+// [...]
 
-pub fn u64_kmer_to_string(kmer: &amp;u64, k: usize) -&gt; Vec&lt;u8&gt; {
-    let mut bytes: Vec&lt;u8&gt; = vec![];
-
-    let mask = 3;
-
-    for i in 0..k {
-        let val = kmer &gt;&gt; 2 * i;
-        let val = val &amp; mask;
-        bytes.push(decode(&amp;val));
-    }
-
-    let kmer_as_string = bytes.into_iter().rev().collect::&lt;Vec&lt;u8&gt;&gt;();
-
-    return kmer_as_string;
-}
-
-fn kmerize(k: usize, nt_string: &amp;[u8]) -&gt; Vec&lt;u64&gt; {
-    // Our kmer size cannot be larger then the sequence length.
+pub fn kmerize(k: usize, nt_string: &amp;[u8]){
     assert!(k &lt;= nt_string.len());
 
-    // This is where we store our "rolling" kmer.
-    let mut kmer: u64 = 0;
+    // Forward related kmer stuff
+    let mut kmer_forward: u64 = 0;
 
-    // This is where we store the generated kmers.
-    let mut kmers: Vec&lt;u64&gt; = Vec::new();
+    let nbits = k &lt;&lt; 1;
+    let mask: u64 = (1 &lt;&lt; nbits) - 1;
 
-    // Iterate over each nucleotide in the sequence.
-    for i in 0..nt_string.len() {
-        // Convert ASCII to u64 (A/T/C/G to 0/1/2/3).
-        let nt = encode(&amp;nt_string[i]);
+    // Reverse related kmer stuff.
+    let mut kmer_reverse: u64 = 0;
+    let shift = ((k - 1) * 2) as u64;
 
-        // Make room for nucleotide and then insert it.
-        kmer = (kmer &lt;&lt; 2) | nt;
+    let mut valid_kmer_index: usize = 0;
 
-        // For the first k-1 nt insertions, we don't have a full kmer yet.
-        // However, note that index i starts at 0 (0-based) whilst our kmer size
-        // is 1-based (we don't count 0). Hence, when i &gt;= k-1, we have actually
-        // inserted k nucleotides, which is our target.
-        //
-        // Example - a kmer_size of 3 means we push after inserting three nucleotides.
-        // Since i starts at 0, we have inserted three nucleotides when i reaches 2 (index 0, 1 and 2).
-        if i &gt;= k - 1 {
-            kmers.push(kmer);
+    nt_string.iter().for_each(|nt_char| {
+        // Forward kmer.
+        let nt = LOOKUP[*nt_char as usize] as u64;
+
+        if nt &gt;= 4 {
+            valid_kmer_index = 0;
+            kmer_forward = 0;
+            kmer_reverse = 0;
+            return;
         }
-    }
+        // Forward kmer.
+        kmer_forward = (kmer_forward &lt;&lt; 2 | nt) &amp; mask;
 
-    return kmers;
+        // Reverse kmer.
+        let nt_rev = 3 - nt;
+        kmer_reverse = kmer_reverse &gt;&gt; 2 | nt_rev &lt;&lt; shift;
+
+        if valid_kmer_index &gt;= k - 1 {
+            let canonical = match kmer_forward &lt; kmer_reverse {
+                true =&gt; kmer_forward,
+                false =&gt; kmer_reverse,
+            };
+
+            print_nt_string(canonical, k);
+        }
+
+        valid_kmer_index += 1;
+    });
+
 }
 
-fn kmerize_wrapper(kmer_size: usize, nt_string: &amp;[u8]) -&gt; Vec&lt;Vec&lt;u8&gt;&gt; {
-    let kmers = kmerize(kmer_size, nt_string);
-
-    let kmers_as_strings: Vec&lt;Vec&lt;u8&gt;&gt; = kmers
-        .iter()
-        .map(|kmer| u64_kmer_to_string(kmer, kmer_size))
-        .collect();
-
-    return kmers_as_strings;
-}
-fn main() {
-    let kmers = kmerize_wrapper(4, b"ATCGATCG");
-    let formatted_kmers: Vec&lt;&amp;[u8]&gt; = kmers.iter().map(|kmer| kmer.as_slice()).collect();
-    assert_eq!(
-        formatted_kmers,
-        vec![b"ATCG", b"TCGA", b"CGAT", b"GATC", b"ATCG"]
-    );
+fn main(){
+    kmerize(5, b"AAAAAA");
+    kmerize(5, b"TTTTTT");
+    kmerize(5, b"AAAANTTTT");
 }</code></pre></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="simd-vectorization"><a class="header" href="#simd-vectorization">SIMD Vectorization</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="frac-min-hash"><a class="header" href="#frac-min-hash">Frac Min Hash</a></h1>
 <p>See this <a href="https://doi.org/10.1186/s13015-025-00276-8">paper</a> for an overview of FracMinHash.</p>
+<p>[Add text about FracMinHash here].</p>
+<pre><pre class="playground"><code class="language-rust edition2024">
+<span class="boring">use std::collections::HashSet;
+</span>
+<span class="boring">const LOOKUP: [u8; 256] = [
+</span><span class="boring">    0, 1, 2, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+</span><span class="boring">    4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+</span><span class="boring">    4, 0, 4, 1, 4, 4, 4, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+</span><span class="boring">    4, 0, 4, 1, 4, 4, 4, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+</span><span class="boring">    4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+</span><span class="boring">    4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+</span><span class="boring">    4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+</span><span class="boring">    4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+</span><span class="boring">];
+</span>
+<span class="boring">fn decode(byte: u64) -&gt; char {
+</span><span class="boring">    match byte {
+</span><span class="boring">        0 =&gt; return 'A',
+</span><span class="boring">        1 =&gt; return 'C',
+</span><span class="boring">        2 =&gt; return 'G',
+</span><span class="boring">        3 =&gt; return 'T',
+</span><span class="boring">        _ =&gt; panic!("Invalid nucleotide."),
+</span><span class="boring">    };
+</span><span class="boring">}
+</span>
+<span class="boring">/// Print a u64 encoded nucleotide with some bit manipulation.
+</span><span class="boring">pub fn print_nt_string(kmer: u64, k: usize) {
+</span><span class="boring">    let mut result = String::with_capacity(k);
+</span><span class="boring">    for i in 0..k {
+</span><span class="boring">        // Shift to extract the 2 bits corresponding to the current nucleotide
+</span><span class="boring">        let shift = 2 * (k - i - 1);
+</span><span class="boring">        let bits = (kmer &gt;&gt; shift) &amp; 0b11;
+</span><span class="boring">
+</span><span class="boring">        result.push(decode(bits));
+</span><span class="boring">    }
+</span><span class="boring">    println!("{}", result);
+</span><span class="boring">}
+</span>
+// [...]
+
+fn mm_hash64(kmer: u64) -&gt; u64 {
+    let mut key = kmer;
+    key = !key.wrapping_add(key &lt;&lt; 21); // key = (key &lt;&lt; 21) - key - 1;
+    key = key ^ key &gt;&gt; 24;
+    key = (key.wrapping_add(key &lt;&lt; 3)).wrapping_add(key &lt;&lt; 8); // key * 265
+    key = key ^ key &gt;&gt; 14;
+    key = (key.wrapping_add(key &lt;&lt; 2)).wrapping_add(key &lt;&lt; 4); // key * 21
+    key = key ^ key &gt;&gt; 28;
+    key = key.wrapping_add(key &lt;&lt; 31);
+    key
+}
+
+fn kmerize(k: usize, ds_factor: u64, nt_string: &amp;[u8]) -&gt; HashSet&lt;u64&gt; {
+    if k &gt;= nt_string.len() {
+        panic!("kmer: {k}, nt_string: {}", nt_string.len());
+    };
+
+    // Forward related kmer stuff
+    let mut kmer_forward: u64 = 0;
+
+    let nbits = k &lt;&lt; 1;
+    let mask: u64 = (1 &lt;&lt; nbits) - 1;
+
+    // Reverse related kmer stuff.
+    let mut kmer_reverse: u64 = 0;
+    let shift = ((k - 1) * 2) as u64;
+
+    // Storage.
+    let mut canonical_hashes: HashSet&lt;u64&gt; = HashSet::with_capacity(nt_string.len() - k + 1);
+
+    let mut valid_kmer_index: usize = 0;
+
+    nt_string.iter().for_each(|nt_char| {
+        // Forward kmer.
+        let nt = LOOKUP[*nt_char as usize] as u64;
+
+        if nt &gt;= 4 {
+            valid_kmer_index = 0;
+            kmer_forward = 0;
+            kmer_reverse = 0;
+            return;
+        }
+        kmer_forward = (kmer_forward &lt;&lt; 2 | nt) &amp; mask;
+
+        // Reverse kmer.
+        let nt_rev = 3 - nt;
+        kmer_reverse = kmer_reverse &gt;&gt; 2 | nt_rev &lt;&lt; shift;
+
+        if valid_kmer_index &gt;= k - 1 {
+            let canonical = match kmer_forward &lt; kmer_reverse {
+                true =&gt; kmer_forward,
+                false =&gt; kmer_reverse,
+            };
+            // MinFracHash
+            if canonical &lt;= u64::MAX / ds_factor {
+                print_nt_string(canonical, k);
+                canonical_hashes.insert(mm_hash64(canonical));
+            }
+        }
+
+        valid_kmer_index += 1;
+    });
+
+    return canonical_hashes;
+}
+
+fn main(){
+    kmerize(5, 1, b"AAAAAAAAAA");
+    println!("");
+    kmerize(5, 1, b"TTTTTTTTTT");
+
+}</code></pre></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="resources-1"><a class="header" href="#resources-1">Resources</a></h1>
 <h2 id="reading-references"><a class="header" href="#reading-references">Reading References</a></h2>
 <ul>
@@ -1852,6 +2097,8 @@ For a mega list of even more crates, see <a href="https://github.com/rust-unoffi
 <li><a href="https://github.com/jeffdaily/parasail">Parasail</a> [C] - General purpose pairwise aligner.</li>
 <li><a href="https://docs.rs/parasail-rs/latest/parasail_rs/">Parasail-rs</a> [Rust] - Rust bindings for the parasail library.</li>
 <li><a href="https://blast.ncbi.nlm.nih.gov/Blast.cgi">BLAST</a> [C++] - The usual go-to for local sequence alignment.</li>
+<li><a href="https://mafft.cbrc.jp/alignment/server/index.html">MAFFT</a> - Multiple sequence aligner.</li>
+<li><a href="https://www.ebi.ac.uk/jdispatcher/msa/clustalo">Clustal Omega</a> - Multiple sequence aligner.</li>
 </ul>
 <p>Assembly related:</p>
 <ul>
@@ -1881,6 +2128,10 @@ For a mega list of even more crates, see <a href="https://github.com/rust-unoffi
 <li><a href="https://github.com/nextstrain/nextclade">NextClade</a> [Rust] - Virus specific tool for alignment, SNP calling, clade assignment and more.</li>
 <li><a href="https://github.com/lbcb-sci/herro">Herro</a> [Rust] - Deep-learning based error correction tool for Oxford Nanopore data.</li>
 </ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="thank-you"><a class="header" href="#thank-you">Thank You</a></h1>
+<p>This was it. If you have made it to this point, I sincerely want to thank you for spending your time reading through this book.</p>
+<p>Initially, this started off as a private project with the goal of learning more about the Rust programming language. Since my background is in biotech/bioinformatics, the combination Rust + bioinformatics felt very natural to me. Along the way, I realized that even though there are some bioinformatic tools written in Rust, there was no real good tutorial on how well Rust integrates with the bioinformatic landscape.</p>
+<p>Whilst working on this project, I realized that this might as well be a public project.</p>
 
                     </main>
 

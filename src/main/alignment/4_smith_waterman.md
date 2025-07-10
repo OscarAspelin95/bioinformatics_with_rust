@@ -2,12 +2,12 @@
 ## Introduction
 In the previous section, we implemented a global aligner with traceback. Now, we want to improve on this approach to handle local alignment. The difference here is that we do not require the entire query and subject to be aligned end-to-end.
 
-In the example below, we just align the middle part of the query and subject and ignore the surrounding regions because we have no significant match there.
+In the example below, we just align the middle part of the query and subject and ignore (soft mask) the surrounding regions because we have no significant match there.
 
 <pre>
-query   TTATCGTT
+query   ttATCGtt
           ||||
-subject GGATCGGG
+subject ggATCGgg
 </pre>
 
 ## Modifications
@@ -231,8 +231,7 @@ fn get_traceback(
     let mut m_c = m.clone();
     let mut n_c = n.clone();
 
-    // Fill the left unaligned.
-    // We do this first because we iterate the alignment backwards.
+    // Fill the left unaligned, we do this first because we iterate the alignment backwards.
     while m_c <= s2.len() - 1 || n_c <= s1.len() - 1 {
         match s1.chars().nth(n_c) {
             // We are still within s1, so we push the soft masked base.
@@ -293,11 +292,11 @@ fn get_traceback(
         n = *j;
     }
 
-    // Fill the right unaligned part.
-    // We do this last because we iterate the alignment backwards.
+    // Fill the right unaligned part, we do this last because we iterate the alignment backwards.
     let mut m = m as i32;
     let mut n = n as i32;
 
+    // We iterate until we have reached the end of both s1 and s2.
     while m >= 1 || n >= 1 {
         // We are still within s1, so we push the soft masked base.
         if n >= 1 {
@@ -351,6 +350,9 @@ fn main() {
 
 
 }
-
-
 ```
+
+This is a very simple implementation of a local aligner. In practice, as a bioinformatician, one would use a highly optimized and widely established tool. Some examples are:
+- [Parasail](https://github.com/jeffdaily/parasail) - A SIMD accelerated C library.
+- [BLAST](https://blast.ncbi.nlm.nih.gov/Blast.cgi) - Uses the seed-and-extend approach.
+- [Minimap2](https://github.com/lh3/minimap2) - One of the fastest aligners out there.

@@ -32,6 +32,23 @@ subject A-CGACTCGAGCTCGAGCTT
 There are three basic types of alignments:
 - *Global Alignment* - Aligns the entire query against the entire subject. Suitable if query and subject are of similar length, or one expects the entire query to align against the entire subject. An example is aligning two very similar genomes of roughly the same length.
 
+<pre>
+        ATCGATCG
+        ||||||||
+        ATCGATCG
+</pre>
+
 - *Semi Global Alignment* - Fully aligns the shorter of query/subject. An example is trying to align a gene (shorter) against an entire genome (longer).
 
+<pre>
+        CCCATCGTTT
+           ||||
+           ATCG
+</pre>
+
 - *Local Alignment* - Allows partial alignment of the query against the subject.
+<pre>
+        CCCATCGTTT
+           ||||
+        GGGATCGAAA
+</pre>

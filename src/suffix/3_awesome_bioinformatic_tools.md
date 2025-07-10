@@ -5,6 +5,8 @@ Alignment related:
 - [Parasail](https://github.com/jeffdaily/parasail) [C] - General purpose pairwise aligner.
 - [Parasail-rs](https://docs.rs/parasail-rs/latest/parasail_rs/) [Rust] - Rust bindings for the parasail library.
 - [BLAST](https://blast.ncbi.nlm.nih.gov/Blast.cgi) [C++] - The usual go-to for local sequence alignment.
+- [MAFFT](https://mafft.cbrc.jp/alignment/server/index.html) - Multiple sequence aligner.
+- [Clustal Omega](https://www.ebi.ac.uk/jdispatcher/msa/clustalo) - Multiple sequence aligner.
 
 Assembly related:
 - [Flye](https://github.com/mikolmogorov/Flye) [C/C++] - Genome assembler for Oxford Nanopore or PacBio data.
