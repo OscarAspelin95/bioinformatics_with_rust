@@ -254,6 +254,9 @@ fn get_traceback(
         n_c += 1;
     }
 
+    s1_aln.reverse();
+    s2_aln.reverse();
+
     loop {
         if array[m][n] == 0 {
             break;
@@ -344,7 +347,9 @@ fn align(s1: &str, s2: &str) {
 fn main() {
     // Run a few alignments.
     align("ATCG", "ATCG");
-    align("CCCATCGCCC", "GGGATCGGGG");
+    // This one still looks weird.
+    align("CCCATCGCCC", "GGGATCGGGTT");
+
     align("AAAAATAAAAA", "CCCCCTCCCCC");
     align("ATCG", "CCCATCGTTT");
 
