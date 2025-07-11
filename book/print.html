@@ -1516,6 +1516,31 @@ fn main() {
 <li><a href="https://blast.ncbi.nlm.nih.gov/Blast.cgi">BLAST</a> - Uses the seed-and-extend approach.</li>
 <li><a href="https://github.com/lh3/minimap2">Minimap2</a> - One of the fastest aligners out there.</li>
 </ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="creating-a-desktop-app"><a class="header" href="#creating-a-desktop-app">Creating a desktop app</a></h1>
+<p>We have now made our own local aligner, implemented entirely in Rust. It might not be the most efficient, but it works. Now, let us take this a step further and generate a desktop application that can visualize the alignment.</p>
+<p>What we need to build it from scratch:</p>
+<ul>
+<li>Our alignment code (which we implemented in the previous section).</li>
+<li>The <a href="https://dioxuslabs.com/">Dioxus</a> framework.</li>
+<li>A bit of knowledge about HTML and CSS.</li>
+</ul>
+<p>We won't go through the entire implementation from scratch. Instead:</p>
+<ul>
+<li>Make sure you are using a Linux operating system.</li>
+<li>Install the Dioxus cli version <strong>v0.7.0-alpha.2</strong>.</li>
+<li>Clone the <a href="https://github.com/OscarAspelin95/alignment_rs">repository</a>.</li>
+<li>Enter the <em>alignment_rs</em> directory and run <em>dx serve</em>.</li>
+<li>It might take several minutes to compile, but when done the desktop app should launch.</li>
+</ul>
+<p>Inspect the code to familarize yourself with Dioxus. If you have used React before, the syntax might look familiar. Think of Dioxus as React for Rust. In short, the code:</p>
+<ul>
+<li>Checks the input for updates to the query and the subject.</li>
+<li>Calls the aligner when Dioxus detects that the query or subject has changed.</li>
+<li>Renders the alignment in real time.</li>
+</ul>
+<p>Note that calling the aligner every time either the query or subject has changed might be extremely inefficient for long sequences. However, in our case we have limited the input length to 80 nucleotides, which is short enough for the UI to be responsive.</p>
+<p>Below is a preview of what the desktop app looks like.</p>
+<p><img src="main/alignment/assets/alignment.gif" alt="image" /></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="resources"><a class="header" href="#resources">Resources</a></h1>
 <p>Understanding the details of alignment can be tricky. However, here are some good resources for further reading:</p>
 <ul>

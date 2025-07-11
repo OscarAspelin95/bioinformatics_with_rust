@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Resources - Bioinformatics with Rust</title>
+        <title>Creating a desktop app - Bioinformatics with Rust</title>
 
 
         <!-- Custom HTML head -->
@@ -166,22 +166,41 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="resources"><a class="header" href="#resources">Resources</a></h1>
-<p>Understanding the details of alignment can be tricky. However, here are some good resources for further reading:</p>
+                        <h1 id="creating-a-desktop-app"><a class="header" href="#creating-a-desktop-app">Creating a desktop app</a></h1>
+<p>We have now made our own local aligner, implemented entirely in Rust. It might not be the most efficient, but it works. Now, let us take this a step further and generate a desktop application that can visualize the alignment.</p>
+<p>What we need to build it from scratch:</p>
 <ul>
-<li><a href="https://www.youtube.com/@BenLangmead">Ben Langmead</a></li>
-<li><a href="https://en.wikipedia.org/wiki/Sequence_alignment">Wikipedia</a></li>
+<li>Our alignment code (which we implemented in the previous section).</li>
+<li>The <a href="https://dioxuslabs.com/">Dioxus</a> framework.</li>
+<li>A bit of knowledge about HTML and CSS.</li>
 </ul>
+<p>We won't go through the entire implementation from scratch. Instead:</p>
+<ul>
+<li>Make sure you are using a Linux operating system.</li>
+<li>Install the Dioxus cli version <strong>v0.7.0-alpha.2</strong>.</li>
+<li>Clone the <a href="https://github.com/OscarAspelin95/alignment_rs">repository</a>.</li>
+<li>Enter the <em>alignment_rs</em> directory and run <em>dx serve</em>.</li>
+<li>It might take several minutes to compile, but when done the desktop app should launch.</li>
+</ul>
+<p>Inspect the code to familarize yourself with Dioxus. If you have used React before, the syntax might look familiar. Think of Dioxus as React for Rust. In short, the code:</p>
+<ul>
+<li>Checks the input for updates to the query and the subject.</li>
+<li>Calls the aligner when Dioxus detects that the query or subject has changed.</li>
+<li>Renders the alignment in real time.</li>
+</ul>
+<p>Note that calling the aligner every time either the query or subject has changed might be extremely inefficient for long sequences. However, in our case we have limited the input length to 80 nucleotides, which is short enough for the UI to be responsive.</p>
+<p>Below is a preview of what the desktop app looks like.</p>
+<p><img src="assets/alignment.gif" alt="image" /></p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../../main/alignment/4_1_desktop_app.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../../main/alignment/4_smith_waterman.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../../main/kmers/1_kmers.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../../main/alignment/resources.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -191,11 +210,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../../main/alignment/4_1_desktop_app.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../../main/alignment/4_smith_waterman.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../../main/kmers/1_kmers.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../../main/alignment/resources.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
