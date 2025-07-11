@@ -25,6 +25,7 @@
     - [Edit Distance](./main/alignment/3_edit_distance.md)
         - [Adding Traceback](./main/alignment/3_1_adding_traceback.md)
     - [Smith-Waterman algorithm](./main/alignment/4_smith_waterman.md)
+        - [Creating a desktop app](./main/alignment/4_1_desktop_app.md)
     - [Resources](./main/alignment/resources.md)
 
 ---
