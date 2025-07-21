@@ -33,8 +33,12 @@
 - [Kmers](./main/kmers/1_kmers.md)
     - [Naive Implementation](./main/kmers/2_naive_implementation.md)
     - [Bit Shift Encoding](./main/kmers/3_bit_shift_encoding.md)
+        - [Forward Strand](./main/kmers/3_1_forward_strand.md)
+        - [Reverse Strand](./main/kmers/3_2_reverse_strand.md)
+        - [Final Implementation](./main/kmers/3_3_final_implementation.md)
     - [SIMD Vectorization](./main/kmers/4_simd_vectorization.md)
-    - [Frac Min Hash](./main/kmers/5_min_frac_hash.md)
+    - [FracMinHash](./main/kmers/5_min_frac_hash.md)
+    - [Making something useful](./main/kmers/6_making_something_useful.md)
 
 ---
 

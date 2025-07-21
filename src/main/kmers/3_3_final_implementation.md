@@ -1,16 +1,7 @@
-# FracMinHash
-Previously, we implemented an efficient way of generating canonical kmers from nucleotide strings. Now, we'll take this a step further by covering FracMinHash. Briefly, FracMinHash is a clever way of downsampling a large set of kmers into a representative set. For a more detailed explanation, please check out this [paper](https://doi.org/10.1186/s13015-025-00276-8).
-
-Essentially, we only add two steps to our canonical kmer pipeline:
-- We hash our canonical kmer using an appropriate hashing function.
-- We add our hashed kmer only if its hash is less than or equal to a defined threshold.
-
-We define our threshold as the maximum possible integer value (in our case we'll use u64), divided by a downsampling factor.
-
+# Final Implementation
+The code below combines the previous sections and adds an additional feature, which is canonical kmers. We define a canonical kmer as the lexicographically smallest kmer of the forward and reverse. This is a way to avoid keeping all kmers from the forward and the reverse strand.
 
 ```rust
-
-# use std::collections::HashSet;
 
 # const LOOKUP: [u8; 256] = [
 #     0, 1, 2, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
@@ -22,6 +13,7 @@ We define our threshold as the maximum possible integer value (in our case we'll
 #     4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
 #     4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
 # ];
+
 
 # fn decode(byte: u64) -> char {
 #     match byte {
@@ -48,23 +40,8 @@ We define our threshold as the maximum possible integer value (in our case we'll
 
 // [...]
 
-/// https://github.com/bluenote-1577/sylph
-fn mm_hash64(kmer: u64) -> u64 {
-    let mut key = kmer;
-    key = !key.wrapping_add(key << 21);
-    key = key ^ key >> 24;
-    key = (key.wrapping_add(key << 3)).wrapping_add(key << 8);
-    key = key ^ key >> 14;
-    key = (key.wrapping_add(key << 2)).wrapping_add(key << 4);
-    key = key ^ key >> 28;
-    key = key.wrapping_add(key << 31);
-    key
-}
-
-fn kmerize(k: usize, ds_factor: u64, nt_string: &[u8]) -> HashSet<u64> {
-    if k >= nt_string.len() {
-        panic!("kmer: {k}, nt_string: {}", nt_string.len());
-    };
+pub fn kmerize(k: usize, nt_string: &[u8]){
+    assert!(k <= nt_string.len());
 
     // Forward related kmer stuff
     let mut kmer_forward: u64 = 0;
@@ -76,21 +53,19 @@ fn kmerize(k: usize, ds_factor: u64, nt_string: &[u8]) -> HashSet<u64> {
     let mut kmer_reverse: u64 = 0;
     let shift = ((k - 1) * 2) as u64;
 
-    // Storage.
-    let mut canonical_hashes: HashSet<u64> = HashSet::with_capacity(nt_string.len() - k + 1);
-
     let mut valid_kmer_index: usize = 0;
 
     nt_string.iter().for_each(|nt_char| {
-        // Forward kmer.
         let nt = LOOKUP[*nt_char as usize] as u64;
 
+        // Check for invalid nucleotides.
         if nt >= 4 {
             valid_kmer_index = 0;
             kmer_forward = 0;
             kmer_reverse = 0;
             return;
         }
+        // Forward kmer.
         kmer_forward = (kmer_forward << 2 | nt) & mask;
 
         // Reverse kmer.
@@ -102,27 +77,27 @@ fn kmerize(k: usize, ds_factor: u64, nt_string: &[u8]) -> HashSet<u64> {
                 true => kmer_forward,
                 false => kmer_reverse,
             };
-            // MinFracHash
-            if canonical <= u64::MAX / ds_factor {
-                print_nt_string(canonical, k);
-                canonical_hashes.insert(mm_hash64(canonical));
-            }
+
+            print_nt_string(canonical, k);
         }
 
         valid_kmer_index += 1;
     });
 
-    return canonical_hashes;
 }
 
-/// In these examples, we don't downsample because our
-/// nucleotide strings are very short and have low complexity.
 fn main(){
-    _ = kmerize(5, 1, b"AAAAAAAAAA");
+    kmerize(5, b"AAAAAA");
     println!("---");
 
-    _ = kmerize(5, 1, b"TTTTTTTTTT");
+    kmerize(5, b"TTTTTT");
     println!("---");
 
+    // Expected to not generate any kmers since
+    // we have an invalid nucleotide.
+    kmerize(5, b"AAAANTTTT");
+    println!("---");
 }
 ```
+
+When we run the code, we see that "AAAAAA" and "TTTTTT" generates the same canonical kmers which is expected since they are reverse complements of each other.
