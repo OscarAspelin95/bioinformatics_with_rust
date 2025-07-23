@@ -5,6 +5,10 @@ Here are some things I'd want to add to this book, in no particular order:
     - GC content for a sliding window of a long nucleotide string (with plot).
     - Break kmer bit shift into separate sections?
 
+- Kmers:
+    - Add minimizers
+    - Add syncmers
+
 - Alignment:
     - Implement a local aligner (Smith-Waterman, with traceback).
     - Add support for finding all alignments from a local aligner?
@@ -27,7 +31,4 @@ Here are some things I'd want to add to this book, in no particular order:
     - Basic read alignment pipeline.
     - Basic assembly pipeline.
     - Metagenomic classification with sylph.
-    - Kmer coverage pipeline from scratch:
-        - Input is fastq and fasta file.
-        - Outputs the kmer coverage for each contig in fasta file, based on kmers in fastq file.
-    - [Based on previous point] - SINTAX classifier in Rust.
+    - SINTAX classifier in Rust.
