@@ -210,9 +210,8 @@ kmer_size = 2
 <li>Insert the next nucleotide, G, resulting in a kmer of length 3.</li>
 <li>Mask anything above our kmer length to keep the length of 2.</li>
 </ul>
-<p>We solve this by applying a bit-mask. The example below handles this, and also handles nucleotides that are not A/T/C/T by just ignoring those kmers.</p>
-<pre><pre class="playground"><code class="language-rust edition2024">
-<span class="boring">const LOOKUP: [u8; 256] = [
+<p>We solve this by applying a bit-mask (as discussed previously).</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">const LOOKUP: [u8; 256] = [
 </span><span class="boring">    0, 1, 2, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
 </span><span class="boring">    4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
 </span><span class="boring">    4, 0, 4, 1, 4, 4, 4, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
@@ -267,6 +266,7 @@ fn kmerize(kmer_size: usize, nt_string: &amp;[u8]){
         // Forward kmer.
         let nt = LOOKUP[*nt_char as usize] as u64;
 
+        // Reset if we found an invalid nucleotide.
         if nt &gt;= 4 {
             valid_kmer_index = 0;
             storage = 0;

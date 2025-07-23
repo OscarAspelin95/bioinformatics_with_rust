@@ -4,12 +4,13 @@ As mentioned in a previous section, we also need to handle the reverse complemen
 
 The following example shows how to insert a nucleotide A whilst using kmer size 4.
 <pre>
+# Define variables.
 k = 4
 nt      =   0b0000000000 # A
 nt_rev  =   0b0000000011 # T (reverse complement)
 storage =   0b0000000000 # example u10 for storage.
 
-# Shift reverse nucleotide to the upper two bits of the kmer size
+# Shift reverse nucleotide to the upper two bits of the kmer size.
 0b0000000011 << (k-1) * 2 = 0b0011000000
 
 # Shift storage to the right to make room (empty at the moment).
