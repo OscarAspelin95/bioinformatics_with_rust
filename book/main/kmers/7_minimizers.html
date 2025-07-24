@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Making something useful - Bioinformatics with Rust</title>
+        <title>Minimizers - Bioinformatics with Rust</title>
 
 
         <!-- Custom HTML head -->
@@ -165,133 +165,96 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="making-something-useful"><a class="header" href="#making-something-useful">Making something useful</a></h1>
-<p>We'll finish this chapter off by calculating the similarity between two nucleotide strings by applying MinFracHash. We'll simply generate all MinFracHashes for the query and subject, followed by calculating the fraction of query hashes that are identical to the subject.</p>
-<pre><pre class="playground"><code class="language-rust edition2024">
-<span class="boring">use std::collections::HashSet;
-</span><span class="boring">const LOOKUP: [u8; 256] = [
-</span><span class="boring">    0, 1, 2, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
-</span><span class="boring">    4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
-</span><span class="boring">    4, 0, 4, 1, 4, 4, 4, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
-</span><span class="boring">    4, 0, 4, 1, 4, 4, 4, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
-</span><span class="boring">    4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
-</span><span class="boring">    4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
-</span><span class="boring">    4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
-</span><span class="boring">    4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
-</span><span class="boring">];
-</span><span class="boring">fn decode(byte: u64) -&gt; char {
-</span><span class="boring">    match byte {
-</span><span class="boring">        0 =&gt; return 'A',
-</span><span class="boring">        1 =&gt; return 'C',
-</span><span class="boring">        2 =&gt; return 'G',
-</span><span class="boring">        3 =&gt; return 'T',
-</span><span class="boring">        _ =&gt; panic!("Invalid nucleotide."),
-</span><span class="boring">    };
-</span><span class="boring">}
-</span><span class="boring">/// Print a u64 encoded nucleotide with some bit manipulation.
-</span><span class="boring">pub fn print_nt_string(kmer: u64, k: usize) {
-</span><span class="boring">    let mut result = String::with_capacity(k);
-</span><span class="boring">    for i in 0..k {
-</span><span class="boring">        // Shift to extract the 2 bits corresponding to the current nucleotide
-</span><span class="boring">        let shift = 2 * (k - i - 1);
-</span><span class="boring">        let bits = (kmer &gt;&gt; shift) &amp; 0b11;
-</span><span class="boring">
-</span><span class="boring">        result.push(decode(bits));
-</span><span class="boring">    }
-</span><span class="boring">    println!("{}", result);
-</span><span class="boring">}
-</span><span class="boring">/// https://github.com/bluenote-1577/sylph
-</span><span class="boring">fn mm_hash64(kmer: u64) -&gt; u64 {
-</span><span class="boring">    let mut key = kmer;
-</span><span class="boring">    key = !key.wrapping_add(key &lt;&lt; 21);
-</span><span class="boring">    key = key ^ key &gt;&gt; 24;
-</span><span class="boring">    key = (key.wrapping_add(key &lt;&lt; 3)).wrapping_add(key &lt;&lt; 8);
-</span><span class="boring">    key = key ^ key &gt;&gt; 14;
-</span><span class="boring">    key = (key.wrapping_add(key &lt;&lt; 2)).wrapping_add(key &lt;&lt; 4);
-</span><span class="boring">    key = key ^ key &gt;&gt; 28;
-</span><span class="boring">    key = key.wrapping_add(key &lt;&lt; 31);
-</span><span class="boring">    key
-</span><span class="boring">}
-</span><span class="boring">
-</span><span class="boring">fn kmerize(k: usize, ds_factor: u64, nt_string: &amp;[u8]) -&gt; HashSet&lt;u64&gt; {
-</span><span class="boring">    if k &gt;= nt_string.len() {
-</span><span class="boring">        panic!("kmer: {k}, nt_string: {}", nt_string.len());
-</span><span class="boring">    };
-</span><span class="boring">
-</span><span class="boring">    // Forward related kmer stuff
-</span><span class="boring">    let mut kmer_forward: u64 = 0;
-</span><span class="boring">
-</span><span class="boring">    let nbits = k &lt;&lt; 1;
-</span><span class="boring">    let mask: u64 = (1 &lt;&lt; nbits) - 1;
-</span><span class="boring">
-</span><span class="boring">    // Reverse related kmer stuff.
-</span><span class="boring">    let mut kmer_reverse: u64 = 0;
-</span><span class="boring">    let shift = ((k - 1) * 2) as u64;
-</span><span class="boring">
-</span><span class="boring">    // Storage.
-</span><span class="boring">    let mut canonical_hashes: HashSet&lt;u64&gt; = HashSet::with_capacity(nt_string.len() - k + 1);
-</span><span class="boring">
-</span><span class="boring">    let mut valid_kmer_index: usize = 0;
-</span><span class="boring">
-</span><span class="boring">    nt_string.iter().for_each(|nt_char| {
-</span><span class="boring">        // Forward kmer.
-</span><span class="boring">        let nt = LOOKUP[*nt_char as usize] as u64;
-</span><span class="boring">
-</span><span class="boring">        if nt &gt;= 4 {
-</span><span class="boring">            valid_kmer_index = 0;
-</span><span class="boring">            kmer_forward = 0;
-</span><span class="boring">            kmer_reverse = 0;
-</span><span class="boring">            return;
-</span><span class="boring">        }
-</span><span class="boring">        kmer_forward = (kmer_forward &lt;&lt; 2 | nt) &amp; mask;
-</span><span class="boring">
-</span><span class="boring">        // Reverse kmer.
-</span><span class="boring">        let nt_rev = 3 - nt;
-</span><span class="boring">        kmer_reverse = kmer_reverse &gt;&gt; 2 | nt_rev &lt;&lt; shift;
-</span><span class="boring">
-</span><span class="boring">        if valid_kmer_index &gt;= k - 1 {
-</span><span class="boring">            let canonical = match kmer_forward &lt; kmer_reverse {
-</span><span class="boring">                true =&gt; kmer_forward,
-</span><span class="boring">                false =&gt; kmer_reverse,
-</span><span class="boring">            };
-</span><span class="boring">            // MinFracHash
-</span><span class="boring">            if canonical &lt;= u64::MAX / ds_factor {
-</span><span class="boring">                canonical_hashes.insert(mm_hash64(canonical));
-</span><span class="boring">            }
-</span><span class="boring">        }
-</span><span class="boring">
-</span><span class="boring">        valid_kmer_index += 1;
-</span><span class="boring">    });
-</span><span class="boring">
-</span><span class="boring">    return canonical_hashes;
-</span><span class="boring">}
-</span>// [...]
+                        <h1 id="minimizers"><a class="header" href="#minimizers">Minimizers</a></h1>
+<p>We saw earlier how FracMinHash could be used to downsample the number of kmers generated from our sequences. Another approach is to use so called minimizers. First introduced in 2004, <a href="https://doi.org/10.1093/bioinformatics/bth408">minimizers</a> are very commonly used in bioinformatic applications to reduce storage requirements for DNA sequences.</p>
+<p>The basic idea is to use a sliding window of w consecutive kmers a sequence and in each window identify one representative kmer to keep. Since we choose a reduced set of kmers from the sequence, these will act as an approximate representation. There are multiple ways to choose a representative kmer inside the sliding window, but typically the lexicographically smallest kmer is chosen. We need to define some terms to make things more clear:</p>
+<ul>
+<li><em>k</em> - length of a kmer.</li>
+<li><em>w</em> - number of consecutive kmers to check for minimizers in.</li>
+<li>|<em>w</em>| - The actual length (in nucleotides) we need for our sliding window to accomodate <em>w</em> consecutive kmers of length <em>k</em>.</li>
+</ul>
+<p>We can calculate |<em>w</em>| since we know how many kmers we can generate from a given sequence.</p>
+<pre>
+   w = |w| - k + 1.
+</pre>
+<p>See the example below, where we set w=4 and k=3, hence calculating |<em>w</em>| = 6.</p>
+<pre>
+AAACCCGGGAAACCCGGGAAACCCGGG
+AAACCC
+ AACCCG    ...        ...
+  ACCCGG
+   CCCGGG            CCCGGG
+</pre>
+<p>Let's consider the first window AAACCC. The possible kmers we can generate in the forward direction is AAA, AAC, ACC, CCC. Out of these, the lexicographically smallest one is AAA and we choose this kmer as this windows minimizer. We then do the same for the remaining windows.</p>
+<p>We can get even more space efficient by storing the minimizers in a hashset, since this removes duplicates. However, this is not suitable if we also want to store information such as the minimizers positions. We also have to take the reverse complement into consideration, similarly to what we did in the bit shift encoding section.</p>
+<p>There are several Rust crates, such as <a href="https://docs.rs/needletail/0.6.3/needletail/">Needletail</a> and <a href="https://docs.rs/bio-seq/latest/bio_seq/">bio-seq</a> that can implement minimizers quite efficiently. In the code snippet below, we just implement a basic a working prototype.</p>
+<pre><pre class="playground"><code class="language-rust edition2024">use std::{cmp::min, vec};
 
-fn similarity(query: &amp;[u8], subject: &amp;[u8], kmer_size: usize, ds_factor: u64) -&gt; f32 {
-    let query_hashes: HashSet&lt;u64&gt; = kmerize(kmer_size, ds_factor, query);
-    let subject_hashes: HashSet&lt;u64&gt; = kmerize(kmer_size, ds_factor, subject);
-
-    // This is one way to check for common elements between two sets.
-    let common_hashes = subject_hashes.intersection(&amp;query_hashes).count();
-
-    return common_hashes as f32 / subject_hashes.len() as f32;
+fn reverse(nt: &amp;u8) -&gt; u8 {
+    match nt {
+        b'A' =&gt; b'T',
+        b'C' =&gt; b'G',
+        b'G' =&gt; b'C',
+        b'T' =&gt; b'A',
+        _ =&gt; panic!("Invalid nt."),
+    }
 }
 
+/// Find the lexicographically smallest kmers from
+/// either the forward or reverse window.
+fn minimizer_from_windows&lt;'a&gt;(
+    w_forward: &amp;'a [u8],
+    w_reverse: &amp;'a [u8],
+    kmer_size: usize,
+) -&gt; &amp;'a [u8] {
+    let min_fwd = w_forward.windows(kmer_size).min().unwrap();
+    let min_rev = w_reverse.windows(kmer_size).min().unwrap();
+
+    return min(min_fwd, min_rev);
+}
+
+fn get_minimizers(seq: &amp;[u8], window_size: usize, kmer_size: usize) -&gt; Vec&lt;String&gt; {
+    // This is the actual length (in nucleoties) of the sliding
+    // window we need for w consecutive kmers of length k.
+    let sliding_window_size = window_size + kmer_size - 1;
+    assert!(sliding_window_size &lt;= seq.len());
+
+    // We'll store the minimizers as strings convenience.
+    let mut m: Vec&lt;String&gt; = Vec::new();
+
+    let rev_comp: Vec&lt;u8&gt; = seq.iter().rev().map(|nt| reverse(nt)).collect();
+
+    // Create windows for both forward and reverse sequences.
+    seq.windows(sliding_window_size)
+        .zip(rev_comp.as_slice().windows(sliding_window_size))
+        // Iterate over forward/reverse windows at the same time.
+        .for_each(|(w_forward, w_reverse)| {
+            let minimizer = minimizer_from_windows(w_forward, w_reverse, kmer_size);
+            m.push(String::from_utf8(minimizer.to_vec()).unwrap());
+        });
+
+    return m;
+}
 fn main() {
-    let s = similarity(b"AAAAAAAAAA", b"ATTTTTTTTTTTTTTTTTT", 5, 1);
-    println!("Frac common hashes: {s:.1}");
+    assert_eq!(get_minimizers(b"AAATTT", 4, 3), vec!["AAA"]);
+
+    // Use all canonical kmers as minimizers.
+    assert_eq!(
+        get_minimizers(b"AAATTT", 1, 3),
+        vec!["AAA", "AAT", "ATT", "TTT"]
+    );
 }</code></pre></pre>
-<p>In this case, we can only generate two unique kmers from the subject, of which one is found in the query.</p>
+<p>For a more thorough review on minimizers, check out this awesome <a href="https://doi.org/10.1186/s13059-024-03414-4">paper</a>.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../../main/kmers/5_min_frac_hash.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../../main/kmers/6_making_something_useful.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../../main/kmers/7_minimizers.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../../suffix/1_resources.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -301,11 +264,11 @@ fn main() {
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../../main/kmers/5_min_frac_hash.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../../main/kmers/6_making_something_useful.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../../main/kmers/7_minimizers.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../../suffix/1_resources.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
