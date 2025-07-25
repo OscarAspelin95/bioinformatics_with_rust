@@ -27,6 +27,7 @@ Misc:
 Tools written in Rust:
 - [Needletail](https://docs.rs/needletail/latest/needletail/) [Rust] - Parsing and processing FASTA/Q files.
 - [Bio](http://docs.rs/bio/latest/bio/) [Rust] - General purpose bioinformatic tool for alignment, file processing and much more.
+- [Bio-seq](https://docs.rs/bio-seq/latest/bio_seq/) [Rust] - Toolbox for bit-packed biological sequences.
 - [Sylph](https://github.com/bluenote-1577/sylph) [Rust] - Metagenomic classification tool.
 - [Rust Htslib](https://docs.rs/rust-htslib/latest/rust_htslib/) [Rust] - Rust bindings for Htslib.
 - [NextClade](https://github.com/nextstrain/nextclade) [Rust] - Virus specific tool for alignment, SNP calling, clade assignment and more.
