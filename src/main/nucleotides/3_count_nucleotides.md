@@ -59,4 +59,4 @@ fn main() {
 ```
 Run the code and inspect the output. The resulting HashMap will have the ASCII encoded nucleotides as keys.
 
-Note that there are lots of alternative solutions and further optimizations we can do.
+Note that there are lots of alternative solutions and further optimizations we can do. For example, if we input a string b"AAAA", our HashMap will only contain As. One alternative here would be to initialize the HashMap with empty counts for A, T, C and G.

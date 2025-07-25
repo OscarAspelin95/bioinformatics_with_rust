@@ -16,6 +16,7 @@
     - [Counting Nucleotides](./main/nucleotides/3_count_nucleotides.md)
         - [GC content](./main/nucleotides/3_1_gc_content.md)
         - [Homopolymers](./main/nucleotides/3_2_homopolymers.md)
+        - [Entropy](./main/nucleotides/3_3_entropy.md)
     - [Reverse Complement](./main/nucleotides/4_reverse_complement.md)
     - [Encoding](./main/nucleotides/5_nucleotide_encoding.md)
 
