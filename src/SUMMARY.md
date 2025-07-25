@@ -15,6 +15,7 @@
     - [Create A Nucleotide Sequence](./main/nucleotides/2_create_nucleotide_sequence.md)
     - [Counting Nucleotides](./main/nucleotides/3_count_nucleotides.md)
         - [GC content](./main/nucleotides/3_1_gc_content.md)
+        - [Homopolymers](./main/nucleotides/3_2_homopolymers.md)
     - [Reverse Complement](./main/nucleotides/4_reverse_complement.md)
     - [Encoding](./main/nucleotides/5_nucleotide_encoding.md)
 
