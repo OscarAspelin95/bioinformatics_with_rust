@@ -29,6 +29,8 @@
 
         <!-- Custom theme stylesheets -->
 
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
         <!-- Provide site root and default themes to javascript -->
         <script>
@@ -219,7 +221,7 @@ fn main() {
     println!("{:?}", map);
 }</code></pre></pre>
 <p>Run the code and inspect the output. The resulting HashMap will have the ASCII encoded nucleotides as keys.</p>
-<p>Note that there are lots of alternative solutions and further optimizations we can do.</p>
+<p>Note that there are lots of alternative solutions and further optimizations we can do. For example, if we input a string b"AAAA", our HashMap will only contain As. One alternative here would be to initialize the HashMap with empty counts for A, T, C and G.</p>
 
                     </main>
 
