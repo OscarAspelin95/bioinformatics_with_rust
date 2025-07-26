@@ -179,23 +179,21 @@
 3' [...]TGCTCGAAACACTGCGCTACGCTGCTCGACGTCGCA[...] 5'
 </pre>
 <p>Pretend this is a bacterial genome we want to sequence. Before sequencing, we need to separate the strands and break this molecule into smaller pieces. When doing this, we don't know which pieces are from which strand.</p>
-<p>When we want to align the pieces back to a reference sequence (which is defined in the 5' to 3' direction), we need to take both strands into consideration. Otherwise, we loose out on information. We do this by reverse complementing, in which we first reverse the sequence, and then replace each base with the corresponding matching base.</p>
-<p>For example, the reverse complement of ATCG would be CGAT.</p>
-<p>We can relatively easily write a Rust function for reverse complementing a nucleotide sequence:</p>
-<pre><pre class="playground"><code class="language-rust edition2024">fn reverse(nt: char) -&gt; char {
+<p>When we want to align the pieces back to a reference sequence (which is defined in the 5' to 3' direction), we need to take both strands into consideration. Otherwise, we lose out on information. We do this by reverse complementing, in which we first reverse the sequence, and then replace each base with the corresponding matching base.</p>
+<pre><pre class="playground"><code class="language-rust edition2024">fn reverse(nt: &amp;u8) -&gt; u8 {
     match nt {
-        'A' =&gt; 'T',
-        'C' =&gt; 'G',
-        'G' =&gt; 'C',
-        'T' =&gt; 'A',
+        b'A' =&gt; b'T',
+        b'C' =&gt; b'G',
+        b'G' =&gt; b'C',
+        b'T' =&gt; b'A',
         _ =&gt; panic!("Invalid nt {nt}"),
     }
 }
 
-fn reverse_complement(nt_string: &amp;'static str) -&gt; String {
-    let rev_comp: String = nt_string
+fn reverse_complement(nt_string: &amp;[u8]) -&gt; Vec&lt;u8&gt; {
+    let rev_comp: Vec&lt;u8&gt; = nt_string
         // Iterate over each character.
-        .chars()
+        .iter()
         // Reverse the iteration order.
         .rev()
         .map(|nt| {
@@ -206,13 +204,12 @@ fn reverse_complement(nt_string: &amp;'static str) -&gt; String {
     return rev_comp;
 }
 fn main() {
-    // Note that we use strings and not &amp;[u8].
-    // &amp;[u8] will be covered in a future topic.
-    assert_eq!(reverse_complement("AAA"), "TTT");
-    assert_eq!(reverse_complement("GGG"), "CCC");
-    assert_eq!(reverse_complement("ATCG"), "CGAT");
-    assert_eq!(reverse_complement("ACACGT"), "ACGTGT");
-}</code></pre></pre>
+    assert_eq!(reverse_complement(b"AAA"), b"TTT");
+    assert_eq!(reverse_complement(b"GGG"), b"CCC");
+    assert_eq!(reverse_complement(b"ATCG"), b"CGAT");
+    assert_eq!(reverse_complement(b"ACACGT"), b"ACGTGT");
+}
+</code></pre></pre>
 
                     </main>
 

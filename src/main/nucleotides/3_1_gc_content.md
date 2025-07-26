@@ -1,5 +1,5 @@
 # GC content
-With the previous section in mind, it is relatively straightforward to implement a function that calculates the GC-content for a nucleotide string.
+With the previous section in mind, it is relatively straightforward to implement a function that calculates the GC-content for a given nucleotide string.
 
 ```rust
 fn gc_content(nt_string: &[u8]) -> f32{

@@ -8,8 +8,6 @@ query   ATCTACCG
 subject ATCTATCG
 </pre>
 
-We can pretty easily write a Rust function for calculating the Hamming distance:
-
 ```rust
 use std::iter::zip;
 
