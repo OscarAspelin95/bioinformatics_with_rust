@@ -175,26 +175,17 @@
 <li>G - Guanine.</li>
 <li>T - Thymine.</li>
 </ul>
-<p>However, there are some important concepts to be aware of:</p>
-<ul>
-<li>
-<p><strong>Soft masking</strong>: A lower case nucleotide indicates <em>soft masking</em> and is used to indicate a soft clipped alignment or a region which is low complexity or repetitive.</p>
-<p>Example of soft masked, highly repetitive sequence:</p>
-<ul>
-<li>ATCGatatatatatatatatatat[...]AGCGAGT</li>
-</ul>
-<p>Example of soft clipped alignment:</p>
-  <pre>
-  * AAAGTGCCAGTGACGCTTagtcgatcgatg
-    ||||||||||||||||||
-    AAAGTGCCAGTGACGCTT
-  <pre>
-
-</li>
-<li>
-<p><strong>Hard masking</strong>: A capital "N" indicates <em>hard masking</em>. This means there is probably a base here, but we don't know exactly what it is. This is usually for indicating uncertainty or gaps in a sequence.</p>
-</li>
-</ul>
+<p>However, there are some important concepts to be aware of.</p>
+<h2 id="soft-masking"><a class="header" href="#soft-masking">Soft masking</a></h2>
+<p>A lower case nucleotide indicates <em>soft masking</em> and is used to indicate a soft clipped alignment or a region which is low complexity or repetitive.</p>
+<p>In the example below, the last part of the upper sequence is soft masked to indicate that this region is not part of the actual alignment. This is commonly encountered in local read aligners such as <a href="https://github.com/lh3/minimap2">Minimap2</a>.</p>
+<pre>
+  AAAGTGCCAGTGACGCTTagtcgatcgatg
+  ||||||||||||||||||
+  AAAGTGCCAGTGACGCTT
+</pre>
+<h2 id="hard-masking"><a class="header" href="#hard-masking">Hard masking</a></h2>
+<p>A capital "N" indicates <em>hard masking</em>. This means there is probably a base here, but we don't know exactly what it is. This is usually for indicating uncertainty or gaps in a sequence.</p>
 <h2 id="ambiguous-nucleotides"><a class="header" href="#ambiguous-nucleotides">Ambiguous nucleotides</a></h2>
 <p>In addition to our four canonical nucleotides, there are also ambiguous nucleotides. Ambiguous in this case, means uncertainty or ambiguity:</p>
 <ul>
@@ -211,12 +202,32 @@
 <li>N = A | C | G | T</li>
 </ul>
 <p>We won't deal much with ambiguous nucleotides in this book. However, make sure not to confuse these nucleotides with one-letter amino acid abbreviations, which have overlapping naming conventions.</p>
+<h2 id="programmatic-representations"><a class="header" href="#programmatic-representations">Programmatic representations</a></h2>
+<p>There are many different ways to represent nucleotide sequences in a programming language. In this book, we'll mainly deal with three different representations:</p>
+<ul>
+<li>String and &amp;str</li>
+<li>Byte slice.</li>
+<li>Binary</li>
+</ul>
+<p>All of these will be covered in further detail, but here is a short code snippet of the three representations in Rust.</p>
+<pre><pre class="playground"><code class="language-rust edition2024">/// Assume we want to represent the sequence ATCG.
+fn main(){
+  let nt_seq_string: String = "ATCG".to_string(); // String.
+  let nt_seq_str: &amp;str = "ATCG"; // String (slice).
+  let nt_seq_byte_slice: &amp;[u8] = b"ATCG"; // Byte slice.
+  let nt_seq_binary: u8 = 0b00110110; // Binary, where A = 00, T = 11, C = 01 and G = 10.
+
+  println!("{}", nt_seq_string);
+  println!("{}", nt_seq_str);
+  println!("{:?}", nt_seq_byte_slice);
+  println!("{:08b}", nt_seq_binary);
+}</code></pre></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../../main/getting_started/getting_started.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../../main/rust_tips_and_tricks/1_introduction.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
@@ -230,7 +241,7 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../../main/getting_started/getting_started.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../../main/rust_tips_and_tricks/1_introduction.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 

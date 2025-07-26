@@ -19,7 +19,7 @@ We need to make some changes to our global aligner in order for it to handle loc
     - A insertion/deletion decreases the score by 1.
 
 - We also make the following changes:
-    - The score must be non-negative (score >= 0).
+    - A score value must be non-negative (>= 0).
     - All cells (i, 0) and (0, j) are initialized to 0.
     - Traceback starts at the cell with the highest score and ends when we reach a 0.
 

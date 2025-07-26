@@ -11,6 +11,10 @@
 
 ---
 
+- [Rust Tips And Tricks](./main/rust_tips_and_tricks/1_introduction.md)
+
+---
+
 - [Nucleotides](./main/nucleotides/1_nucleotides.md)
     - [Create A Nucleotide Sequence](./main/nucleotides/2_create_nucleotide_sequence.md)
     - [Counting Nucleotides](./main/nucleotides/3_count_nucleotides.md)

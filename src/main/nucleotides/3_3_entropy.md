@@ -1,15 +1,15 @@
 # Entropy
-Typically, one associates entropy by the physical term for the measure of disorder. In bioinformatics, entropy can be applied to nucleotide sequences in order to quantify the diversity or randomness of nucleotide sequences.
+Typically, one associates entropy with the physical term for the measure of disorder. In bioinformatics, entropy can be applied to nucleotide sequences in order to quantify the diversity or randomness of nucleotide sequences.
 
 Although there are different kinds of entropies, the *Shannon* entropy is probably the most famous one. It is defined by the following equation:
 
-\\[ -\sum_{i={A,T,C,G}} p_i \cdot log_2(p_i) \quad log_2(p_i) = \begin{cases} log_2(p_i) \\; if \\; p_i > 0 \\\\ 0 \\; if \\; p_i \\; == \\; 0 \end{cases} \\ \\]
+\\[ -\sum_{i=\\{A,T,C,G\\}} p_i \cdot log_2(p_i) \quad log_2(p_i) = \begin{cases} log_2(p_i) \\; if \\; p_i > 0 \\\\ 0 \\; if \\; p_i \\; == \\; 0 \end{cases} \\ \\]
 
 That is, we calculate the proportions of each nucleotide {A, T, C, G} and calculate the sum of the probability times its logarithm. For example, consider the sequence "AAAAA". Calculating the Shannon entropy would result in:
 
 \\[ -(1 \cdot log_2(1) + 0 + 0 + 0) = 0\\]
 
-Which tells us there is very little disorder or randomness. This makes sense, because we have the same nucleotide repeated. The code snippet below implements the Shannon entropy for a given nucleotide sequence. We'll reuse the previous code for counting nucleotides (with a few modifications) and add the entropy calculation.
+Which tells us there is very little disorder or randomness. This makes sense, because we have the same nucleotide repeated five times. The code snippet below implements the Shannon entropy for a given nucleotide sequence. We'll reuse the previous code for counting nucleotides (with a few modifications) and add the entropy calculation.
 
 ```rust
 # use std::collections::HashMap;
@@ -59,7 +59,7 @@ fn shannon_entropy(counts: &HashMap<u8, usize>) -> f32 {
         .map(|prob| match prob {
             0_f32 => return 0 as f32,
             // This is safe because prob is never negative since
-            // both count and sum count are of type usize.
+            // both count and sum_count are of type usize.
             _ => {
                 return prob * prob.log2();
             }
@@ -75,6 +75,7 @@ fn get_shannon_entropy(seq: &[u8]) -> f32 {
 
     return shannon;
 }
+
 fn main() {
     assert_eq!(get_shannon_entropy(b"AAAAA"), 0.0_f32);
     assert_eq!(get_shannon_entropy(b"ATCG"), 2.0_f32);

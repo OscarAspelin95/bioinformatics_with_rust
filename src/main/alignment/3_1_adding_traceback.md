@@ -27,7 +27,6 @@ We know the origin for each cell in the array, because we have defined it as arr
 For simplicity, we'll save each cells origin along with the alignment type.
 
 ## Implementation
-
 ```rust,editable
 
 use std::collections::HashMap;

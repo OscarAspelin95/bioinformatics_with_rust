@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Homopolymers - Bioinformatics with Rust</title>
+        <title>Rust Tips And Tricks - Bioinformatics with Rust</title>
 
 
         <!-- Custom HTML head -->
@@ -167,75 +167,18 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="homopolymers"><a class="header" href="#homopolymers">Homopolymers</a></h1>
-<p>A <em>homopolymer</em> is defined stretch of consecutive, identical nucleotides. One example is the sequence below, in which there is a A-homopolymer of length 7.</p>
-<pre>
-...ATCG<u>AAAAAAA</u>CACA...
-</pre>
-<p>Why are homopolymers important? Biologically, they play a role in multiple functions, such as promoters and other regulatory regions. In addition, homopolymer regions have been shown to introduce systematic errors in Oxford Nanopore data, which is why these regions are important to identify and inspect.</p>
-<p>In the code-snippet below, we implement a simple function for identifying homopolymer regions of a defined minimum length in a sequence. For a full-fledged cli version of this code, checkout the <a href="https://github.com/OscarAspelin95/homopolymer_rs">respository</a>.</p>
-<pre><pre class="playground"><code class="language-rust edition2024">
-
-fn find_homopolymers(seq: &amp;[u8], min_hp_len: usize) -&gt; Vec&lt;&amp;[u8]&gt;{
-    let mut homopolymers: Vec&lt;&amp;[u8]&gt; = Vec::new();
-
-    let seq_len = seq.len();
-
-    // Skip checking if seq length is too short.
-    if seq_len &lt; min_hp_len {
-        return homopolymers
-    }
-
-    let mut i = 0;
-    let mut j = 1;
-
-    // We only need to check homopolymers until our start index
-    // is closer than min_hp_len to the end of the sequence.
-    while i &lt;= seq_len - min_hp_len {
-        while j &lt; seq_len &amp;&amp; seq[j] == seq[i] {
-            j += 1;
-        }
-
-        // We have a homopolymer of required length.
-        if j - i &gt;= min_hp_len{
-            homopolymers.push(&amp;seq[i..j]);
-        }
-
-        i = j;
-        j += 1;
-    }
-
-
-    return homopolymers
-}
-
-
-fn main(){
-    // Find all homopolymers of length &gt;= 5.
-    assert_eq!(find_homopolymers(b"AAAAA", 5), vec![b"AAAAA"]);
-
-    // Find all homopolymers of length &gt;= 3.
-    assert_eq!(find_homopolymers(b"AAACCCTTTGGG", 3), vec![b"AAA", b"CCC", b"TTT", b"GGG"]);
-
-    // Find all homopolymers of length &gt;= 5.
-    assert_eq!(find_homopolymers(b"ATCGAAAAAAAAAAGCTA", 5), vec![b"AAAAAAAAAA"]);
-
-    // Find every nucleotide (makes no sense).
-    assert_eq!(find_homopolymers(b"ATC", 1), vec![b"A", b"T", b"C"]);
-
-}
-
-</code></pre></pre>
+                        <h1 id="rust-tips-and-tricks"><a class="header" href="#rust-tips-and-tricks">Rust Tips And Tricks</a></h1>
+<p>I'm not a Rust wizard. Heck, I'd consider myself an advanced Rust beginner. Regardless, I've learned a few things that might help the reader understand certain concepts that I found difficult to grasp in the beginning.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../../main/nucleotides/3_1_gc_content.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../../main/getting_started/getting_started.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../../main/nucleotides/3_3_entropy.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../../main/nucleotides/1_nucleotides.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -245,11 +188,11 @@ fn main(){
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../../main/nucleotides/3_1_gc_content.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../../main/getting_started/getting_started.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../../main/nucleotides/3_3_entropy.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../../main/nucleotides/1_nucleotides.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

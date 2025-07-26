@@ -1,8 +1,8 @@
 # Edit Distance
 ## Introduction
-In contrast to the Hamming distance, the [Edit distance](https://en.wikipedia.org/wiki/Edit_distance) allows for the query and subject to be different lengths. There are multiple kinds of Edit distances, of which the [Levenshtein distance](https://en.wikipedia.org/wiki/Levenshtein_distance) is probably the most common. This distance allows for insertions, deletions and substitutions, which is highly suitable for alignment of biological sequences.
+In contrast to the Hamming distance, the [Edit distance](https://en.wikipedia.org/wiki/Edit_distance) allows for the query and subject to be different lengths, but it is still a global alignment. There are multiple kinds of Edit distances, of which the [Levenshtein distance](https://en.wikipedia.org/wiki/Levenshtein_distance) is probably the most common. This distance allows for insertions, deletions and substitutions, which is highly suitable for alignment of biological sequences.
 
-The implementation of the Levenshtein distance is more complex than the Hamming distance and requires us to use some dynamic programming. The goal is to use as few insertions, deletions and substitutions as possible to turn one string into the other. We need to be *exhaustive* since we do not know beforehand what is the optimal solution to this problem. I.e., we need to allow for insertions, deletions and substitutions in every position.
+The implementation of the Levenshtein distance is more complex than the Hamming distance and requires us to use some dynamic programming. The goal is to use as few insertions, deletions and substitutions as possible to turn one string into the other. We need to be *exhaustive* since we do not know beforehand what is the optimal solution to this problem.
 
 ## Setup
 To solve this problem, we need a two dimensional array (two dimensions because we have two sequences). The layout will look something like this:

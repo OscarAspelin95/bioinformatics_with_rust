@@ -1,23 +1,22 @@
 # Create nucleotide sequence
 
-To start off, we just create a nucleotide sequence as a String.
+## String
+There are many different string types in Rust, but the two most common ones are *String* and *&str*. Both can be used to store nucleotide sequences, but they have different characteristics. Usually, use *String* if you intend to mutate the sequence, otherwise use *&str*. For more information, visit the rust docs for [String](https://doc.rust-lang.org/std/string/struct.String.html) and [&str](https://doc.rust-lang.org/std/primitive.str.html) respectively.
 ```rust
 fn main(){
     let nt_string: String = "ACGT".to_string();
-
-    println!("{nt_string}");
+    let nt_string: &str = "ACGT";
 }
-
 ```
 
-However, usually when reading nucleotide sequences from a FASTA/Q parser, we get it in binary form &[u8] which is a more convenient format.
+## Byte slice
+Usually when reading nucleotide sequences from a FASTA/Q file, we get it as a byte slice, *&[u8]*, which is a more convenient format.
 
 ```rust
 fn main(){
-    let nt_string_binary: &[u8] = b"ACGT";
+    let nt_string: &[u8] = b"ACGT";
 
-    // Here, we need to print in debug mode.
-    println!("{:?}", nt_string_binary);
+    println!("{:?}", nt_string);
 }
 ```
 Run the code and examine the output. We get a bunch of numbers. This is the ASCII representation of our nucleotides, where A/T/C/G corresponds to an 8-bit representation. For more information, visit [this link](https://www.ascii-code.com/).
@@ -25,16 +24,17 @@ Run the code and examine the output. We get a bunch of numbers. This is the ASCI
 We can check that the following representations are equivalent:
 ```rust
 fn main(){
-    // Note that here we use single quotes
-    // because we are dealing with single chars.
     assert_eq!(b'A', 65);
     assert_eq!(b'C', 67);
     assert_eq!(b'G', 71);
     assert_eq!(b'T', 84);
 }
 ```
-Onwards, we'll work with nucleotide sequences in both binary and string representations. Remember:
-- Binary form looks like b"[...]" and has the type &[u8].
-- String form looks like "[...]" (&str) or "[...]".to_string() (String).
-
-For more information about string types in Rust, click [here](https://doc.rust-lang.org/rust-by-example/std/str.html).
+## Binary
+Will be covered in a later section. In short, using 8-bits is overkill for representing only four nucleotides. Instead, we can map A/C/G/T to the corresponding binary representation:
+<pre>
+    A => 00
+    C => 01
+    G => 10
+    T => 11
+</pre>
