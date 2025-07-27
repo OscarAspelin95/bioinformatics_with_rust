@@ -6,10 +6,14 @@ Welcome to Bioinformatics with Rust, an introduction on how to write fast and me
 
 The purpose of this book is **not** to be an official introduction to neither Rust nor bioinformatics, but rather a resource for passionate bioinformaticians who are curious about the Rust programming language.
 
-The book is structured into different chapters that cover both programmatic and bioinformatic concepts, along with interative Rust code where these concepts are implemented from scratch. These chapters are covered so far:<br>
-
+The book is structured into different chapters that cover both programmatic and bioinformatic concepts, along with interative Rust code where these concepts are implemented from scratch. These chapters are covered so far:
 
 <div style="display:flex; flex-wrap: wrap;">
+    <p style="margin: 10px;">
+        🪄 Rust Tips And Tricks:<br>
+        &emsp;&emsp; ✔ Error Handling.<br>
+        &emsp;&emsp; ✔ Enums.<br>
+    </p>
     <p style="margin: 10px;">
         🧬 The Basics of Nucleotides:<br>
         &emsp;&emsp; ✔ Counting.<br>
@@ -35,3 +39,10 @@ The book is structured into different chapters that cover both programmatic and 
         &emsp;&emsp; 🚧 Syncmers.<br>
     </p>
 </div>
+
+### Contributions
+I'm currently a single person working on this project, so contributions are welcome! There are several things that can be improved, including but not limited to:
+- Reworking some parts of the text for better clarity.
+- Adding and improving on tests.
+- Improving the actual Rust code.
+- Adding entire new chapters.
