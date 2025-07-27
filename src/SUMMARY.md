@@ -49,6 +49,8 @@
     - [FracMinHash](./main/kmers/5_min_frac_hash.md)
     - [Making something useful](./main/kmers/6_making_something_useful.md)
     - [Minimizers](./main/kmers/7_minimizers.md)
+    - [Syncmers](./main/kmers/8_syncmers.md)
+
 
 
 ---
