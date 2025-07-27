@@ -12,6 +12,9 @@
 ---
 
 - [Rust Tips And Tricks](./main/rust_tips_and_tricks/1_introduction.md)
+    - [Error Handling](./main/rust_tips_and_tricks/2_error_handling.md)
+    - [Enums](./main/rust_tips_and_tricks/3_enums.md)
+
 
 ---
 
