@@ -169,8 +169,7 @@
                     <main>
                         <h1 id="enums"><a class="header" href="#enums">Enums</a></h1>
 <p>Rust enums are awesome and also extremely useful, especially in match statements. Assume we have implemented three different alignment functions: local, semi-global and global. We can use an enum as input to decide what alignment function to run for a given query and subject:</p>
-<pre><pre class="playground"><code class="language-rust edition2024">
-enum AlignmentType{
+<pre><pre class="playground"><code class="language-rust edition2024">enum AlignmentType{
     Local,
     SemiGlobal,
     Global,
@@ -203,9 +202,53 @@ fn main(){
     align("ATCG", "ATCG", AlignmentType::Local);
     align("ATCG", "ATCG", AlignmentType::SemiGlobal);
     align("ATCG", "ATCG", AlignmentType::Global);
-
-
 }</code></pre></pre>
+<p>Another use case of enums could be if we have an alignment between two sequences for which we want to calculate an alignment score. We could create an alignment type enum that is associated with increasing or decreasing an alignment score.</p>
+<pre><pre class="playground"><code class="language-rust edition2024">enum AlignmentCost {
+    Match(usize),
+    Mismatch(usize),
+    DeletionQuery(usize),
+    DeletionSubject(usize),
+}
+
+fn update_score(score: &amp;mut i32, alignment_cost: AlignmentCost) {
+    match alignment_cost {
+        AlignmentCost::Match(c) =&gt; {
+            *score += c as i32;
+        }
+        AlignmentCost::Mismatch(c) =&gt; {
+            *score -= c as i32;
+        }
+        AlignmentCost::DeletionQuery(c) =&gt; {
+            *score -= c as i32;
+        }
+        AlignmentCost::DeletionSubject(c) =&gt; {
+            *score -= c as i32;
+        }
+    };
+}
+
+fn main() {
+    let mut score: i32 = 0;
+    println!("Initial score: {score}");
+
+    // Match will increase the score.
+    update_score(&amp;mut score, AlignmentCost::Match(4));
+    println!("Score after match: {score}");
+
+    // Mismatch will decrease the score.
+    update_score(&amp;mut score, AlignmentCost::Mismatch(1));
+    println!("Score after mismatch: {score}");
+
+    // Query deletion will decrease the score.
+    update_score(&amp;mut score, AlignmentCost::DeletionQuery(1));
+    println!("Score after query deletion: {score}");
+
+    // Subject deletion will decrease the score.
+    update_score(&amp;mut score, AlignmentCost::DeletionSubject(1));
+    println!("Score after subject deletion: {score}");
+}</code></pre></pre>
+<p>This is a pretty silly example, but showcases how enums are very convenient for handling and taking action based on a specific set of cases.</p>
 
                     </main>
 
@@ -215,7 +258,7 @@ fn main(){
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../../main/nucleotides/1_nucleotides.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../../main/rust_tips_and_tricks/4_structs.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -229,7 +272,7 @@ fn main(){
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../../main/nucleotides/1_nucleotides.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../../main/rust_tips_and_tricks/4_structs.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
