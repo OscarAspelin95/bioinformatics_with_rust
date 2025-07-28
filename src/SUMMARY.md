@@ -15,6 +15,7 @@
     - [Error Handling](./main/rust_tips_and_tricks/2_error_handling.md)
     - [Enums](./main/rust_tips_and_tricks/3_enums.md)
     - [Structs](./main/rust_tips_and_tricks/4_structs.md)
+    - [Concurrency](./main/rust_tips_and_tricks/5_concurrency.md)
 
 
 ---

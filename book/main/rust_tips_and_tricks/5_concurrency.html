@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Nucleotides - Bioinformatics with Rust</title>
+        <title>Concurrency - Bioinformatics with Rust</title>
 
 
         <!-- Custom HTML head -->
@@ -167,71 +167,53 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="nucleotides"><a class="header" href="#nucleotides">Nucleotides</a></h1>
-<p>When dealing with DNA sequences, nucleotides are everything. Fundamentally, we are usually dealing with four canonical bases:</p>
+                        <h1 id="concurrency"><a class="header" href="#concurrency">Concurrency</a></h1>
+<p>In bioinformatics, concurrency can be vital and has the potential decrease runtimes. Sometimes even by several magnitudes. The Rust <a href="https://doc.rust-lang.org/book/ch16-00-concurrency.html">documentation</a> covers concurrency in detail and there are also several crates that make concurrency easier to implement. Below is a list of Rust crates that work very well for creating fast, concurrent and memory-safe bioinformatic applications:</p>
 <ul>
-<li>A - Adenosine.</li>
-<li>C - Cytosine.</li>
-<li>G - Guanine.</li>
-<li>T - Thymine.</li>
+<li><a href="https://docs.rs/bio/latest/bio/">Bio</a> - General purpose bioinformatic tool for e.g., parsing fastq/fasta files.</li>
+<li><a href="https://docs.rs/rayon/latest/rayon/">Rayon</a> - Data parallelism library that works well together with the Bio crate. Enables parallel processing of sequences through <a href="https://docs.rs/rayon/latest/rayon/iter/trait.ParallelBridge.html#tymethod.par_bridge">par_bridge()</a>.</li>
+<li><a href="https://docs.rs/dashmap/latest/dashmap/">DashMap</a> - Concurrent HashMaps and HashSets.</li>
 </ul>
-<p>However, there are some important concepts to be aware of.</p>
-<h2 id="soft-masking"><a class="header" href="#soft-masking">Soft masking</a></h2>
-<p>A lower case nucleotide indicates <em>soft masking</em> and is used to indicate a soft clipped alignment or a region which is low complexity or repetitive.</p>
-<p>In the example below, the last part of the upper sequence is soft masked to indicate that this region is not part of the actual alignment. This is commonly encountered in local read aligners such as <a href="https://github.com/lh3/minimap2">Minimap2</a>.</p>
-<pre>
-  AAAGTGCCAGTGACGCTTagtcgatcgatg
-  ||||||||||||||||||
-  AAAGTGCCAGTGACGCTT
-</pre>
-<h2 id="hard-masking"><a class="header" href="#hard-masking">Hard masking</a></h2>
-<p>A capital "N" indicates <em>hard masking</em>. This means there is probably a base here, but we don't know exactly what it is. This is usually for indicating uncertainty or gaps in a sequence.</p>
-<h2 id="ambiguous-nucleotides"><a class="header" href="#ambiguous-nucleotides">Ambiguous nucleotides</a></h2>
-<p>In addition to our four canonical nucleotides, there are also ambiguous nucleotides. Ambiguous in this case, means uncertainty or ambiguity:</p>
+<h2 id="tips-and-tricks"><a class="header" href="#tips-and-tricks">Tips And Tricks</a></h2>
+<p>Below, I've gathered some tips and tricks when it comes to using concurrency with Rust, especially for bioinformatic applications.</p>
+<h3 id="start-by-creating-a-mvba"><a class="header" href="#start-by-creating-a-mvba">Start by creating a MVBA</a></h3>
+<p>A MVBA (Minimally Viable Bioinformatic Application) is something that runs and the produces the expected output. I've found that starting out this way is easier, because one can always optimize the code later on. For me, it is tempting to start out by trying to create the most optimized code from the beginning. However, I've learned that programming this way takes more time and is less productive.</p>
+<h3 id="optimize-the-mvba"><a class="header" href="#optimize-the-mvba">Optimize the MVBA</a></h3>
+<p>Once the MVBA is done, it is time to optimize. We cannot forget this if we want an application that performs well under heavy loads. Optimization can be done in several ways, such as:</p>
 <ul>
-<li>R = A | G</li>
-<li>Y = C | T</li>
-<li>K = G | T</li>
-<li>M = A | C</li>
-<li>S = G | C</li>
-<li>W = A | T</li>
-<li>H = A | C | T</li>
-<li>V = A | C | G</li>
-<li>B = C | G | T</li>
-<li>D = A | G | T</li>
-<li>N = A | C | G | T</li>
+<li>Testing the application release mode (cargo build --release).</li>
+<li>Use a profiler such as <a href="https://crates.io/crates/samply">Samply</a> to identify bottlenecks.</li>
+<li>Implement concurrency if applicable.</li>
+<li>Using appropriate data structures. Maybe a Vec is not always the best approach?</li>
 </ul>
-<p>We won't deal much with ambiguous nucleotides in this book. However, make sure not to confuse these nucleotides with one-letter amino acid abbreviations, which have overlapping naming conventions.</p>
-<h2 id="programmatic-representations"><a class="header" href="#programmatic-representations">Programmatic representations</a></h2>
-<p>There are many different ways to represent nucleotide sequences in a programming language. In this book, we'll mainly deal with three different representations:</p>
+<h3 id="concurrency-is-not-always-the-answer"><a class="header" href="#concurrency-is-not-always-the-answer">Concurrency is not always the answer</a></h3>
+<p>Even though concurrency is a useful tool within bioinformatics, there are cases where it might hurt more than it helps.</p>
+<p>Cases where concurrency shines:</p>
 <ul>
-<li>String and &amp;str</li>
-<li>Byte slice.</li>
-<li>Binary</li>
+<li>CPU heavy loads (such as genome assembly, read alignment, etc).</li>
+<li>Tasks can be executed relatively independently.</li>
 </ul>
-<p>All of these will be covered in further detail, but here is a short code snippet of the three representations in Rust.</p>
-<pre><pre class="playground"><code class="language-rust edition2024">/// Assume we want to represent the sequence ATCG.
-fn main(){
-  let nt_seq_string: String = "ATCG".to_string(); // String.
-  let nt_seq_str: &amp;str = "ATCG"; // String (slice).
-  let nt_seq_byte_slice: &amp;[u8] = b"ATCG"; // Byte slice.
-  let nt_seq_binary: u8 = 0b00110110; // Binary, where A = 00, T = 11, C = 01 and G = 10.
-
-  println!("{}", nt_seq_string);
-  println!("{}", nt_seq_str);
-  println!("{:?}", nt_seq_byte_slice);
-  println!("{:08b}", nt_seq_binary);
-}</code></pre></pre>
+<p>Cases where concurrency might not be the answer:</p>
+<ul>
+<li>Tasks are extremely small and frequent.</li>
+<li>Each task is expected to take up a lot of RAM (risking out of memory error).</li>
+</ul>
+<h3 id="find-code-examples"><a class="header" href="#find-code-examples">Find code examples</a></h3>
+<p>One excellent way to learn about concurrency is to look at code examples. There is plenty of well-established open source Rust projects that use concurrency. As a start, here are two of my own projects:</p>
+<ul>
+<li><a href="https://github.com/OscarAspelin95/fastq_rs">fastq_rs</a> - Fastq parser.</li>
+<li><a href="https://github.com/OscarAspelin95/sintax_rs">sintax_rs</a> - Rust implementation of the SINTAX classifier.</li>
+</ul>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../../main/rust_tips_and_tricks/5_concurrency.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../../main/rust_tips_and_tricks/4_structs.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../../main/nucleotides/2_create_nucleotide_sequence.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../../main/nucleotides/1_nucleotides.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -241,11 +223,11 @@ fn main(){
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../../main/rust_tips_and_tricks/5_concurrency.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../../main/rust_tips_and_tricks/4_structs.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../../main/nucleotides/2_create_nucleotide_sequence.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../../main/nucleotides/1_nucleotides.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
