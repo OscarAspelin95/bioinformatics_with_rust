@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Awesome Rust Crates - Bioinformatics with Rust</title>
+        <title>Structs - Bioinformatics with Rust</title>
 
 
         <!-- Custom HTML head -->
@@ -12,20 +12,20 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
 
-        <link rel="icon" href="../favicon.svg">
-        <link rel="shortcut icon" href="../favicon.png">
-        <link rel="stylesheet" href="../css/variables.css">
-        <link rel="stylesheet" href="../css/general.css">
-        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="icon" href="../../favicon.svg">
+        <link rel="shortcut icon" href="../../favicon.png">
+        <link rel="stylesheet" href="../../css/variables.css">
+        <link rel="stylesheet" href="../../css/general.css">
+        <link rel="stylesheet" href="../../css/chrome.css">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
-        <link rel="stylesheet" href="../fonts/fonts.css">
+        <link rel="stylesheet" href="../../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../../fonts/fonts.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
-        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
-        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+        <link rel="stylesheet" id="highlight-css" href="../../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../../ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
 
@@ -34,12 +34,12 @@
 
         <!-- Provide site root and default themes to javascript -->
         <script>
-            const path_to_root = "../";
+            const path_to_root = "../../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../toc.js"></script>
+        <script src="../../toc.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -103,7 +103,7 @@
             <!-- populated by js -->
             <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
             <noscript>
-                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
             </noscript>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -167,36 +167,96 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="awesome-rust-crates"><a class="header" href="#awesome-rust-crates">Awesome Rust crates</a></h1>
-<p>General purpose awesome Rust crates!
-For a mega list of even more crates, see <a href="https://github.com/rust-unofficial/awesome-rust">Awesome Rust</a>.</p>
-<ul>
-<li><a href="https://docs.rs/clap/latest/clap/">Clap</a> - Command line argument parsing.</li>
-<li><a href="https://docs.rs/rstest/latest/rstest/">Rstest</a> - Rust test fixtures.</li>
-<li><a href="https://docs.rs/rayon/latest/rayon/">Rayon</a> - Multithreading library for iterators.</li>
-<li><a href="https://github.com/xacrimon/dashmap">Dashmap</a> - Concurrent HashMaps.</li>
-<li><a href="https://docs.rs/serde/latest/serde/">Serde</a> - Serialization/Deserialization.</li>
-<li><a href="https://docs.rs/thiserror/latest/thiserror/">Thiserror</a> - Easily create custom error types.</li>
-<li><a href="https://docs.rs/log/latest/log/">Log</a> and <a href="https://docs.rs/simple_logger/latest/simple_logger/">SimpleLogger</a> - Switch those pesky println! macros for proper logging.</li>
-<li><a href="https://docs.rs/flate2/latest/flate2/">Flate2</a> - Compression/Decompression library.</li>
-<li><a href="https://docs.rs/bindgen/latest/bindgen/">Bindgen</a> - Rust bindings for C and C++.</li>
-<li><a href="https://docs.rs/polars/latest/polars/">Polars</a> - Blazingly fast dataframes. <strong>NOTE</strong> - Using polars with native Rust can be a bit cumbersome. An alternative is to use the <a href="https://docs.pola.rs/api/python/stable/reference/index.html">Python bindings</a>.</li>
-<li><a href="https://docs.rs/pyo3/latest/pyo3/">Pyo3</a> - Generate Rust bindings to Python or vice versa.</li>
-<li><a href="https://github.com/plotly/plotly.rs">Plotly-rs</a> - Rust bindings for the popular Plotly plotting library.</li>
-<li><a href="https://docs.rs/linfa/latest/linfa/">Linfa</a> - Closely resembles Pythons scikit-learn for Machine Learning applications.</li>
-<li><a href="https://github.com/DioxusLabs/dioxus">Dioxus</a> - Fullstack framework in Rust that resembles React. Build you own (bioinformatic) web or desktop applications!</li>
-<li><a href="https://docs.rs/validify/latest/validify/">Validify</a> - Struct validation and modification.</li>
-</ul>
+                        <h1 id="structs"><a class="header" href="#structs">Structs</a></h1>
+<p>Implementing structs in Rust is a bit different from languages such as Python. In Python, we have the excellent <a href="https://docs.pydantic.dev/latest/">Pydantic</a> module for data validation and other awesome features. In Rust, we can use something like the <a href="https://docs.rs/validify/latest/validify/">Validify</a> crate, however in this book we won't bother much with validation.</p>
+<p>Pretend we have a fastq parser for filtering and trimming reads. However, we want to change the filtering and trimming parameters based on sequencing platform. Maybe we want different behavior depending on if our data originated from PacBio or Oxford Nanopore. An example of this would be to implement a default function based on a provided platform:</p>
+<pre><pre class="playground"><code class="language-rust edition2024">enum Platform {
+    PacBio,
+    Nanopore,
+}
+
+#[allow(unused)]
+#[derive(Debug)]
+struct Parameters {
+    min_len: usize,
+    max_len: usize,
+    min_phred: usize,
+}
+
+impl Parameters {
+    fn default(platform: Platform) -&gt; Self {
+        match platform {
+            Platform::PacBio =&gt; Self {
+                min_len: 100,
+                max_len: 1000,
+                min_phred: 20,
+            },
+            Platform::Nanopore =&gt; Self {
+                min_len: 200,
+                max_len: 900,
+                min_phred: 15,
+            },
+        }
+    }
+}
+
+fn main() {
+    let pacbio_parameters = Parameters::default(Platform::PacBio);
+    println!("PacBio: {:?}", pacbio_parameters);
+
+    let nanopore_parameters = Parameters::default(Platform::Nanopore);
+    println!("Nanopore: {:?}", nanopore_parameters);
+}</code></pre></pre>
+<p>This works, but might not be very idiomatic. Another way is to leverage Rust's type traits by implementing <em>from</em>. By specifying our parameter variable as type <em>Parameters</em>, we can call .into() directly.</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">enum Platform {
+</span><span class="boring">    PacBio,
+</span><span class="boring">    Nanopore,
+</span><span class="boring">}
+</span><span class="boring">
+</span><span class="boring">#[allow(unused)]
+</span><span class="boring">#[derive(Debug)]
+</span><span class="boring">struct Parameters {
+</span><span class="boring">    min_len: usize,
+</span><span class="boring">    max_len: usize,
+</span><span class="boring">    min_phred: usize,
+</span><span class="boring">}
+</span>// [...]
+
+impl From&lt;Platform&gt; for Parameters{
+    fn from(platform: Platform) -&gt; Self{
+        match platform{
+            Platform::PacBio =&gt; Self{
+                min_len: 100,
+                max_len: 1000,
+                min_phred: 20,
+            },
+            Platform::Nanopore =&gt; Self{
+                min_len: 200,
+                max_len: 900,
+                min_phred: 15
+            },
+        }
+    }
+}
+
+fn main(){
+    let pacbio_parameters: Parameters = Platform::PacBio.into();
+    println!("PacBio: {:?}", pacbio_parameters);
+
+    let nanopore_parameters: Parameters = Platform::Nanopore.into();
+    println!("Nanopore: {:?}", nanopore_parameters);
+}</code></pre></pre>
+<p>Again, note that these are just examples that might not be real-world applicable. However, the point here is that structuring the code in certain ways will be of help in the long run.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../suffix/1_resources.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../../main/rust_tips_and_tricks/3_enums.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../suffix/3_awesome_bioinformatic_tools.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../../main/nucleotides/1_nucleotides.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -206,11 +266,11 @@ For a mega list of even more crates, see <a href="https://github.com/rust-unoffi
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../suffix/1_resources.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../../main/rust_tips_and_tricks/3_enums.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../suffix/3_awesome_bioinformatic_tools.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../../main/nucleotides/1_nucleotides.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
@@ -240,19 +300,19 @@ For a mega list of even more crates, see <a href="https://github.com/rust-unoffi
             window.playground_copyable = true;
         </script>
 
-        <script src="../ace.js"></script>
-        <script src="../mode-rust.js"></script>
-        <script src="../editor.js"></script>
-        <script src="../theme-dawn.js"></script>
-        <script src="../theme-tomorrow_night.js"></script>
+        <script src="../../ace.js"></script>
+        <script src="../../mode-rust.js"></script>
+        <script src="../../editor.js"></script>
+        <script src="../../theme-dawn.js"></script>
+        <script src="../../theme-tomorrow_night.js"></script>
 
-        <script src="../elasticlunr.min.js"></script>
-        <script src="../mark.min.js"></script>
-        <script src="../searcher.js"></script>
+        <script src="../../elasticlunr.min.js"></script>
+        <script src="../../mark.min.js"></script>
+        <script src="../../searcher.js"></script>
 
-        <script src="../clipboard.min.js"></script>
-        <script src="../highlight.js"></script>
-        <script src="../book.js"></script>
+        <script src="../../clipboard.min.js"></script>
+        <script src="../../highlight.js"></script>
+        <script src="../../book.js"></script>
 
         <!-- Custom JS scripts -->
 
