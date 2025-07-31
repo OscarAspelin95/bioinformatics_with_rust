@@ -45,9 +45,7 @@ fn main() {
     let seqs: Vec<String> = vec!["ATCGA".to_string(), "ATCG".to_string(), "TTTTT".to_string()];
 
     for seq in seqs {
-        let s = get_nt_string(seq);
-
-        match s {
+        match get_nt_string(seq) {
             Ok(seq) => println!("{seq}"),
             Err(e) => println!("{e}"),
         }
