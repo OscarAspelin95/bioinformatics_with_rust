@@ -13,6 +13,8 @@ The book is structured into different chapters that cover both programmatic and 
         🪄 Rust Tips And Tricks:<br>
         &emsp;&emsp; ✔ Error Handling.<br>
         &emsp;&emsp; ✔ Enums.<br>
+        &emsp;&emsp; ✔ Structs.<br>
+        &emsp;&emsp; ✔ Concurrency.<br>
     </p>
     <p style="margin: 10px;">
         🧬 The Basics of Nucleotides:<br>
