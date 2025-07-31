@@ -205,9 +205,7 @@ fn main() {
     let seqs: Vec&lt;String&gt; = vec!["ATCGA".to_string(), "ATCG".to_string(), "TTTTT".to_string()];
 
     for seq in seqs {
-        let s = get_nt_string(seq);
-
-        match s {
+        match get_nt_string(seq) {
             Ok(seq) =&gt; println!("{seq}"),
             Err(e) =&gt; println!("{e}"),
         }
