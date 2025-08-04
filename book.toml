@@ -7,10 +7,10 @@ title = "Bioinformatics with Rust"
 [rust]
 edition = "2024"
 
-[output.html]
-git-repository-url = "https://github.com/OscarAspelin95/bioinformatics_with_rust"
-git-repository-icon = "fa-github"
-mathjax-support = true
+# [output.html]
+# git-repository-url = "https://github.com/OscarAspelin95/bioinformatics_with_rust"
+# git-repository-icon = "fa-github"
+# mathjax-support = true
 
 [output.html.playground]
 editable = true
