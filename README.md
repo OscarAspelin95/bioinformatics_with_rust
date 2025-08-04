@@ -48,3 +48,4 @@ I'm currently a single person working on this project, so contributions are welc
 - Adding and improving on tests.
 - Improving the actual Rust code.
 - Adding entire new chapters.
+- Enable using external crates for better code examples.
