@@ -203,14 +203,14 @@
 </ul>
 <p>We won't deal much with ambiguous nucleotides in this book. However, make sure not to confuse these nucleotides with one-letter amino acid abbreviations, which have overlapping naming conventions.</p>
 <h2 id="programmatic-representations"><a class="header" href="#programmatic-representations">Programmatic representations</a></h2>
-<p>There are many different ways to represent nucleotide sequences in a programming language. In this book, we'll mainly deal with three different representations:</p>
+<p>There are many different ways to represent nucleotide sequences in a programming language. In this book, we'll mainly deal with these different representations:</p>
 <ul>
-<li>String and &amp;str</li>
-<li>Byte slice.</li>
-<li>Binary</li>
+<li><code>String</code> and <code>&amp;str</code>.</li>
+<li><code>&amp;[u8]</code> (byte slice).</li>
+<li>Binary.</li>
 </ul>
-<p>All of these will be covered in further detail, but here is a short code snippet of the three representations in Rust.</p>
-<pre><pre class="playground"><code class="language-rust edition2024">/// Assume we want to represent the sequence ATCG.
+<p>All of these will be covered in further detail, but here is a short code snippet with examples.</p>
+<pre><pre class="playground"><code class="language-rust edition2021">/// Assume we want to represent the sequence ATCG.
 fn main(){
   let nt_seq_string: String = "ATCG".to_string(); // String.
   let nt_seq_str: &amp;str = "ATCG"; // String (slice).

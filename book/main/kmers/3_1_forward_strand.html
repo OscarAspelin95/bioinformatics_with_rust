@@ -174,7 +174,7 @@
 <li>Insert the actual nucleotide, which is done with the "|" operator (BitOR).</li>
 </ul>
 <p>Hence, for the forward strand we add nucleotides from the <strong>right side</strong>.</p>
-<pre><pre class="playground"><code class="language-rust edition2024">fn main() {
+<pre><pre class="playground"><code class="language-rust edition2021">fn main() {
     let mut storage: u32 = 0b0;
 
     // Insert a T.
@@ -213,7 +213,7 @@ kmer_size = 2
 <li>Mask anything above our kmer length to keep the length of 2.</li>
 </ul>
 <p>We solve this by applying a bit-mask (as discussed previously).</p>
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">const LOOKUP: [u8; 256] = [
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">const LOOKUP: [u8; 256] = [
 </span><span class="boring">    0, 1, 2, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
 </span><span class="boring">    4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
 </span><span class="boring">    4, 0, 4, 1, 4, 4, 4, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
@@ -223,9 +223,9 @@ kmer_size = 2
 </span><span class="boring">    4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
 </span><span class="boring">    4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
 </span><span class="boring">];
-</span>
-
-<span class="boring">fn decode(byte: u64) -&gt; char {
+</span><span class="boring">
+</span><span class="boring">
+</span><span class="boring">fn decode(byte: u64) -&gt; char {
 </span><span class="boring">    match byte {
 </span><span class="boring">        0 =&gt; return 'A',
 </span><span class="boring">        1 =&gt; return 'C',
@@ -234,8 +234,7 @@ kmer_size = 2
 </span><span class="boring">        _ =&gt; panic!("Invalid nucleotide."),
 </span><span class="boring">    };
 </span><span class="boring">}
-</span>
-// [...]
+</span>// [...]
 
 /// Print a u64 encoded nucleotide with some bit manipulation.
 pub fn print_nt_string(kmer: u64, k: usize) {

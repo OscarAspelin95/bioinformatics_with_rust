@@ -63,8 +63,8 @@ We solve this by applying a bit-mask (as discussed previously).
 #     4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
 #     4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
 # ];
-
-
+#
+#
 # fn decode(byte: u64) -> char {
 #     match byte {
 #         0 => return 'A',
@@ -74,7 +74,6 @@ We solve this by applying a bit-mask (as discussed previously).
 #         _ => panic!("Invalid nucleotide."),
 #     };
 # }
-
 // [...]
 
 /// Print a u64 encoded nucleotide with some bit manipulation.

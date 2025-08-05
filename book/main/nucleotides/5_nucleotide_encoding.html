@@ -168,7 +168,7 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="encoding"><a class="header" href="#encoding">Encoding</a></h1>
-<p>Being able to encode and decode nucletides is a vital part of writing high performance bioinformatic code. What it means is essentially converting nucleotides into a more compact form. There are multiple ways of doing nucleotide encoding. However if we assume we only have to deal with {A,C,G,T} then there is a straightforward way for this:</p>
+<p>Being able to encode and decode nucletides is a vital part of writing high performance bioinformatic code. What it means is essentially converting nucleotides into a more compact form. There are multiple ways of doing nucleotide encoding. However if we assume we only have to deal with <code>{A,C,G,T}</code> then there is a straightforward way for this:</p>
 <ul>
 <li>A is encoded as 0 (binary 00).</li>
 <li>C is encoded as 1 (binary 01).</li>
@@ -180,13 +180,13 @@
 <li>Each nucleotides only takes up 2 bits.</li>
 <li>Reverse complementing a base is as easy as:
 <ul>
-<li>rev_nt = 3 - nt</li>
+<li><code>rev_nt = 3 - nt</code></li>
 </ul>
 </li>
 <li>With some bit-shifting, we can very efficiently generate kmers from our sequences (covered in a later topic).</li>
 </ul>
 <p>The following code is just a very straightforward encoding/decoding protocol. However, this enables us to do some more advanced stuff in future topics.</p>
-<pre><pre class="playground"><code class="language-rust edition2024">/// Convert ASCII to our own 2-bit encoded nt.
+<pre><pre class="playground"><code class="language-rust edition2021">/// Convert ASCII to our own 2-bit encoded nt.
 fn encode(nt_decoded: u8) -&gt; u8 {
     match nt_decoded {
         b'A' =&gt; 0,
@@ -231,9 +231,9 @@ fn main() {
 }
 </code></pre></pre>
 <h2 id="using-a-lookup-table"><a class="header" href="#using-a-lookup-table">Using a lookup table</a></h2>
-<p>We used match statements to encode and decode nucleotides, which works. However, we only handle the canonical bases {A,C,G,T}. This is not ideal, because our FASTA/Q file might contain soft masked bases {a,c,g,t} or hard masked bases N.</p>
-<p>We could just extend our match statement to handle this, but we still have not safe-guarded against any other ambiguous nucleotide that we might encounter. A better approach is to use a compile-time lookup table that supports all 256 ASCII characters.</p>
-<pre><pre class="playground"><code class="language-rust edition2024">const LOOKUP_TABLE: [u8; 256] = [
+<p>We used match statements to encode and decode nucleotides, which works. However, we only handle the canonical bases <code>{A,C,G,T}</code>. This is not ideal, because our FASTA/Q file might contain soft masked bases <code>{a,c,g,t}</code> or hard masked bases <code>N</code>.</p>
+<p>We could just extend our match statement to handle this, but we still have not safe-guarded against any other ambiguous nucleotide that we might encounter. A better approach is to use a compile-time lookup table that supports all 256 ASCII characters, where all irrelevant characters are set to 4.</p>
+<pre><pre class="playground"><code class="language-rust edition2021">const LOOKUP_TABLE: [u8; 256] = [
 	0, 1, 2, 3,  4, 4, 4, 4,  4, 4, 4, 4,  4, 4, 4, 4,
 	4, 4, 4, 4,  4, 4, 4, 4,  4, 4, 4, 4,  4, 4, 4, 4,
 	4, 4, 4, 4,  4, 4, 4, 4,  4, 4, 4, 4,  4, 4, 4, 4,
@@ -259,9 +259,10 @@ fn main() {
         }
     });
 }</code></pre></pre>
-<p>Run the code and inspect the output. Using a lookup table (which has a very cheap cost for index lookup) we are able to map {A,C,T,U,a,c,g,t,u} to their corresponding encodings. This means we handle both upper and lowercase nucleotides, and also get U/u for free, meaning that we can now handle RNA as well.</p>
-<p>However, we see that the first four values at index 0/1/2/3 map some weird characters to 0/1/2/3. ASCII characters with DEC values (index in our case) less that 32 are not actually printable characters, but rather control characters. 0/1/2/3 correspond to null character, start of heading, start of text and end of text respectively. We must not use those for encoding ASCII control characters. What we can use them for though, is reverse complement.</p>
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">const LOOKUP_TABLE: [u8; 256] = [
+<p>Run the code and inspect the output. Using a lookup table, we are able to map <code>{A,C,T,U,a,c,g,t,u}</code> to their corresponding encodings. This means we handle both upper and lowercase nucleotides, and also get U/u for free, meaning that we can now handle RNA as well.</p>
+<p>However, we see that the first four values at index <code>[0], [1], [2], [3]</code> map to some weird characters. ASCII characters less than 32 are not actually printable characters, but rather control characters where <code>0, 1, 2, 3</code> correspond to null, start of heading, start of text and end of text respectively.</p>
+<p>Why don't we set these values to 4 since they seem irrelevant?</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">const LOOKUP_TABLE: [u8; 256] = [
 </span><span class="boring">	0, 1, 2, 3,  4, 4, 4, 4,  4, 4, 4, 4,  4, 4, 4, 4,
 </span><span class="boring">	4, 4, 4, 4,  4, 4, 4, 4,  4, 4, 4, 4,  4, 4, 4, 4,
 </span><span class="boring">	4, 4, 4, 4,  4, 4, 4, 4,  4, 4, 4, 4,  4, 4, 4, 4,
@@ -279,10 +280,12 @@ fn main() {
 </span><span class="boring">	4, 4, 4, 4,  4, 4, 4, 4,  4, 4, 4, 4,  4, 4, 4, 4,
 </span><span class="boring">	4, 4, 4, 4,  4, 4, 4, 4,  4, 4, 4, 4,  4, 4, 4, 4
 </span><span class="boring">];
-</span>
+</span>// [...]
+
 fn reverse(nt: u8) -&gt; u8{
     return 3 - LOOKUP_TABLE[nt as usize]
 }
+
 fn main() {
     // We can reverse both ASCII and encoded A into T.
     assert_eq!(reverse(b'A'), LOOKUP_TABLE[b'T' as usize]);

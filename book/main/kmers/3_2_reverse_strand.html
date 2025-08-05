@@ -188,7 +188,7 @@ storage =   0b0000000000 # example u10 for storage.
 </pre>
 <br>
 <p>The following code is an example of inserting the reverse complement of "AGT" into a u32. We'll make it easy for us and use a kmer size of 3 to exactly fit the entire reverse complement into the kmer.</p>
-<pre><pre class="playground"><code class="language-rust edition2024">fn main() {
+<pre><pre class="playground"><code class="language-rust edition2021">fn main() {
     let mut storage: u32 = 0b0;
 
     // Use kmer size 3 to exactly fit our three nucleotides

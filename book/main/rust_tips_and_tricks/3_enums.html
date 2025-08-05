@@ -169,7 +169,7 @@
                     <main>
                         <h1 id="enums"><a class="header" href="#enums">Enums</a></h1>
 <p>Rust enums are awesome and also extremely useful, especially in match statements. Assume we have implemented three different alignment functions: local, semi-global and global. We can use an enum as input to decide what alignment function to run for a given query and subject:</p>
-<pre><pre class="playground"><code class="language-rust edition2024">enum AlignmentType{
+<pre><pre class="playground"><code class="language-rust edition2021">enum AlignmentType{
     Local,
     SemiGlobal,
     Global,
@@ -204,7 +204,7 @@ fn main(){
     align("ATCG", "ATCG", AlignmentType::Global);
 }</code></pre></pre>
 <p>Another use case of enums could be if we have an alignment between two sequences for which we want to calculate an alignment score. We could create an alignment type enum that is associated with increasing or decreasing an alignment score.</p>
-<pre><pre class="playground"><code class="language-rust edition2024">enum AlignmentCost {
+<pre><pre class="playground"><code class="language-rust edition2021">enum AlignmentCost {
     Match(usize),
     Mismatch(usize),
     DeletionQuery(usize),

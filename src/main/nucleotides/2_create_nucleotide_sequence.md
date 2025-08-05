@@ -1,7 +1,7 @@
-# Create nucleotide sequence
+# Create A nucleotide sequence
 
 ## String
-There are many different string types in Rust, but the two most common ones are *String* and *&str*. Both can be used to store nucleotide sequences, but they have different characteristics. Usually, use *String* if you intend to mutate the sequence, otherwise use *&str*. For more information, visit the rust docs for [String](https://doc.rust-lang.org/std/string/struct.String.html) and [&str](https://doc.rust-lang.org/std/primitive.str.html) respectively.
+There are many different string types in Rust, but the two most common ones are `String` and `&str`. Both can be used to store nucleotide sequences, but they have different characteristics. Usually, use *String* if you intend to mutate the sequence, otherwise use *&str*. For more information, visit the rust docs for [`String`](https://doc.rust-lang.org/std/string/struct.String.html) and [`&str`](https://doc.rust-lang.org/std/primitive.str.html) respectively.
 ```rust
 fn main(){
     let nt_string: String = "ACGT".to_string();
@@ -10,7 +10,7 @@ fn main(){
 ```
 
 ## Byte slice
-Usually when reading nucleotide sequences from a FASTA/Q file, we get it as a byte slice, *&[u8]*, which is a more convenient format.
+Usually when reading nucleotide sequences from a FASTA/Q file, we get it as a byte slice, `&[u8]`, which is a more convenient format.
 
 ```rust
 fn main(){

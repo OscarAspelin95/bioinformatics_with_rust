@@ -175,7 +175,7 @@ query   ATCTACCG
         |||||*||
 subject ATCTATCG
 </pre>
-<pre><pre class="playground"><code class="language-rust edition2024">use std::iter::zip;
+<pre><pre class="playground"><code class="language-rust edition2021">use std::iter::zip;
 
 fn hamming_distance(query: &amp;str, subject: &amp;str) -&gt; usize {
     assert_eq!(query.len(), subject.len());
@@ -190,6 +190,7 @@ fn hamming_distance(query: &amp;str, subject: &amp;str) -&gt; usize {
 
     return distance;
 }
+
 fn main() {
     assert_eq!(hamming_distance("ATCG", "ATCG"), 0);
     assert_eq!(hamming_distance("ATCG", "TTCG"), 1);

@@ -175,10 +175,9 @@
 <li>We add our hashed kmer only if its hash is less than or equal to a defined threshold.</li>
 </ul>
 <p>We define our threshold as the maximum possible integer value (in our case we'll use u64), divided by a downsampling factor.</p>
-<pre><pre class="playground"><code class="language-rust edition2024">
-<span class="boring">use std::collections::HashSet;
-</span>
-<span class="boring">const LOOKUP: [u8; 256] = [
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">use std::collections::HashSet;
+</span><span class="boring">
+</span><span class="boring">const LOOKUP: [u8; 256] = [
 </span><span class="boring">    0, 1, 2, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
 </span><span class="boring">    4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
 </span><span class="boring">    4, 0, 4, 1, 4, 4, 4, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
@@ -188,8 +187,8 @@
 </span><span class="boring">    4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
 </span><span class="boring">    4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
 </span><span class="boring">];
-</span>
-<span class="boring">fn decode(byte: u64) -&gt; char {
+</span><span class="boring">
+</span><span class="boring">fn decode(byte: u64) -&gt; char {
 </span><span class="boring">    match byte {
 </span><span class="boring">        0 =&gt; return 'A',
 </span><span class="boring">        1 =&gt; return 'C',
@@ -198,8 +197,8 @@
 </span><span class="boring">        _ =&gt; panic!("Invalid nucleotide."),
 </span><span class="boring">    };
 </span><span class="boring">}
-</span>
-<span class="boring">/// Print a u64 encoded nucleotide with some bit manipulation.
+</span><span class="boring">
+</span><span class="boring">/// Print a u64 encoded nucleotide with some bit manipulation.
 </span><span class="boring">pub fn print_nt_string(kmer: u64, k: usize) {
 </span><span class="boring">    let mut result = String::with_capacity(k);
 </span><span class="boring">    for i in 0..k {
@@ -211,8 +210,7 @@
 </span><span class="boring">    }
 </span><span class="boring">    println!("{}", result);
 </span><span class="boring">}
-</span>
-// [...]
+</span>// [...]
 
 /// https://github.com/bluenote-1577/sylph
 fn mm_hash64(kmer: u64) -&gt; u64 {
@@ -296,7 +294,7 @@ fn main(){
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../../main/kmers/4_simd_vectorization.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../../main/kmers/3_3_final_implementation.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
@@ -310,7 +308,7 @@ fn main(){
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../../main/kmers/4_simd_vectorization.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../../main/kmers/3_3_final_implementation.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 

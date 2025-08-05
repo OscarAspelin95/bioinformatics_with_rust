@@ -9,7 +9,7 @@ In bioinformatics, concurrency can be vital and has the potential decrease runti
 Below, I've gathered some tips and tricks when it comes to using concurrency with Rust, especially for bioinformatic applications.
 
 ### Start by creating a MVBA
-A MVBA (Minimally Viable Bioinformatic Application) is something that runs and the produces the expected output. I've found that starting out this way is easier, because one can always optimize the code later on. For me, it is tempting to start out by trying to create the most optimized code from the beginning. However, I've learned that programming this way takes more time and is less productive.
+A MVBA (Minimally Viable Bioinformatic Application) is something that runs and produces the expected output. I've found that starting out this way is easier, because one can always optimize the code later on. For me, it is tempting to start out writing the most optimized code from the beginning. However, I've learned that programming this way takes more time and is less productive.
 
 ### Optimize the MVBA
 Once the MVBA is done, it is time to optimize. We must not forget this if we want an application that performs well under heavy loads. Optimization can be done in several ways, such as:

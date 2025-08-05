@@ -1,6 +1,5 @@
 # Summary
 
-[TODO list](./prefix/0_todo_list.md)
 [Introduction](./prefix/1_introduction.md)
 [Why Rust?](./prefix/2_why_rust.md)
 [Prerequisites](./prefix/3_prerequisites.md)
@@ -11,12 +10,15 @@
 
 ---
 
+- [Rust Basics]()
+
+---
+
 - [Rust Tips And Tricks](./main/rust_tips_and_tricks/1_introduction.md)
     - [Error Handling](./main/rust_tips_and_tricks/2_error_handling.md)
     - [Enums](./main/rust_tips_and_tricks/3_enums.md)
     - [Structs](./main/rust_tips_and_tricks/4_structs.md)
     - [Concurrency](./main/rust_tips_and_tricks/5_concurrency.md)
-
 
 ---
 
@@ -47,13 +49,20 @@
         - [Forward Strand](./main/kmers/3_1_forward_strand.md)
         - [Reverse Strand](./main/kmers/3_2_reverse_strand.md)
         - [Final Implementation](./main/kmers/3_3_final_implementation.md)
-    - [SIMD Vectorization](./main/kmers/4_simd_vectorization.md)
+    - [SIMD Vectorization]() [comment]: <> (./main/kmers/4_simd_vectorization.md)
     - [FracMinHash](./main/kmers/5_min_frac_hash.md)
     - [Making something useful](./main/kmers/6_making_something_useful.md)
     - [Minimizers](./main/kmers/7_minimizers.md)
-    - [Syncmers](./main/kmers/8_syncmers.md)
+    - [Syncmers]() [comment]: <> (./main/kmers/8_syncmers.md)
 
+---
 
+- [Additional Topics]()
+    - [In Silico PCR]()
+    - [Clustering]()
+---
+
+- [Real Life Applications]()
 
 ---
 
@@ -62,4 +71,9 @@
     - [Awesome Bioinformatic Tools](./suffix/3_awesome_bioinformatic_tools.md)
 
 ---
+
 - [Thank You](./suffix/4_thank_you.md)
+
+---
+
+- [TODO](./suffix/5_todo.md)

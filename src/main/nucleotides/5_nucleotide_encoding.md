@@ -1,5 +1,5 @@
 # Encoding
-Being able to encode and decode nucletides is a vital part of writing high performance bioinformatic code. What it means is essentially converting nucleotides into a more compact form. There are multiple ways of doing nucleotide encoding. However if we assume we only have to deal with {A,C,G,T} then there is a straightforward way for this:
+Being able to encode and decode nucletides is a vital part of writing high performance bioinformatic code. What it means is essentially converting nucleotides into a more compact form. There are multiple ways of doing nucleotide encoding. However if we assume we only have to deal with `{A,C,G,T}` then there is a straightforward way for this:
 - A is encoded as 0 (binary 00).
 - C is encoded as 1 (binary 01).
 - G is encoded as 2 (binary 10).
@@ -8,7 +8,7 @@ Being able to encode and decode nucletides is a vital part of writing high perfo
 The advantages of this approach are:
 - Each nucleotides only takes up 2 bits.
 - Reverse complementing a base is as easy as:
-    - rev_nt = 3 - nt
+    - `rev_nt = 3 - nt`
 - With some bit-shifting, we can very efficiently generate kmers from our sequences (covered in a later topic).
 
 
@@ -61,9 +61,9 @@ fn main() {
 ```
 
 ##  Using a lookup table
-We used match statements to encode and decode nucleotides, which works. However, we only handle the canonical bases {A,C,G,T}. This is not ideal, because our FASTA/Q file might contain soft masked bases {a,c,g,t} or hard masked bases N.
+We used match statements to encode and decode nucleotides, which works. However, we only handle the canonical bases `{A,C,G,T}`. This is not ideal, because our FASTA/Q file might contain soft masked bases `{a,c,g,t}` or hard masked bases `N`.
 
-We could just extend our match statement to handle this, but we still have not safe-guarded against any other ambiguous nucleotide that we might encounter. A better approach is to use a compile-time lookup table that supports all 256 ASCII characters.
+We could just extend our match statement to handle this, but we still have not safe-guarded against any other ambiguous nucleotide that we might encounter. A better approach is to use a compile-time lookup table that supports all 256 ASCII characters, where all irrelevant characters are set to 4.
 
 
 ```rust
@@ -95,9 +95,11 @@ fn main() {
 }
 ```
 
-Run the code and inspect the output. Using a lookup table (which has a very cheap cost for index lookup) we are able to map {A,C,T,U,a,c,g,t,u} to their corresponding encodings. This means we handle both upper and lowercase nucleotides, and also get U/u for free, meaning that we can now handle RNA as well.
+Run the code and inspect the output. Using a lookup table, we are able to map `{A,C,T,U,a,c,g,t,u}` to their corresponding encodings. This means we handle both upper and lowercase nucleotides, and also get U/u for free, meaning that we can now handle RNA as well.
 
-However, we see that the first four values at index 0/1/2/3 map some weird characters to 0/1/2/3. ASCII characters with DEC values (index in our case) less that 32 are not actually printable characters, but rather control characters. 0/1/2/3 correspond to null character, start of heading, start of text and end of text respectively. We must not use those for encoding ASCII control characters. What we can use them for though, is reverse complement.
+However, we see that the first four values at index `[0], [1], [2], [3]` map to some weird characters. ASCII characters less than 32 are not actually printable characters, but rather control characters where `0, 1, 2, 3` correspond to null, start of heading, start of text and end of text respectively.
+
+Why don't we set these values to 4 since they seem irrelevant?
 
 ```rust
 # const LOOKUP_TABLE: [u8; 256] = [
@@ -118,10 +120,12 @@ However, we see that the first four values at index 0/1/2/3 map some weird chara
 # 	4, 4, 4, 4,  4, 4, 4, 4,  4, 4, 4, 4,  4, 4, 4, 4,
 # 	4, 4, 4, 4,  4, 4, 4, 4,  4, 4, 4, 4,  4, 4, 4, 4
 # ];
+// [...]
 
 fn reverse(nt: u8) -> u8{
     return 3 - LOOKUP_TABLE[nt as usize]
 }
+
 fn main() {
     // We can reverse both ASCII and encoded A into T.
     assert_eq!(reverse(b'A'), LOOKUP_TABLE[b'T' as usize]);

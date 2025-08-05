@@ -1,5 +1,5 @@
 # Counting nucleotides
-We'll start of with a something relatively easy - counting nucleotides. We'll create a HashMap for storing the counts of the nucleotides we encounter in the sequence.
+We'll start of with something relatively easy - counting nucleotides. We'll create a HashMap for storing the counts of the nucleotides we encounter in the sequence.
 
 ```rust
 use std::collections::HashMap;
@@ -30,8 +30,9 @@ fn count_nucleotides(seq: &[u8]){
 
 fn main() {
     count_nucleotides(b"ATCG");
+    count_nucleotides(b"AAAA");
 }
 ```
 Run the code and inspect the output. The resulting HashMap will have the ASCII encoded nucleotides as keys.
 
-Note that there are lots of alternative solutions and further optimizations we can do. For example, if we input a string b"AAAA", our HashMap will only contain As. One alternative here would be to initialize the HashMap with empty counts for A, T, C and G.
+Note that there are lots of alternative solutions and further optimizations we can do. For example, when we input `b"AAAA"` we see that our HashMap only contains one key, `b'A'`. One alternative here would be to initialize the HashMap with empty counts for A, T, C and G.

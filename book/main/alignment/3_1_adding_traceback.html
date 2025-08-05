@@ -190,8 +190,7 @@
 <p>We know the origin for each cell in the array, because we have defined it as array[i][j] = min(diagonal, left, up). We can store the origin of each cell in a hashmap and start the traceback from the last cell until we reach the start. This is rather inefficient, but it'll work for now.</p>
 <p>For simplicity, we'll save each cells origin along with the alignment type.</p>
 <h2 id="implementation"><a class="header" href="#implementation">Implementation</a></h2>
-<pre><pre class="playground"><code class="language-rust editable edition2024">
-use std::collections::HashMap;
+<pre><pre class="playground"><code class="language-rust editable edition2021">use std::collections::HashMap;
 
 #[derive(Clone, Copy)]
 enum AlignmentType {
@@ -380,15 +379,13 @@ fn align(s1: &amp;str, s2: &amp;str) {
     get_traceback(traceback, s1, s2);
     // print_array(&amp;array);
 }
+
 fn main() {
-    // Run a few alignments.
     align("ATCG", "ATCG");
     align("A", "T");
     align("ATCG", "ATCGATCG");
     align("TTTTTTTTTTTTTTTTA", "ATTTTTTTTTTTTT");
-}
-
-</code></pre></pre>
+}</code></pre></pre>
 <p>This is awesome! We have created a basic aligner that uses the Levenshtein distance and supports non-equal length strings. Some good excercises (left up to the reader) would be:</p>
 <ul>
 <li>Calculating percent identity and other relevant alignment metrics.</li>

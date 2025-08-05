@@ -228,7 +228,7 @@ subject ggATCGgg
 </ul>
 <h2 id="implementation"><a class="header" href="#implementation">Implementation</a></h2>
 <p>It turns out that implementing the Smith-Waterman algorithm and then printing out the alignment, including the soft masked parts of the query and subject, is not straightforward and includes a bit of extra lines of code. However, here is an example of an implementation:</p>
-<pre><pre class="playground"><code class="language-rust editable edition2024">use std::collections::HashMap;
+<pre><pre class="playground"><code class="language-rust editable edition2021">use std::collections::HashMap;
 
 #[derive(Clone, Copy)]
 enum AlignmentType {
@@ -382,6 +382,7 @@ fn to_lowercase(nt: char) -&gt; char {
         _ =&gt; panic!(),
     }
 }
+
 fn get_traceback(
     array: &amp;Vec&lt;Vec&lt;i32&gt;&gt;,
     traceback: HashMap&lt;(usize, usize), ((usize, usize), AlignmentType)&gt;,
@@ -514,16 +515,12 @@ fn align(s1: &amp;str, s2: &amp;str) {
 
     get_traceback(&amp;array, traceback, max_index, s1, s2);
 }
-fn main() {
-    // Run a few alignments.
-    align("ATCG", "ATCG");
-    // This one still looks weird.
-    align("CCCATCGCCC", "GGGATCGGGTT");
 
+fn main() {
+    align("ATCG", "ATCG");
+    align("CCCATCGCCC", "GGGATCGGGTT");
     align("AAAAATAAAAA", "CCCCCTCCCCC");
     align("ATCG", "CCCATCGTTT");
-
-
 }</code></pre></pre>
 <p>This is a very simple implementation of a local aligner. In practice, as a bioinformatician, one would use a highly optimized and widely established tool. Some examples are:</p>
 <ul>

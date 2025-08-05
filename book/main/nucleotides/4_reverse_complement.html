@@ -180,7 +180,7 @@
 </pre>
 <p>Pretend this is a bacterial genome we want to sequence. Before sequencing, we need to separate the strands and break this molecule into smaller pieces. When doing this, we don't know which pieces are from which strand.</p>
 <p>When we want to align the pieces back to a reference sequence (which is defined in the 5' to 3' direction), we need to take both strands into consideration. Otherwise, we lose out on information. We do this by reverse complementing, in which we first reverse the sequence, and then replace each base with the corresponding matching base.</p>
-<pre><pre class="playground"><code class="language-rust edition2024">fn reverse(nt: &amp;u8) -&gt; u8 {
+<pre><pre class="playground"><code class="language-rust edition2021">fn reverse(nt: &amp;u8) -&gt; u8 {
     match nt {
         b'A' =&gt; b'T',
         b'C' =&gt; b'G',
@@ -203,13 +203,13 @@ fn reverse_complement(nt_string: &amp;[u8]) -&gt; Vec&lt;u8&gt; {
 
     return rev_comp;
 }
+
 fn main() {
     assert_eq!(reverse_complement(b"AAA"), b"TTT");
     assert_eq!(reverse_complement(b"GGG"), b"CCC");
     assert_eq!(reverse_complement(b"ATCG"), b"CGAT");
     assert_eq!(reverse_complement(b"ACACGT"), b"ACGTGT");
-}
-</code></pre></pre>
+}</code></pre></pre>
 
                     </main>
 

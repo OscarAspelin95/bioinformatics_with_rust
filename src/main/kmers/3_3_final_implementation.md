@@ -2,7 +2,6 @@
 The code below combines the previous sections and adds an additional feature, which is canonical kmers. We define a canonical kmer as the lexicographically smallest kmer of the forward and reverse. This is a way to avoid keeping all kmers from the forward and the reverse strand.
 
 ```rust
-
 # const LOOKUP: [u8; 256] = [
 #     0, 1, 2, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
 #     4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
@@ -13,8 +12,8 @@ The code below combines the previous sections and adds an additional feature, wh
 #     4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
 #     4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
 # ];
-
-
+#
+#
 # fn decode(byte: u64) -> char {
 #     match byte {
 #         0 => return 'A',
@@ -24,7 +23,7 @@ The code below combines the previous sections and adds an additional feature, wh
 #         _ => panic!("Invalid nucleotide."),
 #     };
 # }
-
+#
 # /// Print a u64 encoded nucleotide with some bit manipulation.
 # pub fn print_nt_string(kmer: u64, k: usize) {
 #     let mut result = String::with_capacity(k);
@@ -37,7 +36,6 @@ The code below combines the previous sections and adds an additional feature, wh
 #     }
 #     println!("{}", result);
 # }
-
 // [...]
 
 pub fn kmerize(k: usize, nt_string: &[u8]){
