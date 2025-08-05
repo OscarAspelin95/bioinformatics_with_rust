@@ -5,7 +5,7 @@ src = "src"
 title = "Bioinformatics with Rust"
 
 [rust]
-edition = "2024"
+edition = "2021"
 
 # [output.html]
 # git-repository-url = "https://github.com/OscarAspelin95/bioinformatics_with_rust"
