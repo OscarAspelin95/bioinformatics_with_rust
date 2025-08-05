@@ -3,7 +3,6 @@ We'll finish this chapter off by calculating the similarity between two nucleoti
 
 
 ```rust
-
 # use std::collections::HashSet;
 # const LOOKUP: [u8; 256] = [
 #     0, 1, 2, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,

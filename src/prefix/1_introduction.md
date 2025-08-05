@@ -3,7 +3,7 @@
 Welcome to Bioinformatics with Rust! An unofficial book aimed at introducing the Rust programming language for bioinformatic applications. Before we start:
 
 * This book is **not** in any way, shape or form, an official introduction to neither the Rust programming language, nor bioinformatics.
-    - For an introduction to Rust, please visit [resources](../../suffix/1_resources.md#resources).
+    - For a comprehensive introduction to Rust, please visit [resources](../../suffix/1_resources.md#resources).
     - For learning bioinformatics, please visit your favorite university.
 
 * The **purpose** of this book is trifold:

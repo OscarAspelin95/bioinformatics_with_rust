@@ -212,6 +212,7 @@ fn to_lowercase(nt: char) -> char {
         _ => panic!(),
     }
 }
+
 fn get_traceback(
     array: &Vec<Vec<i32>>,
     traceback: HashMap<(usize, usize), ((usize, usize), AlignmentType)>,
@@ -344,16 +345,12 @@ fn align(s1: &str, s2: &str) {
 
     get_traceback(&array, traceback, max_index, s1, s2);
 }
-fn main() {
-    // Run a few alignments.
-    align("ATCG", "ATCG");
-    // This one still looks weird.
-    align("CCCATCGCCC", "GGGATCGGGTT");
 
+fn main() {
+    align("ATCG", "ATCG");
+    align("CCCATCGCCC", "GGGATCGGGTT");
     align("AAAAATAAAAA", "CCCCCTCCCCC");
     align("ATCG", "CCCATCGTTT");
-
-
 }
 ```
 

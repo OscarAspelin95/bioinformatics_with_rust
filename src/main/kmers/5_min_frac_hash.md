@@ -9,9 +9,8 @@ We define our threshold as the maximum possible integer value (in our case we'll
 
 
 ```rust
-
 # use std::collections::HashSet;
-
+#
 # const LOOKUP: [u8; 256] = [
 #     0, 1, 2, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
 #     4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
@@ -22,7 +21,7 @@ We define our threshold as the maximum possible integer value (in our case we'll
 #     4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
 #     4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
 # ];
-
+#
 # fn decode(byte: u64) -> char {
 #     match byte {
 #         0 => return 'A',
@@ -32,7 +31,7 @@ We define our threshold as the maximum possible integer value (in our case we'll
 #         _ => panic!("Invalid nucleotide."),
 #     };
 # }
-
+#
 # /// Print a u64 encoded nucleotide with some bit manipulation.
 # pub fn print_nt_string(kmer: u64, k: usize) {
 #     let mut result = String::with_capacity(k);
@@ -45,7 +44,6 @@ We define our threshold as the maximum possible integer value (in our case we'll
 #     }
 #     println!("{}", result);
 # }
-
 // [...]
 
 /// https://github.com/bluenote-1577/sylph

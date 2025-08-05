@@ -173,7 +173,7 @@
 <p>A <em>recoverable</em> error you can think of as when it is still safe or okay to proceed executing code. One example would be parsing lines from a file and one line has an unexpected structure. If we are okay with this, we can just skip this line and proceed to the next.</p>
 <h2 id="unrecoverable-errors"><a class="header" href="#unrecoverable-errors">Unrecoverable errors</a></h2>
 <p>In the code snippet below, we try to open a file that does not exist. Using .expect() will cause a panic, but this is okay because we allow this to be an unrecoverable error.</p>
-<pre><pre class="playground"><code class="language-rust edition2024">use std::fs::File;
+<pre><pre class="playground"><code class="language-rust edition2021">use std::fs::File;
 
 fn main() {
     let _ = File::open("file_does_not_exist.txt").expect("Failed to open file");
@@ -181,7 +181,7 @@ fn main() {
 </code></pre></pre>
 <h2 id="recoverable-errors"><a class="header" href="#recoverable-errors">Recoverable errors</a></h2>
 <p>In the following example, our goal is to print out nucleotide sequences of a defined length, otherwise we print an error message. This is an example of handling recoverable errors by defining and catching specific errors.</p>
-<pre><pre class="playground"><code class="language-rust edition2024">#[derive(Debug)]
+<pre><pre class="playground"><code class="language-rust edition2021">#[derive(Debug)]
 enum SeqError {
     InvalidLength(String),
 }

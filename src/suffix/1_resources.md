@@ -4,7 +4,7 @@
 - [The Rust Programming Language](https://doc.rust-lang.org/book/) - Official Rust book.
 - [Rust By Practice](https://practice.course.rs/) - Practice Rust.
 - [The Rustonomicon](https://doc.rust-lang.org/nomicon/intro.html) - Even more Rust!
-- [The Rust Performance Book](https://nnethercote.github.io/perf-book/) - How to optomize for Rust performance.
+- [The Rust Performance Book](https://nnethercote.github.io/perf-book/) - How to optimize Rust for performance.
 - [Rustfinity](https://www.rustfinity.com/) - Learn Rust through interactive problems.
 
 ## Viewing References

@@ -1,5 +1,5 @@
 # Entropy
-Typically, one associates entropy with the physical term for the measure of disorder. In bioinformatics, entropy can be applied to nucleotide sequences in order to quantify the diversity or randomness of nucleotide sequences.
+Typically, one associates entropy with the physical term for the measure of disorder. In bioinformatics, entropy can be used for quantifying the diversity or randomness of nucleotide sequences.
 
 Although there are different kinds of entropies, the *Shannon* entropy is probably the most famous one. It is defined by the following equation:
 

@@ -38,11 +38,11 @@ fn reverse_complement(nt_string: &[u8]) -> Vec<u8> {
 
     return rev_comp;
 }
+
 fn main() {
     assert_eq!(reverse_complement(b"AAA"), b"TTT");
     assert_eq!(reverse_complement(b"GGG"), b"CCC");
     assert_eq!(reverse_complement(b"ATCG"), b"CGAT");
     assert_eq!(reverse_complement(b"ACACGT"), b"ACGTGT");
 }
-
 ```

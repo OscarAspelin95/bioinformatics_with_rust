@@ -38,12 +38,12 @@ In addition to our four canonical nucleotides, there are also ambiguous nucleoti
 We won't deal much with ambiguous nucleotides in this book. However, make sure not to confuse these nucleotides with one-letter amino acid abbreviations, which have overlapping naming conventions.
 
 ## Programmatic representations
-There are many different ways to represent nucleotide sequences in a programming language. In this book, we'll mainly deal with three different representations:
-- String and &str
-- Byte slice.
-- Binary
+There are many different ways to represent nucleotide sequences in a programming language. In this book, we'll mainly deal with these different representations:
+- `String` and `&str`.
+- `&[u8]` (byte slice).
+- Binary.
 
-All of these will be covered in further detail, but here is a short code snippet of the three representations in Rust.
+All of these will be covered in further detail, but here is a short code snippet with examples.
 
 ```rust
 /// Assume we want to represent the sequence ATCG.

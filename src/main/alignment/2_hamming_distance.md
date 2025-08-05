@@ -24,6 +24,7 @@ fn hamming_distance(query: &str, subject: &str) -> usize {
 
     return distance;
 }
+
 fn main() {
     assert_eq!(hamming_distance("ATCG", "ATCG"), 0);
     assert_eq!(hamming_distance("ATCG", "TTCG"), 1);

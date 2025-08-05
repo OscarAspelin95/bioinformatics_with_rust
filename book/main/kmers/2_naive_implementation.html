@@ -169,7 +169,7 @@
                     <main>
                         <h1 id="naive-implementation"><a class="header" href="#naive-implementation">Naive Implementation</a></h1>
 <p>For the naive implementation of kmers, we just use a sliding window of the specified kmer size in the forward direction. For now, we skip the reverse complement.</p>
-<pre><pre class="playground"><code class="language-rust edition2024">fn kmerize(nt_string: &amp;[u8], kmer_size: usize) -&gt; Vec&lt;&amp;[u8]&gt; {
+<pre><pre class="playground"><code class="language-rust edition2021">fn kmerize(nt_string: &amp;[u8], kmer_size: usize) -&gt; Vec&lt;&amp;[u8]&gt; {
     assert!(kmer_size &lt;= nt_string.len());
 
     // Rust has a very handy windows function that works perfectly here.

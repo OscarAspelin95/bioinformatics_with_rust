@@ -186,7 +186,7 @@
 <ul>
 <li>Example: 0100 &gt;&gt; 1 = 0010</li>
 </ul>
-<pre><pre class="playground"><code class="language-rust edition2024">fn main() {
+<pre><pre class="playground"><code class="language-rust edition2021">fn main() {
     // Perform a left shift.
     assert_eq!(0b0010 &lt;&lt; 1, 0b0100);
 
@@ -204,7 +204,7 @@ bitor
 0b11 # T.
 </pre>
 <p>because applying the OR bitwise, we'll get 0b(0 OR 1)(0 OR 1) = 0b11</p>
-<pre><pre class="playground"><code class="language-rust edition2024">fn main() {
+<pre><pre class="playground"><code class="language-rust edition2021">fn main() {
     // Insert A
     assert_eq!(0b00 | 0b00, 0b00);
     // Insert C
@@ -217,12 +217,12 @@ bitor
 <h3 id="bit-masks"><a class="header" href="#bit-masks">Bit masks</a></h3>
 <p>Bit masks can be used to manipulate a binary number certain ways. In our context, we'll use it to mask certain parts of our storage integer to ensure proper kmer length. Say we have inserted three Gs (0b101010), but we want to "mask" the upper two bits (the "oldest" G) because our kmer size is 2. Masking the upper two bits is the same as saying we only want to keep the lower 4 bits (two Gs).</p>
 <p>For this, we'll use the AND operator, which only returns 1 if both bits at a given position in our numbers are 1. This way, we can use 1 for every bit we want to keep, and 0 for the rest.</p>
-<pre><pre class="playground"><code class="language-rust edition2024">fn main() {
+<pre><pre class="playground"><code class="language-rust edition2021">fn main() {
     // Only keep the lower 4 bits, mask the rest (e.g., set to zero).
     assert_eq!(0b101010 &amp; 0b001111, 0b001010);
 }</code></pre></pre>
 <p>How do we construct this mask programmatically? If we know our kmer size, we can do it. In the previous example, if our kmer size is 2, we want to keep 4 bits and mask the upper two. If we start with 1 (0b000001) and shift it 4 bits to the left, we get 0b010000. This number is larger than our desired mask, but only by one. Hence, we subtract 1. See code below:</p>
-<pre><pre class="playground"><code class="language-rust edition2024">fn main() {
+<pre><pre class="playground"><code class="language-rust edition2021">fn main() {
     // Kmer size.
     let k = 2;
 

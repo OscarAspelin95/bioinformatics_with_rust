@@ -28,7 +28,6 @@ For simplicity, we'll save each cells origin along with the alignment type.
 
 ## Implementation
 ```rust,editable
-
 use std::collections::HashMap;
 
 #[derive(Clone, Copy)]
@@ -218,15 +217,13 @@ fn align(s1: &str, s2: &str) {
     get_traceback(traceback, s1, s2);
     // print_array(&array);
 }
+
 fn main() {
-    // Run a few alignments.
     align("ATCG", "ATCG");
     align("A", "T");
     align("ATCG", "ATCGATCG");
     align("TTTTTTTTTTTTTTTTA", "ATTTTTTTTTTTTT");
 }
-
-
 ```
 This is awesome! We have created a basic aligner that uses the Levenshtein distance and supports non-equal length strings. Some good excercises (left up to the reader) would be:
 - Calculating percent identity and other relevant alignment metrics.
