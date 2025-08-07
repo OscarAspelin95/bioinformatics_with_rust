@@ -3,19 +3,19 @@
 To streamline our kmer generation function, we need to understand a bit about bit shifting and how computers interpret data. Computers are ridiculously fast at [bitwise operations](https://www.geeksforgeeks.org/dsa/all-about-bit-manipulation/). We won't cover the details in this book, but we'll go over the things we need in order for our kmer script to work properly.
 
 In our case, we'll use 2-bit encoding for our nucleotides:
-- A => 0b00 (0 in base 10)
-- C => 0b01 (1 in base 10)
-- G => 0b10 (2 in base 10)
-- T => 0b11 (3 in base 10)
+- `A` => `0b00` (0 in base 10)
+- `C` => `0b01` (1 in base 10)
+- `G` => `0b10` (2 in base 10)
+- `T` => `0b11` (3 in base 10)
 
 ### Bit shift
 A *left shift* is defined as an operation in which the bits in a binary number are shifted to the left. The most significant bit (leftmost) is lost, and the least significant bit (righmost) is shifted after which a zero is added.
 
-- Example: 0010 << 1 = 0100
+- Example: `0010 << 1 = 0100`
 
 A *right shift* does the opposite.
 
-- Example: 0100 >> 1 = 0010
+- Example: `0100 >> 1 = 0010`
 
 
 ```rust
@@ -33,13 +33,13 @@ A left shift by one is equivalent to multiplying by 2. It make sense by consider
 ### BitOR
 The bitor operation (usually denoted with a pipe character "|") applies the OR operation to two binary numbers. Assume we want to insert a T (0b11) into an integer with value 0b00. We apply the bitor operation for this:
 
-<pre>
+```
 0b00 # Storage.
 bitor
 0b11 # T.
 =
-0b11 # T.
-</pre>
+0b11 # Result.
+```
 
 because applying the OR bitwise, we'll get 0b(0 OR 1)(0 OR 1) = 0b11
 
@@ -68,14 +68,16 @@ fn main() {
 }
 ```
 
-How do we construct this mask programmatically? If we know our kmer size, we can do it. In the previous example, if our kmer size is 2, we want to keep 4 bits and mask the upper two. If we start with 1 (0b000001) and shift it 4 bits to the left, we get 0b010000. This number is larger than our desired mask, but only by one. Hence, we subtract 1. See code below:
+How do we construct this mask programmatically? If we know our kmer size, we can do it. In the previous example, if our kmer size is 2, we want to keep 4 bits and mask the upper two.
+
+We start with the number 1 (`0b000001`) and shift it 4 bits to the left, we get `0b010000`. This is not what we want. Our target is `0b001111`. However, subtracting 1 from `0b010000` gives us the correct answer.
 
 ```rust
 fn main() {
     // Kmer size.
     let k = 2;
 
-    // Number of bits we want to keep.
+    // Eqivalent to multiplying by 2.
     let nbits = k << 1;
     assert_eq!(nbits, 4);
 
@@ -84,20 +86,16 @@ fn main() {
     // This is why we substract one, because 0b010000 - 0b000001 = 0b001111.
     let mask: u64 = (1 << nbits) - 1;
 
-
     assert_eq!(mask, 0b1111);
-
 }
 ```
 
-
-
 ## Choosing storage size
 We use unsigned integers to store our kmers. Remember that each nucleotide, with our encoding, occupies two bits. The following types are available in Rust:
-- u8 - can store kmers of max size 8/2 = 4.
-- u16 - can store kmers of max size 16/2 = 8.
-- u32 - can store kmers of max size 32 / 2 = 16.
-- u64 - can store kmers of max size 64/2 = 32.
-- u128 - can store kmers of max size 128/2 = 64.
+- `u8` - can store kmers of max size 8/2 = 4.
+- `u16` - can store kmers of max size 16/2 = 8.
+- `u32` - can store kmers of max size 32 / 2 = 16.
+- `u64` - can store kmers of max size 64/2 = 32.
+- `u128` - can store kmers of max size 128/2 = 64.
 
-Can we store a kmer size of length 2 in, say a u16? Yes we can, but we'll waste space.
+Can we store a kmer size of length 2 in, say a `u16`? Yes we can, but we'll waste space. Unfortunately, Rust does not yet provide arbitrary integer size, so these are the choices.

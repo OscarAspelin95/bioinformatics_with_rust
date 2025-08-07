@@ -253,15 +253,15 @@ pub fn kmerize(k: usize, nt_string: &amp;[u8]){
 
 fn main(){
     kmerize(5, b"AAAAAA");
-    println!("---");
+    println!("");
 
     kmerize(5, b"TTTTTT");
-    println!("---");
+    println!("");
 
-    // Expected to not generate any kmers since
-    // we have an invalid nucleotide.
+    // Expected to not generate any kmers since we have an
+    // invalid nucleotide interrupting every kmer.
     kmerize(5, b"AAAANTTTT");
-    println!("---");
+    println!("");
 }</code></pre></pre>
 <p>When we run the code, we see that "AAAAAA" and "TTTTTT" generates the same canonical kmers which is expected since they are reverse complements of each other.</p>
 

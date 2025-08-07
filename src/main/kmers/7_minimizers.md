@@ -2,14 +2,12 @@
 We saw earlier how FracMinHash could be used to downsample the number of kmers generated from our sequences. Another approach is to use so called minimizers. First introduced in 2004, [minimizers](https://doi.org/10.1093/bioinformatics/bth408) are very commonly used in bioinformatic applications to reduce storage requirements for DNA sequences.
 
 The basic idea is to use a sliding window of w consecutive kmers a sequence and in each window identify one representative kmer to keep. Since we choose a reduced set of kmers, these will act as an approximate representation for the original sequence. There are multiple ways to choose a representative kmer inside the sliding window, but typically the lexicographically smallest kmer is chosen. We need to define some terms to make things more clear:
-- *k* - length of a kmer.
-- *w* - number of consecutive kmers to check for minimizers in.
-- |*w*| - The actual length (in nucleotides) we need for our sliding window to accomodate *w* consecutive kmers of length *k*.
+- `k` - length of a kmer.
+- `w` - number of consecutive kmers to check for minimizers in.
+- `|w|` - The actual length (in nucleotides) we need for our sliding window to accomodate `w` consecutive kmers of length `k`.
 
-We can calculate |*w*| since we know how many kmers we can generate from a given sequence.
-<pre>
-   w = |w| - k + 1.
-</pre>
+We can calculate |*w*| since we know how many kmers we can generate from a given sequence.<br>
+`w = |w| - k + 1`
 
 See the example below, where we set w=4 and k=3, hence calculating |*w*| = 6.
 <pre>
@@ -20,7 +18,7 @@ AAACCC
    CCCGGG            CCCGGG
 </pre>
 
-Let's consider the first window AAACCC. The possible kmers we can generate in the forward direction is AAA, AAC, ACC, CCC. Out of these, the lexicographically smallest one is AAA and we choose this kmer as this windows minimizer. We then do the same for the remaining windows.
+Let's consider the first window `AAACCC`. The possible kmers we can generate in the forward direction are `AAA`, `AAC`, `ACC`, `CCC`. Out of these, the lexicographically smallest one is AAA and we choose this kmer as this windows minimizer. We then do the same for the remaining windows.
 
 We can get even more space efficient by storing the minimizers in a hashset, since this removes duplicates. However, this is not suitable if we also want to store information such as the minimizers positions. We also have to take the reverse complement into consideration, similarly to what we did in the bit shift encoding section.
 

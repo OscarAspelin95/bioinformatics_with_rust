@@ -2,7 +2,7 @@
 ## Introduction
 In the previous section, we implemented a global aligner with traceback. Now, we want to improve on this approach to handle local alignment. The difference here is that we do not require the entire query and subject to be aligned end-to-end.
 
-In the example below, we just align the middle part of the query and subject and ignore (soft mask) the surrounding regions because we have no significant match there.
+In the example below, we just align the middle part of the query and subject and ignore (softmask) the surrounding regions because we have no significant match there.
 
 <pre>
 query   ttATCGtt
@@ -23,7 +23,7 @@ We need to make some changes to our global aligner in order for it to handle loc
     - All cells (i, 0) and (0, j) are initialized to 0.
     - Traceback starts at the cell with the highest score and ends when we reach a 0.
 
-An local alignment array for aligning "TTATCGTT" to "GGATCGGG" would look like:
+An local alignment array for aligning `TTATCGTT` to `GGATCGGG` would look like:
 <pre>
             T   T   A   T   C   G   T   T   (query)
 

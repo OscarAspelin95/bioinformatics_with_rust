@@ -8,13 +8,10 @@ Expected command:<br>
 
 
 ## Checklist
+- [ ] Add and parse arguments with `Clap`.
 - [ ] Figure out how to read a gzipped file using `Flate2`.
-- [ ] Create a function `run_fastq_filter` that:
-    - [ ] Iterates over each read.
-    - [ ] Calculate length and average gc content.
-    - [ ] Only stores valid reads.
-- [ ] Create a function `write_fastq` that:
-    - [ ] Writes the valid reads to `outfile` in gzip format.
+- [ ] Create a function `run_fastq_filter` returns only valid reads.
+- [ ] Create a function `write_fastq` that writes valid reads to `outfile` in gzip format.
 - [ ] Handle only files with extensions `.fastq.gz`, `.fq.gz`.
 
 ## Suggested Rust Crates

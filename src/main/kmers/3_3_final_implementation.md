@@ -86,15 +86,15 @@ pub fn kmerize(k: usize, nt_string: &[u8]){
 
 fn main(){
     kmerize(5, b"AAAAAA");
-    println!("---");
+    println!("");
 
     kmerize(5, b"TTTTTT");
-    println!("---");
+    println!("");
 
-    // Expected to not generate any kmers since
-    // we have an invalid nucleotide.
+    // Expected to not generate any kmers since we have an
+    // invalid nucleotide interrupting every kmer.
     kmerize(5, b"AAAANTTTT");
-    println!("---");
+    println!("");
 }
 ```
 

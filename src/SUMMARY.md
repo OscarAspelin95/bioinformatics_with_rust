@@ -16,6 +16,15 @@
     - [Keywords](./main/rust_basics/3_keywords.md)
     - [Macros](./main/rust_basics/macros.md)
     - [Data Types](./main/rust_basics/4_data_types.md)
+    - [Strings]()
+    - [Vec]()
+    - [Enums]()
+    - [Structs]()
+    - [Ownership and Borrowing]()
+    - [Lifetimes]()
+    - [Error Handling]()
+    - [Concurrency]()
+
 
 ---
 

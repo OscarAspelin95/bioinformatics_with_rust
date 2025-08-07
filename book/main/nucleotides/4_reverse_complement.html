@@ -174,10 +174,8 @@
 <li>A pairs with T and vice versa.</li>
 <li>G pairs with C and vice versa.</li>
 </ul>
-<pre>
-5' [...]ACGAGCTTTGTGACGCGATGCGACGAGCTGCAGCGT[...] 3'
-3' [...]TGCTCGAAACACTGCGCTACGCTGCTCGACGTCGCA[...] 5'
-</pre>
+<p>5' <code>[...]ACGAGCTTTGTGACGCGATGCGACGAGCTGCAGCGT[...]</code> 3'<br>
+3' <code>[...]TGCTCGAAACACTGCGCTACGCTGCTCGACGTCGCA[...]</code> 5'</p>
 <p>Pretend this is a bacterial genome we want to sequence. Before sequencing, we need to separate the strands and break this molecule into smaller pieces. When doing this, we don't know which pieces are from which strand.</p>
 <p>When we want to align the pieces back to a reference sequence (which is defined in the 5' to 3' direction), we need to take both strands into consideration. Otherwise, we lose out on information. We do this by reverse complementing, in which we first reverse the sequence, and then replace each base with the corresponding matching base.</p>
 <pre><pre class="playground"><code class="language-rust edition2021">fn reverse(nt: &amp;u8) -&gt; u8 {

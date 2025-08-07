@@ -169,7 +169,7 @@
                     <main>
                         <h1 id="create-a-nucleotide-sequence"><a class="header" href="#create-a-nucleotide-sequence">Create A nucleotide sequence</a></h1>
 <h2 id="string"><a class="header" href="#string">String</a></h2>
-<p>There are many different string types in Rust, but the two most common ones are <code>String</code> and <code>&amp;str</code>. Both can be used to store nucleotide sequences, but they have different characteristics. Usually, use <em>String</em> if you intend to mutate the sequence, otherwise use <em>&amp;str</em>. For more information, visit the rust docs for <a href="https://doc.rust-lang.org/std/string/struct.String.html"><code>String</code></a> and <a href="https://doc.rust-lang.org/std/primitive.str.html"><code>&amp;str</code></a> respectively.</p>
+<p>There are many different string types in Rust, but the two most common ones are <code>String</code> and <code>&amp;str</code>. Both can be used to store nucleotide sequences, but they have different characteristics. Usually, use <code>String</code> if you intend to mutate the sequence, otherwise use <code>&amp;str</code>. For more information, visit the rust docs for <a href="https://doc.rust-lang.org/std/string/struct.String.html"><code>String</code></a> and <a href="https://doc.rust-lang.org/std/primitive.str.html"><code>&amp;str</code></a> respectively.</p>
 <pre><pre class="playground"><code class="language-rust edition2021">fn main(){
     let nt_string: String = "ACGT".to_string();
     let nt_string: &amp;str = "ACGT";
@@ -181,7 +181,7 @@
 
     println!("{:?}", nt_string);
 }</code></pre></pre>
-<p>Run the code and examine the output. We get a bunch of numbers. This is the ASCII representation of our nucleotides, where A/T/C/G corresponds to an 8-bit representation. For more information, visit <a href="https://www.ascii-code.com/">this link</a>.</p>
+<p>Run the code and examine the output. We get a bunch of numbers. This is the ASCII representation of our nucleotides, where <code>A/T/C/G</code> corresponds to an 8-bit representation. For more information, visit <a href="https://www.ascii-code.com/">this link</a>.</p>
 <p>We can check that the following representations are equivalent:</p>
 <pre><pre class="playground"><code class="language-rust edition2021">fn main(){
     assert_eq!(b'A', 65);
@@ -190,13 +190,13 @@
     assert_eq!(b'T', 84);
 }</code></pre></pre>
 <h2 id="binary"><a class="header" href="#binary">Binary</a></h2>
-<p>Will be covered in a later section. In short, using 8-bits is overkill for representing only four nucleotides. Instead, we can map A/C/G/T to the corresponding binary representation:</p>
-<pre>
-    A => 00
-    C => 01
-    G => 10
-    T => 11
-</pre>
+<p>Will be covered in a later section. In short, using 8-bits is overkill for representing only four nucleotides. Instead, we can map <code>A/C/G/T</code> to the corresponding binary representation:</p>
+<ul>
+<li><code>A</code> =&gt; <code>00</code></li>
+<li><code>C</code> =&gt; <code>01</code></li>
+<li><code>G</code> =&gt; <code>10</code></li>
+<li><code>T</code> =&gt; <code>11</code></li>
+</ul>
 
                     </main>
 

@@ -268,7 +268,6 @@ fn kmerize(k: usize, ds_factor: u64, nt_string: &amp;[u8]) -&gt; HashSet&lt;u64&
             };
             // MinFracHash
             if canonical &lt;= u64::MAX / ds_factor {
-                print_nt_string(canonical, k);
                 canonical_hashes.insert(mm_hash64(canonical));
             }
         }
@@ -279,16 +278,32 @@ fn kmerize(k: usize, ds_factor: u64, nt_string: &amp;[u8]) -&gt; HashSet&lt;u64&
     return canonical_hashes;
 }
 
+fn print_canonical_hashes(canonical_hashes: &amp;HashSet&lt;u64&gt;){
+    for canonical_hash in canonical_hashes{
+        println!("{canonical_hash}");
+    }
+}
+
 /// In these examples, we don't downsample because our
 /// nucleotide strings are very short and have low complexity.
 fn main(){
-    _ = kmerize(5, 1, b"AAAAAAAAAA");
-    println!("---");
+    let canonical_hashes = kmerize(5, 1, b"AAAAAAAAAA");
+    print_canonical_hashes(&amp;canonical_hashes);
 
-    _ = kmerize(5, 1, b"TTTTTTTTTT");
-    println!("---");
+    let canonical_hashes = kmerize(5, 1, b"TTTTTTTTTT");
+    print_canonical_hashes(&amp;canonical_hashes);
 
 }</code></pre></pre>
+<p>The result is a seemingly nonsensical number for each sequence. However, we note two important things:</p>
+<ul>
+<li>Each sequence only generated one hash.</li>
+<li>Both sequences generated the same hash.</li>
+</ul>
+<p>The reasons for this are:</p>
+<ul>
+<li>The sequences are reverse complements, so they generate the same canonical kmers.</li>
+<li>Both sequences generate only one unique canonical kmer, <code>AAAAA</code></li>
+</ul>
 
                     </main>
 

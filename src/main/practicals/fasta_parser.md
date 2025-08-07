@@ -1,6 +1,6 @@
 # Fasta Parser
 ## Problem Description
-Build a CLI tool `fasta_stats` that calculates basic stats for a provided fasta file and writes the results to a json file.
+Build a CLI tool `fasta_stats` that calculates the number of sequences for a provided fasta file and writes the results to a json file.
 
 - Input argument: `--fasta <file.fasta>`
 - Output argument: `--outfile <outfile.json>`
@@ -9,7 +9,7 @@ Expected command:<br>
 
 `fasta_stats --fasta <file.fasta> --outfile <outfile.json>`
 
-Expected output file:
+Expected contents of output file:
 ```
 {
     num_sequences: usize,
@@ -21,7 +21,7 @@ Expected output file:
 - [ ] Define a struct `FastaStats` for storing calculated stats.
 - [ ] Define a function `get_fasta_stats` that takes `args.fasta` and `args.outfile` as arguments.
     - [ ] Iterate over fasta records and keep track of `num_sequences`.
-    - [ ] Store `num_sequences` in `FastaStats`
+    - [ ] Store `num_sequences` in an instance of `FastaStats`
 - [ ] Define a function `write_json` that writes the `FastaStats` instance to `outfile`.
 
 ## Suggested Rust Crates

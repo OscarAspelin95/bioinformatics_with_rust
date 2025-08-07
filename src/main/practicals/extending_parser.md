@@ -22,6 +22,7 @@ Expected output file:
     - [ ] Calculate number of bases.
     - [ ] Calcular average sequence length.
     - [ ] Calculate average gc content.
+    - [ ] Store all stats in an instance of `FastaStats`.
 - [ ] Only allow input files with extensions `.fasta`, `.fa`, `.fsa`, `.fna`.
 
 ## Suggested Rust Crates

@@ -238,12 +238,11 @@ subject ATCG---
 <li>Insertion/Deletion costs 1.</li>
 </ul>
 <p>The goal is to minimize this cost to generate the best alignment possible.</p>
-<p>We can make another observation, which is that for a given position (i, j) the value in this position, array[i][j], is dependent on the three adjacent values array[i-1][j-1], array[i][j-1] and array[i-1][j]. Namely, we want the minimum value from either of these three values, plus the additional cost to get to (i, j), which can be match, mismatch, insertion or deletion:</p>
-<pre>
-- array[i][j] = min(array[i-1][j-1] + cost_of_match_or_mismatch,
-                    array[i][j-1] + cost_of_insertion_deletion,
-                    array[i-1,j] + cost_of_insertion_deletion)
-</pre>
+<p>We can make another observation, which is that for a given position <code>(i, j)</code> the value in this position, <code>array[i][j]</code>, is dependent on the three adjacent values <code>array[i-1][j-1]</code>, <code>array[i][j-1]</code> and <code>array[i-1][j]</code>. Namely, we want the minimum value from either of these three values, plus the additional cost to get to <code>(i, j)</code>, which can be match, mismatch, insertion or deletion:</p>
+<pre><code>array[i][j] = min(array[i-1][j-1] + cost_of_match_or_mismatch,
+                  array[i][j-1] + cost_of_insertion_deletion,
+                  array[i-1,j] + cost_of_insertion_deletion)
+</code></pre>
 <p>Here, we might realize something. What if there are multiple alignments that generate the same final score? This depends on how we define the costs for matches, mismatches and insertions/deletions AND actually on the order of the arguments in the min function. Min functions usually return the first minimum value if there is a tie. This is something to keep in mind. For now however, we'll just ignore this.</p>
 <p>Finally, it also makes sense to initialize a starting position outside of the query and the subject because we could potentially have insertions and deletions at the start. We'll set this value to 0, because there is a match of nothing against nothing. Our final array will look like:</p>
 <pre>

@@ -3,7 +3,7 @@
 Welcome to Bioinformatics with Rust! An unofficial book aimed at introducing the Rust programming language for bioinformatic applications. Before we start:
 
 * This book is **not** in any way, shape or form, an official introduction to neither the Rust programming language, nor bioinformatics.
-    - For a comprehensive introduction to Rust, please visit [resources](../../suffix/1_resources.md#resources).
+    - For a comprehensive introduction to Rust, please visit [resources](../suffix/1_resources.md#resources).
     - For learning bioinformatics, please visit your favorite university.
 
 * The **purpose** of this book is trifold:
@@ -11,7 +11,7 @@ Welcome to Bioinformatics with Rust! An unofficial book aimed at introducing the
     - Showcase some basic Rust implementations from scratch.
     - Provide examples of awesome open-source Rust crates for bioinformatics.
 
-* We'll mostly deal with DNA sequences and canonical nucleotides. However, feel free to request additional topics by filing a [GitHub issue](https://doc.rust-lang.org/nomicon/meet-safe-and-unsafe.html).
+* We'll mostly deal with DNA sequences and canonical nucleotides. However, feel free to request additional topics by filing a [GitHub issue](https://github.com/OscarAspelin95/bioinformatics_with_rust/issues).
 
 * For any issues related to this book, please file a [GitHub issue](https://github.com/OscarAspelin95/bioinformatics_with_rust/issues).
 

@@ -75,13 +75,15 @@ With this in mind, how do we choose the best alignment? We clearly see that the 
 
 The goal is to minimize this cost to generate the best alignment possible.
 
-We can make another observation, which is that for a given position (i, j) the value in this position, array[i][j], is dependent on the three adjacent values array[i-1][j-1], array[i][j-1] and array[i-1][j]. Namely, we want the minimum value from either of these three values, plus the additional cost to get to (i, j), which can be match, mismatch, insertion or deletion:
+We can make another observation, which is that for a given position `(i, j)` the value in this position, `array[i][j]`, is dependent on the three adjacent values `array[i-1][j-1]`, `array[i][j-1]` and `array[i-1][j]`. Namely, we want the minimum value from either of these three values, plus the additional cost to get to `(i, j)`, which can be match, mismatch, insertion or deletion:
 
-<pre>
-- array[i][j] = min(array[i-1][j-1] + cost_of_match_or_mismatch,
-                    array[i][j-1] + cost_of_insertion_deletion,
-                    array[i-1,j] + cost_of_insertion_deletion)
-</pre>
+
+```
+array[i][j] = min(array[i-1][j-1] + cost_of_match_or_mismatch,
+                  array[i][j-1] + cost_of_insertion_deletion,
+                  array[i-1,j] + cost_of_insertion_deletion)
+```
+
 
 Here, we might realize something. What if there are multiple alignments that generate the same final score? This depends on how we define the costs for matches, mismatches and insertions/deletions AND actually on the order of the arguments in the min function. Min functions usually return the first minimum value if there is a tie. This is something to keep in mind. For now however, we'll just ignore this.
 
