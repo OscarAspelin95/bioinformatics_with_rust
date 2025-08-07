@@ -171,14 +171,12 @@
 <p>We saw earlier how FracMinHash could be used to downsample the number of kmers generated from our sequences. Another approach is to use so called minimizers. First introduced in 2004, <a href="https://doi.org/10.1093/bioinformatics/bth408">minimizers</a> are very commonly used in bioinformatic applications to reduce storage requirements for DNA sequences.</p>
 <p>The basic idea is to use a sliding window of w consecutive kmers a sequence and in each window identify one representative kmer to keep. Since we choose a reduced set of kmers, these will act as an approximate representation for the original sequence. There are multiple ways to choose a representative kmer inside the sliding window, but typically the lexicographically smallest kmer is chosen. We need to define some terms to make things more clear:</p>
 <ul>
-<li><em>k</em> - length of a kmer.</li>
-<li><em>w</em> - number of consecutive kmers to check for minimizers in.</li>
-<li>|<em>w</em>| - The actual length (in nucleotides) we need for our sliding window to accomodate <em>w</em> consecutive kmers of length <em>k</em>.</li>
+<li><code>k</code> - length of a kmer.</li>
+<li><code>w</code> - number of consecutive kmers to check for minimizers in.</li>
+<li><code>|w|</code> - The actual length (in nucleotides) we need for our sliding window to accomodate <code>w</code> consecutive kmers of length <code>k</code>.</li>
 </ul>
-<p>We can calculate |<em>w</em>| since we know how many kmers we can generate from a given sequence.</p>
-<pre>
-   w = |w| - k + 1.
-</pre>
+<p>We can calculate |<em>w</em>| since we know how many kmers we can generate from a given sequence.<br>
+<code>w = |w| - k + 1</code></p>
 <p>See the example below, where we set w=4 and k=3, hence calculating |<em>w</em>| = 6.</p>
 <pre>
 AAACCCGGGAAACCCGGGAAACCCGGG
@@ -187,7 +185,7 @@ AAACCC
   ACCCGG
    CCCGGG            CCCGGG
 </pre>
-<p>Let's consider the first window AAACCC. The possible kmers we can generate in the forward direction is AAA, AAC, ACC, CCC. Out of these, the lexicographically smallest one is AAA and we choose this kmer as this windows minimizer. We then do the same for the remaining windows.</p>
+<p>Let's consider the first window <code>AAACCC</code>. The possible kmers we can generate in the forward direction are <code>AAA</code>, <code>AAC</code>, <code>ACC</code>, <code>CCC</code>. Out of these, the lexicographically smallest one is AAA and we choose this kmer as this windows minimizer. We then do the same for the remaining windows.</p>
 <p>We can get even more space efficient by storing the minimizers in a hashset, since this removes duplicates. However, this is not suitable if we also want to store information such as the minimizers positions. We also have to take the reverse complement into consideration, similarly to what we did in the bit shift encoding section.</p>
 <p>There are several Rust crates, such as <a href="https://docs.rs/needletail/0.6.3/needletail/">Needletail</a> and <a href="https://docs.rs/bio-seq/latest/bio_seq/">bio-seq</a> that can implement minimizers quite efficiently. In the code snippet below, we just implement a basic a working prototype.</p>
 <pre><pre class="playground"><code class="language-rust edition2021">use std::{cmp::min, vec};

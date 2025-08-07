@@ -169,14 +169,14 @@
                     <main>
                         <h1 id="fasta-parser"><a class="header" href="#fasta-parser">Fasta Parser</a></h1>
 <h2 id="problem-description"><a class="header" href="#problem-description">Problem Description</a></h2>
-<p>Build a CLI tool <code>fasta_stats</code> that calculates basic stats for a provided fasta file and writes the results to a json file.</p>
+<p>Build a CLI tool <code>fasta_stats</code> that calculates the number of sequences for a provided fasta file and writes the results to a json file.</p>
 <ul>
 <li>Input argument: <code>--fasta &lt;file.fasta&gt;</code></li>
 <li>Output argument: <code>--outfile &lt;outfile.json&gt;</code></li>
 </ul>
 <p>Expected command:<br></p>
 <p><code>fasta_stats --fasta &lt;file.fasta&gt; --outfile &lt;outfile.json&gt;</code></p>
-<p>Expected output file:</p>
+<p>Expected contents of output file:</p>
 <pre><code>{
     num_sequences: usize,
 }
@@ -193,7 +193,7 @@ Define a function <code>get_fasta_stats</code> that takes <code>args.fasta</code
 <li><input disabled="" type="checkbox"/>
 Iterate over fasta records and keep track of <code>num_sequences</code>.</li>
 <li><input disabled="" type="checkbox"/>
-Store <code>num_sequences</code> in <code>FastaStats</code></li>
+Store <code>num_sequences</code> in an instance of <code>FastaStats</code></li>
 </ul>
 </li>
 <li><input disabled="" type="checkbox"/>

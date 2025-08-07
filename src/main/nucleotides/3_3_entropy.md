@@ -42,7 +42,7 @@ Which tells us there is very little disorder or randomness. This makes sense, be
 #
 #     return map;
 # }
-
+#
 // [...]
 
 fn shannon_entropy(counts: &HashMap<u8, usize>) -> f32 {

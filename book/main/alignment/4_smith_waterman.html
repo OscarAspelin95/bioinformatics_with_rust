@@ -170,7 +170,7 @@
                         <h1 id="smith-waterman-algorithm"><a class="header" href="#smith-waterman-algorithm">Smith-Waterman algorithm</a></h1>
 <h2 id="introduction"><a class="header" href="#introduction">Introduction</a></h2>
 <p>In the previous section, we implemented a global aligner with traceback. Now, we want to improve on this approach to handle local alignment. The difference here is that we do not require the entire query and subject to be aligned end-to-end.</p>
-<p>In the example below, we just align the middle part of the query and subject and ignore (soft mask) the surrounding regions because we have no significant match there.</p>
+<p>In the example below, we just align the middle part of the query and subject and ignore (softmask) the surrounding regions because we have no significant match there.</p>
 <pre>
 query   ttATCGtt
           ||||
@@ -196,7 +196,7 @@ subject ggATCGgg
 </ul>
 </li>
 </ul>
-<p>An local alignment array for aligning "TTATCGTT" to "GGATCGGG" would look like:</p>
+<p>An local alignment array for aligning <code>TTATCGTT</code> to <code>GGATCGGG</code> would look like:</p>
 <pre>
             T   T   A   T   C   G   T   T   (query)
 

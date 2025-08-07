@@ -2,7 +2,7 @@
 ## Introduction
 We have successfully created a basic edit distance aligner! However, we don't just want to return a simple usize of the distance between two strings. We also want to *visualize* the alignment.
 
-To make this work, we need to implement a traceback that enables us to generate the optimal alignment after we are done filling out the array. Let's look at the final array after aligning "ATCG" to "ATCG":
+To make this work, we need to implement a traceback that enables us to generate the optimal alignment after we are done filling out the array. Let's look at the final array after aligning `ATCG` to `ATCG`:
 
 <pre>
             A   T   C   G (query)
@@ -22,7 +22,7 @@ To make this work, we need to implement a traceback that enables us to generate 
 
 In this example, we clearly see that the traceback should be just traversing diagonally. But how do we implement this programmatically?
 
-We know the origin for each cell in the array, because we have defined it as array[i][j] = min(diagonal, left, up). We can store the origin of each cell in a hashmap and start the traceback from the last cell until we reach the start. This is rather inefficient, but it'll work for now.
+We know the origin for each cell in the array, because we have defined it as `array[i][j] = min(diagonal, left, up)`. We can store the origin of each cell in a `HashMap` and start the traceback from the last cell until we reach the start. This is rather inefficient, but it'll work for now.
 
 For simplicity, we'll save each cells origin along with the alignment type.
 
@@ -215,7 +215,6 @@ fn align(s1: &str, s2: &str) {
     let (_, traceback) = levenshtein_distance(s1, s2);
 
     get_traceback(traceback, s1, s2);
-    // print_array(&array);
 }
 
 fn main() {

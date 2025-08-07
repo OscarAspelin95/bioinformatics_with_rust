@@ -5,10 +5,10 @@ DNA is (generally) double stranded, where bases are paired:
 - A pairs with T and vice versa.
 - G pairs with C and vice versa.
 
-<pre>
-5' [...]ACGAGCTTTGTGACGCGATGCGACGAGCTGCAGCGT[...] 3'
-3' [...]TGCTCGAAACACTGCGCTACGCTGCTCGACGTCGCA[...] 5'
-</pre>
+
+5' `[...]ACGAGCTTTGTGACGCGATGCGACGAGCTGCAGCGT[...]` 3'<br>
+3' `[...]TGCTCGAAACACTGCGCTACGCTGCTCGACGTCGCA[...]` 5'
+
 
 Pretend this is a bacterial genome we want to sequence. Before sequencing, we need to separate the strands and break this molecule into smaller pieces. When doing this, we don't know which pieces are from which strand.
 

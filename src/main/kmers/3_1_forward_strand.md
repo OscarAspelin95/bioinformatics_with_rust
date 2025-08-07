@@ -50,7 +50,7 @@ At this point, we have inserted two nucleotides, which also is our target kmer l
 - Insert the next nucleotide, G, resulting in a kmer of length 3.
 - Mask anything above our kmer length to keep the length of 2.
 
-We solve this by applying a bit-mask (as discussed previously).
+We solve this by applying a bit-mask (as discussed previously). In the code example below, we also take care of invalid nucleotides.
 
 ```rust
 # const LOOKUP: [u8; 256] = [
@@ -77,8 +77,9 @@ We solve this by applying a bit-mask (as discussed previously).
 // [...]
 
 /// Print a u64 encoded nucleotide with some bit manipulation.
-pub fn print_nt_string(kmer: u64, k: usize) {
+fn print_nt_string(kmer: u64, k: usize) {
     let mut result = String::with_capacity(k);
+
     for i in 0..k {
         // Shift to extract the 2 bits corresponding to the current nucleotide
         let shift = 2 * (k - i - 1);
@@ -86,6 +87,7 @@ pub fn print_nt_string(kmer: u64, k: usize) {
 
         result.push(decode(bits));
     }
+
     println!("{}", result);
 }
 
@@ -133,5 +135,4 @@ fn main(){
     // We expect AAA, AAT, ATT, TTT.
     kmerize(3, b"AAATTT");
 }
-
 ```

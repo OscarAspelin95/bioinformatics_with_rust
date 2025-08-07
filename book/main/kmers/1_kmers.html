@@ -178,11 +178,11 @@
      CGA CGA
       GAT GAT
 </pre>
-<p>Note that our sequence length is 12 and the kmer length is 3. How many consecutive kmers can we generate? The answer is <em>len(sequence) - kmer_size + 1</em>, which in our case would 12 - 3 + 1 = 10. But why this exact formula?</p>
-<p>If we had kmer_size = 1, the number of kmers would be equal to the sequence length. We just slide along the sequence with a window size of 1. We are loosing out on <em>zero</em> nucleotides.</p>
-<p>If we had kmer_size = 2, we use a sliding window of length 2. However, we cannot use the last nucleotide in the sequence, because we need two nucleotides for our sliding window. We are loosing out on <em>one</em> nucleotide.</p>
+<p>Note that our sequence length is 12 and the kmer length is 3. How many consecutive kmers can we generate? The answer is <code>len(sequence) - kmer_size + 1</code>, which in our case would <code>12 - 3 + 1 = 10</code>. But why this exact formula?</p>
+<p>If we had <code>kmer_size = 1</code>, the number of kmers would be equal to the sequence length. We just slide along the sequence with a window size of 1. We are losing out on <em>zero</em> nucleotides.</p>
+<p>If we had <code>kmer_size = 2</code>, we use a sliding window of length 2. However, we cannot use the last nucleotide in the sequence, because we need two nucleotides for our sliding window. We are losing out on <em>one</em> nucleotide.</p>
 <p>We see a pattern here, which is that the number of kmers we can generate is the length of our sequence minus how many nucleotides in the end we are missing out on (which is one less than our kmer size).</p>
-<p>num_kmers = len(sequence) - (kmer_size - 1) = len(sequence) + kmer_size - 1.</p>
+<p><code>num_kmers = len(sequence) - (kmer_size - 1) = len(sequence) + kmer_size - 1.</code></p>
 
                     </main>
 

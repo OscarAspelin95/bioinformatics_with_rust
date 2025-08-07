@@ -1,5 +1,5 @@
 # Hamming Distance
-The [Hamming distance](https://en.wikipedia.org/wiki/Hamming_distance) is defined as the number of positions between two strings of equal length that are different. Hence, it measures the number of substitutions needed to convert one string to the other. This also means that it is a kind of *global alignment* that only supports substitutions.
+The [Hamming distance](https://en.wikipedia.org/wiki/Hamming_distance) is defined as the number of positions between two strings of equal length that are different. Hence, it measures the number of substitutions needed to convert one string to the other. This also means that it is a kind of `global alignment` that only supports substitutions.
 
 In the example below, the Hamming distance is 1.
 <pre>

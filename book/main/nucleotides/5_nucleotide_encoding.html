@@ -170,10 +170,10 @@
                         <h1 id="encoding"><a class="header" href="#encoding">Encoding</a></h1>
 <p>Being able to encode and decode nucletides is a vital part of writing high performance bioinformatic code. What it means is essentially converting nucleotides into a more compact form. There are multiple ways of doing nucleotide encoding. However if we assume we only have to deal with <code>{A,C,G,T}</code> then there is a straightforward way for this:</p>
 <ul>
-<li>A is encoded as 0 (binary 00).</li>
-<li>C is encoded as 1 (binary 01).</li>
-<li>G is encoded as 2 (binary 10).</li>
-<li>T is encoded as 3 (binary 11).</li>
+<li><code>A</code> is encoded as <code>0</code> (binary <code>00</code>).</li>
+<li><code>C</code> is encoded as <code>1</code> (binary <code>01</code>).</li>
+<li><code>G</code> is encoded as <code>2</code> (binary <code>10</code>).</li>
+<li><code>T</code> is encoded as <code>3</code> (binary <code>11</code>).</li>
 </ul>
 <p>The advantages of this approach are:</p>
 <ul>
@@ -261,7 +261,7 @@ fn main() {
 }</code></pre></pre>
 <p>Run the code and inspect the output. Using a lookup table, we are able to map <code>{A,C,T,U,a,c,g,t,u}</code> to their corresponding encodings. This means we handle both upper and lowercase nucleotides, and also get U/u for free, meaning that we can now handle RNA as well.</p>
 <p>However, we see that the first four values at index <code>[0], [1], [2], [3]</code> map to some weird characters. ASCII characters less than 32 are not actually printable characters, but rather control characters where <code>0, 1, 2, 3</code> correspond to null, start of heading, start of text and end of text respectively.</p>
-<p>Why don't we set these values to 4 since they seem irrelevant?</p>
+<p>That does not make any sense. However, it does enable us to map already encoded nucleotides to themselves, which could serve as some kind of redundancy if we ever would have a mix of encoded and non-encoded nucleotides.</p>
 <pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">const LOOKUP_TABLE: [u8; 256] = [
 </span><span class="boring">	0, 1, 2, 3,  4, 4, 4, 4,  4, 4, 4, 4,  4, 4, 4, 4,
 </span><span class="boring">	4, 4, 4, 4,  4, 4, 4, 4,  4, 4, 4, 4,  4, 4, 4, 4,
@@ -282,15 +282,14 @@ fn main() {
 </span><span class="boring">];
 </span>// [...]
 
-fn reverse(nt: u8) -&gt; u8{
-    return 3 - LOOKUP_TABLE[nt as usize]
-}
-
 fn main() {
-    // We can reverse both ASCII and encoded A into T.
-    assert_eq!(reverse(b'A'), LOOKUP_TABLE[b'T' as usize]);
-    assert_eq!(reverse(0 as u8), LOOKUP_TABLE[b'T' as usize]);
+    // We have a mix of non-encoded and encoded nucleotides.
+    let mix_encoded: &amp;[u8] = &amp;[65, 65, 0, 0]; // AAAA
 
+    // Encode all nucleotides.
+    let all_encoded: Vec&lt;u8&gt; = mix_encoded.iter().map(|nt| LOOKUP_TABLE[*nt as usize]).collect();
+
+    assert_eq!(all_encoded, vec![0, 0, 0, 0]);
 }</code></pre></pre>
 
                     </main>

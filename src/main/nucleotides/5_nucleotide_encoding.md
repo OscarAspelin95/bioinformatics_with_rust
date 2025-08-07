@@ -1,9 +1,9 @@
 # Encoding
 Being able to encode and decode nucletides is a vital part of writing high performance bioinformatic code. What it means is essentially converting nucleotides into a more compact form. There are multiple ways of doing nucleotide encoding. However if we assume we only have to deal with `{A,C,G,T}` then there is a straightforward way for this:
-- A is encoded as 0 (binary 00).
-- C is encoded as 1 (binary 01).
-- G is encoded as 2 (binary 10).
-- T is encoded as 3 (binary 11).
+- `A` is encoded as `0` (binary `00`).
+- `C` is encoded as `1` (binary `01`).
+- `G` is encoded as `2` (binary `10`).
+- `T` is encoded as `3` (binary `11`).
 
 The advantages of this approach are:
 - Each nucleotides only takes up 2 bits.
@@ -99,7 +99,7 @@ Run the code and inspect the output. Using a lookup table, we are able to map `{
 
 However, we see that the first four values at index `[0], [1], [2], [3]` map to some weird characters. ASCII characters less than 32 are not actually printable characters, but rather control characters where `0, 1, 2, 3` correspond to null, start of heading, start of text and end of text respectively.
 
-Why don't we set these values to 4 since they seem irrelevant?
+That does not make any sense. However, it does enable us to map already encoded nucleotides to themselves, which could serve as some kind of redundancy if we ever would have a mix of encoded and non-encoded nucleotides.
 
 ```rust
 # const LOOKUP_TABLE: [u8; 256] = [
@@ -122,14 +122,13 @@ Why don't we set these values to 4 since they seem irrelevant?
 # ];
 // [...]
 
-fn reverse(nt: u8) -> u8{
-    return 3 - LOOKUP_TABLE[nt as usize]
-}
-
 fn main() {
-    // We can reverse both ASCII and encoded A into T.
-    assert_eq!(reverse(b'A'), LOOKUP_TABLE[b'T' as usize]);
-    assert_eq!(reverse(0 as u8), LOOKUP_TABLE[b'T' as usize]);
+    // We have a mix of non-encoded and encoded nucleotides.
+    let mix_encoded: &[u8] = &[65, 65, 0, 0]; // AAAA
 
+    // Encode all nucleotides.
+    let all_encoded: Vec<u8> = mix_encoded.iter().map(|nt| LOOKUP_TABLE[*nt as usize]).collect();
+
+    assert_eq!(all_encoded, vec![0, 0, 0, 0]);
 }
 ```

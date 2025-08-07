@@ -172,19 +172,19 @@
 <p>To streamline our kmer generation function, we need to understand a bit about bit shifting and how computers interpret data. Computers are ridiculously fast at <a href="https://www.geeksforgeeks.org/dsa/all-about-bit-manipulation/">bitwise operations</a>. We won't cover the details in this book, but we'll go over the things we need in order for our kmer script to work properly.</p>
 <p>In our case, we'll use 2-bit encoding for our nucleotides:</p>
 <ul>
-<li>A =&gt; 0b00 (0 in base 10)</li>
-<li>C =&gt; 0b01 (1 in base 10)</li>
-<li>G =&gt; 0b10 (2 in base 10)</li>
-<li>T =&gt; 0b11 (3 in base 10)</li>
+<li><code>A</code> =&gt; <code>0b00</code> (0 in base 10)</li>
+<li><code>C</code> =&gt; <code>0b01</code> (1 in base 10)</li>
+<li><code>G</code> =&gt; <code>0b10</code> (2 in base 10)</li>
+<li><code>T</code> =&gt; <code>0b11</code> (3 in base 10)</li>
 </ul>
 <h3 id="bit-shift"><a class="header" href="#bit-shift">Bit shift</a></h3>
 <p>A <em>left shift</em> is defined as an operation in which the bits in a binary number are shifted to the left. The most significant bit (leftmost) is lost, and the least significant bit (righmost) is shifted after which a zero is added.</p>
 <ul>
-<li>Example: 0010 &lt;&lt; 1 = 0100</li>
+<li>Example: <code>0010 &lt;&lt; 1 = 0100</code></li>
 </ul>
 <p>A <em>right shift</em> does the opposite.</p>
 <ul>
-<li>Example: 0100 &gt;&gt; 1 = 0010</li>
+<li>Example: <code>0100 &gt;&gt; 1 = 0010</code></li>
 </ul>
 <pre><pre class="playground"><code class="language-rust edition2021">fn main() {
     // Perform a left shift.
@@ -196,13 +196,12 @@
 <p>A left shift by one is equivalent to multiplying by 2. It make sense by considering 10-based numbers. Left shifting the number 10 by one results in 100, which is equivalent to multiplying by 10. The same is true for binary numbers.</p>
 <h3 id="bitor"><a class="header" href="#bitor">BitOR</a></h3>
 <p>The bitor operation (usually denoted with a pipe character "|") applies the OR operation to two binary numbers. Assume we want to insert a T (0b11) into an integer with value 0b00. We apply the bitor operation for this:</p>
-<pre>
-0b00 # Storage.
+<pre><code>0b00 # Storage.
 bitor
 0b11 # T.
 =
-0b11 # T.
-</pre>
+0b11 # Result.
+</code></pre>
 <p>because applying the OR bitwise, we'll get 0b(0 OR 1)(0 OR 1) = 0b11</p>
 <pre><pre class="playground"><code class="language-rust edition2021">fn main() {
     // Insert A
@@ -221,12 +220,13 @@ bitor
     // Only keep the lower 4 bits, mask the rest (e.g., set to zero).
     assert_eq!(0b101010 &amp; 0b001111, 0b001010);
 }</code></pre></pre>
-<p>How do we construct this mask programmatically? If we know our kmer size, we can do it. In the previous example, if our kmer size is 2, we want to keep 4 bits and mask the upper two. If we start with 1 (0b000001) and shift it 4 bits to the left, we get 0b010000. This number is larger than our desired mask, but only by one. Hence, we subtract 1. See code below:</p>
+<p>How do we construct this mask programmatically? If we know our kmer size, we can do it. In the previous example, if our kmer size is 2, we want to keep 4 bits and mask the upper two.</p>
+<p>We start with the number 1 (<code>0b000001</code>) and shift it 4 bits to the left, we get <code>0b010000</code>. This is not what we want. Our target is <code>0b001111</code>. However, subtracting 1 from <code>0b010000</code> gives us the correct answer.</p>
 <pre><pre class="playground"><code class="language-rust edition2021">fn main() {
     // Kmer size.
     let k = 2;
 
-    // Number of bits we want to keep.
+    // Eqivalent to multiplying by 2.
     let nbits = k &lt;&lt; 1;
     assert_eq!(nbits, 4);
 
@@ -235,20 +235,18 @@ bitor
     // This is why we substract one, because 0b010000 - 0b000001 = 0b001111.
     let mask: u64 = (1 &lt;&lt; nbits) - 1;
 
-
     assert_eq!(mask, 0b1111);
-
 }</code></pre></pre>
 <h2 id="choosing-storage-size"><a class="header" href="#choosing-storage-size">Choosing storage size</a></h2>
 <p>We use unsigned integers to store our kmers. Remember that each nucleotide, with our encoding, occupies two bits. The following types are available in Rust:</p>
 <ul>
-<li>u8 - can store kmers of max size 8/2 = 4.</li>
-<li>u16 - can store kmers of max size 16/2 = 8.</li>
-<li>u32 - can store kmers of max size 32 / 2 = 16.</li>
-<li>u64 - can store kmers of max size 64/2 = 32.</li>
-<li>u128 - can store kmers of max size 128/2 = 64.</li>
+<li><code>u8</code> - can store kmers of max size 8/2 = 4.</li>
+<li><code>u16</code> - can store kmers of max size 16/2 = 8.</li>
+<li><code>u32</code> - can store kmers of max size 32 / 2 = 16.</li>
+<li><code>u64</code> - can store kmers of max size 64/2 = 32.</li>
+<li><code>u128</code> - can store kmers of max size 128/2 = 64.</li>
 </ul>
-<p>Can we store a kmer size of length 2 in, say a u16? Yes we can, but we'll waste space.</p>
+<p>Can we store a kmer size of length 2 in, say a <code>u16</code>? Yes we can, but we'll waste space. Unfortunately, Rust does not yet provide arbitrary integer size, so these are the choices.</p>
 
                     </main>
 
