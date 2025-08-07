@@ -2,7 +2,7 @@
 
 
 
-Welcome to Bioinformatics with Rust, an introduction on how to write fast and memory safe bioinformatic applications! The project was created with [mdbook](https://github.com/rust-lang/mdBook), which enables the reader to run and edit Rust code interactively.
+Welcome to [Bioinformatics with Rust](https://oscaraspelin95.github.io/bioinformatics_with_rust/), an introduction on how to write fast and memory safe bioinformatic applications! The project was created with [mdbook](https://github.com/rust-lang/mdBook), which enables the reader to run and edit Rust code interactively.
 
 The purpose of this book is **not** to be an official introduction to neither Rust nor bioinformatics, but rather a resource for passionate bioinformaticians who are curious about the Rust programming language.
 

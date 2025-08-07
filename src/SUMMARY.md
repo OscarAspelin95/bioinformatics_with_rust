@@ -10,7 +10,12 @@
 
 ---
 
-- [Rust Basics]()
+- [Rust Basics](./main/rust_basics/1_rust_basics.md)
+    - [Create a Project](./main/rust_basics/2_create_a_project.md)
+    - [Syntax](./main/rust_basics/syntax.md)
+    - [Keywords](./main/rust_basics/3_keywords.md)
+    - [Macros](./main/rust_basics/macros.md)
+    - [Data Types](./main/rust_basics/4_data_types.md)
 
 ---
 
@@ -62,7 +67,10 @@
     - [Clustering]()
 ---
 
-- [Real Life Applications]()
+- [Practicals](./main/practicals/introduction.md)
+    - [Fasta parser](./main/practicals/fasta_parser.md)
+        - [Extending parser](./main/practicals/extending_parser.md)
+    - [Fastq filter](./main/practicals/fastq_filter.md)
 
 ---
 

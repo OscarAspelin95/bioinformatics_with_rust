@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Getting Started - Bioinformatics with Rust</title>
+        <title>Keywords - Bioinformatics with Rust</title>
 
 
         <!-- Custom HTML head -->
@@ -167,33 +167,70 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="getting-started"><a class="header" href="#getting-started">Getting Started</a></h1>
-<p>First and foremost, we need to install Rust and its package manager Cargo. The easiest way to do this is to use <a href="https://rustup.rs/">Rustup</a> and follow the installation instructions.</p>
-<p>Second, we need a code editor. If you want to make your life a living hell, you can use notepad. However, then we are missing some important stuff, like syntax highlighting, code formatting and much more. Here are some examples of code editors that can get the job done:</p>
-<ul>
-<li><a href="https://code.visualstudio.com/">VScode</a> - Easy to use with lots of plugins to make your life easier.</li>
-<li><a href="https://helix-editor.com/">Helix</a> - A text editor written in Rust!</li>
-<li><a href="https://www.vim.org/">Vim</a> - For hardcore programmers.</li>
-<li><a href="https://neovim.io/">NeoVim</a> - For modern, hardcore programmers.</li>
-</ul>
-<p>If using VScode, there are some handy plugins that will make your Rust programming journey more pleasant:</p>
-<ul>
-<li><a href="https://github.com/rust-lang/rust-analyzer">Rust-analyzer</a> - Trust me, you want this.</li>
-<li><a href="https://github.com/astral-sh/ruff">Ruff</a> - Code formatter and linter written in Rust.</li>
-<li><a href="https://marketplace.visualstudio.com/items?itemName=tamasfe.even-better-toml">Even Better TOML</a> - TOML file support.</li>
-<li><a href="https://github.com/features/copilot">GitHub Copilot</a> - Copilot is relatively good at Rust, but use with caution and be aware of hallucinations.</li>
-<li><a href="https://marketplace.visualstudio.com/items?itemName=mechatroner.rainbow-csv">Rainbow CSV</a> - If working with CSV files, this plugin provides highlighting and interactive querying.</li>
-</ul>
+                        <h1 id="keywords"><a class="header" href="#keywords">Keywords</a></h1>
+<p><code>let</code> - initializes something immutable. E.g., <code>let x: usize = 10;</code></p>
+<p><code>mut</code> - makes something mutable. E.g., <code>let mut x: usize = 10;</code></p>
+<p><code>fn</code> - defines a function. This is analogous to pythons <code>def</code> keyword. E.g.,</p>
+<pre><pre class="playground"><code class="language-rust edition2021">fn main() {
+    println!("Hello, world!");
+}</code></pre></pre>
+<p><code>struct</code> - defines a struct. This is kind of analogous <code>class</code> in python. E.g.,</p>
+<pre><code class="language-rust noplayground">struct MyStruct {
+    field1: usize,
+    field2: f32,
+    field3: bool,
+}</code></pre>
+<p><code>enum</code> - defines an enum. This is kind of analogous <code>Enum</code> in python. E.g.,</p>
+<pre><code class="language-rust noplayground">enum MyEnum {
+    Choice1,
+    Choice2,
+    Choice3,
+}</code></pre>
+<p><code>pub</code> - makes something like a function or struct public, meaning that other rust files can access then. E.g.,</p>
+<pre><code class="language-rust noplayground">pub struct MyStruct {
+    field1: usize,
+    field2: f32,
+    field3: bool,
+}</code></pre>
+<p><code>loop</code> - creates an infinite loop until a <code>break</code> statement is encountered. E.g.,</p>
+<pre><pre class="playground"><code class="language-rust edition2021">fn main() {
+    let mut x: usize = 0;
+
+    loop{
+        x += 1;
+
+        println!("{x}");
+
+        if x &gt;= 5{
+            break;
+        }
+    }
+}</code></pre></pre>
+<p><code>for</code> - creates a loop over an iterator. E.g.,</p>
+<pre><pre class="playground"><code class="language-rust edition2021">fn main() {
+    for i in (0..5){
+        println!("{i}");
+    }
+}</code></pre></pre>
+<p><code>while</code> - create a loop (similar to <code>loop</code>) that terminates when a <code>break</code> statement is encountered. E.g.,</p>
+<pre><pre class="playground"><code class="language-rust edition2021">fn main() {
+    let mut x: usize = 0;
+
+    while x &lt;= 5 {
+        println!("{x}");
+        x += 1;
+    }
+}</code></pre></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../../prefix/3_prerequisites.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../../main/rust_basics/syntax.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../../main/rust_basics/1_rust_basics.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../../main/rust_basics/macros.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -203,11 +240,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../../prefix/3_prerequisites.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../../main/rust_basics/syntax.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../../main/rust_basics/1_rust_basics.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../../main/rust_basics/macros.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
