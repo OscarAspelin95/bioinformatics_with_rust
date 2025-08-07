@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Getting Started - Bioinformatics with Rust</title>
+        <title>Fasta parser - Bioinformatics with Rust</title>
 
 
         <!-- Custom HTML head -->
@@ -167,33 +167,59 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="getting-started"><a class="header" href="#getting-started">Getting Started</a></h1>
-<p>First and foremost, we need to install Rust and its package manager Cargo. The easiest way to do this is to use <a href="https://rustup.rs/">Rustup</a> and follow the installation instructions.</p>
-<p>Second, we need a code editor. If you want to make your life a living hell, you can use notepad. However, then we are missing some important stuff, like syntax highlighting, code formatting and much more. Here are some examples of code editors that can get the job done:</p>
+                        <h1 id="fasta-parser"><a class="header" href="#fasta-parser">Fasta Parser</a></h1>
+<h2 id="problem-description"><a class="header" href="#problem-description">Problem Description</a></h2>
+<p>Build a CLI tool <code>fasta_stats</code> that calculates basic stats for a provided fasta file and writes the results to a json file.</p>
 <ul>
-<li><a href="https://code.visualstudio.com/">VScode</a> - Easy to use with lots of plugins to make your life easier.</li>
-<li><a href="https://helix-editor.com/">Helix</a> - A text editor written in Rust!</li>
-<li><a href="https://www.vim.org/">Vim</a> - For hardcore programmers.</li>
-<li><a href="https://neovim.io/">NeoVim</a> - For modern, hardcore programmers.</li>
+<li>Input argument: <code>--fasta &lt;file.fasta&gt;</code></li>
+<li>Output argument: <code>--outfile &lt;outfile.json&gt;</code></li>
 </ul>
-<p>If using VScode, there are some handy plugins that will make your Rust programming journey more pleasant:</p>
+<p>Expected command:<br></p>
+<p><code>fasta_stats --fasta &lt;file.fasta&gt; --outfile &lt;outfile.json&gt;</code></p>
+<p>Expected output file:</p>
+<pre><code>{
+    num_sequences: usize,
+}
+</code></pre>
+<h2 id="checklist"><a class="header" href="#checklist">Checklist</a></h2>
 <ul>
-<li><a href="https://github.com/rust-lang/rust-analyzer">Rust-analyzer</a> - Trust me, you want this.</li>
-<li><a href="https://github.com/astral-sh/ruff">Ruff</a> - Code formatter and linter written in Rust.</li>
-<li><a href="https://marketplace.visualstudio.com/items?itemName=tamasfe.even-better-toml">Even Better TOML</a> - TOML file support.</li>
-<li><a href="https://github.com/features/copilot">GitHub Copilot</a> - Copilot is relatively good at Rust, but use with caution and be aware of hallucinations.</li>
-<li><a href="https://marketplace.visualstudio.com/items?itemName=mechatroner.rainbow-csv">Rainbow CSV</a> - If working with CSV files, this plugin provides highlighting and interactive querying.</li>
+<li><input disabled="" type="checkbox"/>
+Define a struct for CLI arguments with clap.</li>
+<li><input disabled="" type="checkbox"/>
+Define a struct <code>FastaStats</code> for storing calculated stats.</li>
+<li><input disabled="" type="checkbox"/>
+Define a function <code>get_fasta_stats</code> that takes <code>args.fasta</code> and <code>args.outfile</code> as arguments.
+<ul>
+<li><input disabled="" type="checkbox"/>
+Iterate over fasta records and keep track of <code>num_sequences</code>.</li>
+<li><input disabled="" type="checkbox"/>
+Store <code>num_sequences</code> in <code>FastaStats</code></li>
+</ul>
+</li>
+<li><input disabled="" type="checkbox"/>
+Define a function <code>write_json</code> that writes the <code>FastaStats</code> instance to <code>outfile</code>.</li>
+</ul>
+<h2 id="suggested-rust-crates"><a class="header" href="#suggested-rust-crates">Suggested Rust Crates</a></h2>
+<ul>
+<li><a href="https://docs.rs/clap/latest/clap/">Clap</a> - argument parsing.</li>
+<li><a href="https://docs.rs/needletail/latest/needletail/">Needletail</a> - reading fasta files.</li>
+<li><a href="https://docs.rs/serde/latest/serde/">Serde</a> - serializing data.</li>
+<li><a href="https://docs.rs/serde_json/latest/serde_json/">Serde json</a> - serializing json.</li>
+</ul>
+<h2 id="code-examples"><a class="header" href="#code-examples">Code Examples</a></h2>
+<ul>
+<li><a href="https://github.com/OscarAspelin95/fasta_rs">fasta_rs</a></li>
 </ul>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../../prefix/3_prerequisites.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../../main/practicals/introduction.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../../main/rust_basics/1_rust_basics.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../../main/practicals/extending_parser.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -203,11 +229,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../../prefix/3_prerequisites.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../../main/practicals/introduction.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../../main/rust_basics/1_rust_basics.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../../main/practicals/extending_parser.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

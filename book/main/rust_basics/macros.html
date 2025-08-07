@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Getting Started - Bioinformatics with Rust</title>
+        <title>Macros - Bioinformatics with Rust</title>
 
 
         <!-- Custom HTML head -->
@@ -167,33 +167,31 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="getting-started"><a class="header" href="#getting-started">Getting Started</a></h1>
-<p>First and foremost, we need to install Rust and its package manager Cargo. The easiest way to do this is to use <a href="https://rustup.rs/">Rustup</a> and follow the installation instructions.</p>
-<p>Second, we need a code editor. If you want to make your life a living hell, you can use notepad. However, then we are missing some important stuff, like syntax highlighting, code formatting and much more. Here are some examples of code editors that can get the job done:</p>
-<ul>
-<li><a href="https://code.visualstudio.com/">VScode</a> - Easy to use with lots of plugins to make your life easier.</li>
-<li><a href="https://helix-editor.com/">Helix</a> - A text editor written in Rust!</li>
-<li><a href="https://www.vim.org/">Vim</a> - For hardcore programmers.</li>
-<li><a href="https://neovim.io/">NeoVim</a> - For modern, hardcore programmers.</li>
-</ul>
-<p>If using VScode, there are some handy plugins that will make your Rust programming journey more pleasant:</p>
-<ul>
-<li><a href="https://github.com/rust-lang/rust-analyzer">Rust-analyzer</a> - Trust me, you want this.</li>
-<li><a href="https://github.com/astral-sh/ruff">Ruff</a> - Code formatter and linter written in Rust.</li>
-<li><a href="https://marketplace.visualstudio.com/items?itemName=tamasfe.even-better-toml">Even Better TOML</a> - TOML file support.</li>
-<li><a href="https://github.com/features/copilot">GitHub Copilot</a> - Copilot is relatively good at Rust, but use with caution and be aware of hallucinations.</li>
-<li><a href="https://marketplace.visualstudio.com/items?itemName=mechatroner.rainbow-csv">Rainbow CSV</a> - If working with CSV files, this plugin provides highlighting and interactive querying.</li>
-</ul>
+                        <h1 id="macros"><a class="header" href="#macros">Macros</a></h1>
+<p><a href="https://doc.rust-lang.org/std/macro.println.html"><code>println!</code></a> - prints to stdout. Requires a formatter depending on the data type. E.g.,</p>
+<pre><pre class="playground"><code class="language-rust edition2021">fn main(){
+    println!("This is a string");
+    println!("This is an int: {}", 5);
+    println!("{:?}", vec!["This", "is", "a", "vec"]); // {:?} means debug mode.
+}</code></pre></pre>
+<p><a href="https://doc.rust-lang.org/std/macro.assert.html"><code>assert!</code></a> - runtime assert that a boolean expression evaluates to <code>true</code>. E.g.,</p>
+<pre><pre class="playground"><code class="language-rust edition2021">fn main(){
+    assert!(5 &lt; 6);
+}</code></pre></pre>
+<p><a href="https://doc.rust-lang.org/std/macro.assert_eq.html"><code>assert_eq!</code></a> - runtime equality assert. E.g.,</p>
+<pre><pre class="playground"><code class="language-rust edition2021">fn main(){
+    assert_eq!(6, 5 + 1);
+}</code></pre></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../../prefix/3_prerequisites.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../../main/rust_basics/3_keywords.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../../main/rust_basics/1_rust_basics.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../../main/rust_basics/4_data_types.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -203,11 +201,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../../prefix/3_prerequisites.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../../main/rust_basics/3_keywords.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../../main/rust_basics/1_rust_basics.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../../main/rust_basics/4_data_types.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

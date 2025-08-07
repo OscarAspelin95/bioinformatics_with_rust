@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Getting Started - Bioinformatics with Rust</title>
+        <title>Fastq filter - Bioinformatics with Rust</title>
 
 
         <!-- Custom HTML head -->
@@ -167,33 +167,56 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="getting-started"><a class="header" href="#getting-started">Getting Started</a></h1>
-<p>First and foremost, we need to install Rust and its package manager Cargo. The easiest way to do this is to use <a href="https://rustup.rs/">Rustup</a> and follow the installation instructions.</p>
-<p>Second, we need a code editor. If you want to make your life a living hell, you can use notepad. However, then we are missing some important stuff, like syntax highlighting, code formatting and much more. Here are some examples of code editors that can get the job done:</p>
+                        <h1 id="fastq-filter"><a class="header" href="#fastq-filter">Fastq filter</a></h1>
+<h2 id="problem-description"><a class="header" href="#problem-description">Problem Description</a></h2>
+<p>Build a CLI tool <code>fastq_filter</code> that filters a gzipped fastq file based on length and gc content. The output should be a filtered and gzipped fastq file.</p>
+<p>Expected command:<br></p>
+<p><code>fastq_filter --fastq &lt;file.fastq.gz&gt; --outfile &lt;filtered.fastq.gz&gt; --min_len &lt;usize&gt; --max_len &lt;usize&gt; --min_gc &lt;f32&gt; --max_gc &lt;f32&gt;</code></p>
+<h2 id="checklist"><a class="header" href="#checklist">Checklist</a></h2>
 <ul>
-<li><a href="https://code.visualstudio.com/">VScode</a> - Easy to use with lots of plugins to make your life easier.</li>
-<li><a href="https://helix-editor.com/">Helix</a> - A text editor written in Rust!</li>
-<li><a href="https://www.vim.org/">Vim</a> - For hardcore programmers.</li>
-<li><a href="https://neovim.io/">NeoVim</a> - For modern, hardcore programmers.</li>
+<li><input disabled="" type="checkbox"/>
+Figure out how to read a gzipped file using <code>Flate2</code>.</li>
+<li><input disabled="" type="checkbox"/>
+Create a function <code>run_fastq_filter</code> that:
+<ul>
+<li><input disabled="" type="checkbox"/>
+Iterates over each read.</li>
+<li><input disabled="" type="checkbox"/>
+Calculate length and average gc content.</li>
+<li><input disabled="" type="checkbox"/>
+Only stores valid reads.</li>
 </ul>
-<p>If using VScode, there are some handy plugins that will make your Rust programming journey more pleasant:</p>
+</li>
+<li><input disabled="" type="checkbox"/>
+Create a function <code>write_fastq</code> that:
 <ul>
-<li><a href="https://github.com/rust-lang/rust-analyzer">Rust-analyzer</a> - Trust me, you want this.</li>
-<li><a href="https://github.com/astral-sh/ruff">Ruff</a> - Code formatter and linter written in Rust.</li>
-<li><a href="https://marketplace.visualstudio.com/items?itemName=tamasfe.even-better-toml">Even Better TOML</a> - TOML file support.</li>
-<li><a href="https://github.com/features/copilot">GitHub Copilot</a> - Copilot is relatively good at Rust, but use with caution and be aware of hallucinations.</li>
-<li><a href="https://marketplace.visualstudio.com/items?itemName=mechatroner.rainbow-csv">Rainbow CSV</a> - If working with CSV files, this plugin provides highlighting and interactive querying.</li>
+<li><input disabled="" type="checkbox"/>
+Writes the valid reads to <code>outfile</code> in gzip format.</li>
+</ul>
+</li>
+<li><input disabled="" type="checkbox"/>
+Handle only files with extensions <code>.fastq.gz</code>, <code>.fq.gz</code>.</li>
+</ul>
+<h2 id="suggested-rust-crates"><a class="header" href="#suggested-rust-crates">Suggested Rust Crates</a></h2>
+<ul>
+<li><a href="https://docs.rs/clap/latest/clap/">Clap</a> - argument parsing.</li>
+<li><a href="https://docs.rs/needletail/latest/needletail/">Needletail</a> - reading fastq files.</li>
+<li><a href="https://docs.rs/flate2/latest/flate2/">Flate2</a> - compression/decompression.</li>
+</ul>
+<h2 id="code-examples"><a class="header" href="#code-examples">Code Examples</a></h2>
+<ul>
+<li><a href="https://github.com/OscarAspelin95/fastq_rs">fastq_rs</a></li>
 </ul>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../../prefix/3_prerequisites.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../../main/practicals/extending_parser.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../../main/rust_basics/1_rust_basics.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../../suffix/1_resources.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -203,11 +226,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../../prefix/3_prerequisites.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../../main/practicals/extending_parser.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../../main/rust_basics/1_rust_basics.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../../suffix/1_resources.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

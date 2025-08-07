@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Getting Started - Bioinformatics with Rust</title>
+        <title>Rust Basics - Bioinformatics with Rust</title>
 
 
         <!-- Custom HTML head -->
@@ -167,33 +167,46 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="getting-started"><a class="header" href="#getting-started">Getting Started</a></h1>
-<p>First and foremost, we need to install Rust and its package manager Cargo. The easiest way to do this is to use <a href="https://rustup.rs/">Rustup</a> and follow the installation instructions.</p>
-<p>Second, we need a code editor. If you want to make your life a living hell, you can use notepad. However, then we are missing some important stuff, like syntax highlighting, code formatting and much more. Here are some examples of code editors that can get the job done:</p>
+                        <h1 id="rust-basics"><a class="header" href="#rust-basics">Rust Basics</a></h1>
+<p>Even though I stated that this book wouldn't include an introduction to Rust, here we are. This chapter only covers the basics and the reader is strongly encouraged to visit <a href="../../suffix/1_resources.html#resources">resources</a> for a more comprehensive take on Rust.</p>
+<p>Below is a summary of some of the things I personally like and dislike with Rust. This might give the reader some insight into whether or not Rust would be a suitable language for them.</p>
+<h2 id="why-i-like-rust"><a class="header" href="#why-i-like-rust">Why I like Rust</a></h2>
 <ul>
-<li><a href="https://code.visualstudio.com/">VScode</a> - Easy to use with lots of plugins to make your life easier.</li>
-<li><a href="https://helix-editor.com/">Helix</a> - A text editor written in Rust!</li>
-<li><a href="https://www.vim.org/">Vim</a> - For hardcore programmers.</li>
-<li><a href="https://neovim.io/">NeoVim</a> - For modern, hardcore programmers.</li>
+<li>
+<p><strong>The Rust Compiler Is Amazing</strong>. The error messages it produces actually teaches you about Rust and why you cannot do certain things. It even gives you suggestions on how to make changes to your code to make it work correctly.</p>
+</li>
+<li>
+<p><strong>Declarative Mutability</strong>. Variables that are not declared with the <code>mut</code> keyword are immutable, meaning that they cannot change (disregarding interior mutability, which won't be covered here).</p>
+</li>
+<li>
+<p><strong>Fast Growing Community</strong>. There are endless Rust crates available at <a href="https://crates.io/">crates.io</a>, some of which will make Rust programming journey much more enjoyable.</p>
+</li>
+<li>
+<p><strong>Cargo</strong>. It just works. Install a crate? Use <code>cargo install</code>. Run you code? Use <code>cargo run</code>.</p>
+</li>
 </ul>
-<p>If using VScode, there are some handy plugins that will make your Rust programming journey more pleasant:</p>
+<h2 id="why-i-dislike-rust"><a class="header" href="#why-i-dislike-rust">Why I dislike Rust</a></h2>
 <ul>
-<li><a href="https://github.com/rust-lang/rust-analyzer">Rust-analyzer</a> - Trust me, you want this.</li>
-<li><a href="https://github.com/astral-sh/ruff">Ruff</a> - Code formatter and linter written in Rust.</li>
-<li><a href="https://marketplace.visualstudio.com/items?itemName=tamasfe.even-better-toml">Even Better TOML</a> - TOML file support.</li>
-<li><a href="https://github.com/features/copilot">GitHub Copilot</a> - Copilot is relatively good at Rust, but use with caution and be aware of hallucinations.</li>
-<li><a href="https://marketplace.visualstudio.com/items?itemName=mechatroner.rainbow-csv">Rainbow CSV</a> - If working with CSV files, this plugin provides highlighting and interactive querying.</li>
+<li>
+<p><strong>Compile Times</strong>. Compared to languages such as Go, Rust takes ages to compile. This is especially true when the dependencies are piling up.</p>
+</li>
+<li>
+<p><strong>Verbose syntax</strong>. In my personal opinion, Rust is a rather verbose language. Some people might like that, some people don't. Luckily, the rust-analyzer VScode extension helps out a lot with auto-completion and other neat features.</p>
+</li>
+<li>
+<p><strong>Steep Learning Curve</strong>. Coming from the python world, I had a really difficult time with Rust in the beginning. It was not just switching to a compiled language, but also having to learn about lifetimes, ownership and so on. But trust me, it gets easier.</p>
+</li>
 </ul>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../../prefix/3_prerequisites.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../../main/getting_started/getting_started.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../../main/rust_basics/1_rust_basics.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../../main/rust_basics/2_create_a_project.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -203,11 +216,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../../prefix/3_prerequisites.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../../main/getting_started/getting_started.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../../main/rust_basics/1_rust_basics.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../../main/rust_basics/2_create_a_project.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
