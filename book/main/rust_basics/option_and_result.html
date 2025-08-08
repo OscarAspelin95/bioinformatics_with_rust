@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Structs - Bioinformatics with Rust</title>
+        <title>Option and Result - Bioinformatics with Rust</title>
 
 
         <!-- Custom HTML head -->
@@ -167,96 +167,55 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="structs"><a class="header" href="#structs">Structs</a></h1>
-<p>Implementing structs in Rust is a bit different from languages such as Python. In Python, we have the excellent <a href="https://docs.pydantic.dev/latest/">Pydantic</a> module for data validation and other awesome features. In Rust, we can use something like the <a href="https://docs.rs/validify/latest/validify/">Validify</a> crate, however in this book we won't bother much with validation.</p>
-<p>Pretend we have a fastq parser for filtering and trimming reads. However, we want to change the filtering and trimming parameters based on sequencing platform. Maybe we want different behavior depending on if our data originated from PacBio or Oxford Nanopore. An example of this would be to implement a default function based on a provided platform:</p>
-<pre><pre class="playground"><code class="language-rust edition2021">enum Platform {
-    PacBio,
-    Nanopore,
+                        <h1 id="option-and-result"><a class="header" href="#option-and-result">Option and Result</a></h1>
+<h2 id="option"><a class="header" href="#option">Option</a></h2>
+<p>In contrast to python, there is no <code>None</code> type in Rust. There is, however, something called <a href="https://doc.rust-lang.org/std/option/"><code>Option</code></a>, which is of type <code>Option&lt;T&gt;</code>. An <code>Option&lt;T&gt;</code> can either be <code>Some(T)</code> (there is a value) or <code>None</code> (there is no value). Usually, one would pattern match to extract the value from an <code>Option</code> if it exists.</p>
+<pre><pre class="playground"><code class="language-rust edition2021">fn print_value_if_exist(x: Option&lt;usize&gt;) {
+    match x {
+        Some(value) =&gt; println!("Value is {value}"),
+        None =&gt; println!("No value"),
+    };
 }
 
-#[allow(unused)]
-#[derive(Debug)]
-struct Parameters {
-    min_len: usize,
-    max_len: usize,
-    min_phred: usize,
-}
+fn main() {
+    let x: Option&lt;usize&gt; = Some(5);
+    print_value_if_exist(x);
 
-impl Parameters {
-    fn default(platform: Platform) -&gt; Self {
-        match platform {
-            Platform::PacBio =&gt; Self {
-                min_len: 100,
-                max_len: 1000,
-                min_phred: 20,
-            },
-            Platform::Nanopore =&gt; Self {
-                min_len: 200,
-                max_len: 900,
-                min_phred: 15,
-            },
-        }
+    // We can define x have the value None, but
+    // its type will always be Option&lt;T&gt;.
+    let x: Option&lt;usize&gt; = None;
+    print_value_if_exist(x);
+}</code></pre></pre>
+<h2 id="result"><a class="header" href="#result">Result</a></h2>
+<p>Similarly for errors, there is <code>Result</code>, which is of type <code>Result&lt;T, Err&gt;</code>. A <code>Result&lt;T, Err&gt;</code> can be either <code>Ok(T)</code> or <code>Err</code>, which we can pattern match against.</p>
+<pre><pre class="playground"><code class="language-rust edition2021">use std::num::ParseIntError;
+
+fn parse_to_usize(x: &amp;str) {
+    let parsed: Result&lt;usize, ParseIntError&gt; = x.parse::&lt;usize&gt;();
+
+    match parsed {
+        Ok(number) =&gt; println!("{number}"),
+        Err(err) =&gt; println!("{}: {x}", err),
     }
 }
 
 fn main() {
-    let pacbio_parameters = Parameters::default(Platform::PacBio);
-    println!("PacBio: {:?}", pacbio_parameters);
+    let x: &amp;str = "5";
+    parse_to_usize(x);
 
-    let nanopore_parameters = Parameters::default(Platform::Nanopore);
-    println!("Nanopore: {:?}", nanopore_parameters);
+    let x: &amp;str = "5ab";
+    parse_to_usize(x);
 }</code></pre></pre>
-<p>This works, but might not be very idiomatic. Another way is to leverage Rust's type traits by implementing <em>from</em>. By specifying our parameter variable as type <em>Parameters</em>, we can call .into() directly.</p>
-<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">enum Platform {
-</span><span class="boring">    PacBio,
-</span><span class="boring">    Nanopore,
-</span><span class="boring">}
-</span><span class="boring">
-</span><span class="boring">#[allow(unused)]
-</span><span class="boring">#[derive(Debug)]
-</span><span class="boring">struct Parameters {
-</span><span class="boring">    min_len: usize,
-</span><span class="boring">    max_len: usize,
-</span><span class="boring">    min_phred: usize,
-</span><span class="boring">}
-</span>// [...]
-
-impl From&lt;Platform&gt; for Parameters{
-    fn from(platform: Platform) -&gt; Self{
-        match platform{
-            Platform::PacBio =&gt; Self{
-                min_len: 100,
-                max_len: 1000,
-                min_phred: 20,
-            },
-            Platform::Nanopore =&gt; Self{
-                min_len: 200,
-                max_len: 900,
-                min_phred: 15
-            },
-        }
-    }
-}
-
-fn main(){
-    let pacbio_parameters: Parameters = Platform::PacBio.into();
-    println!("PacBio: {:?}", pacbio_parameters);
-
-    let nanopore_parameters: Parameters = Platform::Nanopore.into();
-    println!("Nanopore: {:?}", nanopore_parameters);
-}</code></pre></pre>
-<p>Again, note that these are just examples that might not be real-world applicable. However, the point here is that structuring the code in certain ways will be of help in the long run.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../../main/rust_tips_and_tricks/3_enums.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../../main/rust_basics/structs.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../../main/rust_tips_and_tricks/5_concurrency.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../../main/rust_basics/error_handling.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -266,11 +225,11 @@ fn main(){
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../../main/rust_tips_and_tricks/3_enums.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../../main/rust_basics/structs.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../../main/rust_tips_and_tricks/5_concurrency.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../../main/rust_basics/error_handling.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

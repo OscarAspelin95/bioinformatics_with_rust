@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Data Types - Bioinformatics with Rust</title>
+        <title>Structs - Bioinformatics with Rust</title>
 
 
         <!-- Custom HTML head -->
@@ -167,35 +167,96 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="data-types"><a class="header" href="#data-types">Data Types</a></h1>
-<p>Rust has a lot of <a href="https://doc.rust-lang.org/book/ch03-02-data-types.html">data types</a>. Here is a rundown of the ones I use most often:</p>
-<div class="table-wrapper"><table><thead><tr><th>Data type</th><th>Rust type</th><th>Example</th></tr></thead><tbody>
-<tr><td>boolean</td><td><code>bool</code></td><td><code>let x: bool = true;</code></td></tr>
-<tr><td>string</td><td><code>String</code></td><td><code>let x: String = "Hello".to_string();</code></td></tr>
-<tr><td>string slice</td><td><code>&amp;str</code></td><td><code>let x: &amp;str = "Hello"</code></td></tr>
-<tr><td>array</td><td><code>[type; len]</code></td><td><code>let x: [usize; 3] = [1, 2, 3];</code></td></tr>
-<tr><td>vec</td><td><code>Vec&lt;type&gt;</code></td><td><code>let x: Vec&lt;usize&gt; = vec![1, 2, 3];</code></td></tr>
-<tr><td>byte slice</td><td><code>&amp;[u8]</code></td><td><code>let x: &amp;[u8] = b"Hello";</code></td></tr>
-<tr><td>unsigned 32-bit int</td><td><code>u32</code></td><td><code>let x: u32 = 0;</code></td></tr>
-<tr><td>unsigned 64-bit int</td><td><code>u64</code></td><td><code>let x: u64 = 0;</code></td></tr>
-<tr><td>unsigned (32 or 64)<sup class="footnote-reference" id="fr-note-1"><a href="#footnote-note">1</a></sup>-bit int</td><td><code>usize</code></td><td><code>let x: usize = 0;</code></td></tr>
-<tr><td>32-bit float</td><td><code>f32</code></td><td><code>let x: f32 = 0.0</code>;</td></tr>
-<tr><td>64-bit float</td><td><code>f64</code></td><td><code>let x: f64 = 0.0</code>;</td></tr>
-</tbody></table>
-</div><hr>
-<ol class="footnote-definition"><li id="footnote-note">
-<p>Depends on computer architecture. <a href="#fr-note-1">↩</a></p>
-</li>
-</ol>
+                        <h1 id="structs"><a class="header" href="#structs">Structs</a></h1>
+<p>Implementing structs in Rust is a bit different from languages such as Python. In Python, we have the excellent <a href="https://docs.pydantic.dev/latest/">Pydantic</a> module for data validation and other awesome features. In Rust, we can use something like the <a href="https://docs.rs/validify/latest/validify/">Validify</a> crate, however in this book we won't bother much with validation.</p>
+<p>Pretend we have a fastq parser for filtering and trimming reads. However, we want to change the filtering and trimming parameters based on sequencing platform. Maybe we want different behavior depending on if our data originated from PacBio or Oxford Nanopore. An example of this would be to implement a default function based on a provided platform:</p>
+<pre><pre class="playground"><code class="language-rust edition2021">enum Platform {
+    PacBio,
+    Nanopore,
+}
+
+#[allow(unused)]
+#[derive(Debug)]
+struct Parameters {
+    min_len: usize,
+    max_len: usize,
+    min_phred: usize,
+}
+
+impl Parameters {
+    fn default(platform: Platform) -&gt; Self {
+        match platform {
+            Platform::PacBio =&gt; Self {
+                min_len: 100,
+                max_len: 1000,
+                min_phred: 20,
+            },
+            Platform::Nanopore =&gt; Self {
+                min_len: 200,
+                max_len: 900,
+                min_phred: 15,
+            },
+        }
+    }
+}
+
+fn main() {
+    let pacbio_parameters = Parameters::default(Platform::PacBio);
+    println!("PacBio: {:?}", pacbio_parameters);
+
+    let nanopore_parameters = Parameters::default(Platform::Nanopore);
+    println!("Nanopore: {:?}", nanopore_parameters);
+}</code></pre></pre>
+<p>This works, but might not be very idiomatic. Another way is to leverage Rust's type traits by implementing <code>from</code>. By specifying our variable as type <code>Parameters</code>, we can call <code>.into()</code> directly.</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">enum Platform {
+</span><span class="boring">    PacBio,
+</span><span class="boring">    Nanopore,
+</span><span class="boring">}
+</span><span class="boring">
+</span><span class="boring">#[allow(unused)]
+</span><span class="boring">#[derive(Debug)]
+</span><span class="boring">struct Parameters {
+</span><span class="boring">    min_len: usize,
+</span><span class="boring">    max_len: usize,
+</span><span class="boring">    min_phred: usize,
+</span><span class="boring">}
+</span>// [...]
+
+impl From&lt;Platform&gt; for Parameters {
+    fn from(platform: Platform) -&gt; Self {
+        match platform{
+            Platform::PacBio =&gt; Self {
+                min_len: 100,
+                max_len: 1000,
+                min_phred: 20,
+            },
+            Platform::Nanopore =&gt; Self {
+                min_len: 200,
+                max_len: 900,
+                min_phred: 15
+            },
+        }
+    }
+}
+
+fn main(){
+    let pacbio_parameters: Parameters = Platform::PacBio.into();
+    println!("PacBio: {:?}", pacbio_parameters);
+
+    let nanopore_parameters: Parameters = Platform::Nanopore.into();
+    println!("Nanopore: {:?}", nanopore_parameters);
+}</code></pre></pre>
+<p>Again, note that these are just examples that might not be real-world applicable. However, the point here is that structuring the code in certain ways will be of help in the long run.</p>
+
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../../main/rust_basics/macros.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../../main/rust_basics/enums.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../../main/rust_basics/strings.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../../main/rust_basics/option_and_result.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -205,11 +266,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../../main/rust_basics/macros.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../../main/rust_basics/enums.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../../main/rust_basics/strings.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../../main/rust_basics/option_and_result.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

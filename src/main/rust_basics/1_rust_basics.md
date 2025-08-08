@@ -1,5 +1,5 @@
 # Rust Basics
-Even though I stated that this book wouldn't include an introduction to Rust, here we are. This chapter only covers the basics and the reader is strongly encouraged to visit [resources](../../suffix/1_resources.md#resources) for a more comprehensive take on Rust.
+Even though I stated that this book wouldn't include an introduction to Rust, here we are. This chapter only covers some of the basics and the reader is strongly encouraged to visit [resources](../../suffix/1_resources.md#resources) for a more comprehensive take on Rust.
 
 Below is a summary of some of the things I personally like and dislike with Rust. This might give the reader some insight into whether or not Rust would be a suitable language for them.
 
@@ -15,6 +15,6 @@ Below is a summary of some of the things I personally like and dislike with Rust
 ## Why I dislike Rust
 - **Compile Times**. Compared to languages such as Go, Rust takes ages to compile. This is especially true when the dependencies are piling up.
 
-- **Verbose syntax**. In my personal opinion, Rust is a rather verbose language. Some people might like that, some people don't. Luckily, the rust-analyzer VScode extension helps out a lot with auto-completion and other neat features.
+- **Verbose Syntax**. In my personal opinion, Rust is a rather verbose language. Some people might like that, some people don't. Luckily, the rust-analyzer VScode extension helps out a lot with auto-completion and other neat features.
 
 - **Steep Learning Curve**. Coming from the python world, I had a really difficult time with Rust in the beginning. It was not just switching to a compiled language, but also having to learn about lifetimes, ownership and so on. But trust me, it gets easier.

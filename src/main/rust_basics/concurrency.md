@@ -4,19 +4,20 @@ In bioinformatics, concurrency can be vital and has the potential decrease runti
 - [Rayon](https://docs.rs/rayon/latest/rayon/) - Data parallelism library that works well together with the Bio crate. Enables parallel processing of sequences through [par_bridge()](https://docs.rs/rayon/latest/rayon/iter/trait.ParallelBridge.html#tymethod.par_bridge).
 - [DashMap](https://docs.rs/dashmap/latest/dashmap/) - Concurrent HashMaps and HashSets.
 
-
 ## Tips And Tricks
 Below, I've gathered some tips and tricks when it comes to using concurrency with Rust, especially for bioinformatic applications.
+
+**NOTE** - concurrency here means using multiple threads.
 
 ### Start by creating a MVBA
 A MVBA (Minimally Viable Bioinformatic Application) is something that runs and produces the expected output. I've found that starting out this way is easier, because one can always optimize the code later on. For me, it is tempting to start out writing the most optimized code from the beginning. However, I've learned that programming this way takes more time and is less productive.
 
 ### Optimize the MVBA
 Once the MVBA is done, it is time to optimize. We must not forget this if we want an application that performs well under heavy loads. Optimization can be done in several ways, such as:
-- Testing the application in release mode (cargo build --release).
+- Testing the application in release mode `cargo build --release`.
 - Use a profiler such as [Samply](https://crates.io/crates/samply) to identify bottlenecks.
 - Implement concurrency if applicable.
-- Using appropriate data structures. Maybe a Vec is not always the best approach?
+- Using appropriate data structures. Maybe a `Vec` is not always the best approach?
 
 ### Concurrency is not always the answer
 Even though concurrency is a useful tool within bioinformatics, there are cases where it might hurt more than it helps.

@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Error Handling - Bioinformatics with Rust</title>
+        <title>Array - Bioinformatics with Rust</title>
 
 
         <!-- Custom HTML head -->
@@ -167,61 +167,28 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="error-handling"><a class="header" href="#error-handling">Error Handling</a></h1>
-<p>It took a while for me to understand errors in Rust. I never understood the concept of using the <q>?</q> operator and why I could not simply use the panic! macro everywhere. One day, I came across the concept of recoverable and non-recoverable errors and that is when everything start making sense.</p>
-<p>An <em>unrecoverable</em> error occurs when it makes sense to terminate the code. One example would be failing to read a file because it is corrupt. If our only goal is to parse the file and print its contents, but we cannot even read it, then we'd classify this as a unrecoverable error.</p>
-<p>A <em>recoverable</em> error you can think of as when it is still safe or okay to proceed executing code. One example would be parsing lines from a file and one line has an unexpected structure. If we are okay with this, we can just skip this line and proceed to the next.</p>
-<h2 id="unrecoverable-errors"><a class="header" href="#unrecoverable-errors">Unrecoverable errors</a></h2>
-<p>In the code snippet below, we try to open a file that does not exist. Using .expect() will cause a panic, but this is okay because we allow this to be an unrecoverable error.</p>
-<pre><pre class="playground"><code class="language-rust edition2021">use std::fs::File;
+                        <h1 id="array"><a class="header" href="#array">Array</a></h1>
+<p>Arrays in Rust are fixed size that need to be known at compile time. In bioinformatic applications, we can use an array as a lookup table for nucleotide encoding, which we'll see in later chapters.</p>
+<p>If we declare the array as mutable, we can change its values but not its size.</p>
+<pre><pre class="playground"><code class="language-rust edition2021">fn main(){
+    let mut arr: [usize; 5] = [1, 2, 3, 4, 5];
 
-fn main() {
-    let _ = File::open("file_does_not_exist.txt").expect("Failed to open file");
-}
-</code></pre></pre>
-<h2 id="recoverable-errors"><a class="header" href="#recoverable-errors">Recoverable errors</a></h2>
-<p>In the following example, our goal is to print out nucleotide sequences of a defined length, otherwise we print an error message. This is an example of handling recoverable errors by defining and catching specific errors.</p>
-<pre><pre class="playground"><code class="language-rust edition2021">#[derive(Debug)]
-enum SeqError {
-    InvalidLength(String),
-}
-
-impl std::fmt::Display for SeqError {
-    fn fmt(&amp;self, f: &amp;mut std::fmt::Formatter) -&gt; std::fmt::Result {
-        match self {
-            SeqError::InvalidLength(seq) =&gt; write!(f, "Invalid length: {seq}"),
-        }
+    for i in (0..arr.len()){
+        arr[i] = arr[i] * 2;
     }
-}
 
-fn get_nt_string(seq: String) -&gt; Result&lt;String, SeqError&gt; {
-    match seq.len() {
-        5 =&gt; return Ok(seq), // In this example, we hard code length 5.
-        _ =&gt; return Err(SeqError::InvalidLength(seq)),
-    };
-}
-
-fn main() {
-    let seqs: Vec&lt;String&gt; = vec!["ATCGA".to_string(), "ATCG".to_string(), "TTTTT".to_string()];
-
-    for seq in seqs {
-        match get_nt_string(seq) {
-            Ok(seq) =&gt; println!("{seq}"),
-            Err(e) =&gt; println!("{e}"),
-        }
-    }
+    assert_eq!(arr, [2, 4, 6, 8, 10]);
 }</code></pre></pre>
-<p>Visit the <a href="https://doc.rust-lang.org/book/ch09-00-error-handling.html">official documentation</a> for error handling to learn more. In addition, there are crates such as <a href="https://docs.rs/anyhow/latest/anyhow/">anyhow</a> and <a href="https://docs.rs/thiserror/latest/thiserror/">thiserror</a> that simplifies the generation of custom error types.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../../main/rust_tips_and_tricks/1_introduction.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../../main/rust_basics/strings.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../../main/rust_tips_and_tricks/3_enums.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../../main/rust_basics/vec.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -231,11 +198,11 @@ fn main() {
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../../main/rust_tips_and_tricks/1_introduction.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../../main/rust_basics/strings.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../../main/rust_tips_and_tricks/3_enums.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../../main/rust_basics/vec.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

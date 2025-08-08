@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Data Types - Bioinformatics with Rust</title>
+        <title>Strings - Bioinformatics with Rust</title>
 
 
         <!-- Custom HTML head -->
@@ -167,35 +167,31 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="data-types"><a class="header" href="#data-types">Data Types</a></h1>
-<p>Rust has a lot of <a href="https://doc.rust-lang.org/book/ch03-02-data-types.html">data types</a>. Here is a rundown of the ones I use most often:</p>
-<div class="table-wrapper"><table><thead><tr><th>Data type</th><th>Rust type</th><th>Example</th></tr></thead><tbody>
-<tr><td>boolean</td><td><code>bool</code></td><td><code>let x: bool = true;</code></td></tr>
-<tr><td>string</td><td><code>String</code></td><td><code>let x: String = "Hello".to_string();</code></td></tr>
-<tr><td>string slice</td><td><code>&amp;str</code></td><td><code>let x: &amp;str = "Hello"</code></td></tr>
-<tr><td>array</td><td><code>[type; len]</code></td><td><code>let x: [usize; 3] = [1, 2, 3];</code></td></tr>
-<tr><td>vec</td><td><code>Vec&lt;type&gt;</code></td><td><code>let x: Vec&lt;usize&gt; = vec![1, 2, 3];</code></td></tr>
-<tr><td>byte slice</td><td><code>&amp;[u8]</code></td><td><code>let x: &amp;[u8] = b"Hello";</code></td></tr>
-<tr><td>unsigned 32-bit int</td><td><code>u32</code></td><td><code>let x: u32 = 0;</code></td></tr>
-<tr><td>unsigned 64-bit int</td><td><code>u64</code></td><td><code>let x: u64 = 0;</code></td></tr>
-<tr><td>unsigned (32 or 64)<sup class="footnote-reference" id="fr-note-1"><a href="#footnote-note">1</a></sup>-bit int</td><td><code>usize</code></td><td><code>let x: usize = 0;</code></td></tr>
-<tr><td>32-bit float</td><td><code>f32</code></td><td><code>let x: f32 = 0.0</code>;</td></tr>
-<tr><td>64-bit float</td><td><code>f64</code></td><td><code>let x: f64 = 0.0</code>;</td></tr>
-</tbody></table>
-</div><hr>
-<ol class="footnote-definition"><li id="footnote-note">
-<p>Depends on computer architecture. <a href="#fr-note-1">↩</a></p>
-</li>
-</ol>
+                        <h1 id="strings"><a class="header" href="#strings">Strings</a></h1>
+<p>There are multiple string types in Rust. Two of the ones I use mostly are <code>String</code> and <code>&amp;str</code>.</p>
+<p><code>String</code> is an owned, mutable and heap-allocated type. We can allow it to be mutable with the <code>mut</code> keyword. E.g.,</p>
+<pre><pre class="playground"><code class="language-rust edition2021">fn main() {
+    let mut seq: String = "ATCG".to_string();
+    seq.push_str("ATCG"); // Mutate.
+
+    assert_eq!(seq, "ATCGATCG".to_string());
+}</code></pre></pre>
+<p><code>&amp;str</code> is a borrowed and immutable type. We can read from it, but cannot mutate it. <code>&amp;str</code> is suitable when one wants to avoid heap-allocation.</p>
+<pre><pre class="playground"><code class="language-rust edition2021">fn main() {
+    let seq: &amp;str = "ATCG";
+
+    println!("{seq}");
+}</code></pre></pre>
+
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../../main/rust_basics/macros.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../../main/rust_basics/4_data_types.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../../main/rust_basics/strings.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../../main/rust_basics/array.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -205,11 +201,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../../main/rust_basics/macros.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../../main/rust_basics/4_data_types.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../../main/rust_basics/strings.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../../main/rust_basics/array.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

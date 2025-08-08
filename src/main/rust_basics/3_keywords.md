@@ -1,4 +1,6 @@
 # Keywords
+`use` - is used for importing. E.g., `use std::num::ParseIntError`
+
 `let` - initializes something immutable. E.g., `let x: usize = 10;`
 
 `mut` - makes something mutable. E.g., `let mut x: usize = 10;`
@@ -10,7 +12,7 @@ fn main() {
 }
 ```
 
-`struct` - defines a struct. This is kind of analogous `class` in python. E.g.,
+`struct` - defines a struct. This is kind of analogous to `class` in python. E.g.,
 ```rust,noplayground
 struct MyStruct {
     field1: usize,
@@ -18,7 +20,7 @@ struct MyStruct {
     field3: bool,
 }
 ```
-`enum` - defines an enum. This is kind of analogous `Enum` in python. E.g.,
+`enum` - defines an enum. This is kind of analogous to `Enum` in python. E.g.,
 ```rust,noplayground
 enum MyEnum {
     Choice1,
