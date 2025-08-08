@@ -10,10 +10,24 @@ The book is structured into different chapters that cover both programmatic and 
 
 <div style="display:flex; flex-wrap: wrap;">
     <p style="margin: 10px;">
-        🪄 Rust Tips And Tricks:<br>
-        &emsp;&emsp; ✔ Error Handling.<br>
+        🪄 Rust Basics:<br>
+        &emsp;&emsp; ✔ Create a Project.<br>
+        &emsp;&emsp; ✔ Syntax.<br>
+        &emsp;&emsp; ✔ Keywords.<br>
+        &emsp;&emsp; ✔ Common Macros.<br>
+        &emsp;&emsp; ✔ Data Types.<br>
+        &emsp;&emsp; ✔ Strings.<br>
+        &emsp;&emsp; ✔ Array.<br>
+        &emsp;&emsp; ✔ Vec.<br>
+        &emsp;&emsp; ✔ Control Flow.<br>
+        &emsp;&emsp; ✔ References.<br>
+        &emsp;&emsp; ✔ Functions.<br>
         &emsp;&emsp; ✔ Enums.<br>
         &emsp;&emsp; ✔ Structs.<br>
+        &emsp;&emsp; ✔ Option and Result.<br>
+        &emsp;&emsp; ✔ Error Handling.<br>
+        &emsp;&emsp; ✔ Ownership and Borrowing.<br>
+        &emsp;&emsp; ✔ Lifetimes.<br>
         &emsp;&emsp; ✔ Concurrency.<br>
     </p>
     <p style="margin: 10px;">
@@ -39,6 +53,21 @@ The book is structured into different chapters that cover both programmatic and 
         &emsp;&emsp; 🚧 SIMD vectorization.<br>
         &emsp;&emsp; ✔ Minimizers.<br>
         &emsp;&emsp; 🚧 Syncmers.<br>
+    </p>
+    <p style="margin: 10px;">
+        🧬 Aminoacids:<br>
+        &emsp;&emsp; 🚧 Translation.<br>
+    </p>
+    <p style="margin: 10px;">
+        🧬 Amplicon:<br>
+        &emsp;&emsp; 🚧 In Silico PCR.<br>
+        &emsp;&emsp; 🚧 Clustering.<br>
+        &emsp;&emsp; 🚧 Classification.<br>
+    </p>
+    <p style="margin: 10px;">
+        🖋️ Practical Excercises:<br>
+        &emsp;&emsp; ✔ Create a basic fasta parser CLI.<br>
+        &emsp;&emsp; ✔ Create a basic fastq filter CLI.<br>
     </p>
 </div>
 

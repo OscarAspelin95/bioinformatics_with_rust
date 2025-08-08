@@ -2,7 +2,7 @@
 The concept of [lifetimes](https://doc.rust-lang.org/rust-by-example/scope/lifetime.html) is related to for how long variables are valid. As an example, we'll create a struct with a single field `my_string`, which is of type `&str`.
 
 ```rust
-struct MyStruct{
+struct MyStruct {
     my_string: &str
 }
 
@@ -16,7 +16,7 @@ Try running the code and see what happens. We get a compiler error, stating that
 Lifetimes are signified with a `'`, followed by a name. E.g., `'a` would be a lifetime called `a`. To make the code run, we'll bind `MyStruct` and `my_string` to the same lifetime, telling the Rust compiler that `MyStruct` will live for at least as long as `my_string`.
 
 ```rust
-struct MyStruct<'a>{
+struct MyStruct<'a> {
     my_string: &'a str
 }
 

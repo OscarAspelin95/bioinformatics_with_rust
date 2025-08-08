@@ -171,7 +171,7 @@
 <p>The Rust syntax is similar to other languages such as C and C++. However, here is a briew overview.</p>
 <h3 id="variable-declaration"><a class="header" href="#variable-declaration">Variable declaration</a></h3>
 <p>Rust is a statically typed language, which means that the type of a variable needs to be known, either explicitly or implicitly. The basic syntax for variable declaration is <code>let name: type = value;</code>. E.g.,</p>
-<pre><pre class="playground"><code class="language-rust edition2021">fn main(){
+<pre><pre class="playground"><code class="language-rust edition2021">fn main() {
     let x: usize = 0; // unsigned integer.
     let x: &amp;str = "Hello, world!"; // string slice.
     let x: String = "Hello, world!".to_string(); // string.
@@ -180,11 +180,11 @@
 }</code></pre></pre>
 <h3 id="scopes"><a class="header" href="#scopes">Scopes</a></h3>
 <p><code>{</code> and <code>}</code> define scopes. E.g.,</p>
-<pre><pre class="playground"><code class="language-rust edition2021">fn main(){ // start of function scope.
+<pre><pre class="playground"><code class="language-rust edition2021">fn main() { // start of function scope.
     println!("Hello, world!");
 } // end of function scope.</code></pre></pre>
 <p>We can also have nested scopes. E.g.,</p>
-<pre><pre class="playground"><code class="language-rust edition2021">fn main(){
+<pre><pre class="playground"><code class="language-rust edition2021">fn main() {
     let x: &amp;str = "Hello, world!";
 
     {
@@ -194,20 +194,28 @@
 <p>Scopes are important for ownership and lifetimes, which will be covered later on.</p>
 <h3 id="statement-deliminators"><a class="header" href="#statement-deliminators">Statement deliminators</a></h3>
 <p><code>;</code> is used for statement deliminators. E.g.,</p>
-<pre><pre class="playground"><code class="language-rust edition2021">fn main(){
+<pre><pre class="playground"><code class="language-rust edition2021">fn main() {
     println!("Hello, world!"); // Defines the println! statement.
 } // does not need a ";".</code></pre></pre>
 <p>Note that scopes do not need a <code>;</code> terminator.</p>
+<h3 id="comments"><a class="header" href="#comments">Comments</a></h3>
+<p><code>//</code> is used for code comments.<br>
+<code>///</code> is used for docstrings.</p>
+<pre><pre class="playground"><code class="language-rust edition2021">/// This is a docstring.
+fn main() {
+    // This is a comment.
+    println!("Hello, world");
+}</code></pre></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../../main/rust_basics/2_create_a_project.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../../main/rust_basics/create_a_project.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../../main/rust_basics/3_keywords.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../../main/rust_basics/keywords.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -217,11 +225,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../../main/rust_basics/2_create_a_project.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../../main/rust_basics/create_a_project.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../../main/rust_basics/3_keywords.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../../main/rust_basics/keywords.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

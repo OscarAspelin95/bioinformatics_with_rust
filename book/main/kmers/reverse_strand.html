@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Lifetimes - Bioinformatics with Rust</title>
+        <title>Reverse Strand - Bioinformatics with Rust</title>
 
 
         <!-- Custom HTML head -->
@@ -167,35 +167,68 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="lifetimes"><a class="header" href="#lifetimes">Lifetimes</a></h1>
-<p>The concept of <a href="https://doc.rust-lang.org/rust-by-example/scope/lifetime.html">lifetimes</a> is related to for how long variables are valid. As an example, we'll create a struct with a single field <code>my_string</code>, which is of type <code>&amp;str</code>.</p>
-<pre><pre class="playground"><code class="language-rust edition2021">struct MyStruct {
-    my_string: &amp;str
-}
+                        <h1 id="reverse-strand"><a class="header" href="#reverse-strand">Reverse Strand</a></h1>
+<p>As mentioned in a previous section, we also need to handle the reverse complement. How do we do this in an efficient way? We can insert the reverse complement from the left side instead of the right, ensuring the correct order. To insert from the left side, we first need to shift the two least significant bits, our nucleotide, to the upper most significant bits of our kmer. Then, we shift our storage to the right by 2 and finally apply BitOR to insert.</p>
+<p>The following pseudo-code shows how to insert a nucleotide A whilst using <code>k=4</code>.</p>
+<pre><code>// Define variables.
+k = 4
+nt      =   0b0000000000 # A
+nt_rev  =   0b0000000011 # T (reverse complement)
+storage =   0b0000000000
 
-fn main() {
-    let my_struct = MyStruct {my_string: "Hello, world!"};
-}</code></pre></pre>
-<p>Try running the code and see what happens. We get a compiler error, stating that we need a lifetime parameter. Why is this? <code>my_string</code> is of type <code>&amp;str</code>, which means that <code>MyStruct</code> does not own it. This also means <code>MyStruct</code> does not control when <code>my_string</code> is no longer valid. This is dangerous, because if <code>my_string</code> would go out of scope and we subsequently try to read its value in <code>MyStruct</code>, we'd be in trouble. The Rust compiler needs some kind of assurance that <code>MyStruct</code> will be valid at least for as long as <code>my_string</code>. This is what lifetimes are for.</p>
-<p>Lifetimes are signified with a <code>'</code>, followed by a name. E.g., <code>'a</code> would be a lifetime called <code>a</code>. To make the code run, we'll bind <code>MyStruct</code> and <code>my_string</code> to the same lifetime, telling the Rust compiler that <code>MyStruct</code> will live for at least as long as <code>my_string</code>.</p>
-<pre><pre class="playground"><code class="language-rust edition2021">struct MyStruct&lt;'a&gt; {
-    my_string: &amp;'a str
-}
+// Shift reverse nucleotide to the upper two bits of the kmer size.
+0b0000000011 &lt;&lt; (k-1) * 2 = 0b0011000000
 
-fn main() {
-    let my_struct = MyStruct {my_string: "Hello, world!"};
+// Shift storage to the right to make room (empty at the moment).
+0b0000000000 &gt;&gt; 2 = 0b0000000000
+
+// Insert.
+0b0000000000 | 0b0011000000 = 0b0011000000
+</code></pre>
+<p>The following code is an example of inserting the reverse complement of <code>AGT</code> into a <code>u32</code>. We'll make it easy for us and use a <code>k=3</code> to exactly fit the entire reverse complement into the kmer.</p>
+<pre><pre class="playground"><code class="language-rust edition2021">fn main() {
+    let mut storage: u32 = 0b0;
+
+    // Use kmer size 3 to exactly fit our three nucleotides
+    // In the least significant bits.
+    let k: u32 = 3;
+
+    let forward = b"AGT";
+
+    let shift: u32 = (k - 1) * 2;
+
+    forward.iter().for_each(|nt| {
+        let nt_encoded = match nt {
+            b'A' =&gt; 0 as u32,
+            b'C' =&gt; 1 as u32,
+            b'G' =&gt; 2 as u32,
+            b'T' =&gt; 3 as u32,
+            _ =&gt; panic!(""),
+        };
+        // Use 3 - nt_encoded to get the reverse base.
+        storage = storage &gt;&gt; 2 | (3 - nt_encoded) &lt;&lt; shift;
+    });
+
+    // Print the full u32-bit.
+    println!("{:032b}", &amp;storage);
 }</code></pre></pre>
-<p>Note that lifetimes also apply to functions and other objects!</p>
+<p>Run the code and inspect the result. Our output is:</p>
+<pre>
+00 [...] 00 01 11
+         A  C  T
+
+</pre>
+<p>Which is the reverse complement of <code>AGT</code>, inserted in the correct order.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../../main/rust_basics/ownership_and_borrowing.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../../main/kmers/forward_strand.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../../main/rust_basics/concurrency.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../../main/kmers/final_implementation.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -205,11 +238,11 @@ fn main() {
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../../main/rust_basics/ownership_and_borrowing.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../../main/kmers/forward_strand.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../../main/rust_basics/concurrency.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../../main/kmers/final_implementation.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
