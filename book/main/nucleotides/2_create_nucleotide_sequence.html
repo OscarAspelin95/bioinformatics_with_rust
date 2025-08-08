@@ -170,20 +170,20 @@
                         <h1 id="create-a-nucleotide-sequence"><a class="header" href="#create-a-nucleotide-sequence">Create A nucleotide sequence</a></h1>
 <h2 id="string"><a class="header" href="#string">String</a></h2>
 <p>There are many different string types in Rust, but the two most common ones are <code>String</code> and <code>&amp;str</code>. Both can be used to store nucleotide sequences, but they have different characteristics. Usually, use <code>String</code> if you intend to mutate the sequence, otherwise use <code>&amp;str</code>. For more information, visit the rust docs for <a href="https://doc.rust-lang.org/std/string/struct.String.html"><code>String</code></a> and <a href="https://doc.rust-lang.org/std/primitive.str.html"><code>&amp;str</code></a> respectively.</p>
-<pre><pre class="playground"><code class="language-rust edition2021">fn main(){
+<pre><pre class="playground"><code class="language-rust edition2021">fn main() {
     let nt_string: String = "ACGT".to_string();
     let nt_string: &amp;str = "ACGT";
 }</code></pre></pre>
 <h2 id="byte-slice"><a class="header" href="#byte-slice">Byte slice</a></h2>
 <p>Usually when reading nucleotide sequences from a FASTA/Q file, we get it as a byte slice, <code>&amp;[u8]</code>, which is a more convenient format.</p>
-<pre><pre class="playground"><code class="language-rust edition2021">fn main(){
+<pre><pre class="playground"><code class="language-rust edition2021">fn main() {
     let nt_string: &amp;[u8] = b"ACGT";
 
     println!("{:?}", nt_string);
 }</code></pre></pre>
 <p>Run the code and examine the output. We get a bunch of numbers. This is the ASCII representation of our nucleotides, where <code>A/T/C/G</code> corresponds to an 8-bit representation. For more information, visit <a href="https://www.ascii-code.com/">this link</a>.</p>
 <p>We can check that the following representations are equivalent:</p>
-<pre><pre class="playground"><code class="language-rust edition2021">fn main(){
+<pre><pre class="playground"><code class="language-rust edition2021">fn main() {
     assert_eq!(b'A', 65);
     assert_eq!(b'C', 67);
     assert_eq!(b'G', 71);

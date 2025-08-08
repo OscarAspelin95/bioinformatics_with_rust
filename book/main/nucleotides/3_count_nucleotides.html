@@ -171,7 +171,7 @@
 <p>We'll start of with something relatively easy - counting nucleotides. We'll create a <code>HashMap</code> for storing the counts of the nucleotides we encounter in the sequence.</p>
 <pre><pre class="playground"><code class="language-rust edition2021">use std::collections::HashMap;
 
-fn count_nucleotides(seq: &amp;[u8]){
+fn count_nucleotides(seq: &amp;[u8]) {
     let mut map: HashMap&lt;&amp;u8, usize&gt; = HashMap::new();
 
     // Iterate over each nucleotide.

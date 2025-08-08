@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>TODO - Bioinformatics with Rust</title>
+        <title>Ownership and Borrowing - Bioinformatics with Rust</title>
 
 
         <!-- Custom HTML head -->
@@ -12,20 +12,20 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
 
-        <link rel="icon" href="../favicon.svg">
-        <link rel="shortcut icon" href="../favicon.png">
-        <link rel="stylesheet" href="../css/variables.css">
-        <link rel="stylesheet" href="../css/general.css">
-        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="icon" href="../../favicon.svg">
+        <link rel="shortcut icon" href="../../favicon.png">
+        <link rel="stylesheet" href="../../css/variables.css">
+        <link rel="stylesheet" href="../../css/general.css">
+        <link rel="stylesheet" href="../../css/chrome.css">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
-        <link rel="stylesheet" href="../fonts/fonts.css">
+        <link rel="stylesheet" href="../../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../../fonts/fonts.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
-        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
-        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+        <link rel="stylesheet" id="highlight-css" href="../../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../../ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
 
@@ -34,12 +34,12 @@
 
         <!-- Provide site root and default themes to javascript -->
         <script>
-            const path_to_root = "../";
+            const path_to_root = "../../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../toc.js"></script>
+        <script src="../../toc.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -103,7 +103,7 @@
             <!-- populated by js -->
             <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
             <noscript>
-                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
             </noscript>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -167,89 +167,92 @@
 
                 <div id="content" class="content">
                     <main>
-                        <ul>
-<li>
-<p><input disabled="" type="checkbox"/>
-Updates for existing chapters:</p>
-<ul>
-<li><input disabled="" type="checkbox" checked=""/>
-Rust Basics.</li>
-<li><input disabled="" type="checkbox"/>
-Alignment:
-<ul>
-<li><input disabled="" type="checkbox"/>
-Create a simple multiple sequence aligner?</li>
-</ul>
-</li>
-<li><input disabled="" type="checkbox"/>
-Kmers:
-<ul>
-<li><input disabled="" type="checkbox"/>
-Syncmers</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>
-<p><input disabled="" type="checkbox"/>
-Suggestions for <strong>new</strong> chapters:</p>
-<ul>
-<li><input disabled="" type="checkbox"/>
-Clustering:
-<ul>
-<li><input disabled="" type="checkbox"/>
-Cluster reads similar to isONclust3.</li>
-</ul>
-</li>
-<li><input disabled="" type="checkbox"/>
-Aminoacids:
-<ul>
-<li><input disabled="" type="checkbox"/>
-Translation.</li>
-</ul>
-</li>
-<li><input disabled="" type="checkbox"/>
-Assembly:
-<ul>
-<li><input disabled="" type="checkbox"/>
-The basics of assembly.</li>
-<li><input disabled="" type="checkbox"/>
-Build a De-Bruijn graph.</li>
-<li><input disabled="" type="checkbox"/>
-Build an overlap graph.</li>
-<li><input disabled="" type="checkbox"/>
-Eularian walk?</li>
-<li><input disabled="" type="checkbox"/>
-Section about the difficulties and challenges with assembly.</li>
-</ul>
-</li>
-<li><input disabled="" type="checkbox"/>
-Pipelines (how do we solve dependencies in mdbook?):
-<ul>
-<li><input disabled="" type="checkbox"/>
-Basic BLAST pipeline.</li>
-<li><input disabled="" type="checkbox"/>
-Basic read alignment pipeline.</li>
-<li><input disabled="" type="checkbox"/>
-Basic assembly pipeline.</li>
-<li><input disabled="" type="checkbox"/>
-Metagenomic classification with sylph.</li>
-<li><input disabled="" type="checkbox"/>
-SINTAX classifier in Rust.</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
+                        <h1 id="ownership-and-borrowing"><a class="header" href="#ownership-and-borrowing">Ownership and Borrowing</a></h1>
+<p>Ownership can initially be a rather tricky topic to understand. The reader is adviced to read the official <a href="https://doc.rust-lang.org/book/ch04-00-understanding-ownership.html">reference</a> on ownership.</p>
+<p>I like to think of ownership in terms of scopes. A variable is valid when it inside the scope it was defined in. When the scope ends, the variable is dropped from memory. This might not always be true, but this way of thinking simplified the ownership concept for me quite a lot. Consider the following example:</p>
+<pre><pre class="playground"><code class="language-rust edition2021">fn main() {
+    // Create a nested scope.
+    {
+        let x: usize = 0;
+        println!("{x}");
+    }
+}</code></pre></pre>
+<p>It is perfectly valid to use <code>println!</code> whilst we are inside the scope, because <code>x</code> is still valid here. Once we move outside of this scope, <code>x</code> is dropped. This means we cannot move our <code>println!</code> outside of the scope where <code>x</code> is defined.</p>
+<pre><pre class="playground"><code class="language-rust editable edition2021">fn main() {
+    // Create a nested scope.
+    {
+        let x: usize = 0;
+    }
+
+    // try commenting this out!
+    // println!("{x}");
+}</code></pre></pre>
+<p>The same goes for heap-allocated variables that are passed by value (i.e., we are not passing a reference). In the following example, we'll create a <code>Vec</code> and pass it by value to a function <code>print_vec</code>. As we will see, the Rust compiler won't let us print the <code>Vec</code> anymore in the main function.</p>
+<pre><pre class="playground"><code class="language-rust editable edition2021">fn print_vec(x: Vec&lt;usize&gt;) {
+    println!("[print_vec]: {:?}", x);
+}
+
+
+fn main() {
+    let x: Vec&lt;usize&gt; = vec![1, 2, 3, 4, 5];
+
+    print_vec(x); // x is passed by value here. Ownership is transferred to print_vec.
+
+    // try commenting this out!
+    // println!("[main]: {:?}", x);
+}</code></pre></pre>
+<p>How do we solve this? We can pass <code>x</code> by reference. This way, <code>x</code> is still owned by <code>main</code> and borrowed by <code>print_vec</code>.</p>
+<pre><pre class="playground"><code class="language-rust edition2021">fn print_vec(x: &amp;Vec&lt;usize&gt;) {
+    println!("[print_vec]: {:?}", x);
+}
+
+fn main() {
+    let x: Vec&lt;usize&gt; = vec![1, 2, 3, 4, 5];
+
+    print_vec(&amp;x); // x is passed by reference here. main still owns x.
+    println!("[main]: {:?}", x);
+}</code></pre></pre>
+<p>What about mutable references? Remember that a variable can only have one mutable reference existing at a given time. If we pass <code>x</code> as a mutable reference to a new function <code>mutate_vec</code>, <code>main</code> still has ownership of <code>x</code> so we are good.</p>
+<pre><pre class="playground"><code class="language-rust edition2021">fn mutate_vec(x: &amp;mut Vec&lt;usize&gt;) {
+    x[0] = 10;
+
+    println!("[mutate_vec]: {:?}", x);
+}
+
+fn main() {
+    let mut x: Vec&lt;usize&gt; = vec![1, 2, 3, 4, 5];
+
+    mutate_vec(&amp;mut x); // x is passed by (mutable) reference here. main still owns r.
+    println!("[main]: {:?}", x);
+}</code></pre></pre>
+<p>However, we would run into issues if we try dereferencing <code>x</code> inside <code>mutate_vec</code>. In the example below, we try dereferencing <code>x</code> into a variable <code>y</code> inside <code>mutate_vec</code>. This is not allowed because we don't own <code>x</code>. We have only borrowed it, so we cannot move its value.</p>
+<pre><pre class="playground"><code class="language-rust editable edition2021">fn mutate_vec(x: &amp;mut Vec&lt;usize&gt;) {
+    x[0] = 10;
+
+    // try commenting this out!
+    // let y = *x;
+
+    println!("[mutate_vec]: {:?}", x);
+}
+
+fn main() {
+    let mut x: Vec&lt;usize&gt; = vec![1, 2, 3, 4, 5];
+
+    mutate_vec(&amp;mut x); // x is passed by (mutable) reference here. main still owns r.
+    println!("[main]: {:?}", x);
+}</code></pre></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../suffix/4_thank_you.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../../main/rust_basics/error_handling.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
+                            <a rel="next prefetch" href="../../main/rust_basics/lifetimes.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -257,10 +260,13 @@ SINTAX classifier in Rust.</li>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../suffix/4_thank_you.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../../main/rust_basics/error_handling.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
+                    <a rel="next prefetch" href="../../main/rust_basics/lifetimes.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
             </nav>
 
         </div>
@@ -288,19 +294,19 @@ SINTAX classifier in Rust.</li>
             window.playground_copyable = true;
         </script>
 
-        <script src="../ace.js"></script>
-        <script src="../mode-rust.js"></script>
-        <script src="../editor.js"></script>
-        <script src="../theme-dawn.js"></script>
-        <script src="../theme-tomorrow_night.js"></script>
+        <script src="../../ace.js"></script>
+        <script src="../../mode-rust.js"></script>
+        <script src="../../editor.js"></script>
+        <script src="../../theme-dawn.js"></script>
+        <script src="../../theme-tomorrow_night.js"></script>
 
-        <script src="../elasticlunr.min.js"></script>
-        <script src="../mark.min.js"></script>
-        <script src="../searcher.js"></script>
+        <script src="../../elasticlunr.min.js"></script>
+        <script src="../../mark.min.js"></script>
+        <script src="../../searcher.js"></script>
 
-        <script src="../clipboard.min.js"></script>
-        <script src="../highlight.js"></script>
-        <script src="../book.js"></script>
+        <script src="../../clipboard.min.js"></script>
+        <script src="../../highlight.js"></script>
+        <script src="../../book.js"></script>
 
         <!-- Custom JS scripts -->
 

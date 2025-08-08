@@ -82,5 +82,4 @@ fn main() {
     assert_eq!(get_shannon_entropy(b"ATCGATCGATCG"), 2.0_f32);
     assert_eq!(get_shannon_entropy(b"AAAAAAG"), 0.5916728_f32);
 }
-
 ```

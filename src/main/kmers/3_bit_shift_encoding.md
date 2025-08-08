@@ -9,11 +9,11 @@ In our case, we'll use 2-bit encoding for our nucleotides:
 - `T` => `0b11` (3 in base 10)
 
 ### Bit shift
-A *left shift* is defined as an operation in which the bits in a binary number are shifted to the left. The most significant bit (leftmost) is lost, and the least significant bit (righmost) is shifted after which a zero is added.
+A `left shift` is defined as an operation in which the bits in a binary number are shifted to the left. The most significant bit (leftmost) is lost, and the least significant bit (righmost) is shifted after which a zero is added.
 
 - Example: `0010 << 1 = 0100`
 
-A *right shift* does the opposite.
+A `right shift` does the opposite.
 
 - Example: `0100 >> 1 = 0010`
 
@@ -31,14 +31,14 @@ fn main() {
 A left shift by one is equivalent to multiplying by 2. It make sense by considering 10-based numbers. Left shifting the number 10 by one results in 100, which is equivalent to multiplying by 10. The same is true for binary numbers.
 
 ### BitOR
-The bitor operation (usually denoted with a pipe character "|") applies the OR operation to two binary numbers. Assume we want to insert a T (0b11) into an integer with value 0b00. We apply the bitor operation for this:
+The bitor operation (usually denoted with a pipe character `|`) applies the OR operation to two binary numbers. Assume we want to insert a `T` (`0b11`) into an integer with value `0b00`. We apply the bitor operation for this:
 
 ```
-0b00 # Storage.
+0b00 // Storage.
 bitor
-0b11 # T.
+0b11 // T.
 =
-0b11 # Result.
+0b11 // Result.
 ```
 
 because applying the OR bitwise, we'll get 0b(0 OR 1)(0 OR 1) = 0b11
@@ -57,7 +57,7 @@ fn main() {
 ```
 
 ### Bit masks
-Bit masks can be used to manipulate a binary number certain ways. In our context, we'll use it to mask certain parts of our storage integer to ensure proper kmer length. Say we have inserted three Gs (0b101010), but we want to "mask" the upper two bits (the "oldest" G) because our kmer size is 2. Masking the upper two bits is the same as saying we only want to keep the lower 4 bits (two Gs).
+Bit masks can be used to manipulate a binary number certain ways. In our context, we'll use it to mask certain parts of our storage integer to ensure proper kmer length `k`. Say we have inserted three Gs `0b101010`, but we want to "mask" the upper two bits (the "oldest" `G`) because `k=2`. Masking the upper two bits is the same as saying we only want to keep the lower 4 bits (two Gs).
 
 For this, we'll use the AND operator, which only returns 1 if both bits at a given position in our numbers are 1. This way, we can use 1 for every bit we want to keep, and 0 for the rest.
 

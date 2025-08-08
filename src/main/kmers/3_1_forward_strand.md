@@ -2,7 +2,7 @@
 
 In order to insert a nucleotide, we need two things:
 - A left shift by two to make room for the two new bits.
-- Insert the actual nucleotide, which is done with the "|" operator (BitOR).
+- Insert the actual nucleotide, which is done with the `|` operator (BitOR).
 
 Hence, for the forward strand we add nucleotides from the **right side**.
 
@@ -32,7 +32,7 @@ fn main() {
 ## Handling the kmer size
 Our approach kinda works, but it has a fundamental flaw. We want our storage variable to only contain k nucleotides at one time, all other leading bits should be zero. As as example:
 
-<pre>
+```
 nt_string = "GTGT"
 kmer_size = 2
 
@@ -44,7 +44,7 @@ kmer_size = 2
 
 # insert T
 0b00001011
-</pre>
+```
 
 At this point, we have inserted two nucleotides, which also is our target kmer length. In order to keep our target kmer size of 2, we need to:
 - Insert the next nucleotide, G, resulting in a kmer of length 3.
@@ -91,7 +91,7 @@ fn print_nt_string(kmer: u64, k: usize) {
     println!("{}", result);
 }
 
-fn kmerize(kmer_size: usize, nt_string: &[u8]){
+fn kmerize(kmer_size: usize, nt_string: &[u8]) {
     assert!(kmer_size <= nt_string.len());
 
     // Forward related kmer stuff
@@ -125,7 +125,7 @@ fn kmerize(kmer_size: usize, nt_string: &[u8]){
     });
 }
 
-fn main(){
+fn main() {
     // We expect just one kmer.
     kmerize(5, b"AAAAA");
 

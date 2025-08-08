@@ -22,3 +22,7 @@ fn main() {
     print_a_vec(&my_vec);
 }
 ```
+
+There is an important rule when it comes to references, which I'll quote from the official Rust [book](http://127.0.0.1:3000/main/rust_basics/references.html):
+
+<q><em>At any given time, you can have either one mutable reference or any number of immutable references.</em></q>

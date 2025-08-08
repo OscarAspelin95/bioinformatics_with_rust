@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>TODO - Bioinformatics with Rust</title>
+        <title>Lifetimes - Bioinformatics with Rust</title>
 
 
         <!-- Custom HTML head -->
@@ -12,20 +12,20 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
 
-        <link rel="icon" href="../favicon.svg">
-        <link rel="shortcut icon" href="../favicon.png">
-        <link rel="stylesheet" href="../css/variables.css">
-        <link rel="stylesheet" href="../css/general.css">
-        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="icon" href="../../favicon.svg">
+        <link rel="shortcut icon" href="../../favicon.png">
+        <link rel="stylesheet" href="../../css/variables.css">
+        <link rel="stylesheet" href="../../css/general.css">
+        <link rel="stylesheet" href="../../css/chrome.css">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
-        <link rel="stylesheet" href="../fonts/fonts.css">
+        <link rel="stylesheet" href="../../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../../fonts/fonts.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
-        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
-        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+        <link rel="stylesheet" id="highlight-css" href="../../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../../ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
 
@@ -34,12 +34,12 @@
 
         <!-- Provide site root and default themes to javascript -->
         <script>
-            const path_to_root = "../";
+            const path_to_root = "../../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../toc.js"></script>
+        <script src="../../toc.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -103,7 +103,7 @@
             <!-- populated by js -->
             <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
             <noscript>
-                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
             </noscript>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -167,89 +167,37 @@
 
                 <div id="content" class="content">
                     <main>
-                        <ul>
-<li>
-<p><input disabled="" type="checkbox"/>
-Updates for existing chapters:</p>
-<ul>
-<li><input disabled="" type="checkbox" checked=""/>
-Rust Basics.</li>
-<li><input disabled="" type="checkbox"/>
-Alignment:
-<ul>
-<li><input disabled="" type="checkbox"/>
-Create a simple multiple sequence aligner?</li>
-</ul>
-</li>
-<li><input disabled="" type="checkbox"/>
-Kmers:
-<ul>
-<li><input disabled="" type="checkbox"/>
-Syncmers</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>
-<p><input disabled="" type="checkbox"/>
-Suggestions for <strong>new</strong> chapters:</p>
-<ul>
-<li><input disabled="" type="checkbox"/>
-Clustering:
-<ul>
-<li><input disabled="" type="checkbox"/>
-Cluster reads similar to isONclust3.</li>
-</ul>
-</li>
-<li><input disabled="" type="checkbox"/>
-Aminoacids:
-<ul>
-<li><input disabled="" type="checkbox"/>
-Translation.</li>
-</ul>
-</li>
-<li><input disabled="" type="checkbox"/>
-Assembly:
-<ul>
-<li><input disabled="" type="checkbox"/>
-The basics of assembly.</li>
-<li><input disabled="" type="checkbox"/>
-Build a De-Bruijn graph.</li>
-<li><input disabled="" type="checkbox"/>
-Build an overlap graph.</li>
-<li><input disabled="" type="checkbox"/>
-Eularian walk?</li>
-<li><input disabled="" type="checkbox"/>
-Section about the difficulties and challenges with assembly.</li>
-</ul>
-</li>
-<li><input disabled="" type="checkbox"/>
-Pipelines (how do we solve dependencies in mdbook?):
-<ul>
-<li><input disabled="" type="checkbox"/>
-Basic BLAST pipeline.</li>
-<li><input disabled="" type="checkbox"/>
-Basic read alignment pipeline.</li>
-<li><input disabled="" type="checkbox"/>
-Basic assembly pipeline.</li>
-<li><input disabled="" type="checkbox"/>
-Metagenomic classification with sylph.</li>
-<li><input disabled="" type="checkbox"/>
-SINTAX classifier in Rust.</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
+                        <h1 id="lifetimes"><a class="header" href="#lifetimes">Lifetimes</a></h1>
+<p>The concept of <a href="https://doc.rust-lang.org/rust-by-example/scope/lifetime.html">lifetimes</a> is related to for how long variables are valid. As an example, we'll create a struct with a single field <code>my_string</code>, which is of type <code>&amp;str</code>.</p>
+<pre><pre class="playground"><code class="language-rust edition2021">struct MyStruct{
+    my_string: &amp;str
+}
+
+fn main() {
+    let my_struct = MyStruct {my_string: "Hello, world!"};
+}</code></pre></pre>
+<p>Try running the code and see what happens. We get a compiler error, stating that we need a lifetime parameter. Why is this? <code>my_string</code> is of type <code>&amp;str</code>, which means that <code>MyStruct</code> does not own it. This also means <code>MyStruct</code> does not control when <code>my_string</code> is no longer valid. This is dangerous, because if <code>my_string</code> would go out of scope and we subsequently try to read its value in <code>MyStruct</code>, we'd be in trouble. The Rust compiler needs some kind of assurance that <code>MyStruct</code> will be valid at least for as long as <code>my_string</code>. This is what lifetimes are for.</p>
+<p>Lifetimes are signified with a <code>'</code>, followed by a name. E.g., <code>'a</code> would be a lifetime called <code>a</code>. To make the code run, we'll bind <code>MyStruct</code> and <code>my_string</code> to the same lifetime, telling the Rust compiler that <code>MyStruct</code> will live for at least as long as <code>my_string</code>.</p>
+<pre><pre class="playground"><code class="language-rust edition2021">struct MyStruct&lt;'a&gt;{
+    my_string: &amp;'a str
+}
+
+fn main() {
+    let my_struct = MyStruct {my_string: "Hello, world!"};
+}</code></pre></pre>
+<p>Note that lifetimes also apply to functions and other objects!</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../suffix/4_thank_you.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../../main/rust_basics/ownership_and_borrowing.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
+                            <a rel="next prefetch" href="../../main/rust_basics/concurrency.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -257,10 +205,13 @@ SINTAX classifier in Rust.</li>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../suffix/4_thank_you.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../../main/rust_basics/ownership_and_borrowing.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
+                    <a rel="next prefetch" href="../../main/rust_basics/concurrency.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
             </nav>
 
         </div>
@@ -288,19 +239,19 @@ SINTAX classifier in Rust.</li>
             window.playground_copyable = true;
         </script>
 
-        <script src="../ace.js"></script>
-        <script src="../mode-rust.js"></script>
-        <script src="../editor.js"></script>
-        <script src="../theme-dawn.js"></script>
-        <script src="../theme-tomorrow_night.js"></script>
+        <script src="../../ace.js"></script>
+        <script src="../../mode-rust.js"></script>
+        <script src="../../editor.js"></script>
+        <script src="../../theme-dawn.js"></script>
+        <script src="../../theme-tomorrow_night.js"></script>
 
-        <script src="../elasticlunr.min.js"></script>
-        <script src="../mark.min.js"></script>
-        <script src="../searcher.js"></script>
+        <script src="../../elasticlunr.min.js"></script>
+        <script src="../../mark.min.js"></script>
+        <script src="../../searcher.js"></script>
 
-        <script src="../clipboard.min.js"></script>
-        <script src="../highlight.js"></script>
-        <script src="../book.js"></script>
+        <script src="../../clipboard.min.js"></script>
+        <script src="../../highlight.js"></script>
+        <script src="../../book.js"></script>
 
         <!-- Custom JS scripts -->
 

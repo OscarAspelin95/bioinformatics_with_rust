@@ -39,4 +39,4 @@ Finally, I just want to give a quick shoutout to some awesome bioinformatic tool
 - [Sylph](https://github.com/bluenote-1577/sylph) - Metagenomic classification tool.
 - [NextClade](https://github.com/nextstrain/nextclade) - Virus specific tool for alignment, SNP calling, clade assignment and more.
 
-For a more exhaustive list, visit [resources](../suffix/3_awesome_bioinformatic_tools.md).
+For a more exhaustive list, see [resources](../suffix/3_awesome_bioinformatic_tools.md).

@@ -262,7 +262,7 @@ subject ATCG---
 </pre>
 <h2 id="implementation"><a class="header" href="#implementation">Implementation</a></h2>
 <p>Here is a very naive implementation of the Levenshtein distance. There are many, many ways to optimize this, however it is out of scope in this book.</p>
-<pre><pre class="playground"><code class="language-rust editable edition2021">#[derive(Clone, Copy)]
+<pre><pre class="playground"><code class="language-rust edition2021">#[derive(Clone, Copy)]
 enum AlignmentType {
     Match,
     Mismatch,
@@ -282,7 +282,6 @@ fn print_array(array: &amp;Vec&lt;Vec&lt;usize&gt;&gt;) {
     println!("\n");
 }
 
-/// We could modify these if we want.
 fn get_alignment_cost(aln: AlignmentType) -&gt; usize {
     match aln {
         AlignmentType::Match =&gt; 0,

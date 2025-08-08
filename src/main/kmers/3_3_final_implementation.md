@@ -98,4 +98,4 @@ fn main(){
 }
 ```
 
-When we run the code, we see that "AAAAAA" and "TTTTTT" generates the same canonical kmers which is expected since they are reverse complements of each other.
+When we run the code, we see that `AAAAAA` and `TTTTTT` generates the same canonical kmers which is expected since they are reverse complements of each other.

@@ -2,27 +2,25 @@
 
 As mentioned in a previous section, we also need to handle the reverse complement. How do we do this in an efficient way? We can insert the reverse complement from the left side instead of the right, ensuring the correct order. To insert from the left side, we first need to shift the two least significant bits, our nucleotide, to the upper most significant bits of our kmer. Then, we shift our storage to the right by 2 and finally apply BitOR to insert.
 
-The following example shows how to insert a nucleotide A whilst using kmer size 4.
-<pre>
-# Define variables.
+The following pseudo-code shows how to insert a nucleotide A whilst using `k=4`.
+```
+// Define variables.
 k = 4
 nt      =   0b0000000000 # A
 nt_rev  =   0b0000000011 # T (reverse complement)
-storage =   0b0000000000 # example u10 for storage.
+storage =   0b0000000000
 
-# Shift reverse nucleotide to the upper two bits of the kmer size.
+// Shift reverse nucleotide to the upper two bits of the kmer size.
 0b0000000011 << (k-1) * 2 = 0b0011000000
 
-# Shift storage to the right to make room (empty at the moment).
+// Shift storage to the right to make room (empty at the moment).
 0b0000000000 >> 2 = 0b0000000000
 
-# Insert.
+// Insert.
 0b0000000000 | 0b0011000000 = 0b0011000000
-</pre>
+```
 
-<br>
-
-The following code is an example of inserting the reverse complement of "AGT" into a u32. We'll make it easy for us and use a kmer size of 3 to exactly fit the entire reverse complement into the kmer.
+The following code is an example of inserting the reverse complement of `AGT` into a `u32`. We'll make it easy for us and use a `k=3` to exactly fit the entire reverse complement into the kmer.
 
 ```rust
 fn main() {
@@ -59,4 +57,4 @@ Run the code and inspect the result. Our output is:
          A  C  T
 
 </pre>
-Which is the reverse complement of "AGT", inserted in the correct order.
+Which is the reverse complement of `AGT`, inserted in the correct order.

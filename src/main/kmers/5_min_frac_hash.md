@@ -5,7 +5,7 @@ Essentially, we only add two steps to our canonical kmer pipeline:
 - We hash our canonical kmer using an appropriate hashing function.
 - We add our hashed kmer only if its hash is less than or equal to a defined threshold.
 
-We define our threshold as the maximum possible integer value (in our case we'll use u64), divided by a downsampling factor.
+We define our threshold as the maximum possible integer value (in our case we'll use `u64`), divided by a downsampling factor.
 
 
 ```rust
@@ -112,7 +112,7 @@ fn kmerize(k: usize, ds_factor: u64, nt_string: &[u8]) -> HashSet<u64> {
     return canonical_hashes;
 }
 
-fn print_canonical_hashes(canonical_hashes: &HashSet<u64>){
+fn print_canonical_hashes(canonical_hashes: &HashSet<u64>) {
     for canonical_hash in canonical_hashes{
         println!("{canonical_hash}");
     }
