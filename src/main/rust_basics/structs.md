@@ -42,7 +42,7 @@ fn main() {
     println!("Nanopore: {:?}", nanopore_parameters);
 }
 ```
-This works, but might not be very idiomatic. Another way is to leverage Rust's type traits by implementing *from*. By specifying our parameter variable as type *Parameters*, we can call .into() directly.
+This works, but might not be very idiomatic. Another way is to leverage Rust's type traits by implementing `from`. By specifying our variable as type `Parameters`, we can call `.into()` directly.
 
 ```rust
 # enum Platform {
@@ -59,15 +59,15 @@ This works, but might not be very idiomatic. Another way is to leverage Rust's t
 # }
 // [...]
 
-impl From<Platform> for Parameters{
-    fn from(platform: Platform) -> Self{
+impl From<Platform> for Parameters {
+    fn from(platform: Platform) -> Self {
         match platform{
-            Platform::PacBio => Self{
+            Platform::PacBio => Self {
                 min_len: 100,
                 max_len: 1000,
                 min_phred: 20,
             },
-            Platform::Nanopore => Self{
+            Platform::Nanopore => Self {
                 min_len: 200,
                 max_len: 900,
                 min_phred: 15

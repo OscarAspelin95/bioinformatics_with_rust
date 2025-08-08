@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Data Types - Bioinformatics with Rust</title>
+        <title>Enums - Bioinformatics with Rust</title>
 
 
         <!-- Custom HTML head -->
@@ -167,35 +167,99 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="data-types"><a class="header" href="#data-types">Data Types</a></h1>
-<p>Rust has a lot of <a href="https://doc.rust-lang.org/book/ch03-02-data-types.html">data types</a>. Here is a rundown of the ones I use most often:</p>
-<div class="table-wrapper"><table><thead><tr><th>Data type</th><th>Rust type</th><th>Example</th></tr></thead><tbody>
-<tr><td>boolean</td><td><code>bool</code></td><td><code>let x: bool = true;</code></td></tr>
-<tr><td>string</td><td><code>String</code></td><td><code>let x: String = "Hello".to_string();</code></td></tr>
-<tr><td>string slice</td><td><code>&amp;str</code></td><td><code>let x: &amp;str = "Hello"</code></td></tr>
-<tr><td>array</td><td><code>[type; len]</code></td><td><code>let x: [usize; 3] = [1, 2, 3];</code></td></tr>
-<tr><td>vec</td><td><code>Vec&lt;type&gt;</code></td><td><code>let x: Vec&lt;usize&gt; = vec![1, 2, 3];</code></td></tr>
-<tr><td>byte slice</td><td><code>&amp;[u8]</code></td><td><code>let x: &amp;[u8] = b"Hello";</code></td></tr>
-<tr><td>unsigned 32-bit int</td><td><code>u32</code></td><td><code>let x: u32 = 0;</code></td></tr>
-<tr><td>unsigned 64-bit int</td><td><code>u64</code></td><td><code>let x: u64 = 0;</code></td></tr>
-<tr><td>unsigned (32 or 64)<sup class="footnote-reference" id="fr-note-1"><a href="#footnote-note">1</a></sup>-bit int</td><td><code>usize</code></td><td><code>let x: usize = 0;</code></td></tr>
-<tr><td>32-bit float</td><td><code>f32</code></td><td><code>let x: f32 = 0.0</code>;</td></tr>
-<tr><td>64-bit float</td><td><code>f64</code></td><td><code>let x: f64 = 0.0</code>;</td></tr>
-</tbody></table>
-</div><hr>
-<ol class="footnote-definition"><li id="footnote-note">
-<p>Depends on computer architecture. <a href="#fr-note-1">↩</a></p>
-</li>
-</ol>
+                        <h1 id="enums"><a class="header" href="#enums">Enums</a></h1>
+<p>Rust enums are awesome and also extremely useful, especially in match statements. Assume we have implemented three different alignment functions: local, semi-global and global. We can use an enum as input to decide what alignment function to run for a given query and subject:</p>
+<pre><pre class="playground"><code class="language-rust edition2021">enum AlignmentType {
+    Local,
+    SemiGlobal,
+    Global,
+}
+
+#[allow(unused)]
+fn local_alignment(query: &amp;str, subject: &amp;str){
+    println!("Running local alignment...");
+}
+
+#[allow(unused)]
+fn semi_global_alignment(query: &amp;str, subject: &amp;str){
+    println!("Running semi-global alignment...");
+}
+
+#[allow(unused)]
+fn global_alignment(query: &amp;str, subject: &amp;str){
+    println!("Running global alignment...");
+}
+
+
+fn align(query: &amp;str, subject: &amp;str, alignment_type: AlignmentType) {
+    match alignment_type {
+        AlignmentType::Local =&gt; local_alignment(query, subject),
+        AlignmentType::SemiGlobal =&gt; semi_global_alignment(query, subject),
+        AlignmentType::Global =&gt; global_alignment(query, subject),
+    }
+}
+
+fn main(){
+    align("ATCG", "ATCG", AlignmentType::Local);
+    align("ATCG", "ATCG", AlignmentType::SemiGlobal);
+    align("ATCG", "ATCG", AlignmentType::Global);
+}</code></pre></pre>
+<p>Another use case of enums could be if we have an alignment between two sequences for which we want to calculate an alignment score. We could create an alignment type enum that is associated with increasing or decreasing an alignment score.</p>
+<pre><pre class="playground"><code class="language-rust edition2021">enum AlignmentCost {
+    Match(usize),
+    Mismatch(usize),
+    DeletionQuery(usize),
+    DeletionSubject(usize),
+}
+
+fn update_score(score: &amp;mut i32, alignment_cost: AlignmentCost) {
+    match alignment_cost {
+        AlignmentCost::Match(c) =&gt; {
+            *score += c as i32;
+        }
+        AlignmentCost::Mismatch(c) =&gt; {
+            *score -= c as i32;
+        }
+        AlignmentCost::DeletionQuery(c) =&gt; {
+            *score -= c as i32;
+        }
+        AlignmentCost::DeletionSubject(c) =&gt; {
+            *score -= c as i32;
+        }
+    };
+}
+
+fn main() {
+    let mut score: i32 = 0;
+    println!("Initial score: {score}");
+
+    // Match will increase the score.
+    update_score(&amp;mut score, AlignmentCost::Match(4));
+    println!("Score after match: {score}");
+
+    // Mismatch will decrease the score.
+    update_score(&amp;mut score, AlignmentCost::Mismatch(1));
+    println!("Score after mismatch: {score}");
+
+    // Query deletion will decrease the score.
+    update_score(&amp;mut score, AlignmentCost::DeletionQuery(1));
+    println!("Score after query deletion: {score}");
+
+    // Subject deletion will decrease the score.
+    update_score(&amp;mut score, AlignmentCost::DeletionSubject(1));
+    println!("Score after subject deletion: {score}");
+}</code></pre></pre>
+<p>This is a pretty silly example, but showcases how enums are very convenient for handling and taking action based on a specific set of cases.</p>
+
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../../main/rust_basics/macros.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../../main/rust_basics/functions.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../../main/rust_basics/strings.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../../main/rust_basics/structs.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -205,11 +269,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../../main/rust_basics/macros.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../../main/rust_basics/functions.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../../main/rust_basics/strings.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../../main/rust_basics/structs.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Enums - Bioinformatics with Rust</title>
+        <title>Control Flow - Bioinformatics with Rust</title>
 
 
         <!-- Custom HTML head -->
@@ -167,98 +167,39 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="enums"><a class="header" href="#enums">Enums</a></h1>
-<p>Rust enums are awesome and also extremely useful, especially in match statements. Assume we have implemented three different alignment functions: local, semi-global and global. We can use an enum as input to decide what alignment function to run for a given query and subject:</p>
-<pre><pre class="playground"><code class="language-rust edition2021">enum AlignmentType{
-    Local,
-    SemiGlobal,
-    Global,
-}
+                        <h1 id="control-flow"><a class="header" href="#control-flow">Control Flow</a></h1>
+<p>An <code>if</code> statement works very similar to other languages. E.g.,</p>
+<pre><pre class="playground"><code class="language-rust edition2021">fn main() {
+    let x: usize = 5;
 
-#[allow(unused)]
-fn local_alignment(query: &amp;str, subject: &amp;str){
-    println!("Running local alignment...");
-}
-
-#[allow(unused)]
-fn semi_global_alignment(query: &amp;str, subject: &amp;str){
-    println!("Running semi-global alignment...");
-}
-#[allow(unused)]
-fn global_alignment(query: &amp;str, subject: &amp;str){
-    println!("Running global alignment...");
-}
-
-
-fn align(query: &amp;str, subject: &amp;str, alignment_type: AlignmentType){
-    match alignment_type{
-        AlignmentType::Local =&gt; local_alignment(query, subject),
-        AlignmentType::SemiGlobal =&gt; semi_global_alignment(query, subject),
-        AlignmentType::Global =&gt; global_alignment(query, subject),
+    if x &gt;= 10 {
+        println!("{x} is large");
     }
-}
-
-fn main(){
-    align("ATCG", "ATCG", AlignmentType::Local);
-    align("ATCG", "ATCG", AlignmentType::SemiGlobal);
-    align("ATCG", "ATCG", AlignmentType::Global);
+    else {
+        println!("{x} is small");
+    }
 }</code></pre></pre>
-<p>Another use case of enums could be if we have an alignment between two sequences for which we want to calculate an alignment score. We could create an alignment type enum that is associated with increasing or decreasing an alignment score.</p>
-<pre><pre class="playground"><code class="language-rust edition2021">enum AlignmentCost {
-    Match(usize),
-    Mismatch(usize),
-    DeletionQuery(usize),
-    DeletionSubject(usize),
-}
+<p>A <a href="https://doc.rust-lang.org/book/ch06-02-match.html"><code>match</code></a> statement works similarly to a <code>switch</code> statement in C and C++ and needs to be exhaustive.</p>
+<pre><pre class="playground"><code class="language-rust edition2021">fn main() {
+    let x: usize = 1;
 
-fn update_score(score: &amp;mut i32, alignment_cost: AlignmentCost) {
-    match alignment_cost {
-        AlignmentCost::Match(c) =&gt; {
-            *score += c as i32;
-        }
-        AlignmentCost::Mismatch(c) =&gt; {
-            *score -= c as i32;
-        }
-        AlignmentCost::DeletionQuery(c) =&gt; {
-            *score -= c as i32;
-        }
-        AlignmentCost::DeletionSubject(c) =&gt; {
-            *score -= c as i32;
-        }
-    };
-}
-
-fn main() {
-    let mut score: i32 = 0;
-    println!("Initial score: {score}");
-
-    // Match will increase the score.
-    update_score(&amp;mut score, AlignmentCost::Match(4));
-    println!("Score after match: {score}");
-
-    // Mismatch will decrease the score.
-    update_score(&amp;mut score, AlignmentCost::Mismatch(1));
-    println!("Score after mismatch: {score}");
-
-    // Query deletion will decrease the score.
-    update_score(&amp;mut score, AlignmentCost::DeletionQuery(1));
-    println!("Score after query deletion: {score}");
-
-    // Subject deletion will decrease the score.
-    update_score(&amp;mut score, AlignmentCost::DeletionSubject(1));
-    println!("Score after subject deletion: {score}");
+    match x {
+        1 =&gt; println!("x is 1"),
+        2 =&gt; println!("x is 2"),
+        _ =&gt; println!("x is something else"),
+    }
 }</code></pre></pre>
-<p>This is a pretty silly example, but showcases how enums are very convenient for handling and taking action based on a specific set of cases.</p>
+<p>Rust supports relatively advanced <a href="https://doc.rust-lang.org/book/ch19-03-pattern-syntax.html">pattern matching</a> which is extremely useful.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../../main/rust_tips_and_tricks/2_error_handling.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../../main/rust_basics/vec.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../../main/rust_tips_and_tricks/4_structs.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../../main/rust_basics/references.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -268,11 +209,11 @@ fn main() {
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../../main/rust_tips_and_tricks/2_error_handling.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../../main/rust_basics/vec.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../../main/rust_tips_and_tricks/4_structs.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../../main/rust_basics/references.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

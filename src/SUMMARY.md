@@ -16,23 +16,19 @@
     - [Keywords](./main/rust_basics/3_keywords.md)
     - [Macros](./main/rust_basics/macros.md)
     - [Data Types](./main/rust_basics/4_data_types.md)
-    - [Strings]()
-    - [Vec]()
-    - [Enums]()
-    - [Structs]()
+    - [Strings](./main/rust_basics/strings.md)
+    - [Array](./main/rust_basics/array.md)
+    - [Vec](./main/rust_basics/vec.md)
+    - [Control Flow](./main/rust_basics/control_flow.md)
+    - [References](./main/rust_basics/references.md)
+    - [Functions](./main/rust_basics/functions.md)
+    - [Enums](./main/rust_basics/enums.md)
+    - [Structs](./main/rust_basics/structs.md)
+    - [Option and Result](./main/rust_basics/option_and_result.md)
+    - [Error Handling](./main/rust_basics/error_handling.md)
     - [Ownership and Borrowing]()
     - [Lifetimes]()
-    - [Error Handling]()
-    - [Concurrency]()
-
-
----
-
-- [Rust Tips And Tricks](./main/rust_tips_and_tricks/1_introduction.md)
-    - [Error Handling](./main/rust_tips_and_tricks/2_error_handling.md)
-    - [Enums](./main/rust_tips_and_tricks/3_enums.md)
-    - [Structs](./main/rust_tips_and_tricks/4_structs.md)
-    - [Concurrency](./main/rust_tips_and_tricks/5_concurrency.md)
+    - [Concurrency](./main/rust_basics/concurrency.md)
 
 ---
 
