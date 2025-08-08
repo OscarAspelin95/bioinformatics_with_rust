@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Lifetimes - Bioinformatics with Rust</title>
+        <title>Data Types - Bioinformatics with Rust</title>
 
 
         <!-- Custom HTML head -->
@@ -167,35 +167,35 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="lifetimes"><a class="header" href="#lifetimes">Lifetimes</a></h1>
-<p>The concept of <a href="https://doc.rust-lang.org/rust-by-example/scope/lifetime.html">lifetimes</a> is related to for how long variables are valid. As an example, we'll create a struct with a single field <code>my_string</code>, which is of type <code>&amp;str</code>.</p>
-<pre><pre class="playground"><code class="language-rust edition2021">struct MyStruct {
-    my_string: &amp;str
-}
-
-fn main() {
-    let my_struct = MyStruct {my_string: "Hello, world!"};
-}</code></pre></pre>
-<p>Try running the code and see what happens. We get a compiler error, stating that we need a lifetime parameter. Why is this? <code>my_string</code> is of type <code>&amp;str</code>, which means that <code>MyStruct</code> does not own it. This also means <code>MyStruct</code> does not control when <code>my_string</code> is no longer valid. This is dangerous, because if <code>my_string</code> would go out of scope and we subsequently try to read its value in <code>MyStruct</code>, we'd be in trouble. The Rust compiler needs some kind of assurance that <code>MyStruct</code> will be valid at least for as long as <code>my_string</code>. This is what lifetimes are for.</p>
-<p>Lifetimes are signified with a <code>'</code>, followed by a name. E.g., <code>'a</code> would be a lifetime called <code>a</code>. To make the code run, we'll bind <code>MyStruct</code> and <code>my_string</code> to the same lifetime, telling the Rust compiler that <code>MyStruct</code> will live for at least as long as <code>my_string</code>.</p>
-<pre><pre class="playground"><code class="language-rust edition2021">struct MyStruct&lt;'a&gt; {
-    my_string: &amp;'a str
-}
-
-fn main() {
-    let my_struct = MyStruct {my_string: "Hello, world!"};
-}</code></pre></pre>
-<p>Note that lifetimes also apply to functions and other objects!</p>
-
+                        <h1 id="data-types"><a class="header" href="#data-types">Data Types</a></h1>
+<p>Rust has a lot of <a href="https://doc.rust-lang.org/book/ch03-02-data-types.html">data types</a>. Here is a rundown of the ones I use most often:</p>
+<div class="table-wrapper"><table><thead><tr><th>Data type</th><th>Rust type</th><th>Example</th></tr></thead><tbody>
+<tr><td>boolean</td><td><code>bool</code></td><td><code>let x: bool = true;</code></td></tr>
+<tr><td>string</td><td><code>String</code></td><td><code>let x: String = "Hello".to_string();</code></td></tr>
+<tr><td>string slice</td><td><code>&amp;str</code></td><td><code>let x: &amp;str = "Hello";</code></td></tr>
+<tr><td>array</td><td><code>[type; len]</code></td><td><code>let x: [usize; 3] = [1, 2, 3];</code></td></tr>
+<tr><td>vec</td><td><code>Vec&lt;type&gt;</code></td><td><code>let x: Vec&lt;usize&gt; = vec![1, 2, 3];</code></td></tr>
+<tr><td>byte slice</td><td><code>&amp;[u8]</code></td><td><code>let x: &amp;[u8] = b"Hello";</code></td></tr>
+<tr><td>unsigned 32-bit int</td><td><code>u32</code></td><td><code>let x: u32 = 0;</code></td></tr>
+<tr><td>unsigned 64-bit int</td><td><code>u64</code></td><td><code>let x: u64 = 0;</code></td></tr>
+<tr><td>unsigned (32 or 64)<sup class="footnote-reference" id="fr-note-1"><a href="#footnote-note">1</a></sup>-bit int</td><td><code>usize</code></td><td><code>let x: usize = 0;</code></td></tr>
+<tr><td>32-bit float</td><td><code>f32</code></td><td><code>let x: f32 = 0.0</code>;</td></tr>
+<tr><td>64-bit float</td><td><code>f64</code></td><td><code>let x: f64 = 0.0</code>;</td></tr>
+</tbody></table>
+</div><hr>
+<ol class="footnote-definition"><li id="footnote-note">
+<p>Depends on computer architecture. <a href="#fr-note-1">↩</a></p>
+</li>
+</ol>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../../main/rust_basics/ownership_and_borrowing.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../../main/rust_basics/macros.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../../main/rust_basics/concurrency.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../../main/rust_basics/strings.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -205,11 +205,11 @@ fn main() {
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../../main/rust_basics/ownership_and_borrowing.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../../main/rust_basics/macros.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../../main/rust_basics/concurrency.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../../main/rust_basics/strings.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

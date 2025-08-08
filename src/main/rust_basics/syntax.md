@@ -4,7 +4,7 @@ The Rust syntax is similar to other languages such as C and C++. However, here i
 ### Variable declaration
 Rust is a statically typed language, which means that the type of a variable needs to be known, either explicitly or implicitly. The basic syntax for variable declaration is `let name: type = value;`. E.g.,
 ```rust
-fn main(){
+fn main() {
     let x: usize = 0; // unsigned integer.
     let x: &str = "Hello, world!"; // string slice.
     let x: String = "Hello, world!".to_string(); // string.
@@ -16,14 +16,14 @@ fn main(){
 ### Scopes
 `{` and `}` define scopes. E.g.,
 ```rust
-fn main(){ // start of function scope.
+fn main() { // start of function scope.
     println!("Hello, world!");
 } // end of function scope.
 ```
 
 We can also have nested scopes. E.g.,
 ```rust
-fn main(){
+fn main() {
     let x: &str = "Hello, world!";
 
     {
@@ -36,8 +36,20 @@ Scopes are important for ownership and lifetimes, which will be covered later on
 ### Statement deliminators
 `;` is used for statement deliminators. E.g.,
 ```rust
-fn main(){
+fn main() {
     println!("Hello, world!"); // Defines the println! statement.
 } // does not need a ";".
 ```
 Note that scopes do not need a `;` terminator.
+
+### Comments
+`//` is used for code comments.<br>
+`///` is used for docstrings.
+
+```rust
+/// This is a docstring.
+fn main() {
+    // This is a comment.
+    println!("Hello, world");
+}
+```

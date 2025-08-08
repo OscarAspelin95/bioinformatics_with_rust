@@ -1,0 +1,26 @@
+- [ ] Updates for existing chapters:
+    - [x] Rust Basics.
+    - [ ] Alignment:
+        - [ ] Create a simple multiple sequence aligner?
+    - [ ] Kmers:
+        - [ ] Syncmers
+
+- [ ] Suggestions for **new** chapters:
+    - [ ] Amplicon:
+        - [ ] In Silico PCR.
+        - [ ] Cluster reads similar to isONclust3.
+        - [ ] Classification.
+    - [ ] Aminoacids:
+        - [ ] Translation.
+    - [ ] Assembly:
+        - [ ] The basics of assembly.
+        - [ ] Build a De-Bruijn graph.
+        - [ ] Build an overlap graph.
+        - [ ] Eularian walk?
+        - [ ] Section about the difficulties and challenges with assembly.
+    - [ ] Pipelines (how do we solve dependencies in mdbook?):
+        - [ ] Basic BLAST pipeline.
+        - [ ] Basic read alignment pipeline.
+        - [ ] Basic assembly pipeline.
+        - [ ] Metagenomic classification with sylph.
+        - [ ] SINTAX classifier in Rust.

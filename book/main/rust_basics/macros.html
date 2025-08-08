@@ -168,30 +168,54 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="macros"><a class="header" href="#macros">Macros</a></h1>
+<p>Macros should have a decicated book to themselves. Rust supports both declarative and procedural <a href="https://doc.rust-lang.org/book/ch20-05-macros.html">macros</a>, which are either built-in or user created. In this book, we'll cover some of the most common build-in macros.</p>
+<p>For more information about Rust macros, also see <a href="https://lukaswirth.dev/tlborm/">The Little Book of Rust Macros</a></p>
+<h2 id="declarative-macros"><a class="header" href="#declarative-macros">Declarative macros</a></h2>
 <p><a href="https://doc.rust-lang.org/std/macro.println.html"><code>println!</code></a> - prints to stdout. Requires a formatter depending on the data type. E.g.,</p>
-<pre><pre class="playground"><code class="language-rust edition2021">fn main(){
+<pre><pre class="playground"><code class="language-rust edition2021">fn main() {
     println!("This is a string");
     println!("This is an int: {}", 5);
     println!("{:?}", vec!["This", "is", "a", "vec"]); // {:?} means debug mode.
 }</code></pre></pre>
+<p><a href="https://doc.rust-lang.org/std/macro.vec.html"><code>vec!</code></a> - creates a <code>Vec</code> based on the provided input.</p>
+<pre><pre class="playground"><code class="language-rust edition2021">fn main() {
+    let x: Vec&lt;usize&gt; = vec![1, 2, 3, 4, 5];
+    println!("{:?}", x);
+}</code></pre></pre>
+<p><a href="https://doc.rust-lang.org/rust-by-example/std/panic.html"><code>panic!</code></a> - causes the program to exit and starts unwinding the stack.</p>
+<pre><pre class="playground"><code class="language-rust edition2021">fn main() {
+    panic!("This will exit the program!")
+}</code></pre></pre>
 <p><a href="https://doc.rust-lang.org/std/macro.assert.html"><code>assert!</code></a> - runtime assert that a boolean expression evaluates to <code>true</code>. E.g.,</p>
-<pre><pre class="playground"><code class="language-rust edition2021">fn main(){
+<pre><pre class="playground"><code class="language-rust edition2021">fn main() {
     assert!(5 &lt; 6);
 }</code></pre></pre>
 <p><a href="https://doc.rust-lang.org/std/macro.assert_eq.html"><code>assert_eq!</code></a> - runtime equality assert. E.g.,</p>
-<pre><pre class="playground"><code class="language-rust edition2021">fn main(){
+<pre><pre class="playground"><code class="language-rust edition2021">fn main() {
     assert_eq!(6, 5 + 1);
+}</code></pre></pre>
+<h2 id="declarative-macros-1"><a class="header" href="#declarative-macros-1">Declarative macros</a></h2>
+<p>Are divided into three categories, all of which are outside the scope of this book. Regardless, they are very handy for deriving traits, such as <code>Debug</code>. As an example, assume we've created a <code>Struct</code> that we'd want to be able to print to stdout using <code>println!</code>. In this case, we need use derive the <code>Debug</code> trait through <code>#[derive(Debug)]</code>.</p>
+<pre><pre class="playground"><code class="language-rust editable edition2021">#[derive(Debug)] // Try commenting out this line!
+struct MyStruct{
+    my_vec: Vec&lt;usize&gt;,
+}
+
+fn main() {
+    let my_struct = MyStruct { my_vec: vec![1, 2, 3, 4, 5] };
+
+    println!("{:?}", my_struct);
 }</code></pre></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../../main/rust_basics/3_keywords.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../../main/rust_basics/keywords.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../../main/rust_basics/4_data_types.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../../main/rust_basics/data_types.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -201,11 +225,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../../main/rust_basics/3_keywords.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../../main/rust_basics/keywords.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../../main/rust_basics/4_data_types.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../../main/rust_basics/data_types.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
