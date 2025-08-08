@@ -178,11 +178,11 @@
 <li><code>T</code> =&gt; <code>0b11</code> (3 in base 10)</li>
 </ul>
 <h3 id="bit-shift"><a class="header" href="#bit-shift">Bit shift</a></h3>
-<p>A <em>left shift</em> is defined as an operation in which the bits in a binary number are shifted to the left. The most significant bit (leftmost) is lost, and the least significant bit (righmost) is shifted after which a zero is added.</p>
+<p>A <code>left shift</code> is defined as an operation in which the bits in a binary number are shifted to the left. The most significant bit (leftmost) is lost, and the least significant bit (righmost) is shifted after which a zero is added.</p>
 <ul>
 <li>Example: <code>0010 &lt;&lt; 1 = 0100</code></li>
 </ul>
-<p>A <em>right shift</em> does the opposite.</p>
+<p>A <code>right shift</code> does the opposite.</p>
 <ul>
 <li>Example: <code>0100 &gt;&gt; 1 = 0010</code></li>
 </ul>
@@ -195,12 +195,12 @@
 }</code></pre></pre>
 <p>A left shift by one is equivalent to multiplying by 2. It make sense by considering 10-based numbers. Left shifting the number 10 by one results in 100, which is equivalent to multiplying by 10. The same is true for binary numbers.</p>
 <h3 id="bitor"><a class="header" href="#bitor">BitOR</a></h3>
-<p>The bitor operation (usually denoted with a pipe character "|") applies the OR operation to two binary numbers. Assume we want to insert a T (0b11) into an integer with value 0b00. We apply the bitor operation for this:</p>
-<pre><code>0b00 # Storage.
+<p>The bitor operation (usually denoted with a pipe character <code>|</code>) applies the OR operation to two binary numbers. Assume we want to insert a <code>T</code> (<code>0b11</code>) into an integer with value <code>0b00</code>. We apply the bitor operation for this:</p>
+<pre><code>0b00 // Storage.
 bitor
-0b11 # T.
+0b11 // T.
 =
-0b11 # Result.
+0b11 // Result.
 </code></pre>
 <p>because applying the OR bitwise, we'll get 0b(0 OR 1)(0 OR 1) = 0b11</p>
 <pre><pre class="playground"><code class="language-rust edition2021">fn main() {
@@ -214,7 +214,7 @@ bitor
     assert_eq!(0b00 | 0b11, 0b11);
 }</code></pre></pre>
 <h3 id="bit-masks"><a class="header" href="#bit-masks">Bit masks</a></h3>
-<p>Bit masks can be used to manipulate a binary number certain ways. In our context, we'll use it to mask certain parts of our storage integer to ensure proper kmer length. Say we have inserted three Gs (0b101010), but we want to "mask" the upper two bits (the "oldest" G) because our kmer size is 2. Masking the upper two bits is the same as saying we only want to keep the lower 4 bits (two Gs).</p>
+<p>Bit masks can be used to manipulate a binary number certain ways. In our context, we'll use it to mask certain parts of our storage integer to ensure proper kmer length <code>k</code>. Say we have inserted three Gs <code>0b101010</code>, but we want to "mask" the upper two bits (the "oldest" <code>G</code>) because <code>k=2</code>. Masking the upper two bits is the same as saying we only want to keep the lower 4 bits (two Gs).</p>
 <p>For this, we'll use the AND operator, which only returns 1 if both bits at a given position in our numbers are 1. This way, we can use 1 for every bit we want to keep, and 0 for the rest.</p>
 <pre><pre class="playground"><code class="language-rust edition2021">fn main() {
     // Only keep the lower 4 bits, mask the rest (e.g., set to zero).

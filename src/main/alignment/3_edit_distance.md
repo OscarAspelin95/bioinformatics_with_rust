@@ -110,7 +110,7 @@ Finally, it also makes sense to initialize a starting position outside of the qu
 Here is a very naive implementation of the Levenshtein distance. There are many, many ways to optimize this, however it is out of scope in this book.
 
 
-```rust,editable
+```rust
 #[derive(Clone, Copy)]
 enum AlignmentType {
     Match,
@@ -131,7 +131,6 @@ fn print_array(array: &Vec<Vec<usize>>) {
     println!("\n");
 }
 
-/// We could modify these if we want.
 fn get_alignment_cost(aln: AlignmentType) -> usize {
     match aln {
         AlignmentType::Match => 0,

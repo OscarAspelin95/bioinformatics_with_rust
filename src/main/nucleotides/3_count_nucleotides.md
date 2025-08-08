@@ -4,7 +4,7 @@ We'll start of with something relatively easy - counting nucleotides. We'll crea
 ```rust
 use std::collections::HashMap;
 
-fn count_nucleotides(seq: &[u8]){
+fn count_nucleotides(seq: &[u8]) {
     let mut map: HashMap<&u8, usize> = HashMap::new();
 
     // Iterate over each nucleotide.

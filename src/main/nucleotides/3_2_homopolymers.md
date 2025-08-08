@@ -11,7 +11,7 @@ In the code-snippet below, we implement a simple function for identifying homopo
 
 
 ```rust
-fn find_homopolymers(seq: &[u8], min_hp_len: usize) -> Vec<&[u8]>{
+fn find_homopolymers(seq: &[u8], min_hp_len: usize) -> Vec<&[u8]> {
     let mut homopolymers: Vec<&[u8]> = Vec::new();
 
     let seq_len = seq.len();
@@ -44,7 +44,7 @@ fn find_homopolymers(seq: &[u8], min_hp_len: usize) -> Vec<&[u8]>{
     return homopolymers
 }
 
-fn main(){
+fn main() {
     // Find all homopolymers of length >= 5.
     assert_eq!(find_homopolymers(b"AAAAA", 5), vec![b"AAAAA"]);
 

@@ -43,14 +43,12 @@ There are many different ways to represent nucleotide sequences in a programming
 - `&[u8]` (byte slice).
 - Binary.
 
-All of these will be covered in further detail, but here is a short code snippet with examples.
-
 ```rust
 /// Assume we want to represent the sequence ATCG.
-fn main(){
-  let nt_seq_string: String = "ATCG".to_string(); // String.
-  let nt_seq_str: &str = "ATCG"; // String (slice).
-  let nt_seq_byte_slice: &[u8] = b"ATCG"; // Byte slice.
+fn main() {
+  let nt_seq_string: String = "ATCG".to_string();
+  let nt_seq_str: &str = "ATCG";
+  let nt_seq_byte_slice: &[u8] = b"ATCG";
   let nt_seq_binary: u8 = 0b00110110; // Binary, where A = 00, T = 11, C = 01 and G = 10.
 
   println!("{}", nt_seq_string);

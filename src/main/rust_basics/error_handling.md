@@ -12,7 +12,7 @@ There are different ways of handling errors, some of which are listed below:
 
 - [`unwrap`](https://doc.rust-lang.org/rust-by-example/error/option_unwrap.html) - Will panic if an `Option<T>` is `None` or if a `Result<T, Error>` is `Error`.
 
-- `expect` - Is similar to `unwrap` but also displays a provided error message on panic.
+- [`expect`](https://doc.rust-lang.org/std/result/enum.Result.html#method.expect) - Is similar to `unwrap` but also displays a provided error message on panic.
 
 - [`?`](https://doc.rust-lang.org/rust-by-example/std/result/question_mark.html) - Is used for error propagation and can be handled by e.g., upstream functions. This is a very elegant way of handling errors and is preferred over `unwrap` and `expect` in real world appilcations. `?` must always be inside a function that returns the `Result` type.
 

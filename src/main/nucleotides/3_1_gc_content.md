@@ -2,7 +2,7 @@
 With the previous section in mind, it is relatively straightforward to implement a function that calculates the GC-content for a given nucleotide sequence.
 
 ```rust
-fn gc_content(nt_seq: &[u8]) -> f32{
+fn gc_content(nt_seq: &[u8]) -> f32 {
     let gc_count = nt_seq.iter().filter(|&&nt| {
         nt == b'C' || nt == b'G'
     }).count();
@@ -11,7 +11,7 @@ fn gc_content(nt_seq: &[u8]) -> f32{
 
 }
 
-fn main(){
+fn main() {
    assert_eq!(gc_content(b"ATCG"), 0.5);
    assert_eq!(gc_content(b"ATTC"), 0.25);
    assert_eq!(gc_content(b"AAAA"), 0.0);

@@ -26,8 +26,8 @@
     - [Structs](./main/rust_basics/structs.md)
     - [Option and Result](./main/rust_basics/option_and_result.md)
     - [Error Handling](./main/rust_basics/error_handling.md)
-    - [Ownership and Borrowing]()
-    - [Lifetimes]()
+    - [Ownership and Borrowing](./main/rust_basics/ownership_and_borrowing.md)
+    - [Lifetimes](./main/rust_basics/lifetimes.md)
     - [Concurrency](./main/rust_basics/concurrency.md)
 
 ---
