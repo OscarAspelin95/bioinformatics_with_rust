@@ -12,6 +12,7 @@
         - [ ] Classification.
     - [ ] Aminoacids:
         - [ ] Translation.
+        - [ ] Alignment with substitution matrix?
     - [ ] Assembly:
         - [ ] The basics of assembly.
         - [ ] Build a De-Bruijn graph.

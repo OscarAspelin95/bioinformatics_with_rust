@@ -1,5 +1,6 @@
 # Summary
 
+[Bioinformatics With Rust](./prefix/bioinformatics_with_rust.md)
 [Introduction](./prefix/introduction.md)
 [Why Rust?](./prefix/why_rust.md)
 [Prerequisites](./prefix/prerequisites.md)
