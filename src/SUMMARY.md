@@ -28,6 +28,7 @@
     - [Error Handling](./main/rust_basics/error_handling.md)
     - [Ownership and Borrowing](./main/rust_basics/ownership_and_borrowing.md)
     - [Lifetimes](./main/rust_basics/lifetimes.md)
+    - [Iterator Chaining](./main/rust_basics/iterator_chaining.md)
     - [Concurrency](./main/rust_basics/concurrency.md)
 
 ---
