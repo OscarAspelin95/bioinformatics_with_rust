@@ -18,5 +18,5 @@ Welcome to Bioinformatics with Rust! An unofficial book aimed at introducing the
 * Currently, I'm a single person working on this project. If this project grows, I most likely need help from other people. Contributions are welcome!
 
 <div style="display:flex; align-items:center; justify-content:center; margin:50px">
-<img src="assets/rust-bio.jpeg" width="500px" style="border-radius:7px;"/>
+<img src="/assets/rust-bio.jpeg" width="500px" style="border-radius:7px;"/>
 </div>
