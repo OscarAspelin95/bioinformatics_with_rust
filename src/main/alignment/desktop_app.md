@@ -22,4 +22,4 @@ Note that calling the aligner every time either the query or subject has changed
 
 Below is a preview of what the desktop app looks like.
 
-![image](assets/alignment.gif)
+![image](/assets/alignment.gif)
