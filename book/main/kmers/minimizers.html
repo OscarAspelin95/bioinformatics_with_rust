@@ -188,7 +188,7 @@ AAACCC
 </pre>
 <p>Let's consider the first window <code>AAACCC</code>. The possible kmers we can generate in the forward direction are <code>AAA</code>, <code>AAC</code>, <code>ACC</code>, <code>CCC</code>. Out of these, the lexicographically smallest one is AAA and we choose this kmer as this windows minimizer. We then do the same for the remaining windows.</p>
 <p>We can get even more space efficient by storing the minimizers in a hashset, since this removes duplicates. However, this is not suitable if we also want to store information such as the minimizers positions. We also have to take the reverse complement into consideration, similarly to what we did in the bit shift encoding section.</p>
-<p>There are several Rust crates, such as <a href="https://docs.rs/needletail/0.6.3/needletail/">Needletail</a> and <a href="https://docs.rs/bio-seq/latest/bio_seq/">bio-seq</a> that can implement minimizers quite efficiently. In the code snippet below, we just implement a basic a working prototype.</p>
+<p>There are several Rust crates, such as <a href="https://docs.rs/needletail/0.6.3/needletail/">Needletail</a> and <a href="https://docs.rs/bio-seq/latest/bio_seq/">bio-seq</a> that implement minimizers quite efficiently. In the code snippet below, we just implement a minimally viable prototype.</p>
 <pre><pre class="playground"><code class="language-rust edition2021">use std::{cmp::min, vec};
 
 fn reverse(nt: &amp;u8) -&gt; u8 {

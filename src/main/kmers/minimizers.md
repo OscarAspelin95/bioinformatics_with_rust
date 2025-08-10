@@ -22,7 +22,7 @@ Let's consider the first window `AAACCC`. The possible kmers we can generate in 
 
 We can get even more space efficient by storing the minimizers in a hashset, since this removes duplicates. However, this is not suitable if we also want to store information such as the minimizers positions. We also have to take the reverse complement into consideration, similarly to what we did in the bit shift encoding section.
 
-There are several Rust crates, such as [Needletail](https://docs.rs/needletail/0.6.3/needletail/) and [bio-seq](https://docs.rs/bio-seq/latest/bio_seq/) that can implement minimizers quite efficiently. In the code snippet below, we just implement a basic a working prototype.
+There are several Rust crates, such as [Needletail](https://docs.rs/needletail/0.6.3/needletail/) and [bio-seq](https://docs.rs/bio-seq/latest/bio_seq/) that implement minimizers quite efficiently. In the code snippet below, we just implement a minimally viable prototype.
 
 
 ```rust

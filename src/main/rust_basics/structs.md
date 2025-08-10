@@ -1,5 +1,5 @@
 # Structs
-Implementing structs in Rust is a bit different from languages such as Python. In Python, we have the excellent [Pydantic](https://docs.pydantic.dev/latest/) module for data validation and other awesome features. In Rust, we can use something like the [Validify](https://docs.rs/validify/latest/validify/) crate, however in this book we won't bother much with validation.
+Implementing structs in Rust is a bit different from languages such as python. In python, we have the excellent [Pydantic](https://docs.pydantic.dev/latest/) module for data validation and other awesome features. In Rust, we can use something like the [Validify](https://docs.rs/validify/latest/validify/) crate, however in this book we won't bother much with validation.
 
 Pretend we have a fastq parser for filtering and trimming reads. However, we want to change the filtering and trimming parameters based on sequencing platform. Maybe we want different behavior depending on if our data originated from PacBio or Oxford Nanopore. An example of this would be to implement a default function based on a provided platform:
 

@@ -14,8 +14,8 @@ Assembly related:
 - [SPAdes](https://github.com/ablab/spades) [C++] - Genome assembler suitable for Illumina or IonTorrent data.
 
 Variant calling related:
-- [Clair3](https://github.com/HKU-BAL/Clair3) [Python] - Variant caller suitable for Illumina, Oxford Nanopore or PacBio data.
-- [Medaka](https://github.com/nanoporetech/medaka) [Python] - Variant caller and polishing tool specifically for Oxford Nanopore data.
+- [Clair3](https://github.com/HKU-BAL/Clair3) [python] - Variant caller suitable for Illumina, Oxford Nanopore or PacBio data.
+- [Medaka](https://github.com/nanoporetech/medaka) [python] - Variant caller and polishing tool specifically for Oxford Nanopore data.
 - [Freebayes](https://github.com/freebayes/freebayes) [C++] - Variant caller suitable for Illumina and IonTorrent data. Questionable use for Oxford Nanopore data.
 
 Misc:
