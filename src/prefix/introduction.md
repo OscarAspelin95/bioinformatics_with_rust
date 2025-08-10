@@ -16,7 +16,3 @@ Welcome to Bioinformatics with Rust! An unofficial book aimed at introducing the
 * For any issues related to this book, please file a [GitHub issue](https://github.com/OscarAspelin95/bioinformatics_with_rust/issues).
 
 * Currently, I'm a single person working on this project. If this project grows, I most likely need help from other people. Contributions are welcome!
-
-<div style="display:flex; align-items:center; justify-content:center; margin:50px">
-<img src="/assets/rust-bio.jpeg" width="500px" style="border-radius:7px;"/>
-</div>

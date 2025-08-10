@@ -11,6 +11,7 @@ edition = "2021"
 git-repository-url = "https://github.com/OscarAspelin95/bioinformatics_with_rust"
 git-repository-icon = "fa-github"
 mathjax-support = true
+default-theme = "coal"
 
 [output.html.playground]
 editable = true
