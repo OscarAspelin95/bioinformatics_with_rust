@@ -1,4 +1,4 @@
-<img src="https://github.com/OscarAspelin95/bioinformatics_with_rust/blob/main/src/assets/rust-bio-gray.png" style="width: 200px"></img>
+<img src="https://github.com/OscarAspelin95/bioinformatics_with_rust/blob/main/src/assets/rust-bio-gray.png" style="width: 200px; border-radius: 2em;"></img>
 
 
 Welcome to [Bioinformatics with Rust](https://oscaraspelin95.github.io/bioinformatics_with_rust/), an introduction on how to write fast and memory safe bioinformatic applications! The project was created with [mdbook](https://github.com/rust-lang/mdBook), which enables the reader to run and edit Rust code interactively.
