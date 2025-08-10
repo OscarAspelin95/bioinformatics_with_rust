@@ -1,4 +1,3 @@
-
 # Introduction
 Welcome to Bioinformatics with Rust! An unofficial book aimed at introducing the Rust programming language for bioinformatic applications. Before we start:
 
@@ -16,3 +15,6 @@ Welcome to Bioinformatics with Rust! An unofficial book aimed at introducing the
 * For any issues related to this book, please file a [GitHub issue](https://github.com/OscarAspelin95/bioinformatics_with_rust/issues).
 
 * Currently, I'm a single person working on this project. If this project grows, I most likely need help from other people. Contributions are welcome!
+
+<img src="../assets/rust-bio-gray.png" class="logo-gray" style="margin-top: 20px; border-radius: 5em;"/>
+<img src="../assets/rust-bio-blue.png" class="logo-blue" style="margin-top: 20px; border-radius: 5em;"/>

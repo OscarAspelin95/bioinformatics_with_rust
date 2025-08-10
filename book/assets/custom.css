@@ -1,0 +1,25 @@
+.rust,
+.light,
+.coal {
+    .logo-gray {
+        display: inline;
+    }
+
+    .logo-blue {
+        display: none;
+    }
+
+}
+
+.ayu,
+.navy {
+    .logo-gray {
+        display: none;
+    }
+
+    .logo-blue {
+        display: inline;
+    }
+
+
+}
