@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Counting Nucleotides - Bioinformatics with Rust</title>
+        <title>Manipulating - Bioinformatics with Rust</title>
 
 
         <!-- Custom HTML head -->
@@ -168,50 +168,18 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="counting-nucleotides"><a class="header" href="#counting-nucleotides">Counting nucleotides</a></h1>
-<p>We'll start of with something relatively easy - counting nucleotides. We'll create a <code>HashMap</code> for storing the counts of the nucleotides we encounter in the sequence.</p>
-<pre><pre class="playground"><code class="language-rust edition2021">use std::collections::HashMap;
-
-fn count_nucleotides(seq: &amp;[u8]) {
-    let mut map: HashMap&lt;&amp;u8, usize&gt; = HashMap::new();
-
-    // Iterate over each nucleotide.
-    seq.iter().for_each(|nt| match nt {
-        // If we have a canonical nucleotide, we bind it to the variable c.
-        c @ (b'A' | b'C' | b'G' | b'T') =&gt; match map.contains_key(c) {
-            // If nucleotide is already in HashMap, increment its count.
-            true =&gt; {
-                let v = map.get_mut(c).unwrap();
-                *v += 1;
-            }
-            // Otherwise, add it.
-            false =&gt; {
-                map.insert(c, 1);
-            }
-        },
-        _ =&gt; panic!("Invalid nt {nt}"),
-    });
-
-    assert_eq!(map.values().sum::&lt;usize&gt;(), seq.len());
-    println!("{:?}", map);
-}
-
-fn main() {
-    count_nucleotides(b"ATCG");
-    count_nucleotides(b"AAAA");
-}</code></pre></pre>
-<p>Run the code and inspect the output. The resulting HashMap will have the ASCII encoded nucleotides as keys.</p>
-<p>Note that there are lots of alternative solutions and further optimizations we can do. For example, when we input <code>b"AAAA"</code> we see that our <code>HashMap</code> only contains one key, <code>b'A'</code>. One alternative here would be to initialize the <code>HashMap</code> with empty counts for A, T, C and G.</p>
+                        <h1 id="manipulating"><a class="header" href="#manipulating">Manipulating</a></h1>
+<p>The art of manipulating nucleotide sequences has numerous applications. Essentially what is means is somehow changing or modifying the sequence to better fit the application at hand. In this chapter, we'll get acquainted with three different methods: <code>compression</code>, <code>trimming</code> and <code>reverse complement</code>.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../../main/nucleotides/create_nucleotide_sequence.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../../main/nucleotides/entropy.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../../main/nucleotides/gc_content.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../../main/nucleotides/compression.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -221,11 +189,11 @@ fn main() {
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../../main/nucleotides/create_nucleotide_sequence.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../../main/nucleotides/entropy.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../../main/nucleotides/gc_content.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../../main/nucleotides/compression.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

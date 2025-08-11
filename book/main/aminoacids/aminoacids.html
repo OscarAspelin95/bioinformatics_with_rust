@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Practicals - Bioinformatics with Rust</title>
+        <title>Aminoacids - Bioinformatics with Rust</title>
 
 
         <!-- Custom HTML head -->
@@ -168,19 +168,52 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="practicals"><a class="header" href="#practicals">Practicals</a></h1>
-<p>So far, we have not seen any code examples of using external crates. In this chapter, the reader is encouraged to implement their own solutions to the suggested problems, using their own code in combination with suitable Rust crates.</p>
-<p>For each problem, there is a description of what should be implemented, what Rust crates would be suitable and also links to examples to take inspiration from.</p>
+                        <h1 id="aminoacids"><a class="header" href="#aminoacids">Aminoacids</a></h1>
+<p>In the past chapters, we have gone through some fundamental ways to analyze and manipulate nucleotide sequences. Now, we'll take a brief look at aminoacid sequences. Luckily, some of the concepts we have implemented for nucleotides also appliy to aminoacids, with some minor tweaking of the code. Examples are:</p>
+<ul>
+<li>Counting aminoacids.</li>
+<li>Extracting homopolymer regions.</li>
+<li>Hamming distance.</li>
+<li>Global and local aligner (with suitable substitution matrix).</li>
+</ul>
+<h2 id="codon-table"><a class="header" href="#codon-table">Codon Table</a></h2>
+<p>For aminoacids, we have to think triplets of nucleotides because this is what encodes aminoacids. In Rust, we can use something like the <a href="https://docs.rs/bio-seq/latest/bio_seq/translation/index.html">bio_seq</a> crate. However, for fun we'll create our own very basic <code>HashMap</code> using the <a href="https://www.ncbi.nlm.nih.gov/Taxonomy/Utils/wprintgc.cgi#SG1.">standard</a> NCBI codon table.</p>
+<pre><pre class="playground"><code class="language-rust edition2021">use std::collections::HashMap;
+
+fn generate_codon_table&lt;'a&gt;() -&gt; HashMap&lt;[u8; 3], u8&gt; {
+    let aa = b"FFLLSSSSYY**CC*WLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG";
+
+    let base1 = b"TTTTTTTTTTTTTTTTCCCCCCCCCCCCCCCCAAAAAAAAAAAAAAAAGGGGGGGGGGGGGGGG";
+    let base2 = b"TTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGG";
+    let base3 = b"TCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAG";
+
+    let map: HashMap&lt;[u8; 3], u8&gt; = (0..aa.len())
+        .map(|i| {
+            let value = aa[i];
+            let key = [base1[i], base2[i], base3[i]];
+
+            return (key, value);
+        })
+        .collect();
+
+    return map;
+}
+
+fn main() {
+    let codon_table = generate_codon_table();
+
+    assert_eq!(codon_table.get(b"ATG"), Some(&amp;b'M'));
+}</code></pre></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../../main/aminoacids/translation.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../../main/kmers/minimizers.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../../main/practicals/fasta_parser.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../../main/aminoacids/translation.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -190,11 +223,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../../main/aminoacids/translation.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../../main/kmers/minimizers.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../../main/practicals/fasta_parser.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../../main/aminoacids/translation.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

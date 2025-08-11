@@ -27,16 +27,18 @@ The book is structured into different chapters that cover both programmatic and 
         &emsp;&emsp; ✔ Error Handling.<br>
         &emsp;&emsp; ✔ Ownership and Borrowing.<br>
         &emsp;&emsp; ✔ Lifetimes.<br>
+        &emsp;&emsp; ✔ Iterator Chaining.<br>
         &emsp;&emsp; ✔ Concurrency.<br>
     </p>
     <p style="margin: 10px;">
         🧬 The Basics of Nucleotides:<br>
-        &emsp;&emsp; ✔ Counting.<br>
         &emsp;&emsp; ✔ GC content.<br>
         &emsp;&emsp; ✔ Homopolymers.<br>
         &emsp;&emsp; ✔ Entropy.<br>
+        &emsp;&emsp; 🚧 Compression.<br>
+        &emsp;&emsp; 🚧 Filtering and Trimming.<br>
         &emsp;&emsp; ✔ Reverse Complement.<br>
-        &emsp;&emsp; ✔ Nucleotide Encoding.<br>
+        &emsp;&emsp; ✔ Encoding.<br>
     </p>
     <p style="margin: 10px;">
         🧬 The Basics of Alignment:<br>
@@ -55,7 +57,7 @@ The book is structured into different chapters that cover both programmatic and 
     </p>
     <p style="margin: 10px;">
         🧬 Aminoacids:<br>
-        &emsp;&emsp; 🚧 Translation.<br>
+        &emsp;&emsp; Translation.<br>
     </p>
     <p style="margin: 10px;">
         🧬 Amplicon:<br>
