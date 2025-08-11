@@ -11,7 +11,7 @@
         - [ ] Cluster reads similar to isONclust3.
         - [ ] Classification.
     - [ ] Aminoacids:
-        - [ ] Translation.
+        - [x] Translation.
         - [ ] Alignment with substitution matrix?
     - [ ] Assembly:
         - [ ] The basics of assembly.

@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Create A Nucleotide Sequence - Bioinformatics with Rust</title>
+        <title>Compression - Bioinformatics with Rust</title>
 
 
         <!-- Custom HTML head -->
@@ -168,46 +168,76 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="create-a-nucleotide-sequence"><a class="header" href="#create-a-nucleotide-sequence">Create A nucleotide sequence</a></h1>
-<h2 id="string"><a class="header" href="#string">String</a></h2>
-<p>There are many different string types in Rust, but the two most common ones are <code>String</code> and <code>&amp;str</code>. Both can be used to store nucleotide sequences, but they have different characteristics. Usually, use <code>String</code> if you intend to mutate the sequence, otherwise use <code>&amp;str</code>. For more information, visit the rust docs for <a href="https://doc.rust-lang.org/std/string/struct.String.html"><code>String</code></a> and <a href="https://doc.rust-lang.org/std/primitive.str.html"><code>&amp;str</code></a> respectively.</p>
-<pre><pre class="playground"><code class="language-rust edition2021">fn main() {
-    let nt_string: String = "ACGT".to_string();
-    let nt_string: &amp;str = "ACGT";
-}</code></pre></pre>
-<h2 id="byte-slice"><a class="header" href="#byte-slice">Byte slice</a></h2>
-<p>Usually when reading nucleotide sequences from a FASTA/Q file, we get it as a byte slice, <code>&amp;[u8]</code>, which is a more convenient format.</p>
-<pre><pre class="playground"><code class="language-rust edition2021">fn main() {
-    let nt_string: &amp;[u8] = b"ACGT";
+                        <h1 id="compression"><a class="header" href="#compression">Compression</a></h1>
+<p>Compression algorithms have been around for a long time. Examples span everything from <a href="https://en.wikipedia.org/wiki/Huffman_coding">Huffman encoding</a> (used in e.g., <code>gzip</code>) to <a href="https://en.wikipedia.org/wiki/Burrows%E2%80%93Wheeler_transform">Burrows Wheeler</a>. In this section, we'll just cover some very basic ways of compressing a nucleotide sequence.</p>
+<p>One very straightforward way to implement nucleotide compression would be to save how many times the same nucleotide appears in a row. E.g., <code>ATAAAAAGGCGCTTTA</code> -&gt; <code>AT5A2GCGC3TA</code>. Since we preserve the order, this compression is easily reversible.</p>
+<p>Another way of compression is nucleotide encoding, which is covered in more detail later on. It turns out that if we only allow <code>{A, C, G, T, a, c, g, t}</code>, we can map each base to 2 bits. E.g., <code>ATCG</code> -&gt; <code>00110110</code>, which is extremely efficient when generating kmers.</p>
+<h2 id="homopolymer-compression"><a class="header" href="#homopolymer-compression">Homopolymer Compression</a></h2>
+<p>A similar, non reversible approach is homopolymer compression. We define a length <code>k</code>, at which we cap the maximum number of allowed adjacent identical nucleotides. E.g., with <code>k=3</code> we get <code>ATAAAAAGGCGCTTTA</code> -&gt; <code>ATAAAGGCGCTTTA</code> and with <code>k=1</code> we get <code>ATAAAGGCGCTTTA</code> -&gt; <code>ATAGCGCTA</code>. If we also store positional information, we can make this compression reversible.</p>
+<p>In the code example below, we implement the non-reversible version of homopolymer compression for <code>k=1</code>, inspired by <a href="https://github.com/aljpetri/isONclust3">isONclust3</a>.</p>
+<pre><pre class="playground"><code class="language-rust edition2021">fn homopolymer_compression(seq: &amp;[u8]) -&gt; String {
+    let mut hp_compressed = String::new();
 
-    println!("{:?}", nt_string);
+    let mut previous: Option&lt;&amp;u8&gt; = None;
+
+    for nt in seq {
+        // We are safe to unwrap because we checked if previous is None.
+        if previous.is_none() || previous.unwrap() != nt {
+            hp_compressed.push(*nt as char);
+        }
+        previous = Some(nt);
+    }
+
+    return hp_compressed;
+}
+
+fn main() {
+    assert_eq!(homopolymer_compression(b"").as_bytes(), b"");
+    assert_eq!(homopolymer_compression(b"AAAAAAAAAAAAA").as_bytes(), b"A");
+    assert_eq!(homopolymer_compression(b"AATTCCGG").as_bytes(), b"ATCG");
+    assert_eq!(homopolymer_compression(b"AAATTTTTT").as_bytes(), b"AT");
 }</code></pre></pre>
-<p>Run the code and examine the output. We get a bunch of numbers. This is the ASCII representation of our nucleotides, where <code>A/T/C/G</code> corresponds to an 8-bit representation. For more information, visit <a href="https://www.ascii-code.com/">this link</a>.</p>
-<p>We can check that the following representations are equivalent:</p>
-<pre><pre class="playground"><code class="language-rust edition2021">fn main() {
-    assert_eq!(b'A', 65);
-    assert_eq!(b'C', 67);
-    assert_eq!(b'G', 71);
-    assert_eq!(b'T', 84);
+<p>We can improve on this idea slightly to allow for arbitrary numbers of <code>k</code>. Instead of just checking if the previous nucleotide is the same as the current, we keep track of the number of adjacent nucleotides and write maximally <code>k</code> identical, adjacent nucleotides to our string.</p>
+<pre><pre class="playground"><code class="language-rust edition2021">fn homopolymer_compression(seq: &amp;[u8], k: usize) -&gt; String {
+    assert!(k &gt; 0, "value of k must be &gt; 0.");
+
+    let mut hp_compressed: String = String::new();
+    let mut i: usize = 0;
+
+    while i &lt; seq.len() {
+        let mut j = i + 1;
+
+        while j &lt; seq.len() &amp;&amp; seq[j] == seq[i] {
+            j += 1;
+        }
+
+        for _ in 0..std::cmp::min(j-i, k){
+            hp_compressed.push(seq[i] as char);
+        }
+        i = j;
+    }
+
+    hp_compressed
+}
+
+fn main() {
+    assert_eq!(homopolymer_compression(b"AAAAAAAAAAAA", 1).as_bytes(), b"A");
+    assert_eq!(homopolymer_compression(b"AAAAAAAAAAAA", 2).as_bytes(), b"AA");
+    assert_eq!(homopolymer_compression(b"AAATTTCCCGGG", 1).as_bytes(), b"ATCG");
+    assert_eq!(homopolymer_compression(b"AAATTTCCCGGG", 2).as_bytes(), b"AATTCCGG");
+    assert_eq!(homopolymer_compression(b"AAATTTCCCGGG", 3).as_bytes(), b"AAATTTCCCGGG");
+    assert_eq!(homopolymer_compression(b"AAATTTCCCGGG", 100).as_bytes(), b"AAATTTCCCGGG");
 }</code></pre></pre>
-<h2 id="binary"><a class="header" href="#binary">Binary</a></h2>
-<p>Will be covered in a later section. In short, using 8-bits is overkill for representing only four nucleotides. Instead, we can map <code>A/C/G/T</code> to the corresponding binary representation:</p>
-<ul>
-<li><code>A</code> =&gt; <code>00</code></li>
-<li><code>C</code> =&gt; <code>01</code></li>
-<li><code>G</code> =&gt; <code>10</code></li>
-<li><code>T</code> =&gt; <code>11</code></li>
-</ul>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../../main/nucleotides/nucleotides.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../../main/nucleotides/manipulating.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../../main/nucleotides/count_nucleotides.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../../main/nucleotides/reverse_complement.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -217,11 +247,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../../main/nucleotides/nucleotides.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../../main/nucleotides/manipulating.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../../main/nucleotides/count_nucleotides.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../../main/nucleotides/reverse_complement.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

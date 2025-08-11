@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Practicals - Bioinformatics with Rust</title>
+        <title>Translation - Bioinformatics with Rust</title>
 
 
         <!-- Custom HTML head -->
@@ -168,19 +168,79 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="practicals"><a class="header" href="#practicals">Practicals</a></h1>
-<p>So far, we have not seen any code examples of using external crates. In this chapter, the reader is encouraged to implement their own solutions to the suggested problems, using their own code in combination with suitable Rust crates.</p>
-<p>For each problem, there is a description of what should be implemented, what Rust crates would be suitable and also links to examples to take inspiration from.</p>
+                        <h1 id="translation"><a class="header" href="#translation">Translation</a></h1>
+<p>When it comes to translation, there is a couple of things we need to consider:</p>
+<ul>
+<li>
+<p><code>sequence_length</code> - Is the length of our nucleotide string divisible by 3? If no, then we need to handle this. Otherwise, we might encounter a partial codon.</p>
+<p>E.g., <code>ATGTTTTAG</code> -&gt; <code>ATG TTT TAG</code> is a well behaved nucleotide string.</p>
+</li>
+<li>
+<p><code>frames</code> - The forward strand has three reading frames, so does the reverse strand. Ideally, we'd try translating all six frames.</p>
+<p>E.g., <code>...ATGTTTTAG...</code> can be read in the forward direction as:<br>
+<code>...ATG TTT TAG...</code> or<br>
+<code>....TGT TTT AG...</code> or<br>
+<code>.....GTT TTA G...</code><br><br>
+where <code>...</code> is the remaining part of the string.</p>
+</li>
+<li>
+<p><code>ambiguous nucleotides</code> - We need to decide how to handle ambiguous and softmasked nucleotides.</p>
+</li>
+</ul>
+<p>For this first implementation, we'll use the first frame of the forward strand and <code>panic!</code> if the length is not divisible by 3.</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">use std::collections::HashMap;
+</span><span class="boring">
+</span><span class="boring">fn generate_codon_table() -&gt; HashMap&lt;[u8; 3], u8&gt; {
+</span><span class="boring">    let aa = b"FFLLSSSSYY**CC*WLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG";
+</span><span class="boring">
+</span><span class="boring">    let base1 = b"TTTTTTTTTTTTTTTTCCCCCCCCCCCCCCCCAAAAAAAAAAAAAAAAGGGGGGGGGGGGGGGG";
+</span><span class="boring">    let base2 = b"TTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGG";
+</span><span class="boring">    let base3 = b"TCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAG";
+</span><span class="boring">
+</span><span class="boring">    let map: HashMap&lt;[u8; 3], u8&gt; = (0..aa.len())
+</span><span class="boring">        .map(|i| {
+</span><span class="boring">            let value = aa[i];
+</span><span class="boring">            let key = [base1[i], base2[i], base3[i]];
+</span><span class="boring">
+</span><span class="boring">            return (key, value);
+</span><span class="boring">        })
+</span><span class="boring">        .collect();
+</span><span class="boring">
+</span><span class="boring">    return map;
+</span><span class="boring">}
+</span>// [...]
+
+fn translate(seq: &amp;[u8], codon_table: &amp;HashMap&lt;[u8; 3], u8&gt;) -&gt; Vec&lt;u8&gt; {
+    if seq.len() % 3 != 0 {
+        panic!("Length of sequence must be divisible by three.");
+    }
+
+    let translation: Vec&lt;u8&gt; = seq
+        .chunks(3)
+        .filter_map(|codon| match codon_table.get(codon) {
+            Some(aa) =&gt; Some(*aa),
+            None =&gt; None,
+        })
+        .collect();
+
+    return translation;
+}
+
+fn main() {
+    let codon_table = generate_codon_table();
+
+    assert_eq!(translate(b"ATGTAG", &amp;codon_table), b"M*");
+}</code></pre></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../../main/aminoacids/translation.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../../main/aminoacids/aminoacids.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../../main/practicals/fasta_parser.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../../main/practicals/introduction.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -190,11 +250,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../../main/aminoacids/translation.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../../main/aminoacids/aminoacids.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../../main/practicals/fasta_parser.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../../main/practicals/introduction.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

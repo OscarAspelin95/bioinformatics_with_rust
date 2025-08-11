@@ -35,12 +35,15 @@
 ---
 
 - [Nucleotides](./main/nucleotides/nucleotides.md)
-    - [Create A Nucleotide Sequence](./main/nucleotides/create_nucleotide_sequence.md)
-    - [Counting Nucleotides](./main/nucleotides/count_nucleotides.md)
+    - [Representations](./main/nucleotides/representations.md)
+    - [Counting](./main/nucleotides/counting.md)
         - [GC content](./main/nucleotides/gc_content.md)
         - [Homopolymers](./main/nucleotides/homopolymers.md)
         - [Entropy](./main/nucleotides/entropy.md)
-    - [Reverse Complement](./main/nucleotides/reverse_complement.md)
+    - [Manipulating](./main/nucleotides/manipulating.md)
+        - [Compression](./main/nucleotides/compression.md)
+        - [Trimming]()
+        - [Reverse Complement](./main/nucleotides/reverse_complement.md)
     - [Encoding](./main/nucleotides/nucleotide_encoding.md)
 
 ---
@@ -69,8 +72,8 @@
 
 ---
 
-- [Aminoacids]()
-    - [Translation]()
+- [Aminoacids](./main/aminoacids/aminoacids.md)
+    - [Translation](./main/aminoacids/translation.md)
 
 ---
 
