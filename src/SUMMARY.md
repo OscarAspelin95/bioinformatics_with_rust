@@ -31,6 +31,7 @@
     - [Lifetimes](./main/rust_basics/lifetimes.md)
     - [Iterator Chaining](./main/rust_basics/iterator_chaining.md)
     - [Concurrency](./main/rust_basics/concurrency.md)
+    - [Trait Bounds and Generics](./main/rust_basics/trait_bounds_and_generics.md)
 
 ---
 
