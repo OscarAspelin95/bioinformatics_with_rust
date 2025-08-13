@@ -29,6 +29,7 @@ The book is structured into different chapters that cover both programmatic and 
         &emsp;&emsp; ✔ Lifetimes.<br>
         &emsp;&emsp; ✔ Iterator Chaining.<br>
         &emsp;&emsp; ✔ Concurrency.<br>
+        &emsp;&emsp; ✔ Trait Bounds and Generics.<br>
     </p>
     <p style="margin: 10px;">
         🧬 The Basics of Nucleotides:<br>

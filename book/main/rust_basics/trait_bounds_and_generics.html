@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Nucleotides - Bioinformatics with Rust</title>
+        <title>Trait Bounds and Generics - Bioinformatics with Rust</title>
 
 
         <!-- Custom HTML head -->
@@ -168,70 +168,78 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="nucleotides"><a class="header" href="#nucleotides">Nucleotides</a></h1>
-<p>When dealing with DNA sequences, nucleotides are everything. Fundamentally, we are usually dealing with four canonical bases:</p>
-<ul>
-<li><code>A</code> - Adenosine.</li>
-<li><code>C</code> - Cytosine.</li>
-<li><code>G</code> - Guanine.</li>
-<li><code>T</code> - Thymine.</li>
-</ul>
-<p>However, there are some important concepts to be aware of.</p>
-<h2 id="soft-masking"><a class="header" href="#soft-masking">Soft masking</a></h2>
-<p>A lower case nucleotide indicates <em>soft masking</em> and is used to indicate a soft clipped alignment or a region which is low complexity or repetitive.</p>
-<p>In the example below, the last part of the upper sequence is soft masked to indicate that this region is not part of the actual alignment. This is commonly encountered in local read aligners such as <a href="https://github.com/lh3/minimap2">Minimap2</a>.</p>
-<pre>
-  AAAGTGCCAGTGACGCTTagtcgatcgatg
-  ||||||||||||||||||
-  AAAGTGCCAGTGACGCTT
-</pre>
-<h2 id="hard-masking"><a class="header" href="#hard-masking">Hard masking</a></h2>
-<p>A capital <code>N</code> indicates <em>hard masking</em>. This means there is probably a base here, but we don't know exactly what it is. This is usually for indicating uncertainty or gaps in a sequence.</p>
-<h2 id="ambiguous-nucleotides"><a class="header" href="#ambiguous-nucleotides">Ambiguous nucleotides</a></h2>
-<p>In addition to our four canonical nucleotides, there are also ambiguous nucleotides. Ambiguous in this case, means uncertainty or ambiguity:</p>
-<ul>
-<li><code>R</code> = <code>A</code> | <code>G</code></li>
-<li><code>Y</code> = <code>C</code> | <code>T</code></li>
-<li><code>K</code> = <code>G</code> | <code>T</code></li>
-<li><code>M</code> = <code>A</code> | <code>C</code></li>
-<li><code>S</code> = <code>G</code> | <code>C</code></li>
-<li><code>W</code> = <code>A</code> | <code>T</code></li>
-<li><code>H</code> = <code>A</code> | <code>C</code> | <code>T</code></li>
-<li><code>V</code> = <code>A</code> | <code>C</code> | <code>G</code></li>
-<li><code>B</code> = <code>C</code> | <code>G</code> | <code>T</code></li>
-<li><code>D</code> = <code>A</code> | <code>G</code> | <code>T</code></li>
-<li><code>N</code> = <code>A</code> | <code>C</code> | <code>G</code> | <code>T</code></li>
-</ul>
-<p>We won't deal much with ambiguous nucleotides in this book. However, make sure not to confuse these nucleotides with one-letter amino acid abbreviations, which have overlapping naming conventions.</p>
-<h2 id="programmatic-representations"><a class="header" href="#programmatic-representations">Programmatic representations</a></h2>
-<p>There are many different ways to represent nucleotide sequences in a programming language. In this book, we'll mainly deal with these different representations:</p>
-<ul>
-<li><code>String</code> and <code>&amp;str</code>.</li>
-<li><code>&amp;[u8]</code> (byte slice).</li>
-<li>Binary.</li>
-</ul>
-<pre><pre class="playground"><code class="language-rust edition2021">/// Assume we want to represent the sequence ATCG.
-fn main() {
-  let nt_seq_string: String = "ATCG".to_string();
-  let nt_seq_str: &amp;str = "ATCG";
-  let nt_seq_byte_slice: &amp;[u8] = b"ATCG";
-  let nt_seq_binary: u8 = 0b00110110; // Binary, where A = 00, T = 11, C = 01 and G = 10.
+                        <h1 id="trait-bounds-and-generics"><a class="header" href="#trait-bounds-and-generics">Trait Bounds and Generics</a></h1>
+<p>Rust support generic types, but due to the its strict type checker we need to put some restrictions on the generic type. In python, we can use unions to signify that a variable or argument can be of different types.</p>
+<pre><code class="language-python">def display(s: str | int | list[str]):
+    print(s)
 
-  println!("{}", nt_seq_string);
-  println!("{}", nt_seq_str);
-  println!("{:?}", nt_seq_byte_slice);
-  println!("{:08b}", nt_seq_binary);
+print('my_string')
+print(1)
+print(['my', 'string'])
+
+# This will actually run but the linter will complain.
+print({'my', 'string'})
+</code></pre>
+<p>In Rust, this works a bit differently. To print something, the variable needs to implement either the <a href="https://doc.rust-lang.org/rust-by-example/hello/print/print_display.html"><code>Display</code></a> trait ("normal" print) or the <a href="https://doc.rust-lang.org/rust-by-example/hello/print/print_debug.html"><code>Debug</code></a> trait (debug print). By using a <code>trait bound</code>, we can tell the compiler that only generic types which implement the <code>Display</code> or <code>Debug</code> trait are allowed as a argument to the function.</p>
+<p>In the example below, we implement a function that accepts an argument of a generic type <code>T</code> that implements the <code>Debug</code> trait. Luckily, all Rust types in the <code>std</code> library automatically implement <code>Debug</code>.</p>
+<pre><pre class="playground"><code class="language-rust edition2021">use std::fmt::Debug;
+
+fn display&lt;T: Debug&gt;(arg: T) {
+    println!("{:?}", arg);
+}
+
+fn main() {
+    display(1);
+    display("my_string");
+    display("my_string".to_string());
+    display(vec!["my", "string"]);
 }</code></pre></pre>
+<h2 id="deriving-traits"><a class="header" href="#deriving-traits">Deriving traits</a></h2>
+<p>What if we have a type that does not implement <code>Debug</code> by default? We can derive it using the <code>derive</code> macro.</p>
+<p>In the following example, we'll create a <code>Struct</code> that by default does not implement <code>Debug</code>. By using the <code>derive</code> macro, we can subsequently call our <code>display</code> function.</p>
+<pre><pre class="playground"><code class="language-rust editable edition2021">use std::fmt::Debug;
+
+#[derive(Debug)] // Try commenting this out!
+struct MyStruct&lt;'a&gt; {
+    field_1: usize,
+    field_2: &amp;'a str,
+    field_3: String,
+    field_4: Vec&lt;&amp;'a str&gt;,
+}
+
+fn display&lt;T: Debug&gt;(arg: T) {
+    println!("{:?}", arg);
+}
+
+fn main() {
+    let my_struct = MyStruct {
+        field_1: 1,
+        field_2: "my_string",
+        field_3: "my_string".to_string(),
+        field_4: vec!["my", "string"],
+    };
+
+    display(my_struct);
+}</code></pre></pre>
+<p>Other common Rust traits that can be derived or implemented manually are:</p>
+<ul>
+<li><a href="https://doc.rust-lang.org/rust-by-example/hello/print/print_display.html"><code>Display</code></a></li>
+<li><a href="https://doc.rust-lang.org/rust-by-example/trait/clone.html"><code>Clone</code></a></li>
+<li><a href="https://doc.rust-lang.org/nomicon/send-and-sync.html"><code>Send</code></a></li>
+<li><a href="https://doc.rust-lang.org/nomicon/send-and-sync.html"><code>Sync</code></a></li>
+<li><a href="https://doc.rust-lang.org/std/cmp/trait.Ord.html"><code>Ord</code></a></li>
+<li><a href="https://doc.rust-lang.org/std/cmp/trait.PartialOrd.html"><code>PartialOrd</code></a></li>
+</ul>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../../main/rust_basics/trait_bounds_and_generics.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../../main/rust_basics/concurrency.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../../main/nucleotides/representations.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../../main/nucleotides/nucleotides.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -241,11 +249,11 @@ fn main() {
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../../main/rust_basics/trait_bounds_and_generics.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../../main/rust_basics/concurrency.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../../main/nucleotides/representations.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../../main/nucleotides/nucleotides.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
