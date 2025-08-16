@@ -32,6 +32,6 @@ Cases where concurrency might not be the answer:
 
 ### Find code examples
 One excellent way to learn about concurrency is to look at code examples. There is plenty of well-established open source Rust projects that use concurrency. As a start, here are some of my own not-so-well-established-and-work-in-progress projects:
-- [fastq_rs](https://github.com/OscarAspelin95/fastq_rs) - Fastq parser.
+- [fastq_rs](https://github.com/OscarAspelin95/fastq_rs) - Fastq toolkit.
 - [fasta_rs](https://github.com/OscarAspelin95/fasta_rs) - Fasta toolkit.
 - [sintax_rs](https://github.com/OscarAspelin95/sintax_rs) - Rust implementation of the SINTAX classifier.

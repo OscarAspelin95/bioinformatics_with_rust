@@ -168,23 +168,17 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="fastq-filter"><a class="header" href="#fastq-filter">Fastq filter</a></h1>
+                        <h1 id="fastq-filter"><a class="header" href="#fastq-filter">Fastq Filter</a></h1>
 <h2 id="problem-description"><a class="header" href="#problem-description">Problem Description</a></h2>
 <p>Build a CLI tool <code>fastq_filter</code> that filters a gzipped fastq file based on length and gc content. The output should be a filtered and gzipped fastq file.</p>
-<p>Expected command:<br></p>
+<p>Expected command:</p>
 <p><code>fastq_filter --fastq &lt;file.fastq.gz&gt; --outfile &lt;filtered.fastq.gz&gt; --min_len &lt;usize&gt; --max_len &lt;usize&gt; --min_gc &lt;f32&gt; --max_gc &lt;f32&gt;</code></p>
 <h2 id="checklist"><a class="header" href="#checklist">Checklist</a></h2>
 <ul>
 <li><input disabled="" type="checkbox"/>
-Add and parse arguments with <code>Clap</code>.</li>
-<li><input disabled="" type="checkbox"/>
 Figure out how to read a gzipped file using <code>Flate2</code>.</li>
 <li><input disabled="" type="checkbox"/>
-Create a function <code>run_fastq_filter</code> returns only valid reads.</li>
-<li><input disabled="" type="checkbox"/>
-Create a function <code>write_fastq</code> that writes valid reads to <code>outfile</code> in gzip format.</li>
-<li><input disabled="" type="checkbox"/>
-Handle only files with extensions <code>.fastq.gz</code>, <code>.fq.gz</code>.</li>
+Figure out out how write a needletail <code>SequenceRecord</code> to a target <code>output.fastq.gz</code> file.</li>
 </ul>
 <h2 id="suggested-rust-crates"><a class="header" href="#suggested-rust-crates">Suggested Rust Crates</a></h2>
 <ul>
@@ -196,16 +190,25 @@ Handle only files with extensions <code>.fastq.gz</code>, <code>.fq.gz</code>.</
 <ul>
 <li><a href="https://github.com/OscarAspelin95/fastq_rs">fastq_rs</a></li>
 </ul>
+<h2 id="extra-credit"><a class="header" href="#extra-credit">Extra Credit</a></h2>
+<ul>
+<li><input disabled="" type="checkbox"/>
+Add functionality to also filter on mean error rate.</li>
+<li><input disabled="" type="checkbox"/>
+Handle only files with extensions <code>.fastq.gz</code>, <code>.fq.gz</code>.</li>
+<li><input disabled="" type="checkbox"/>
+Graceful error handling.</li>
+</ul>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../../main/practicals/extending_parser.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../../main/practicals/fasta_parser.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../../suffix/resources.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../../main/practicals/fastx_toolkit.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -215,11 +218,11 @@ Handle only files with extensions <code>.fastq.gz</code>, <code>.fq.gz</code>.</
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../../main/practicals/extending_parser.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../../main/practicals/fasta_parser.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../../suffix/resources.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../../main/practicals/fastx_toolkit.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

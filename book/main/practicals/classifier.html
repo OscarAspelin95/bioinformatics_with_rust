@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Resources - Bioinformatics with Rust</title>
+        <title>Classifier - Bioinformatics with Rust</title>
 
 
         <!-- Custom HTML head -->
@@ -12,35 +12,35 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
 
-        <link rel="icon" href="../favicon.svg">
-        <link rel="shortcut icon" href="../favicon.png">
-        <link rel="stylesheet" href="../css/variables.css">
-        <link rel="stylesheet" href="../css/general.css">
-        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="icon" href="../../favicon.svg">
+        <link rel="shortcut icon" href="../../favicon.png">
+        <link rel="stylesheet" href="../../css/variables.css">
+        <link rel="stylesheet" href="../../css/general.css">
+        <link rel="stylesheet" href="../../css/chrome.css">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
-        <link rel="stylesheet" href="../fonts/fonts.css">
+        <link rel="stylesheet" href="../../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../../fonts/fonts.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
-        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
-        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+        <link rel="stylesheet" id="highlight-css" href="../../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../../ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="../src/assets/custom.css">
+        <link rel="stylesheet" href="../../src/assets/custom.css">
 
         <!-- MathJax -->
         <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
         <!-- Provide site root and default themes to javascript -->
         <script>
-            const path_to_root = "../";
+            const path_to_root = "../../";
             const default_light_theme = "coal";
             const default_dark_theme = "navy";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../toc.js"></script>
+        <script src="../../toc.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -104,7 +104,7 @@
             <!-- populated by js -->
             <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
             <noscript>
-                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
             </noscript>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -168,36 +168,58 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="resources"><a class="header" href="#resources">Resources</a></h1>
-<h2 id="reading-references"><a class="header" href="#reading-references">Reading References</a></h2>
+                        <h1 id="classifier"><a class="header" href="#classifier">Classifier</a></h1>
+<p>In this excercise, a lot of concepts will come together to form a basic classifier.</p>
+<h2 id="problem-description"><a class="header" href="#problem-description">Problem Description</a></h2>
+<p>Build a CLI tool <code>classifier</code> for sequence classification of reads against a database. The output should be a .tsv file, containing the classification in sorted order. E.g., the database sequence with the best classification should be first in the list.</p>
+<p>Expected command:</p>
+<p><code>classifier --fastq &lt;reads.fastq.gz&gt; --db &lt;db.fasta&gt;</code>.</p>
+<p>Expected example output:</p>
+<pre><code>sequence_x  1.0
+sequence y  0.95
+sequence z  0.94
+...
+</code></pre>
+<p>Where <code>sequence_x</code> was fully covered, <code>sequence_y</code> was 95% covered, etc. Define the <code>score</code> as 1.0 if 100% of the FracMinHash kmers from a sequence is contained in the reads.</p>
+<h2 id="checklist"><a class="header" href="#checklist">Checklist</a></h2>
 <ul>
-<li><a href="https://doc.rust-lang.org/book/">The Rust Programming Language</a> - Official Rust book.</li>
-<li><a href="https://practice.course.rs/">Rust By Practice</a> - Practice Rust.</li>
-<li><a href="https://doc.rust-lang.org/nomicon/intro.html">The Rustonomicon</a> - Even more Rust!</li>
-<li><a href="https://nnethercote.github.io/perf-book/">The Rust Performance Book</a> - How to optimize Rust for performance.</li>
-<li><a href="https://www.rustfinity.com/">Rustfinity</a> - Learn Rust through interactive problems.</li>
+<li><input disabled="" type="checkbox"/>
+Implement FracMinHash generation for a given byte slice <code>&amp;[u8]</code>.</li>
+<li><input disabled="" type="checkbox"/>
+Generate FracMinHashes for all reads.</li>
+<li><input disabled="" type="checkbox"/>
+Iterative calculate the containment for each db sequence.</li>
 </ul>
-<h2 id="viewing-references"><a class="header" href="#viewing-references">Viewing References</a></h2>
+<h2 id="suggested-rust-crates"><a class="header" href="#suggested-rust-crates">Suggested Rust Crates</a></h2>
 <ul>
-<li><a href="https://www.youtube.com/@jonhoo">Jon Gjengset</a></li>
-<li><a href="https://www.youtube.com/@jonhoo">Bogdan from Let's Get Rusty</a></li>
-<li><a href="https://www.youtube.com/@yousuckatprogramming">Dave from You Suck at Programming</a></li>
-<li><a href="https://www.youtube.com/@maxtaylordev">Max Taylor</a></li>
+<li><a href="https://docs.rs/clap/latest/clap/">Clap</a> - argument parsing.</li>
+<li><a href="https://docs.rs/needletail/latest/needletail/">Needletail</a> - reading fasta files.</li>
 </ul>
-<h2 id="listening-references"><a class="header" href="#listening-references">Listening References</a></h2>
+<h2 id="code-examples"><a class="header" href="#code-examples">Code Examples</a></h2>
 <ul>
-<li><a href="https://open.spotify.com/show/0Hf6gWrzpSzXp1X0cebbsT?si=db39249cb66b4d9b">Rust in Production</a></li>
+<li>Take inspiration from code examples in this book.</li>
+</ul>
+<h2 id="extra-credits"><a class="header" href="#extra-credits">Extra Credits</a></h2>
+<ul>
+<li><input disabled="" type="checkbox"/>
+Only allow input files with extensions <code>.fasta</code>, <code>.fa</code>, <code>.fsa</code>, <code>.fna</code> for the database file and <code>.fastq</code>, <code>.fastq.gz</code> for the reads.</li>
+<li><input disabled="" type="checkbox"/>
+Graceful error handling.</li>
+<li><input disabled="" type="checkbox"/>
+Increase performance by replacing <code>Needletail</code> with <code>Bio</code> + <code>Rayon</code> to enable multi-threading.</li>
+<li><input disabled="" type="checkbox"/>
+Add a coverage metric to show the mean FracMinHash coverage for each sequence. Hint - don't use a <code>HashSet</code>, but rather a <code>HashMap</code> to count the FracMinHash read kmers.</li>
 </ul>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../main/practicals/classifier.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../../main/practicals/fastx_toolkit.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../suffix/awesome_rust_crates.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../../suffix/resources.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -207,11 +229,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../main/practicals/classifier.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../../main/practicals/fastx_toolkit.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../suffix/awesome_rust_crates.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../../suffix/resources.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
@@ -241,19 +263,19 @@
             window.playground_copyable = true;
         </script>
 
-        <script src="../ace.js"></script>
-        <script src="../mode-rust.js"></script>
-        <script src="../editor.js"></script>
-        <script src="../theme-dawn.js"></script>
-        <script src="../theme-tomorrow_night.js"></script>
+        <script src="../../ace.js"></script>
+        <script src="../../mode-rust.js"></script>
+        <script src="../../editor.js"></script>
+        <script src="../../theme-dawn.js"></script>
+        <script src="../../theme-tomorrow_night.js"></script>
 
-        <script src="../elasticlunr.min.js"></script>
-        <script src="../mark.min.js"></script>
-        <script src="../searcher.js"></script>
+        <script src="../../elasticlunr.min.js"></script>
+        <script src="../../mark.min.js"></script>
+        <script src="../../searcher.js"></script>
 
-        <script src="../clipboard.min.js"></script>
-        <script src="../highlight.js"></script>
-        <script src="../book.js"></script>
+        <script src="../../clipboard.min.js"></script>
+        <script src="../../highlight.js"></script>
+        <script src="../../book.js"></script>
 
         <!-- Custom JS scripts -->
 

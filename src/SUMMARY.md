@@ -86,8 +86,9 @@
 
 - [Practicals](./main/practicals/introduction.md)
     - [Fasta parser](./main/practicals/fasta_parser.md)
-        - [Extending parser](./main/practicals/extending_parser.md)
     - [Fastq filter](./main/practicals/fastq_filter.md)
+    - [Fastx toolkit](./main/practicals/fastx_toolkit.md)
+    - [Classifier](./main/practicals/classifier.md)
 
 ---
 

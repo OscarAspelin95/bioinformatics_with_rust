@@ -175,7 +175,7 @@
 <li>Input argument: <code>--fasta &lt;file.fasta&gt;</code></li>
 <li>Output argument: <code>--outfile &lt;outfile.json&gt;</code></li>
 </ul>
-<p>Expected command:<br></p>
+<p>Expected command:</p>
 <p><code>fasta_stats --fasta &lt;file.fasta&gt; --outfile &lt;outfile.json&gt;</code></p>
 <p>Expected contents of output file:</p>
 <pre><code>{
@@ -189,7 +189,7 @@ Define a struct for CLI arguments with clap.</li>
 <li><input disabled="" type="checkbox"/>
 Define a struct <code>FastaStats</code> for storing calculated stats.</li>
 <li><input disabled="" type="checkbox"/>
-Define a function <code>get_fasta_stats</code> that takes <code>args.fasta</code> and <code>args.outfile</code> as arguments.
+Define a function <code>get_fasta_stats</code> that takes <code>fasta: PathBuf</code> and <code>outfile: PathBuf</code> as arguments.
 <ul>
 <li><input disabled="" type="checkbox"/>
 Iterate over fasta records and keep track of <code>num_sequences</code>.</li>
@@ -211,6 +211,15 @@ Define a function <code>write_json</code> that writes the <code>FastaStats</code
 <ul>
 <li><a href="https://github.com/OscarAspelin95/fasta_rs">fasta_rs</a></li>
 </ul>
+<h2 id="extra-credits"><a class="header" href="#extra-credits">Extra Credits</a></h2>
+<ul>
+<li><input disabled="" type="checkbox"/>
+Only allow input files with extensions <code>.fasta</code>, <code>.fa</code>, <code>.fsa</code>, <code>.fna</code>.</li>
+<li><input disabled="" type="checkbox"/>
+Add more stats: average sequence length, average gc content and total number of bases.</li>
+<li><input disabled="" type="checkbox"/>
+Graceful error handling.</li>
+</ul>
 
                     </main>
 
@@ -220,7 +229,7 @@ Define a function <code>write_json</code> that writes the <code>FastaStats</code
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../../main/practicals/extending_parser.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../../main/practicals/fastq_filter.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -234,7 +243,7 @@ Define a function <code>write_json</code> that writes the <code>FastaStats</code
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../../main/practicals/extending_parser.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../../main/practicals/fastq_filter.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
