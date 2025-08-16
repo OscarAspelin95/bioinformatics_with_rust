@@ -5,7 +5,7 @@ Build a CLI tool `fasta_stats` that calculates the number of sequences for a pro
 - Input argument: `--fasta <file.fasta>`
 - Output argument: `--outfile <outfile.json>`
 
-Expected command:<br>
+Expected command:
 
 `fasta_stats --fasta <file.fasta> --outfile <outfile.json>`
 
@@ -19,7 +19,7 @@ Expected contents of output file:
 ## Checklist
 - [ ] Define a struct for CLI arguments with clap.
 - [ ] Define a struct `FastaStats` for storing calculated stats.
-- [ ] Define a function `get_fasta_stats` that takes `args.fasta` and `args.outfile` as arguments.
+- [ ] Define a function `get_fasta_stats` that takes `fasta: PathBuf` and `outfile: PathBuf` as arguments.
     - [ ] Iterate over fasta records and keep track of `num_sequences`.
     - [ ] Store `num_sequences` in an instance of `FastaStats`
 - [ ] Define a function `write_json` that writes the `FastaStats` instance to `outfile`.
@@ -33,3 +33,8 @@ Expected contents of output file:
 
 ## Code Examples
 - [fasta_rs](https://github.com/OscarAspelin95/fasta_rs)
+
+## Extra Credits
+- [ ] Only allow input files with extensions `.fasta`, `.fa`, `.fsa`, `.fna`.
+- [ ] Add more stats: average sequence length, average gc content and total number of bases.
+- [ ] Graceful error handling.
