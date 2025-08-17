@@ -32,6 +32,7 @@
     - [Iterator Chaining](./main/rust_basics/iterator_chaining.md)
     - [Concurrency](./main/rust_basics/concurrency.md)
     - [Trait Bounds and Generics](./main/rust_basics/trait_bounds_and_generics.md)
+    - [Smart Pointers]() [comment]: <> (./main/rust_basics/smart_pointers.md)
 
 ---
 
@@ -69,7 +70,7 @@
     - [FracMinHash](./main/kmers/min_frac_hash.md)
     - [Making something useful](./main/kmers/making_something_useful.md)
     - [Minimizers](./main/kmers/minimizers.md)
-    - [Syncmers]() [comment]: <> (./main/kmers/syncmers.md)
+    - [Syncmers](./main/kmers/syncmers.md)
 
 ---
 
