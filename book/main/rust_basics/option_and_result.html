@@ -170,7 +170,7 @@
                     <main>
                         <h1 id="option-and-result"><a class="header" href="#option-and-result">Option and Result</a></h1>
 <h2 id="option"><a class="header" href="#option">Option</a></h2>
-<p>In contrast to python, there is no <code>None</code> type in Rust. There is, however, something called <a href="https://doc.rust-lang.org/std/option/"><code>Option</code></a>, which is of type <code>Option&lt;T&gt;</code>. An <code>Option&lt;T&gt;</code> can either be <code>Some(T)</code> (there is a value) or <code>None</code> (there is no value). Usually, one would pattern match to extract the value from an <code>Option</code> if it exists.</p>
+<p>In contrast to Python, there is no <code>None</code> type in Rust. There is, however, something called <a href="https://doc.rust-lang.org/std/option/"><code>Option</code></a>, which is of type <code>Option&lt;T&gt;</code>. An <code>Option&lt;T&gt;</code> can either be <code>Some(T)</code> (there is a value) or <code>None</code> (there is no value). Usually, one would pattern match to extract the value from an <code>Option</code> if it exists.</p>
 <pre><pre class="playground"><code class="language-rust edition2021">fn print_value_if_exist(x: Option&lt;usize&gt;) {
     match x {
         Some(value) =&gt; println!("Value is {value}"),

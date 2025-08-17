@@ -5,14 +5,14 @@
 
 `mut` - makes something mutable. E.g., `let mut x: usize = 10;`
 
-`fn` - defines a function. This is analogous to pythons `def` keyword. E.g.,
+`fn` - defines a function. This is analogous to Pythons `def` keyword. E.g.,
 ```rust
 fn main() {
     println!("Hello, world!");
 }
 ```
 
-`struct` - defines a struct. This is kind of analogous to `class` in python. E.g.,
+`struct` - defines a struct. This is kind of analogous to `class` in Python. E.g.,
 ```rust,noplayground
 struct MyStruct {
     field1: usize,
@@ -20,7 +20,7 @@ struct MyStruct {
     field3: bool,
 }
 ```
-`enum` - defines an enum. This is kind of analogous to `Enum` in python. E.g.,
+`enum` - defines an enum. This is kind of analogous to `Enum` in Python. E.g.,
 ```rust,noplayground
 enum MyEnum {
     Choice1,

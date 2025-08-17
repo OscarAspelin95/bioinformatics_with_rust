@@ -169,7 +169,7 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="structs"><a class="header" href="#structs">Structs</a></h1>
-<p>Implementing structs in Rust is a bit different from languages such as python. In python, we have the excellent <a href="https://docs.pydantic.dev/latest/">Pydantic</a> module for data validation and other awesome features. In Rust, we can use something like the <a href="https://docs.rs/validify/latest/validify/">Validify</a> crate, however in this book we won't bother much with validation.</p>
+<p>Implementing structs in Rust is a bit different from languages such as Python. In Python, we have the excellent <a href="https://docs.pydantic.dev/latest/">Pydantic</a> module for data validation and other awesome features. In Rust, we can use something like the <a href="https://docs.rs/validify/latest/validify/">Validify</a> crate, however in this book we won't bother much with validation.</p>
 <p>Pretend we have a fastq parser for filtering and trimming reads. However, we want to change the filtering and trimming parameters based on sequencing platform. Maybe we want different behavior depending on if our data originated from PacBio or Oxford Nanopore. An example of this would be to implement a default function based on a provided platform:</p>
 <pre><pre class="playground"><code class="language-rust edition2021">enum Platform {
     PacBio,

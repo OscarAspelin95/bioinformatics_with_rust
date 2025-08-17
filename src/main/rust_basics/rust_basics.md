@@ -17,4 +17,4 @@ Below is a summary of some of the things I personally like and dislike with Rust
 
 - **Verbose Syntax**. In my personal opinion, Rust is a rather verbose language. Some people might like that, some people don't. Luckily, the rust-analyzer VScode extension helps out a lot with auto-completion and other neat features.
 
-- **Steep Learning Curve**. Coming from the python world, I had a really difficult time with Rust in the beginning. It was not just switching to a compiled language, but also having to learn about lifetimes, ownership and so on. But trust me, it gets easier.
+- **Steep Learning Curve**. Coming from the Python world, I had a really difficult time with Rust in the beginning. It was not just switching to a compiled language, but also having to learn about lifetimes, ownership and so on. But trust me, it gets easier.
