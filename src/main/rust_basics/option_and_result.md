@@ -1,7 +1,7 @@
 # Option and Result
 
 ## Option
-In contrast to python, there is no `None` type in Rust. There is, however, something called [`Option`](https://doc.rust-lang.org/std/option/), which is of type `Option<T>`. An `Option<T>` can either be `Some(T)` (there is a value) or `None` (there is no value). Usually, one would pattern match to extract the value from an `Option` if it exists.
+In contrast to Python, there is no `None` type in Rust. There is, however, something called [`Option`](https://doc.rust-lang.org/std/option/), which is of type `Option<T>`. An `Option<T>` can either be `Some(T)` (there is a value) or `None` (there is no value). Usually, one would pattern match to extract the value from an `Option` if it exists.
 
 ```rust
 fn print_value_if_exist(x: Option<usize>) {

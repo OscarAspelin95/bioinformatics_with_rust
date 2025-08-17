@@ -2,8 +2,8 @@
     - [x] Rust Basics.
     - [ ] Alignment:
         - [ ] Create a simple multiple sequence aligner?
-    - [ ] Kmers:
-        - [ ] Syncmers
+    - [x] Kmers:
+        - [x] Syncmers (basics)
 
 - [ ] Suggestions for **new** chapters:
     - [ ] Amplicon:
