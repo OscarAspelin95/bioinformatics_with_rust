@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Translation - Bioinformatics with Rust</title>
+        <title>Syncmers - Bioinformatics with Rust</title>
 
 
         <!-- Custom HTML head -->
@@ -168,80 +168,87 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="translation"><a class="header" href="#translation">Translation</a></h1>
-<p>When it comes to translation, there is a couple of things we need to consider:</p>
+                        <h1 id="syncmers"><a class="header" href="#syncmers">Syncmers</a></h1>
+<p>Minimizers are widely used in bioinformatics by softwares such as <a href="https://github.com/lh3/minimap2">Minimap2</a> and <a href="https://github.com/DerrickWood/kraken2">Kraken2</a>. Recently, the concept of <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC7869670/">syncmers</a> was proposed as an alternative to minimizers. To quote the paper:<br></p>
+<p><q><em>Syncmers are defined here as a family of alternative methods which select k-mers by inspecting the position of the smallest-valued substring of length s &lt; k within the k-mer.</em></q></p>
+<p>Basically what this means is:</p>
 <ul>
-<li>
-<p><code>sequence_length</code> - Is the length of our nucleotide string divisible by 3? If no, then we need to handle this. Otherwise, we might encounter a partial codon.</p>
-<p>E.g., <code>ATGTTTTAG</code> -&gt; <code>ATG TTT TAG</code> is a well behaved nucleotide string.</p>
-</li>
-<li>
-<p><code>frames</code> - The forward strand has three reading frames, so does the reverse strand. Ideally, we'd try translating all six frames.</p>
-<p>E.g., <code>...ATGTTTTAG...</code> can be read in the forward direction as:<br>
-<code>...ATG TTT TAG...</code> or<br>
-<code>....TGT TTT AG...</code> or<br>
-<code>.....GTT TTA G...</code><br><br>
-where <code>...</code> is the remaining part of the string.</p>
-</li>
-<li>
-<p><code>ambiguous nucleotides</code> - We need to decide how to handle ambiguous and softmasked nucleotides.</p>
-</li>
+<li>Take a kmer of length <code>k</code>.</li>
+<li>Check for the smallest substring (by value) of length <code>s</code> in the kmer.</li>
+<li>If the location of this substring fulfills a given criteria, classify the kmer as a syncmer.</li>
 </ul>
-<p>For this first implementation, we'll use the first frame of the forward strand and <code>panic!</code> if the length is not divisible by 3.</p>
-<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">use std::collections::HashMap;
-</span><span class="boring">
-</span><span class="boring">fn generate_codon_table() -&gt; HashMap&lt;[u8; 3], u8&gt; {
-</span><span class="boring">    let aa = b"FFLLSSSSYY**CC*WLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG";
-</span><span class="boring">
-</span><span class="boring">    let base1 = b"TTTTTTTTTTTTTTTTCCCCCCCCCCCCCCCCAAAAAAAAAAAAAAAAGGGGGGGGGGGGGGGG";
-</span><span class="boring">    let base2 = b"TTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGG";
-</span><span class="boring">    let base3 = b"TCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAG";
-</span><span class="boring">
-</span><span class="boring">    let map: HashMap&lt;[u8; 3], u8&gt; = (0..aa.len())
-</span><span class="boring">        .map(|i| {
-</span><span class="boring">            let value = aa[i];
-</span><span class="boring">            let key = [base1[i], base2[i], base3[i]];
-</span><span class="boring">
-</span><span class="boring">            return (key, value);
-</span><span class="boring">        })
-</span><span class="boring">        .collect();
-</span><span class="boring">
-</span><span class="boring">    return map;
-</span><span class="boring">}
-</span>// [...]
+<p>A very simplified example is a nucleotide <code>ATCG</code> of length 4. Let <code>k = 3</code> and <code>s = 2</code>. Let's assume that our criteria is that the smallest valued substring must be located at the start of the kmer.</p>
+<p>We can generate two kmers and for each of them, we check if the smallest valued substring of length <code>s = 2</code> is located at the start of the kmer.</p>
+<pre><code>ATCG    # nucleotide sequence.
 
-fn translate(seq: &amp;[u8], codon_table: &amp;HashMap&lt;[u8; 3], u8&gt;) -&gt; Vec&lt;u8&gt; {
-    if seq.len() % 3 != 0 {
-        panic!("Length of sequence must be divisible by three.");
-    }
+ATC     # kmer_1
+ TCG    # kmer_2
+</code></pre>
+<p>We see that:</p>
+<ul>
+<li><code>ATC</code> has <code>AT</code> as its smallest valued substring and <code>AT</code> is located at the start. <code>ATC</code> is a syncmer.</li>
+<li><code>TCG</code> has <code>CG</code> as its smallest valued substring and <code>CG</code> is not located at the start. <code>TCG</code> is not a syncmer.</li>
+</ul>
+<h2 id="closed-syncmers"><a class="header" href="#closed-syncmers">Closed syncmers</a></h2>
+<p>In this section, we'll go through <em>closed syncmers</em> where the location criteria is that the smallest value substring must be located at either the start or end of the kmer. Expanding our previous example with this location criteria, we get</p>
+<pre><code>ATCG    # nucleotide sequence.
 
-    let translation: Vec&lt;u8&gt; = seq
-        .chunks(3)
-        .filter_map(|codon| match codon_table.get(codon) {
-            Some(aa) =&gt; Some(*aa),
-            None =&gt; None,
+ATC     # kmer_1
+ TCG    # kmer_2
+</code></pre>
+<p>We see that:</p>
+<ul>
+<li><code>ATC</code> has <code>AT</code> as its smallest valued substring and <code>AT</code> is located at the start. <code>ATC</code> is a closed syncmer.</li>
+<li><code>TCG</code> has <code>CG</code> as its smallest valued substring and <code>CG</code> is located at the end. <code>TCG</code> is a closed syncmer.</li>
+</ul>
+<h2 id="implementation"><a class="header" href="#implementation">Implementation</a></h2>
+<p>In the example below, we won't bother with nucleotide encoding. Rather, we'll just find closed syncmers by iterate over the kmers, using the <code>.windows()</code> function and check the location of the smallest valued substring.</p>
+<pre><pre class="playground"><code class="language-rust edition2021">fn get_closed_syncmers&lt;'a&gt;(seq: &amp;'a [u8], k: usize, s: usize) -&gt; Vec&lt;&amp;'a [u8]&gt; {
+    assert!(k &lt;= seq.len());
+    assert!(s &lt;= k);
+
+    let closed_syncmers: Vec&lt;&amp;[u8]&gt; = seq
+        .windows(k) // Generate kmers.
+        .filter_map(|kmer| {
+
+            let (smallest_index, _) = kmer
+                .windows(s) // Substrings of length s for a given kmer.
+                .enumerate()
+                .min_by_key(|substring| substring.1) // Find smallest valued substring.
+                .unwrap();
+
+            // Location criteria.
+            if smallest_index == 0 || smallest_index == (k - s) {
+                return Some(kmer);
+            }
+
+            return None;
         })
         .collect();
 
-    return translation;
+    return closed_syncmers;
 }
 
 fn main() {
-    let codon_table = generate_codon_table();
+    // Generate one single kmer. Syncmer "AT" is not in the start or end.
+    assert_eq!(get_closed_syncmers(b"TTATT", 5, 2), Vec::&lt;&amp;[u8]&gt;::new());
 
-    assert_eq!(translate(b"ATGTAG", &amp;codon_table), b"M*");
-    assert_eq!(translate(b"", &amp;codon_table), b"");
+    // The example from the introduction to this chapter.
+    assert_eq!(get_closed_syncmers(b"ATCG", 3, 2), vec![b"ATC", b"TCG"]);
+
+    // Example from the syncmer paper.
+    assert_eq!(get_closed_syncmers(b"GGCAAGTGACA", 5, 2), vec![b"GGCAA", b"AAGTG", b"AGTGA", b"GTGAC"]);
 }</code></pre></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../../main/aminoacids/aminoacids.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../../main/kmers/minimizers.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../../main/practicals/introduction.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../../main/aminoacids/aminoacids.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -251,11 +258,11 @@ fn main() {
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../../main/aminoacids/aminoacids.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../../main/kmers/minimizers.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../../main/practicals/introduction.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../../main/aminoacids/aminoacids.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

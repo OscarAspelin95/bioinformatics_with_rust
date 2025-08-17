@@ -60,5 +60,6 @@ fn main() {
     let codon_table = generate_codon_table();
 
     assert_eq!(translate(b"ATGTAG", &codon_table), b"M*");
+    assert_eq!(translate(b"", &codon_table), b"");
 }
 ```
