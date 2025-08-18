@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Trait Bounds and Generics - Bioinformatics with Rust</title>
+        <title>Smart Pointers - Bioinformatics with Rust</title>
 
 
         <!-- Custom HTML head -->
@@ -168,78 +168,166 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="trait-bounds-and-generics"><a class="header" href="#trait-bounds-and-generics">Trait Bounds and Generics</a></h1>
-<p>Rust support generic types, but due to the its strict type checker we need to put some restrictions on the generic type. In Python, we can use unions to signify that a variable or argument can be of different types.</p>
-<pre><code class="language-Python">def display(s: str | int | list[str]):
-    print(s)
+                        <h1 id="smart-pointers"><a class="header" href="#smart-pointers">Smart Pointers</a></h1>
+<p>In Rust, there is a set of smart-pointers to make our lives easier when it comes to things such as ownership, references, etc.</p>
+<h2 id="box"><a class="header" href="#box">Box</a></h2>
+<p>The <code>Box</code> smart-pointer is used to enforce heap allocation of the value, and stack allocation of the reference. It can be used in various applications, two of which are recursive datatypes and dynamic traits.</p>
+<h3 id="recursive-datatypes"><a class="header" href="#recursive-datatypes">Recursive Datatypes</a></h3>
+<p>Let's define a <code>Struct</code> which has a field <code>inner</code> that references itself (i.e., a recursive structure). If we try to run this, we'll get a compiler error.</p>
+<pre><pre class="playground"><code class="language-rust edition2021">struct MyStruct{
+    inner: Option&lt;MyStruct&gt;,
+    value: usize
+}
 
-print('my_string')
-print(1)
-print(['my', 'string'])
+fn main(){
+    let my_struct = MyStruct {value: 0, inner: Some(MyStruct { value: 1, inner: None}) };
+}</code></pre></pre>
+<p>The problem is that the size of <code>MyStruct</code> is not known at compile time, which is a requirement for stack allocation. However, by using a <code>Box</code> we can enforce heap allocation of <code>MyStruct</code>, keeping its reference on the stack. Since references are compile-size-known, this works.</p>
+<pre><pre class="playground"><code class="language-rust edition2021">struct MyStruct{
+    inner: Option&lt;Box&lt;MyStruct&gt;&gt;,
+    value: usize
+}
 
-# This will actually run but the linter will complain.
-print({'my', 'string'})
-</code></pre>
-<p>In Rust, this works a bit differently. To print something, the variable needs to implement either the <a href="https://doc.rust-lang.org/rust-by-example/hello/print/print_display.html"><code>Display</code></a> trait ("normal" print) or the <a href="https://doc.rust-lang.org/rust-by-example/hello/print/print_debug.html"><code>Debug</code></a> trait (debug print). By using a <code>trait bound</code>, we can tell the compiler that only generic types which implement the <code>Display</code> or <code>Debug</code> trait are allowed as a argument to the function.</p>
-<p>In the example below, we implement a function that accepts an argument of a generic type <code>T</code> that implements the <code>Debug</code> trait. Luckily, all Rust types in the <code>std</code> library automatically implement <code>Debug</code>.</p>
-<pre><pre class="playground"><code class="language-rust edition2021">use std::fmt::Debug;
+fn main(){
+    let my_struct = Box::new(MyStruct {value: 0, inner: Some(Box::new(MyStruct { value: 1, inner: None})) });
+}</code></pre></pre>
+<p>The obvious downside here is that the code becomes rather verbose.</p>
+<h3 id="dynamic-traits"><a class="header" href="#dynamic-traits">Dynamic Traits</a></h3>
+<p>Another use of <code>Box</code> is for dynamic traits. One example of this is to create a <code>BufWriter</code> that writes either to file or stdout depending on if we provide an output file. We'll define a function <code>get_bufwriter</code>, that wraps <code>BufWriter</code> around either <code>File</code> or <code>Stdout</code> depending on the argument <code>outfile</code>. We want something like this (in pseudo-code):</p>
+<pre><code class="language-rust noplayground">fn get_bufwriter(outfile: Option&lt;PathBuf&gt;) -&gt; ??? {
+    match outfile {
+        Some(outfile) =&gt; return BufWriter::new(File::create(outfile).unwrap());
+        None =&gt; return BufWriter::New(stdout());
+    }
+}</code></pre>
+<p>However, Rust does not natively allow us to return a value that can be of two different types, <code>BufWriter&lt;File&gt;</code> or <code>BufWriter&lt;Stdout&gt;</code>. Fortunately, both types have the <code>Write</code> trait implemented. By wrapping <code>File</code> and <code>Stdout</code> in a <code>Box</code>, we can change our return type to the more generic <code>BufWriter&lt;Box&lt;dyn Write&gt;&gt;</code>. Conceptually, this signature means that the return type is a <code>BufWriter</code> wrapped around a type that implements the <code>Write</code> trait. The <code>dyn</code> keyword is related a <a href="https://doc.rust-lang.org/std/keyword.dyn.html">trait object</a>'s type. Because the exact size of <code>Write</code> is not known at compile-time, we need to use <code>Box</code>.</p>
+<pre><pre class="playground"><code class="language-rust edition2021">use std::{
+    fs::File,
+    io::{BufWriter, Write, stdout},
+    path::PathBuf,
+};
 
-fn display&lt;T: Debug&gt;(arg: T) {
-    println!("{:?}", arg);
+fn get_bufwriter(outfile: Option&lt;PathBuf&gt;) -&gt; BufWriter&lt;Box&lt;dyn Write&gt;&gt; {
+    match outfile {
+        Some(outfile) =&gt; return BufWriter::new(Box::new(File::create(outfile).unwrap())),
+        None =&gt; return BufWriter::new(Box::new(stdout())),
+    }
 }
 
 fn main() {
-    display(1);
-    display("my_string");
-    display("my_string".to_string());
-    display(vec!["my", "string"]);
+    // Create a writer that writes to stdout.
+    let mut writer = get_bufwriter(None);
+    writer.write(b"This will be written to stdout!\n").unwrap();
+
+    // // Commented out for obvious reasons.
+    // let mut writer = get_bufwriter(Some(PathBuf::from("file.txt")));
+    // writer
+    //     .write(b"This will be written to the output file!\n")
+    //     .unwrap();
 }</code></pre></pre>
-<h2 id="deriving-traits"><a class="header" href="#deriving-traits">Deriving traits</a></h2>
-<p>What if we have a type that does not implement <code>Debug</code> by default? We can derive it using the <code>derive</code> macro.</p>
-<p>In the following example, we'll create a <code>Struct</code> that by default does not implement <code>Debug</code>. By using the <code>derive</code> macro, we can subsequently call our <code>display</code> function.</p>
-<pre><pre class="playground"><code class="language-rust editable edition2021">use std::fmt::Debug;
+<h2 id="rc"><a class="header" href="#rc">Rc</a></h2>
+<p><code>Rc</code> stands for <q>Reference Counting</q> and is for single-threaded, multiple ownership. By creating multiple references to a variable (increasing the reference count), we can prevent the variable from being dropped until the reference count reaches zero. A good analogy would be multiple people watching the same TV. We don't want the TV to turn off until all people stop watching.</p>
+<pre><pre class="playground"><code class="language-rust edition2021">use std::rc::Rc;
 
-#[derive(Debug)] // Try commenting this out!
-struct MyStruct&lt;'a&gt; {
-    field_1: usize,
-    field_2: &amp;'a str,
-    field_3: String,
-    field_4: Vec&lt;&amp;'a str&gt;,
-}
+#[allow(unused)]
+fn main() {
+    let x: Rc&lt;usize&gt; = Rc::new(0);
 
-fn display&lt;T: Debug&gt;(arg: T) {
-    println!("{:?}", arg);
-}
+    println!("{}", Rc::strong_count(&amp;x));
+
+    {
+        let x_clone = x.clone();
+        println!("{}", Rc::strong_count(&amp;x));
+    } // x_clone is dropped here, reference count to x will decrease by one.
+
+    println!("{}", Rc::strong_count(&amp;x));
+}</code></pre></pre>
+<h2 id="arc"><a class="header" href="#arc">Arc</a></h2>
+<p><code>Arc</code> stands for <q>Atomic Reference Count</q> and is a thread safe alternative to <code>Rc</code>. It is commonly used together with <code>Mutex</code> for exclusive read/write access. One example is trying to push elements from different threads to a shared <code>Vec</code> instance. We need to ensure that our threads do not read and write at the same time since this can cause lockings and undefined behavior.</p>
+<p>In the example below, we create a <code>Vec</code> for storing a message from each thread. We wrap it in <code>Arc&lt;Mutex&lt;&gt;&gt;</code> to ensure thread safety. Then we spawn four threads, each of which will push a <code>String</code> to our <code>Vec</code>. By using <code>.lock()</code> we can make sure only one thread can access our <code>Vec</code> at a given time. Finally, we wait for all threads to finish and print the results.</p>
+<pre><pre class="playground"><code class="language-rust edition2021">use std::sync::{Arc, Mutex};
+use std::thread;
 
 fn main() {
-    let my_struct = MyStruct {
-        field_1: 1,
-        field_2: "my_string",
-        field_3: "my_string".to_string(),
-        field_4: vec!["my", "string"],
-    };
+    let v: Arc&lt;Mutex&lt;Vec&lt;String&gt;&gt;&gt; = Arc::new(Mutex::new(vec![]));
 
-    display(my_struct);
+    let mut handles = Vec::new();
+
+    for i in 0..4 {
+        // Each thread will get its own reference to the Arc&lt;Mutex&lt;Vec&lt;String&gt;&gt;&gt;.
+        let v_clone = v.clone();
+
+        let s = thread::spawn(move || {
+            v_clone
+                .lock()
+                .unwrap()
+                .push(format!("Hello from thread {}", i));
+        });
+
+        handles.push(s);
+    }
+
+    // Wait for and join the spawned threads.
+    for h in handles {
+        h.join().unwrap();
+    }
+
+    // Extract our Vec from the Arc&lt;Mutex&lt;&gt;&gt;.
+    let v_done = Arc::into_inner(v).unwrap().into_inner().unwrap();
+
+    for s in v_done {
+        println!("{s}");
+    }
 }</code></pre></pre>
-<p>Other common Rust traits that can be derived or implemented manually are:</p>
-<ul>
-<li><a href="https://doc.rust-lang.org/rust-by-example/hello/print/print_display.html"><code>Display</code></a></li>
-<li><a href="https://doc.rust-lang.org/rust-by-example/trait/clone.html"><code>Clone</code></a></li>
-<li><a href="https://doc.rust-lang.org/nomicon/send-and-sync.html"><code>Send</code></a></li>
-<li><a href="https://doc.rust-lang.org/nomicon/send-and-sync.html"><code>Sync</code></a></li>
-<li><a href="https://doc.rust-lang.org/std/cmp/trait.Ord.html"><code>Ord</code></a></li>
-<li><a href="https://doc.rust-lang.org/std/cmp/trait.PartialOrd.html"><code>PartialOrd</code></a></li>
-</ul>
+<h2 id="cow"><a class="header" href="#cow">Cow</a></h2>
+<p>The Clone-On-Write smart pointer provides immutable access to borrowed data with the ability to lazy-clone data when mutability or ownership is required. <code>Cow</code> is usable for cases where most of the time, we don't need to mutate data.</p>
+<p>Consider the example below, where we want to convert a <code>&amp;str</code> to lowercase. If we expect that most of the time our <code>&amp;str</code> is already lowercase, we can return it as is most of the times with <code>Cow::Borrow()</code>. However, for those rare cases when we need to modify it, we use <code>Cow::Owned()</code>.</p>
+<pre><pre class="playground"><code class="language-rust edition2021">use std::borrow::Cow;
+
+fn convert_to_lowercase(x: &amp;str) -&gt; Cow&lt;'_, str&gt; {
+    if x.chars().any(|c| c.is_uppercase()) {
+        return Cow::Owned(x.to_lowercase());
+    }
+
+    return Cow::Borrowed(x);
+}
+
+fn make_lowercase(x: &amp;str) -&gt; Cow&lt;'_, str&gt; {
+    let x_uppercase = convert_to_lowercase(&amp;x);
+
+    match &amp;x_uppercase {
+        Cow::Borrowed(_) =&gt; {
+            println!("Is borrowed.");
+        }
+        Cow::Owned(_) =&gt; {
+            println!("Is owned.");
+        }
+    }
+
+    return x_uppercase;
+}
+
+#[allow(unused)]
+fn main() {
+    // Lowercase conversion not needed.
+    let x = "my_string";
+    let x_lowercase = make_lowercase(x);
+
+    // Lowercase conversion needed.
+    let y = "My_String";
+    let y_lowercase = make_lowercase(y);
+}</code></pre></pre>
+<p>To be honest, I still fully do not understand the details of <code>Cow</code> and I rarely use it in my own code. However, I'm sure it is useful.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../../main/rust_basics/concurrency.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../../main/rust_basics/trait_bounds_and_generics.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../../main/rust_basics/smart_pointers.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../../main/nucleotides/nucleotides.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -249,11 +337,11 @@ fn main() {
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../../main/rust_basics/concurrency.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../../main/rust_basics/trait_bounds_and_generics.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../../main/rust_basics/smart_pointers.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../../main/nucleotides/nucleotides.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
