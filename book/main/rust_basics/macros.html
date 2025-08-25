@@ -7,6 +7,12 @@
 
 
         <!-- Custom HTML head -->
+        <meta property="og:title" content="Bioinformatics With Rust" />
+        <meta property="og:description" content="An introduction to using Rust for bioinformatic applications." />
+        <meta property="og:image" content="" />
+        <meta property="og:url"
+            content="https://github.com/OscarAspelin95/bioinformatics_with_rust/blob/5fd7158379edf483d5b975aa40b8460cd4bc85d2/src/assets/rust-bio-gray.png" />
+        <meta property="og:type" content="website" />
 
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -195,7 +201,44 @@
 <pre><pre class="playground"><code class="language-rust edition2021">fn main() {
     assert_eq!(6, 5 + 1);
 }</code></pre></pre>
-<h2 id="declarative-macros-1"><a class="header" href="#declarative-macros-1">Declarative macros</a></h2>
+<h3 id="implementing-our-own-declarative-macro"><a class="header" href="#implementing-our-own-declarative-macro">Implementing our own declarative macro</a></h3>
+<p>I want to emphasize that I personally do not know that much about Rust macros. However, in this example we'll try to implement something that resembles Python's <code>Path</code>, which is a part of the <code>Pathlib</code> module. Using <code>Path</code>, there is a very handy way to define a file path by chaining multiple directories.</p>
+<pre><code class="language-python">from pathlib import Path
+
+outdir = Path("my_outdir")
+outfile = outdir / "sub_dir" / "another_sub_dir" / "my_file.txt"
+</code></pre>
+<p>Essentially, if the top directory <code>outdir</code> is of type <code>Path</code>, we can generate a file path through <code>/</code>. Personally, I think this is way more neat than having to use an f-string or similar. Let's try to implement something similar using a Rust declarative macro.</p>
+<p>There are endless ways of implementing this, but below is one example. We'll define our macro <code>file_path</code> to require a base directory and at least one more argument. The syntax is a bit strange. It kinda looks like a function, but kinda not.</p>
+<p>The <a href="https://doc.rust-lang.org/reference/expressions.html">expression</a> <code>($base:expr $(, $sub:expr)+)</code> defines the pattern that we enforce. In this case, we require one expression <code>$base</code>, followed by one or more comma-separated expressions <code>$sub</code>.</p>
+<p>We use import statements with a leading <code>::</code> to signify that we want the root crate <code>std</code> to not accidentally use some locally defined crate called <code>std</code>.</p>
+<p>Finally, we create a <code>PathBuf</code> from our base dir and iteratively build up the path.</p>
+<pre><pre class="playground"><code class="language-rust edition2021">use std::path::PathBuf;
+
+macro_rules! file_path {
+    ($base:expr $(, $sub:expr)+) =&gt; {{
+        use ::std::path::PathBuf;
+        use ::std::fs;
+
+        let mut full_path = PathBuf::from($base);
+
+        $(
+            full_path.push($sub);
+        )*
+
+        full_path
+    }};
+}
+
+fn main(){
+
+    let outdir = "my_outdir".to_string();
+    let outfile = file_path!(outdir, "sub_dir", "another_sub_dir", "my_file.txt");
+
+    println!("{:?}", outfile);
+}</code></pre></pre>
+<p>The point with the simple example above is not to generate a bullet proof, production ready macro but rather showcase that declarative macros can be very handy for defining custom behaviors. If we'd try to implement <code>file_path</code> as a function, we'd probably have to handle the variable number of sub-directories through a <code>Vec</code> or similar.</p>
+<h2 id="procedural-macros"><a class="header" href="#procedural-macros">Procedural macros</a></h2>
 <p>Are divided into three categories, all of which are outside the scope of this book. Regardless, they are very handy for deriving traits, such as <code>Debug</code>. As an example, assume we've created a <code>Struct</code> that we'd want to be able to print to stdout using <code>println!</code>. In this case, we need use derive the <code>Debug</code> trait through <code>#[derive(Debug)]</code>.</p>
 <pre><pre class="playground"><code class="language-rust editable edition2021">#[derive(Debug)] // Try commenting out this line!
 struct MyStruct{
