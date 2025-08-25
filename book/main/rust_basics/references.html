@@ -7,6 +7,12 @@
 
 
         <!-- Custom HTML head -->
+        <meta property="og:title" content="Bioinformatics With Rust" />
+        <meta property="og:description" content="An introduction to using Rust for bioinformatic applications." />
+        <meta property="og:image" content="" />
+        <meta property="og:url"
+            content="https://github.com/OscarAspelin95/bioinformatics_with_rust/blob/5fd7158379edf483d5b975aa40b8460cd4bc85d2/src/assets/rust-bio-gray.png" />
+        <meta property="og:type" content="website" />
 
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -175,18 +181,19 @@
 
     println!("{:?}", &amp;my_vec); // Pass my_vec as a reference to the println! macro.
 }</code></pre></pre>
-<p>References are useful for passing variables to other functions without needing to clone the data.</p>
-<pre><pre class="playground"><code class="language-rust edition2021">fn print_a_vec(vec: &amp;Vec&lt;usize&gt;) {
-    println!("{:?}", vec);
+<p>References are useful for passing variables to other functions without needing to clone the data. In the following example below, we'll create a <code>Vec</code> and then pass it by reference to a function. Note the syntax here, we actually don't pass a reference <code>&amp;Vec&lt;usize&gt;</code>. We could, but a more idiomatic approach (in my opinion) is to pass a slice instead.</p>
+<pre><pre class="playground"><code class="language-rust edition2021">fn print_a_vec(x: &amp;[usize]) {
+    println!("{:?}", x);
 }
 
 fn main() {
     let my_vec: Vec&lt;usize&gt; = vec![1, 2, 3, 4, 5];
 
-    print_a_vec(&amp;my_vec);
+    print_a_vec(&amp;my_vec[..]);
 }</code></pre></pre>
 <p>There is an important rule when it comes to references, which I'll quote from the official Rust <a href="http://127.0.0.1:3000/main/rust_basics/references.html">book</a>:</p>
 <p><q><em>At any given time, you can have either one mutable reference or any number of immutable references.</em></q></p>
+<p>This makes perfect sense when you think about it. If we are able to mutate a variable, we do not want a bunch of read-only references with unpredictable values when read.</p>
 
                     </main>
 

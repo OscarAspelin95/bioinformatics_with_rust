@@ -13,6 +13,8 @@ git-repository-icon = "fa-github"
 mathjax-support = true
 default-theme = "coal"
 additional-css = ["src/assets/custom.css"]
+additional-head = ["theme/head.hbs"]
+
 [output.html.playground]
 editable = true
 

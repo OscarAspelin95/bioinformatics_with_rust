@@ -30,14 +30,15 @@ The book is structured into different chapters that cover both programmatic and 
         &emsp;&emsp; ✔ Iterator Chaining.<br>
         &emsp;&emsp; ✔ Concurrency.<br>
         &emsp;&emsp; ✔ Trait Bounds and Generics.<br>
+        &emsp;&emsp; ✔ Smart pointers.<br>
     </p>
     <p style="margin: 10px;">
         🧬 The Basics of Nucleotides:<br>
         &emsp;&emsp; ✔ GC content.<br>
         &emsp;&emsp; ✔ Homopolymers.<br>
         &emsp;&emsp; ✔ Entropy.<br>
-        &emsp;&emsp; 🚧 Compression.<br>
-        &emsp;&emsp; 🚧 Filtering and Trimming.<br>
+        &emsp;&emsp; ✔ Compression.<br>
+        &emsp;&emsp; 🚧 Trimming.<br>
         &emsp;&emsp; ✔ Reverse Complement.<br>
         &emsp;&emsp; ✔ Encoding.<br>
     </p>
@@ -54,7 +55,7 @@ The book is structured into different chapters that cover both programmatic and 
         &emsp;&emsp; ✔ FracMinHash.<br>
         &emsp;&emsp; 🚧 SIMD vectorization.<br>
         &emsp;&emsp; ✔ Minimizers.<br>
-        &emsp;&emsp; 🚧 Syncmers.<br>
+        &emsp;&emsp; ✔ Syncmers.<br>
     </p>
     <p style="margin: 10px;">
         🧬 Aminoacids:<br>
@@ -70,6 +71,8 @@ The book is structured into different chapters that cover both programmatic and 
         🖋️ Practical Excercises:<br>
         &emsp;&emsp; ✔ Create a basic fasta parser CLI.<br>
         &emsp;&emsp; ✔ Create a basic fastq filter CLI.<br>
+        &emsp;&emsp; ✔ Create a basic fastx toolkit CLI.<br>
+        &emsp;&emsp; 🚧 Create a basic classifier CLI.<br>
     </p>
 </div>
 
