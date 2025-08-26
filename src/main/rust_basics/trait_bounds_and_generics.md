@@ -1,5 +1,5 @@
 # Trait Bounds and Generics
-Rust support generic types, but due to the its strict type checker we need to put some restrictions on the generic type. In Python, we can use unions to signify that a variable or argument can be of different types.
+Rust supports generic types, but due to the its strict type checker we need to put some restrictions on the generic type. In Python, we can use unions to signify that a variable or argument can be of different types.
 
 ```Python
 def display(s: str | int | list[str]):
@@ -13,7 +13,7 @@ print(['my', 'string'])
 print({'my', 'string'})
 ```
 
-In Rust, this works a bit differently. To print something, the variable needs to implement either the [`Display`](https://doc.rust-lang.org/rust-by-example/hello/print/print_display.html) trait ("normal" print) or the [`Debug`](https://doc.rust-lang.org/rust-by-example/hello/print/print_debug.html) trait (debug print). By using a `trait bound`, we can tell the compiler that only generic types which implement the `Display` or `Debug` trait are allowed as a argument to the function.
+In Rust, this works a bit differently. To print something, the variable needs to implement either the [`Display`](https://doc.rust-lang.org/rust-by-example/hello/print/print_display.html) trait ("normal" print) or the [`Debug`](https://doc.rust-lang.org/rust-by-example/hello/print/print_debug.html) trait (debug print). By using a `trait bound`, we can tell the compiler that only generic types which implement the `Display` or `Debug` trait are allowed as argument(s) to the function.
 
 In the example below, we implement a function that accepts an argument of a generic type `T` that implements the `Debug` trait. Luckily, all Rust types in the `std` library automatically implement `Debug`.
 

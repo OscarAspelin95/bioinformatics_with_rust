@@ -192,23 +192,37 @@ subject A-CGACTCGAGCTCGAGCTT
 <h2 id="definitions"><a class="header" href="#definitions">Definitions</a></h2>
 <ul>
 <li>
-<p><code>Query length</code> - The length of the query sequence.</p>
+<p><code>Query length</code> - The length of the query sequence. Here, we need to be a bit careful about if we mean either the original query length, or the length of the aligned part of the query.</p>
 </li>
 <li>
-<p><code>Subject length</code> = The length of the subject sequence.</p>
+<p><code>Subject length</code> - The length of the subject sequence (either original or aligned, same reasoning as for query).</p>
 </li>
 <li>
-<p><code>Alignment length</code> = The length of the aligned part between the query and subject.</p>
+<p><code>Alignment length</code> - The length of the aligned part between the query and subject.</p>
 </li>
 <li>
-<p><code>Percent Identity</code> = <code>100 * (num_matches / alignment_length)</code>.</p>
+<p><code>Percent identity</code> - <code>100 * (num_matches / alignment_length)</code>. Here, we also need to be a bit careful since this metric only considers the aligned part of the query and subject. Theoretically, if our query and subject are of length 100, but they align only in the first 10 bases with no mismatches, this would be <code>percent identity</code> = <code>100</code> * (<code>10</code> / <code>10</code>) = <code>100</code>.</p>
 </li>
 <li>
-<p><code>Fraction Aligned (Query)</code> = <code>query_length / alignment_length</code> (how much of the query is aligned).</p>
+<p><code>Fraction aligned (query)</code> - <code>query_length / alignment_length</code> (how much of the query is aligned). Here, we use the original query length.</p>
 </li>
 <li>
-<p><code>Fraction Aligned (Subject)</code> = <code>subject_length / alignment_length</code> (how much of the subject is aligned).</p>
+<p><code>Fraction aligned (subject)</code> - <code>subject_length / alignment_length</code> (how much of the subject is aligned). Here, we use the original subject length.</p>
 </li>
+</ul>
+<p>In the example below, we have the following alignment metrics:</p>
+<pre>
+query   CATCGT
+         ||||
+subject  ATCG
+</pre>
+<ul>
+<li><code>Query length</code> = <code>6</code> (original) or <code>4</code> (aligned).</li>
+<li><code>Subject length</code> = <code>4</code> (original and aligned).</li>
+<li><code>Alignment length</code> = <code>4</code>.</li>
+<li><code>Percent Identity</code> = <code>100</code>.</li>
+<li><code>Fraction aligned (query)</code> = <code>4</code> / <code>6</code> = <code>0.67</code>.</li>
+<li><code>Fraction aligned (subject)</code> = <code>4</code> / <code>4</code> = <code>1.0</code>.</li>
 </ul>
 <h2 id="types-of-alignments"><a class="header" href="#types-of-alignments">Types Of Alignments</a></h2>
 <p>There are three basic types of alignments:</p>
@@ -229,7 +243,7 @@ subject A-CGACTCGAGCTCGAGCTT
            ATCG
 </pre>
 <ul>
-<li><code>Local Alignment</code> - Allows partial alignment of the query against the subject.</li>
+<li><code>Local Alignment</code> - Allows partial alignment of the query against the subject. This is the type of alignments that <a href="https://pubmed.ncbi.nlm.nih.gov/2231712/">BLAST</a> outputs.</li>
 </ul>
 <pre>
         CCCATCGTTT

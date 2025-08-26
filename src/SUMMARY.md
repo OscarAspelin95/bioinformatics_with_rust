@@ -3,6 +3,7 @@
 [Bioinformatics With Rust](./prefix/bioinformatics_with_rust.md)
 [Introduction](./prefix/introduction.md)
 [Why Rust?](./prefix/why_rust.md)
+[About AI](./prefix/about_ai.md)
 [Prerequisites](./prefix/prerequisites.md)
 
 ---
@@ -83,6 +84,7 @@
     - [In Silico PCR]()
     - [Clustering]()
     - [Classification]()
+
 ---
 
 - [Practicals](./main/practicals/introduction.md)
@@ -90,6 +92,12 @@
     - [Fastq filter](./main/practicals/fastq_filter.md)
     - [Fastx toolkit](./main/practicals/fastx_toolkit.md)
     - [Classifier](./main/practicals/classifier.md)
+
+---
+
+- [Blueprints](./main/blueprints/introduction.md)
+    - [Argument Parsing](./main/blueprints/argument_parsing.md)
+    - [Commands](./main/blueprints/commands.md)
 
 ---
 

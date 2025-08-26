@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Aminoacids - Bioinformatics with Rust</title>
+        <title>Argument Parsing - Bioinformatics with Rust</title>
 
 
         <!-- Custom HTML head -->
@@ -174,52 +174,53 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="aminoacids"><a class="header" href="#aminoacids">Aminoacids</a></h1>
-<p>In the past chapters, we have gone through some fundamental ways to analyze and manipulate nucleotide sequences. Now, we'll take a brief look at aminoacid sequences. Luckily, some of the concepts we have implemented for nucleotides also appliy to aminoacids, with some minor tweaking of the code. Examples are:</p>
-<ul>
-<li>Counting aminoacids.</li>
-<li>Identifying homopolymers.</li>
-<li>Hamming distance.</li>
-<li>Global and local aligner (with suitable substitution matrix).</li>
-</ul>
-<h2 id="codon-table"><a class="header" href="#codon-table">Codon Table</a></h2>
-<p>For aminoacids, we have to think triplets of nucleotides because this is what encodes aminoacids. In Rust, we can use something like the <a href="https://docs.rs/bio-seq/latest/bio_seq/translation/index.html">bio_seq</a> crate. However, for fun we'll create our own very basic <code>HashMap</code> using the <a href="https://www.ncbi.nlm.nih.gov/Taxonomy/Utils/wprintgc.cgi#SG1.">standard</a> NCBI codon table.</p>
-<pre><pre class="playground"><code class="language-rust edition2021">use std::collections::HashMap;
+                        <h1 id="argument-parsing"><a class="header" href="#argument-parsing">Argument Parsing</a></h1>
+<p>There are multiple ways to handle argument parsing in Rust. One easy way is to use <a href="https://doc.rust-lang.org/book/ch12-01-accepting-command-line-arguments.html"><code>std::env</code></a>, but it quickly becomes rather complex when the number and types of arguments increase.</p>
+<p>An alternative approach is to use <a href="https://docs.rs/clap/latest/clap/">clap</a>, which has worked really well for me personally. Defining arguments is as easy as defining a struct with a clap specific derive macro.</p>
+<p>For reproducibility purposes, the code example uses the following Cargo.toml dependency:</p>
+<pre><code>[dependencies]
+clap = { version = "4.5.39", features = ["derive"] }
+</code></pre>
+<p>Pretend we are creating a CLI called <code>fasta_cli</code> for filtering and parsing a FASTA file. These might be some of the arguments we think are relevant.</p>
+<pre><code class="language-rust noplayground">use clap::Parser;
+use clap::value_parser;
+use std::path::PathBuf;
 
-fn generate_codon_table&lt;'a&gt;() -&gt; HashMap&lt;[u8; 3], u8&gt; {
-    let aa = b"FFLLSSSSYY**CC*WLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG";
+#[derive(Parser, Debug)]
+struct Args {
+    #[arg(short, long, help = "Path to fasta file.")]
+    fasta: PathBuf,
 
-    let base1 = b"TTTTTTTTTTTTTTTTCCCCCCCCCCCCCCCCAAAAAAAAAAAAAAAAGGGGGGGGGGGGGGGG";
-    let base2 = b"TTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGG";
-    let base3 = b"TCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAG";
+    #[arg(long, default_value_t = 100, help = "Min allowed read length.")]
+    min_len: usize,
 
-    let map: HashMap&lt;[u8; 3], u8&gt; = (0..aa.len())
-        .map(|i| {
-            let value = aa[i];
-            let key = [base1[i], base2[i], base3[i]];
+    #[arg(long, default_value_t = 1000, help = "Max allowed read length.")]
+    max_len: usize,
 
-            return (key, value);
-        })
-        .collect();
+    #[arg(long, default_value_t = 15, value_parser = value_parser!(u16).range(7..31))]
+    kmer_size: u16,
 
-    return map;
+    #[arg(short, long, default_value_t = 8)]
+    threads: usize,
 }
 
 fn main() {
-    let codon_table = generate_codon_table();
+    let args = Args::parse();
 
-    assert_eq!(codon_table.get(b"ATG"), Some(&amp;b'M'));
-}</code></pre></pre>
+    // Now, we can access the values as args.fasta, args.min_len, etc.
+}</code></pre>
+<p>Once compiled, we can run our binary as <code>fasta_cli --fasta &lt;file.fasta&gt; --min_len &lt;min_len&gt; --max_len &lt;max_len&gt; --kmer_size &lt;kmer_size&gt; --threads &lt;threads&gt;</code>.</p>
+<p>Clap also supports more complex argument parsing, such as global flags, subcommands and enums. See e.g., <a href="https://github.com/OscarAspelin95/fastq_rs/blob/main/src/args.rs">fastq_rs</a> for examples of this.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../../main/kmers/syncmers.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../../main/blueprints/introduction.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../../main/aminoacids/translation.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../../main/blueprints/commands.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -229,11 +230,11 @@ fn main() {
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../../main/kmers/syncmers.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../../main/blueprints/introduction.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../../main/aminoacids/translation.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../../main/blueprints/commands.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
