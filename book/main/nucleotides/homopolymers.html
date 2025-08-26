@@ -180,7 +180,7 @@
 ...ATCG<u>AAAAAAA</u>CACA...
 </pre>
 <p>Why are homopolymers important? Biologically, they play a role in multiple functions, such as promoters and other regulatory regions. In addition, homopolymer regions have been shown to introduce systematic errors in Oxford Nanopore data, which is why these regions are important to identify and inspect.</p>
-<p>In the code-snippet below, we implement a simple function for identifying homopolymer regions of a defined minimum length in a sequence. For a full-fledged cli version of this code, checkout the <a href="https://github.com/OscarAspelin95/homopolymer_rs">respository</a>.</p>
+<p>In the code-snippet below, we implement a simple function for identifying homopolymer regions of a defined minimum length in a sequence.</p>
 <pre><pre class="playground"><code class="language-rust edition2021">fn find_homopolymers(seq: &amp;[u8], min_hp_len: usize) -&gt; Vec&lt;&amp;[u8]&gt; {
     let mut homopolymers: Vec&lt;&amp;[u8]&gt; = Vec::new();
 
@@ -228,6 +228,7 @@ fn main() {
     assert_eq!(find_homopolymers(b"ATC", 1), vec![b"A", b"T", b"C"]);
 
 }</code></pre></pre>
+<p>In a real life application, we'd most likely do more than this such as saving the positions for identified homopolymers.</p>
 
                     </main>
 

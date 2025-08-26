@@ -6,6 +6,11 @@
         - [x] Syncmers (basics)
 
 - [ ] Suggestions for **new** chapters:
+    - [ ] Blueprint:
+        - [ ] Clap argument parsing.
+        - [ ] Run commands from cli/subprocess.
+        - [ ] Reading fast(a/q) with needletail.
+        - [ ] Reading fast(a/q) with bio.
     - [ ] Amplicon:
         - [ ] In Silico PCR.
         - [ ] Cluster reads similar to isONclust3.

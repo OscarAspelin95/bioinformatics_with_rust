@@ -7,7 +7,7 @@ A *homopolymer* is defined stretch of consecutive, identical nucleotides. One ex
 
 Why are homopolymers important? Biologically, they play a role in multiple functions, such as promoters and other regulatory regions. In addition, homopolymer regions have been shown to introduce systematic errors in Oxford Nanopore data, which is why these regions are important to identify and inspect.
 
-In the code-snippet below, we implement a simple function for identifying homopolymer regions of a defined minimum length in a sequence. For a full-fledged cli version of this code, checkout the [respository](https://github.com/OscarAspelin95/homopolymer_rs).
+In the code-snippet below, we implement a simple function for identifying homopolymer regions of a defined minimum length in a sequence.
 
 
 ```rust
@@ -59,3 +59,5 @@ fn main() {
 
 }
 ```
+
+In a real life application, we'd most likely do more than this such as saving the positions for identified homopolymers.

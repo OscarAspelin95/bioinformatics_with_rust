@@ -1,7 +1,7 @@
 # Aminoacids
 In the past chapters, we have gone through some fundamental ways to analyze and manipulate nucleotide sequences. Now, we'll take a brief look at aminoacid sequences. Luckily, some of the concepts we have implemented for nucleotides also appliy to aminoacids, with some minor tweaking of the code. Examples are:
 - Counting aminoacids.
-- Extracting homopolymer regions.
+- Identifying homopolymers.
 - Hamming distance.
 - Global and local aligner (with suitable substitution matrix).
 
