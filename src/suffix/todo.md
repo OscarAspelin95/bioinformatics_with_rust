@@ -7,12 +7,13 @@
 
 - [ ] Suggestions for **new** chapters:
     - [ ] Blueprint:
-        - [ ] Clap argument parsing.
-        - [ ] Run commands from cli/subprocess.
+        - [x] Clap argument parsing.
+        - [x] Run commands from cli/subprocess.
+        - [x] Reading file to DataFrame.
         - [ ] Reading fast(a/q) with needletail.
         - [ ] Reading fast(a/q) with bio.
     - [ ] Amplicon:
-        - [ ] In Silico PCR.
+        - [x] In Silico PCR.
         - [ ] Cluster reads similar to isONclust3.
         - [ ] Classification.
     - [ ] Aminoacids:

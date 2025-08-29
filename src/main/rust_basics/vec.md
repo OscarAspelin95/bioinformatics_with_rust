@@ -1,5 +1,5 @@
 # Vec
-A `Vec` is an array type with dynamic size. There are two common ways to initialize a `Vec`, either through the `vec!` macro, or through `Vec::new()`.
+A `Vec` is like an array type with dynamic size. There are two common ways to initialize a `Vec`, either through the `vec!` macro, or through `Vec::new()`.
 
 ```rust
 fn main() {

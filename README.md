@@ -59,11 +59,11 @@ The book is structured into different chapters that cover both programmatic and 
     </p>
     <p style="margin: 10px;">
         🧬 Aminoacids:<br>
-        &emsp;&emsp; Translation.<br>
+        &emsp;&emsp; ✔ Translation.<br>
     </p>
     <p style="margin: 10px;">
         🧬 Amplicon:<br>
-        &emsp;&emsp; 🚧 In Silico PCR.<br>
+        &emsp;&emsp; ✔ In Silico PCR.<br>
         &emsp;&emsp; 🚧 Clustering.<br>
         &emsp;&emsp; 🚧 Classification.<br>
     </p>
@@ -72,7 +72,7 @@ The book is structured into different chapters that cover both programmatic and 
         &emsp;&emsp; ✔ Create a basic fasta parser CLI.<br>
         &emsp;&emsp; ✔ Create a basic fastq filter CLI.<br>
         &emsp;&emsp; ✔ Create a basic fastx toolkit CLI.<br>
-        &emsp;&emsp; 🚧 Create a basic classifier CLI.<br>
+        &emsp;&emsp; ✔ Create a basic classifier CLI.<br>
     </p>
 </div>
 

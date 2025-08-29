@@ -10,7 +10,7 @@ Expected command:
 `fasta_stats --fasta <file.fasta> --outfile <outfile.json>`
 
 Expected contents of output file:
-```
+```rust
 {
     num_sequences: usize,
 }

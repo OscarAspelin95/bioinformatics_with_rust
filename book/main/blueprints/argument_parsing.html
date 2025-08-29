@@ -178,7 +178,7 @@
 <p>There are multiple ways to handle argument parsing in Rust. One easy way is to use <a href="https://doc.rust-lang.org/book/ch12-01-accepting-command-line-arguments.html"><code>std::env</code></a>, but it quickly becomes rather complex when the number and types of arguments increase.</p>
 <p>An alternative approach is to use <a href="https://docs.rs/clap/latest/clap/">clap</a>, which has worked really well for me personally. Defining arguments is as easy as defining a struct with a clap specific derive macro.</p>
 <p>For reproducibility purposes, the code example uses the following Cargo.toml dependency:</p>
-<pre><code>[dependencies]
+<pre><code class="language-toml">[dependencies]
 clap = { version = "4.5.39", features = ["derive"] }
 </code></pre>
 <p>Pretend we are creating a CLI called <code>fasta_cli</code> for filtering and parsing a FASTA file. These might be some of the arguments we think are relevant.</p>

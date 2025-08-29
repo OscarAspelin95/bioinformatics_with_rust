@@ -178,7 +178,7 @@
 <p>In Python, commands can easily be run with <code>subprocess</code> or through the very neat <a href="https://github.com/amoffat/sh"><code>sh</code></a> module.</p>
 <p>In Rust, we can use <code>std::process::Command</code> to achieve something similar to <code>subprocess</code>. The example below shows how to call <code>minimap2</code> to align reads against a genome. We'll use <code>thiserror</code> to create two custom errors, the last of which will capture stderr if the command exits with a non-zero exitcode.</p>
 <p>For reproducibility purposes, the code example uses the following Cargo.toml dependency:</p>
-<pre><code>[dependencies]
+<pre><code class="language-toml">[dependencies]
 thiserror = { version = "2.0.16" }
 </code></pre>
 <p>Note, we obviously need <code>minimap2</code> installed in order for this code to work properly.</p>
@@ -230,7 +230,7 @@ fn main() {
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../../suffix/resources.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../../main/blueprints/dataframes.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -244,7 +244,7 @@ fn main() {
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../../suffix/resources.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../../main/blueprints/dataframes.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

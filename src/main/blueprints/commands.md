@@ -5,7 +5,7 @@ In Rust, we can use `std::process::Command` to achieve something similar to `sub
 
 For reproducibility purposes, the code example uses the following Cargo.toml dependency:
 
-```
+```toml
 [dependencies]
 thiserror = { version = "2.0.16" }
 ```
