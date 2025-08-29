@@ -21,7 +21,7 @@ Where `sequence_x` was fully covered, `sequence_y` was 95% covered, etc. Define 
 ## Checklist
 - [ ] Implement FracMinHash generation for a given byte slice `&[u8]`.
 - [ ] Generate FracMinHashes for all reads.
-- [ ] Iterative calculate the containment for each db sequence.
+- [ ] Calculate the score for each db sequence.
 
 ## Suggested Rust Crates
 - [Clap](https://docs.rs/clap/latest/clap/) - argument parsing.
@@ -34,5 +34,5 @@ Where `sequence_x` was fully covered, `sequence_y` was 95% covered, etc. Define 
 ## Extra Credits
 - [ ] Only allow input files with extensions `.fasta`, `.fa`, `.fsa`, `.fna` for the database file and `.fastq`, `.fastq.gz` for the reads.
 - [ ] Graceful error handling.
-- [ ] Increase performance by replacing `Needletail` with `Bio` + `Rayon` to enable multi-threading.
+- [ ] Replace `Needletail` with `Bio` + `Rayon` to enable multi-threading.
 - [ ] Add a coverage metric to show the mean FracMinHash coverage for each sequence. Hint - don't use a `HashSet`, but rather a `HashMap` to count the FracMinHash read kmers.

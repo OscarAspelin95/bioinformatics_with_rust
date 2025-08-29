@@ -194,7 +194,7 @@ Implement FracMinHash generation for a given byte slice <code>&amp;[u8]</code>.<
 <li><input disabled="" type="checkbox"/>
 Generate FracMinHashes for all reads.</li>
 <li><input disabled="" type="checkbox"/>
-Iterative calculate the containment for each db sequence.</li>
+Calculate the score for each db sequence.</li>
 </ul>
 <h2 id="suggested-rust-crates"><a class="header" href="#suggested-rust-crates">Suggested Rust Crates</a></h2>
 <ul>
@@ -212,7 +212,7 @@ Only allow input files with extensions <code>.fasta</code>, <code>.fa</code>, <c
 <li><input disabled="" type="checkbox"/>
 Graceful error handling.</li>
 <li><input disabled="" type="checkbox"/>
-Increase performance by replacing <code>Needletail</code> with <code>Bio</code> + <code>Rayon</code> to enable multi-threading.</li>
+Replace <code>Needletail</code> with <code>Bio</code> + <code>Rayon</code> to enable multi-threading.</li>
 <li><input disabled="" type="checkbox"/>
 Add a coverage metric to show the mean FracMinHash coverage for each sequence. Hint - don't use a <code>HashSet</code>, but rather a <code>HashMap</code> to count the FracMinHash read kmers.</li>
 </ul>

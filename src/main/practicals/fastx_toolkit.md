@@ -31,4 +31,4 @@ Where `subcommand` can be:
 ## Extra Credits
 - [ ] Only allow input files with extensions `.fasta`, `.fa`, `.fsa`, `.fna`, `.fastq`, `.fastq.gz`.
 - [ ] Graceful error handling.
-- [ ] Increase performance by replacing `Needletail` with `Bio` + `Rayon` to enable multi-threading.
+- [ ] Replacing `Needletail` with `Bio` + `Rayon` to enable multi-threading.

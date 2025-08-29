@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Practicals - Bioinformatics with Rust</title>
+        <title>DataFrames - Bioinformatics with Rust</title>
 
 
         <!-- Custom HTML head -->
@@ -174,19 +174,44 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="practicals"><a class="header" href="#practicals">Practicals</a></h1>
-<p>So far, we have not seen any code examples of using external crates. In this chapter, the reader is encouraged to implement their own solutions to the suggested problems, using their own code in combination with suitable Rust crates.</p>
-<p>For each problem, there is a description of what should be implemented, what Rust crates would be suitable and also links to examples to take inspiration from.</p>
+                        <h1 id="dataframes"><a class="header" href="#dataframes">DataFrames</a></h1>
+<p>Reading and manipulating dataframes in Rust is actually not that easy. <a href="https://docs.rs/polars/latest/polars/">Polars</a> is the crate to use for dataframes but honestly, the Rust API is not that good. In my opinion, it is much easier to either use the Python API, or simply use <a href="https://pandas.pydata.org/">pandas</a> and completely skip Rust.</p>
+<p>With that said, here is a small example of reading a .tsv file in Rust, using polars.</p>
+<p>For reproducibility purposes, the code example uses the following Cargo.toml dependency:</p>
+<pre><code class="language-toml">[dependencies]
+polars = { version = "0.50.0", features = ["lazy", "csv"]}
+</code></pre>
+<pre><code class="language-rust noplayground">use polars::prelude::*;
+
+/// Assumes tab separated values and that the first line is the header.
+fn tsv_to_df(tsv: &amp;PathBuf) -&gt; LazyFrame {
+    let df = LazyCsvReader::new(PlPath::new(tsv.to_str().unwrap()))
+        .with_separator(b'\t')
+        .with_has_header(true)
+        .with_truncate_ragged_lines(true)
+        .finish()
+        .expect("Failed to read tsv to DataFrame.");
+
+    df
+}
+
+fn main() {
+    let tsv: PathBuf = PathBuf::from("my_file.tsv");
+
+    let df = tsv_to_df(&amp;tsv);
+
+    // Do stuff with the dataframe...
+}</code></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../../main/amplicon/in_silico_pcr.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../../main/blueprints/commands.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../../main/practicals/fasta_parser.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../../suffix/resources.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -196,11 +221,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../../main/amplicon/in_silico_pcr.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../../main/blueprints/commands.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../../main/practicals/fasta_parser.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../../suffix/resources.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

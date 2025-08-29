@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Practicals - Bioinformatics with Rust</title>
+        <title>Amplicon - Bioinformatics with Rust</title>
 
 
         <!-- Custom HTML head -->
@@ -174,19 +174,36 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="practicals"><a class="header" href="#practicals">Practicals</a></h1>
-<p>So far, we have not seen any code examples of using external crates. In this chapter, the reader is encouraged to implement their own solutions to the suggested problems, using their own code in combination with suitable Rust crates.</p>
-<p>For each problem, there is a description of what should be implemented, what Rust crates would be suitable and also links to examples to take inspiration from.</p>
+                        <h1 id="amplicon"><a class="header" href="#amplicon">Amplicon</a></h1>
+<p>As we all know, there are multiple different approaches to genome sequencing. I'll list my interpretation of the different approaches below:</p>
+<ul>
+<li><code>WGS</code> - Is a rather broad term, but generally refers to single isolate sequencing. This could be for example sequencing the entire genome from a single bacterial colony.</li>
+<li><code>Shotgun</code> - Generally refers to sequencing the entire genomes from multiple taxa (metagenomic sample). For example, sequencing a gut sample from a patient.</li>
+<li><code>Amplicon</code> - Is a targeted approach, commonly used with PCR. The goal here is to sequence a part of the target genome. One example is amplicon sequencing of the 16S bacterial rRNA region.</li>
+</ul>
+<p>Amplicon sequencing has several advantages compared to other sequencing protocols:</p>
+<ul>
+<li>Reduced costs per sample due to sequencing less DNA for a shorter period of time.</li>
+<li>Enables sequencing more samples in parallel due to smalles sample sizes.</li>
+<li>The bioinformatic analysis is generally less computationally heavy.</li>
+</ul>
+<p>However, this does not come without disadvantages:</p>
+<ul>
+<li>PCR can introduce artifacts.</li>
+<li>Off targets, depending on the primer design.</li>
+<li>Reduced genomic resolution.</li>
+</ul>
+<p>In the following chapters, we'll go through some very basic Rust implementations of common amplicon based analyses.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../../main/amplicon/in_silico_pcr.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../../main/aminoacids/translation.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../../main/practicals/fasta_parser.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../../main/amplicon/in_silico_pcr.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -196,11 +213,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../../main/amplicon/in_silico_pcr.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../../main/aminoacids/translation.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../../main/practicals/fasta_parser.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../../main/amplicon/in_silico_pcr.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

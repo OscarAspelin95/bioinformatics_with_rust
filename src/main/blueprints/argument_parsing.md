@@ -4,7 +4,7 @@ There are multiple ways to handle argument parsing in Rust. One easy way is to u
 An alternative approach is to use [clap](https://docs.rs/clap/latest/clap/), which has worked really well for me personally. Defining arguments is as easy as defining a struct with a clap specific derive macro.
 
 For reproducibility purposes, the code example uses the following Cargo.toml dependency:
-```
+```toml
 [dependencies]
 clap = { version = "4.5.39", features = ["derive"] }
 ```
