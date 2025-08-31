@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Resources - Bioinformatics with Rust</title>
+        <title>FASTQ - Bioinformatics with Rust</title>
 
 
         <!-- Custom HTML head -->
@@ -18,35 +18,35 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
 
-        <link rel="icon" href="../favicon.svg">
-        <link rel="shortcut icon" href="../favicon.png">
-        <link rel="stylesheet" href="../css/variables.css">
-        <link rel="stylesheet" href="../css/general.css">
-        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="icon" href="../../favicon.svg">
+        <link rel="shortcut icon" href="../../favicon.png">
+        <link rel="stylesheet" href="../../css/variables.css">
+        <link rel="stylesheet" href="../../css/general.css">
+        <link rel="stylesheet" href="../../css/chrome.css">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
-        <link rel="stylesheet" href="../fonts/fonts.css">
+        <link rel="stylesheet" href="../../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../../fonts/fonts.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
-        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
-        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+        <link rel="stylesheet" id="highlight-css" href="../../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../../ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="../src/assets/custom.css">
+        <link rel="stylesheet" href="../../src/assets/custom.css">
 
         <!-- MathJax -->
         <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
         <!-- Provide site root and default themes to javascript -->
         <script>
-            const path_to_root = "../";
+            const path_to_root = "../../";
             const default_light_theme = "coal";
             const default_dark_theme = "navy";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../toc.js"></script>
+        <script src="../../toc.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -110,7 +110,7 @@
             <!-- populated by js -->
             <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
             <noscript>
-                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
             </noscript>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -174,37 +174,67 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="resources"><a class="header" href="#resources">Resources</a></h1>
-<h2 id="reading-references"><a class="header" href="#reading-references">Reading References</a></h2>
+                        <h1 id="fastq"><a class="header" href="#fastq">FASTQ</a></h1>
+<p>The <a href="https://en.wikipedia.org/wiki/FASTQ_format">FASTQ</a> format is similar to FASTA, but also associates each nucleotide with an error probability. This is relevant because it enables us to do things such as trimming, filtering and estimating sample quality. Each record takes up four lines:</p>
+<ol>
+<li>Sequence id with an optional description. Must start with the <code>@</code> character.</li>
+<li>Actual sequence.</li>
+<li><code>+</code>.</li>
+<li>Quality (<a href="https://www.ascii-code.com/">ASCII</a> encoded <a href="https://en.wikipedia.org/wiki/Phred_quality_score">phred scores</a>).</li>
+</ol>
+<p>In addition, the sequence and quality lines must contain the same number of characters. One simple example of a FASTQ record is:</p>
+<pre><code>@sequence_1
+ATCG
++
+????
+</code></pre>
+<p>which tells us that there is a record called <code>sequence_1</code> with the nucleotide sequence <code>ATCG</code> and associated qualities <code>????</code>. How do we know that these are nucleotides and not aminoacids? Strictly, we don't. However, the FASTQ format is almost exclusively used for nucleotides.</p>
+<h2 id="quality-phred-scores-and-error-probabilities"><a class="header" href="#quality-phred-scores-and-error-probabilities">Quality, Phred Scores and Error Probabilities</a></h2>
+<p>There are three concepts we need to understand before proceeding:</p>
 <ul>
-<li><a href="https://doc.rust-lang.org/book/">The Rust Programming Language</a> - Official Rust book.</li>
-<li><a href="https://practice.course.rs/">Rust By Practice</a> - Practice Rust.</li>
-<li><a href="https://doc.rust-lang.org/nomicon/intro.html">The Rustonomicon</a> - Even more Rust!</li>
-<li><a href="https://nnethercote.github.io/perf-book/">The Rust Performance Book</a> - How to optimize Rust for performance.</li>
-<li><a href="https://www.rustfinity.com/">Rustfinity</a> - Learn Rust through interactive problems.</li>
+<li>
+<p><code>Quality</code> - The ASCII character associated with a particular nucleotide. This is what is found in the actual FASTQ file. Can be converted to a <code>phred score</code> by taking the ASCII value and subtracting the phred offset (which is usually <code>33</code>). For example, <code>?</code> in ASCII corresponds to the value <code>63</code>. If the phred offset is <code>33</code> (depends on the sequencing machine), then our phred score is <code>63</code> - <code>33</code> = <code>30</code>.</p>
+</li>
+<li>
+<p><code>Phred Score</code> - A logarithmically encoded error probability. These are integers that can be converted to errror probabilities. E.g., a phred score of <code>30</code> corresponds to an error probability of <code>0.001</code>.</p>
+</li>
+<li>
+<p><code>Error probabilities</code> - The probability that a particular nucleotide was called incorrectly by the sequencing machine. For example, a nucleotide <code>A</code> with error probability <code>0.001</code> means there is a 0.1% likelihood that this <code>A</code> is actually something else, like a <code>C</code>, <code>G</code> or <code>T</code>.</p>
+</li>
 </ul>
-<h2 id="viewing-references"><a class="header" href="#viewing-references">Viewing References</a></h2>
-<ul>
-<li><a href="https://www.youtube.com/@jonhoo">Jon Gjengset</a></li>
-<li><a href="https://www.youtube.com/@jonhoo">Bogdan from Let's Get Rusty</a></li>
-<li><a href="https://www.youtube.com/@yousuckatprogramming">Dave from You Suck at Programming</a></li>
-<li><a href="https://www.youtube.com/@maxtaylordev">Max Taylor</a></li>
-<li><a href="https://www.youtube.com/@RustCurious">Rust Curious</a></li>
-</ul>
-<h2 id="listening-references"><a class="header" href="#listening-references">Listening References</a></h2>
-<ul>
-<li><a href="https://open.spotify.com/show/0Hf6gWrzpSzXp1X0cebbsT?si=db39249cb66b4d9b">Rust in Production</a></li>
-</ul>
+<p>Since ASCII, phred scores and error probabilities are related, we can convert between them.</p>
+<p>\[ ASCII \iff phred \iff error \]</p>
+<p>Before we proceed with this, why are error probabilities not used directly in the FASTQ file? The answer is convenience, efficiency and discretization. We don't want the FASTQ file to contain lots of (potentially very small) floating point numbers. That would be messy and unfeasible.</p>
+<p>We won't go through the <a href="https://en.wikipedia.org/wiki/Phred_quality_score">math</a> regarding phred scores and error probabilities, but the equality looks something like this:</p>
+<p>\[ error = 10^{-(ASCII - \text{phred_offset})/10} \]</p>
+<p>We can now test this formula. Assume we'd want to convert <code>?</code> to an error probability using <code>phred_offset = 33</code>. This would equate to:</p>
+<p>\[ error = 10^{-(63 - 33)/10}  = 10^{-3} = 0.001 \]</p>
+<p>To make things a bit more concrete, we'll go through a code example of how to do this in Rust.</p>
+<pre><pre class="playground"><code class="language-rust edition2021">
+fn phred_to_err(phred: u8) -&gt; f64 {
+    10_f64.powf(-1.0 * ((phred - 33) as f64) / 10.0)
+}
+
+fn main() {
+    assert_eq!(phred_to_err(b'?'), 0.001);
+    assert_eq!(phred_to_err(b'5'), 0.01);
+    assert_eq!(phred_to_err(b'+'), 0.1);
+    assert_eq!(phred_to_err(b'!'), 1.0);
+}</code></pre></pre>
+<p>Note that the conversion from ASCII character to ASCII value is implicit by using <code>b'.'</code>.</p>
+<h2 id="phred-offset"><a class="header" href="#phred-offset">Phred Offset</a></h2>
+<p>Why are phred offsets even used? The reason is related to ASCII characters. More precisely, the first ASCII characters with values 0-31 are non printable characters so it does not make sense to use them. In addition, ASCII 32 corresponds to a space which also does not make sense to use.</p>
+<p>The first usable character is therefore ASCII 33, which is <code>!</code>. To adjust for the fact that our <q>zero</q> starts at 33, we simply subtract 33.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../main/blueprints/dataframes.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../../main/file_formats/fasta.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../suffix/awesome_rust_crates.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../../main/nucleotides/nucleotides.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -214,11 +244,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../main/blueprints/dataframes.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../../main/file_formats/fasta.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../suffix/awesome_rust_crates.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../../main/nucleotides/nucleotides.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
@@ -248,19 +278,19 @@
             window.playground_copyable = true;
         </script>
 
-        <script src="../ace.js"></script>
-        <script src="../mode-rust.js"></script>
-        <script src="../editor.js"></script>
-        <script src="../theme-dawn.js"></script>
-        <script src="../theme-tomorrow_night.js"></script>
+        <script src="../../ace.js"></script>
+        <script src="../../mode-rust.js"></script>
+        <script src="../../editor.js"></script>
+        <script src="../../theme-dawn.js"></script>
+        <script src="../../theme-tomorrow_night.js"></script>
 
-        <script src="../elasticlunr.min.js"></script>
-        <script src="../mark.min.js"></script>
-        <script src="../searcher.js"></script>
+        <script src="../../elasticlunr.min.js"></script>
+        <script src="../../mark.min.js"></script>
+        <script src="../../searcher.js"></script>
 
-        <script src="../clipboard.min.js"></script>
-        <script src="../highlight.js"></script>
-        <script src="../book.js"></script>
+        <script src="../../clipboard.min.js"></script>
+        <script src="../../highlight.js"></script>
+        <script src="../../book.js"></script>
 
         <!-- Custom JS scripts -->
 

@@ -33,6 +33,11 @@ The book is structured into different chapters that cover both programmatic and 
         &emsp;&emsp; ✔ Smart pointers.<br>
     </p>
     <p style="margin: 10px;">
+        🧬 File Formats:<br>
+        &emsp;&emsp; ✔ FASTA.<br>
+        &emsp;&emsp; ✔ FASTQ.<br>
+    </p>
+    <p style="margin: 10px;">
         🧬 The Basics of Nucleotides:<br>
         &emsp;&emsp; ✔ GC content.<br>
         &emsp;&emsp; ✔ Homopolymers.<br>

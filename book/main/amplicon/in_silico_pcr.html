@@ -226,7 +226,7 @@ fn main() {
 <li>Add a <code>min_len</code> and <code>max_len</code> criteria to filter out potential outliers.</li>
 <li>Check both forward and reverse complements.</li>
 <li>Replace <code>.windows()</code> with something faster. For exact matches, <a href="https://docs.rs/memchr/latest/memchr/">memchr</a> is a good alternative.</li>
-<li>Add fuzzy matching to allow for a few mismatches between the primers and the sequence. A good alternative here is <a href="https://docs.rs/bio/latest/bio/pattern_matching/myers/index.html">myers</a> from the <a href="https://docs.rs/bio/latest/bio/">bio</a> crate since it supports ambiguous nucleotides.</li>
+<li>Add fuzzy search to allow for a few mismatches between the primers and the sequence. A good alternative here is <a href="https://docs.rs/bio/latest/bio/pattern_matching/myers/index.html">myers</a> from the <a href="https://docs.rs/bio/latest/bio/">bio</a> crate since it supports ambiguous nucleotides.</li>
 </ul>
 
                     </main>

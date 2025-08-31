@@ -18,3 +18,5 @@ Rust has a lot of [data types](https://doc.rust-lang.org/book/ch03-02-data-types
 | 64-bit float                     | `f64`         | `let x: f64 = 0.0`;                                |
 
 [^note]: Depends on computer architecture.
+
+For an interactive map of Rust types, please visit [RustCurious](https://rustcurious.com/elements/).
