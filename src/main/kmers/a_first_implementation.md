@@ -1,5 +1,5 @@
-# Naive Implementation
-For the naive implementation of kmers, we just use a sliding window of the specified kmer size in the forward direction. For now, we skip the reverse complement.
+# A First Implementation
+For a naive implementation of kmers, we'll just use a sliding window of the specified kmer size in the forward direction. For now, we skip the reverse complement.
 
 ```rust
 fn kmerize(nt_string: &[u8], kmer_size: usize) -> Vec<&[u8]> {

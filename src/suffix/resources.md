@@ -12,6 +12,7 @@
 - [Bogdan from Let's Get Rusty](https://www.youtube.com/@jonhoo)
 - [Dave from You Suck at Programming](https://www.youtube.com/@yousuckatprogramming)
 - [Max Taylor](https://www.youtube.com/@maxtaylordev)
+- [Rust Curious](https://www.youtube.com/@RustCurious)
 
 ## Listening References
 - [Rust in Production](https://open.spotify.com/show/0Hf6gWrzpSzXp1X0cebbsT?si=db39249cb66b4d9b)

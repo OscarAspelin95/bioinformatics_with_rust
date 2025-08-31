@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Naive Implementation - Bioinformatics with Rust</title>
+        <title>A first implementation - Bioinformatics with Rust</title>
 
 
         <!-- Custom HTML head -->
@@ -174,8 +174,8 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="naive-implementation"><a class="header" href="#naive-implementation">Naive Implementation</a></h1>
-<p>For the naive implementation of kmers, we just use a sliding window of the specified kmer size in the forward direction. For now, we skip the reverse complement.</p>
+                        <h1 id="a-first-implementation"><a class="header" href="#a-first-implementation">A First Implementation</a></h1>
+<p>For a naive implementation of kmers, we'll just use a sliding window of the specified kmer size in the forward direction. For now, we skip the reverse complement.</p>
 <pre><pre class="playground"><code class="language-rust edition2021">fn kmerize(nt_string: &amp;[u8], kmer_size: usize) -&gt; Vec&lt;&amp;[u8]&gt; {
     assert!(kmer_size &lt;= nt_string.len());
 
@@ -211,7 +211,7 @@ fn main() {
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../../main/kmers/bit_shift_encoding.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../../main/kmers/using_phred_scores.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -225,7 +225,7 @@ fn main() {
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../../main/kmers/bit_shift_encoding.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../../main/kmers/using_phred_scores.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

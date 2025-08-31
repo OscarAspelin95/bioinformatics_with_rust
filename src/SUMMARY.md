@@ -37,6 +37,11 @@
 
 ---
 
+- [File Formats](./main/file_formats/introduction.md)
+    - [FASTA](./main/file_formats/fasta.md)
+    - [FASTQ](./main/file_formats/fastq.md)
+
+---
 - [Nucleotides](./main/nucleotides/nucleotides.md)
     - [Representations](./main/nucleotides/representations.md)
     - [Counting](./main/nucleotides/counting.md)
@@ -62,14 +67,14 @@
 ---
 
 - [Kmers](./main/kmers/kmers.md)
-    - [Naive Implementation](./main/kmers/naive_implementation.md)
+    - [A first implementation](./main/kmers/a_first_implementation.md)
+    - [Using Phred Scores](./main/kmers/using_phred_scores.md)
     - [Bit Shift Encoding](./main/kmers/bit_shift_encoding.md)
         - [Forward Strand](./main/kmers/forward_strand.md)
         - [Reverse Strand](./main/kmers/reverse_strand.md)
         - [Final Implementation](./main/kmers/final_implementation.md)
     - [SIMD Vectorization]() [comment]: <> (./main/kmers/simd_vectorization.md)
     - [FracMinHash](./main/kmers/min_frac_hash.md)
-    - [Making something useful](./main/kmers/making_something_useful.md)
     - [Minimizers](./main/kmers/minimizers.md)
     - [Syncmers](./main/kmers/syncmers.md)
 
