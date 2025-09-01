@@ -1,0 +1,418 @@
+<!DOCTYPE HTML>
+<html lang="en" class="coal sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Clustering - Bioinformatics with Rust</title>
+
+
+        <!-- Custom HTML head -->
+        <meta property="og:title" content="Bioinformatics With Rust" />
+        <meta property="og:description" content="An introduction to using Rust for bioinformatic applications." />
+        <meta property="og:image" content="" />
+        <meta property="og:url"
+            content="https://github.com/OscarAspelin95/bioinformatics_with_rust/blob/5fd7158379edf483d5b975aa40b8460cd4bc85d2/src/assets/rust-bio-gray.png" />
+        <meta property="og:type" content="website" />
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon.svg">
+        <link rel="shortcut icon" href="../../favicon.png">
+        <link rel="stylesheet" href="../../css/variables.css">
+        <link rel="stylesheet" href="../../css/general.css">
+        <link rel="stylesheet" href="../../css/chrome.css">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../../src/assets/custom.css">
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "coal";
+            const default_dark_theme = "navy";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('coal')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Bioinformatics with Rust</h1>
+
+                    <div class="right-buttons">
+                        <a href="https://github.com/OscarAspelin95/bioinformatics_with_rust" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="clustering"><a class="header" href="#clustering">Clustering</a></h1>
+<p>Within amplicon analysis, read clustering is commonly applied as a type of dimensionality reduction. A typical example of this is prior to taxonomic classification. Usually, it is redundant and computationally expensive to classify every single read in a sample. Especially if multiple reads belong to the same taxa.</p>
+<p>Consider a theoretical example with a known prior taxonomic distribution where we have 100,000 reads, half of which belong to <em>Escherichia coli</em> and the rest belong to <em>Staphylococcus aureus</em>. Instead of classifying all reads, we apply read clustering and get two distinct clusters, each containing 50,000 reads. From each cluster, we pick one representative sequence (E.g., the read with the highest quality) and classify only that one. Pretend that our two representatives (one for each cluster) classifies as <em>Escherichia coli</em> and <em>Staphylococcus aureus</em> respectively. We then extrapolate the classification for both clusters and say that 50,000 reads belong to <em>Escherichia coli</em> and 50,000 reads belong to <em>Staphylococcus aureus</em>, even though we only classified two sequences.</p>
+<p>Obviously, we don't always know the taxonomic distribution beforehand. Maybe if we use a mock sample, otherwise generally we don't. There are also several questions that need to be adressed regarding our theoretical example:</p>
+<ul>
+<li>What algorithm should we use for read clustering?</li>
+<li>What thresholds are suitable for considering a read part of a cluster?</li>
+<li>How do we pick a suitable representative sequence from each cluster?</li>
+</ul>
+<h2 id="algorithms"><a class="header" href="#algorithms">Algorithms</a></h2>
+<p>There are multiple different approaches we can use for read clustering, each with its pros and cons. Common methods include:</p>
+<p><strong>Alignment based</strong> methods rely on some version of global, semi-global or local alignment. This approach is relatively slow but can be highly accurate.</p>
+<p><strong>Kmer based</strong> methods rely on kmers for sequence similarity. This is an alignment free method that is fast but not always as sensitive as alignment based methods. In order to save even more space and time, we can use minimizers or syncmers.</p>
+<p><strong>Cluster free</strong> methods do not really belong in this chapter, but we'll briefly mention them anyways. These methods usually try to classify reads directly without an intermediary clustering step. One example is <a href="https://github.com/treangenlab/emu">EMU</a>, which leverages read error rates and an iterative maximum likelihood algorithm.</p>
+<h2 id="thresholds"><a class="header" href="#thresholds">Thresholds</a></h2>
+<p>We need some kind of metric to decide if a read belongs to an already existing cluster, or if it should initiate a new cluster. Obviously, this depends on if we use an alignment based method, or a kmer based method.</p>
+<p>Historically, for alignment methods a threshold of 97% similarity has been used to classify two sequences as belonging to the same <a href="https://en.wikipedia.org/wiki/Operational_taxonomic_unit">Operational Taxonomic Unit</a> (OTU). The obvious downside to the OTU approach is that taxa with &gt;97% similarity are collapsed.</p>
+<p>A more recent approach is to use <a href="https://doi.org/10.1038/ismej.2017.119">Amplicon Sequence Variants</a>, which is a more high resolution approach. With the improvements in NGS data quality, it is much easier to distinguish sequencing errors from true biological variation. This means we can relatively accurately identify the exact taxonomic variation in the sample and leverage that. The ASV approach is commonly used for Illumina data, but might be unsuitable for error prone Nanopore data.</p>
+<p>For kmer approaches, we can use set theory to calculate how many, and the fraction of, shared kmers we have between the read and the cluster. The <a href="https://en.wikipedia.org/wiki/Jaccard_index">jaccard index</a> is a good example of this.</p>
+<p>Read error rates are also something that must be considered. This is not generally a problem for Illumina data, but it can be for Nanopore. For example, if the average error rate in a sample is 3%, we need to take this into consideration when we choose a threshold. Error rates also become a problem during classification. If the average error rate is 3%, but the taxa we are trying to distinguish are &gt;97% similar, we might run into issues.</p>
+<h2 id="representatives"><a class="header" href="#representatives">Representatives</a></h2>
+<p>How to choose a representative sequence from a cluster varies across bioinformatic tools. A few common ways are:</p>
+<ul>
+<li>
+<p><strong>First seen in cluster</strong>. The most straightforward way is to choose the read that initiated the cluster. However, since we don't consider read length, error rate or anything else, this method might not be appropriate unless we have done any prior read sorting.</p>
+</li>
+<li>
+<p><strong>Choosing the longest sequence</strong>. One could argue that the longer the representative, the longer alignment or the most kmers we can generate. However, we probably need to consider factors such as outliers and sequence errors as well.</p>
+</li>
+<li>
+<p><strong>Choosing a random sequence</strong>. This approach introduces a bit of stochasticity unless we use a seed.</p>
+</li>
+<li>
+<p><strong>Choosing the highest quality sequence</strong>. For Nanopore samples, this is a highly suitable approach because the sequence with the lowest error rate generally has the potential to generate the best classification.</p>
+</li>
+<li>
+<p><strong>Least intercluster distance</strong>. For each cluster, we choose the sequence that has the least total distance to all other sequences in the cluster. This approach uses some kind of concept of a <q>mean</q> and is a bit more robust towards accidentally picking outliers, but might be a bit more computationally heavy.</p>
+</li>
+<li>
+<p><strong>Generating a consensus sequence</strong>. If we expect the sequences in a cluster to be highly similar, we could generate a consensus sequence. This essentially mean we generate a new sequence, based on some kind of multiple sequence alignment of all reads in the cluster, and take the majority vote in each position.</p>
+</li>
+</ul>
+<h2 id="code-example"><a class="header" href="#code-example">Code example</a></h2>
+<p>Cluster algorithms can be quite complex so we'll create a <em>very</em> basic native Rust implementation here, which uses minimizers (using code from our sloppy, earlier implementation). We won't bother with sorting sequences or choosing representatives but rather just keeping track of how many clusters we generate and their members.</p>
+<p>Conceptually what we do is:</p>
+<ul>
+<li>Start with zero clusters.</li>
+<li>Iterate over the sequences.
+<ul>
+<li>Extract minimizers for sequence.</li>
+<li>Iterate over each cluster.
+<ul>
+<li>Calculate the jaccard index.</li>
+<li>If jaccard index is larger than threshold, assign the read to this cluster.</li>
+</ul>
+</li>
+<li>If sequence has not been assigned, initiate a new cluster.</li>
+</ul>
+</li>
+</ul>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">use std::{cmp::min, collections::HashSet, vec};
+</span><span class="boring">
+</span><span class="boring">fn reverse(nt: &amp;u8) -&gt; u8 {
+</span><span class="boring">    match nt {
+</span><span class="boring">        b'A' =&gt; b'T',
+</span><span class="boring">        b'C' =&gt; b'G',
+</span><span class="boring">        b'G' =&gt; b'C',
+</span><span class="boring">        b'T' =&gt; b'A',
+</span><span class="boring">        _ =&gt; panic!("Invalid nt."),
+</span><span class="boring">    }
+</span><span class="boring">}
+</span><span class="boring">
+</span><span class="boring">fn minimizer_from_windows&lt;'a&gt;(
+</span><span class="boring">    w_forward: &amp;'a [u8],
+</span><span class="boring">    w_reverse: &amp;'a [u8],
+</span><span class="boring">    kmer_size: usize,
+</span><span class="boring">) -&gt; &amp;'a [u8] {
+</span><span class="boring">    let min_fwd = w_forward.windows(kmer_size).min().unwrap();
+</span><span class="boring">    let min_rev = w_reverse.windows(kmer_size).min().unwrap();
+</span><span class="boring">
+</span><span class="boring">    return min(min_fwd, min_rev);
+</span><span class="boring">}
+</span><span class="boring">
+</span><span class="boring">fn get_minimizers(seq: &amp;[u8], window_size: usize, kmer_size: usize) -&gt; HashSet&lt;String&gt; {
+</span><span class="boring">    let sliding_window_size = window_size + kmer_size - 1;
+</span><span class="boring">    assert!(sliding_window_size &lt;= seq.len());
+</span><span class="boring">
+</span><span class="boring">    // We'll store the minimizers as strings convenience.
+</span><span class="boring">    let mut h: HashSet&lt;String&gt; = HashSet::new();
+</span><span class="boring">
+</span><span class="boring">    let rev_comp: Vec&lt;u8&gt; = seq.iter().rev().map(|nt| reverse(nt)).collect();
+</span><span class="boring">
+</span><span class="boring">    // Create windows for both forward and reverse sequences.
+</span><span class="boring">    seq.windows(sliding_window_size)
+</span><span class="boring">        .zip(rev_comp.as_slice().windows(sliding_window_size))
+</span><span class="boring">        // Iterate over forward/reverse windows at the same time.
+</span><span class="boring">        .for_each(|(w_forward, w_reverse)| {
+</span><span class="boring">            let minimizer = minimizer_from_windows(w_forward, w_reverse, kmer_size);
+</span><span class="boring">            h.insert(String::from_utf8(minimizer.to_vec()).unwrap());
+</span><span class="boring">        });
+</span><span class="boring">
+</span><span class="boring">    return h;
+</span><span class="boring">}
+</span>// [...]
+
+fn jaccard_index(h1: &amp;HashSet&lt;&amp;[u8]&gt;, h2: &amp;HashSet&lt;&amp;[u8]&gt;) -&gt; f64 {
+    let num_common = h1.intersection(h2).count();
+    let num_total = h1.union(h2).count();
+
+    return num_common as f64 / num_total as f64;
+}
+
+fn cluster&lt;'a&gt;(
+    seqs: &amp;[(&amp;'a str, &amp;[u8])],
+    kmer_size: usize,
+    window_size: usize,
+    threshold: f64,
+) -&gt; Vec&lt;(HashSet&lt;String&gt;, Vec&lt;&amp;'a str&gt;)&gt; {
+    let mut clusters: Vec&lt;(HashSet&lt;String&gt;, Vec&lt;&amp;str&gt;)&gt; = Vec::new();
+
+    for (seq_name, seq) in seqs {
+        let minimizers = get_minimizers(seq, window_size, kmer_size);
+        let minimizer_set: HashSet&lt;&amp;[u8]&gt; = minimizers.iter().map(|m| m.as_bytes()).collect();
+
+        let mut assigned: bool = false;
+
+        for (cluster_hashset, cluster_members) in &amp;mut clusters {
+            let cluster_hashset: HashSet&lt;&amp;[u8]&gt; =
+                cluster_hashset.iter().map(|h| h.as_bytes()).collect();
+
+            let d = jaccard_index(&amp;minimizer_set, &amp;cluster_hashset);
+
+            if d &gt;= threshold {
+                assigned = true;
+                cluster_members.push(seq_name);
+                break;
+            }
+        }
+
+        if !assigned {
+            clusters.push((minimizers, vec![seq_name]));
+        }
+    }
+
+    clusters
+}
+
+fn main() {
+    let seqs: Vec&lt;(&amp;str, &amp;[u8])&gt; = vec![
+        ("seq_1", b"AAACACCGTGTGGGGCTAGCTATTTCACATGTGTCATGCAT"),
+        ("seq_2", b"AAACACCGTGTGGGGCTAGCTATTTCACATGTGTCATGCAT"),
+        ("seq_3", b"TACGTACGTACGTACGTACGATCGATCGTACGATCGATCGT"),
+        ("seq_4", b"TACGTACGTCCGTACGTACGATCGATCGTACGATCGTTCGT"),
+    ];
+
+    let window_size: usize = 3;
+    let kmer_size: usize = 3;
+    let threshold: f64 = 0.6;
+
+    let clusters = cluster(&amp;seqs[..], kmer_size, window_size, threshold);
+
+    println!("Num clusters: {}", clusters.len());
+
+    for (_, members) in clusters {
+        println!("{:?}", members)
+    }
+}</code></pre></pre>
+<p>In this example, we have plenty of room for improvement. Firstly, we'd probably want to filter out low quality sequences if we have access to phred scores. Second, we could sort by quality in descending order. This ensures that new clusters are initiated with the highest quality sequences. In addition, our current approach is greedy, meaning that a sequence is assigned to the first best cluster we find. We don't know if there is a better matching cluster later in the iteration. Finally, we obviously want a more efficient approach for generating minimizers.</p>
+<p>In summary, this example is crap when it comes to performance. It does, however, conceptually illustrate how clustering algorithms work. <a href="https://github.com/aljpetri/isONclust3">isONclust3</a> and <a href="https://github.com/rcedgar/usearch12">USEARCH</a> are great examples of fast and high performance implementations.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../main/amplicon/in_silico_pcr.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../../main/practicals/introduction.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../main/amplicon/in_silico_pcr.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../../main/practicals/introduction.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="../../ace.js"></script>
+        <script src="../../mode-rust.js"></script>
+        <script src="../../editor.js"></script>
+        <script src="../../theme-dawn.js"></script>
+        <script src="../../theme-tomorrow_night.js"></script>
+
+        <script src="../../elasticlunr.min.js"></script>
+        <script src="../../mark.min.js"></script>
+        <script src="../../searcher.js"></script>
+
+        <script src="../../clipboard.min.js"></script>
+        <script src="../../highlight.js"></script>
+        <script src="../../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

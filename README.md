@@ -69,7 +69,7 @@ The book is structured into different chapters that cover both programmatic and 
     <p style="margin: 10px;">
         🧬 Amplicon:<br>
         &emsp;&emsp; ✔ In Silico PCR.<br>
-        &emsp;&emsp; 🚧 Clustering.<br>
+        &emsp;&emsp; ✔ Clustering.<br>
         &emsp;&emsp; 🚧 Classification.<br>
     </p>
     <p style="margin: 10px;">
