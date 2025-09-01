@@ -1,7 +1,7 @@
 # Introduction
 
 - This book is **not** in any way, shape or form, an official introduction to neither the Rust programming language, nor bioinformatics.
-    - For a comprehensive introduction to Rust, please visit [resources](../suffix/1_resources.md#resources).
+    - For a comprehensive introduction to Rust, please visit [resources](../suffix/resources.md#resources).
     - For learning bioinformatics, please visit your favorite university.
 
 - The **purpose** of this book is trifold:

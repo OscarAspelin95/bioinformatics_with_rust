@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Practicals - Bioinformatics with Rust</title>
+        <title>Needletail - Bioinformatics with Rust</title>
 
 
         <!-- Custom HTML head -->
@@ -174,19 +174,41 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="practicals"><a class="header" href="#practicals">Practicals</a></h1>
-<p>So far, we have not seen any code examples of using external crates. In this chapter, the reader is encouraged to implement their own solutions to the suggested problems, using their own code in combination with suitable Rust crates.</p>
-<p>For each problem, there is a description of what should be implemented, what Rust crates would be suitable and also links to examples to take inspiration from. A hint can be to also checkout the <a href="../blueprints/introduction.html#introduction">blueprints</a> for tips and tricks.</p>
+                        <h1 id="needletail"><a class="header" href="#needletail">Needletail</a></h1>
+<p>The <a href="https://docs.rs/needletail/0.6.3/needletail/">needletail</a> crate is perfectly suited for reading and parsing FASTA and FASTQ files. It is very fast and efficient but not easily parallelized. Here, we'll outline a template for reading a fastq file and looping over each record.</p>
+<p>For reproducibility purposes, the code example uses the following Cargo.toml dependency:</p>
+<pre><code class="language-toml">[dependencies]
+needletail = { version = "0.6.3" }
+</code></pre>
+<pre><code class="language-rust noplayground">use needletail::parse_fastx_file;
+use std::path::PathBuf;
+
+fn main() {
+    let fastx_file = PathBuf::from("file.fastq.gz");
+
+    let mut reader = parse_fastx_file(&amp;fastx_file).expect("Failed to initialize FastxReader.");
+
+    while let Some(record) = reader.next() {
+        let record = match record {
+            Ok(record) =&gt; record,
+            Err(_) =&gt; continue,
+        };
+    }
+
+    // Do stuff with the record...
+}</code></pre>
+<p>The advantage of using <code>parse_fastx_file</code> is that we can read both .fasta and .fastq files in plain or gzip format, which is very convenient.</p>
+<p>Note that in this example, we just skip invalid records. In practice, we probably want to log that as a warning or error.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../../main/amplicon/clustering.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../../main/blueprints/dataframes.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../../main/practicals/fasta_parser.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../../main/blueprints/bio.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -196,11 +218,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../../main/amplicon/clustering.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../../main/blueprints/dataframes.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../../main/practicals/fasta_parser.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../../main/blueprints/bio.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

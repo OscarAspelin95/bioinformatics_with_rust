@@ -87,7 +87,7 @@
 
 - [Amplicon](./main/amplicon/introduction.md)
     - [In Silico PCR](./main/amplicon/in_silico_pcr.md)
-    - [Clustering]()
+    - [Clustering](./main/amplicon/clustering.md)
     - [Classification]()
 
 ---
@@ -104,8 +104,8 @@
     - [Argument Parsing](./main/blueprints/argument_parsing.md)
     - [Commands](./main/blueprints/commands.md)
     - [DataFrames](./main/blueprints/dataframes.md)
-    - [Needletail]()
-    - [Bio]()
+    - [Needletail](./main/blueprints/needletail.md)
+    - [Bio](./main/blueprints/bio.md)
 
 ---
 
