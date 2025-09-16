@@ -217,7 +217,7 @@
 </li>
 </ul>
 <h2 id="code-example"><a class="header" href="#code-example">Code example</a></h2>
-<p>Cluster algorithms can be quite complex so we'll create a <em>very</em> basic native Rust implementation here, which uses minimizers (using code from our sloppy, earlier implementation). We won't bother with sorting sequences or choosing representatives but rather just keeping track of how many clusters we generate and their members.</p>
+<p>Clustering algorithms can be quite complex so we'll create a <em>very</em> basic native Rust implementation here, which uses minimizers (using code from our sloppy, earlier implementation). We won't bother with sorting sequences or choosing representatives but rather just keeping track of how many clusters we generate and their members.</p>
 <p>Conceptually what we do is:</p>
 <ul>
 <li>Start with zero clusters.</li>
@@ -341,7 +341,7 @@ fn main() {
         println!("{:?}", members)
     }
 }</code></pre></pre>
-<p>In this example, we have plenty of room for improvement. Firstly, we'd probably want to filter out low quality sequences if we have access to phred scores. Second, we could sort by quality in descending order. This ensures that new clusters are initiated with the highest quality sequences. In addition, our current approach is greedy, meaning that a sequence is assigned to the first best cluster we find. We don't know if there is a better matching cluster later in the iteration. Finally, we obviously want a more efficient approach for generating minimizers.</p>
+<p>In this example, we have plenty of room for improvement. Firstly, we'd probably want to filter out low quality sequences if we have access to phred scores. Second, we could sort by quality in descending order. This ensures that new clusters are initiated with the highest quality sequences. In addition, our current approach is greedy, meaning that a sequence is assigned to the first best cluster we find. We don't know if there is a better matching cluster later in the iteration. Finally, we obviously want a more efficient approach for generating minimizers (such at <a href="https://docs.rs/minimizer-iter/latest/minimizer_iter/index.html">minimizer_iter</a> or maybe even our own bit-shift encoded implementation).</p>
 <p>In summary, this example is crap when it comes to performance. It does, however, conceptually illustrate how clustering algorithms work. <a href="https://github.com/aljpetri/isONclust3">isONclust3</a> and <a href="https://github.com/rcedgar/usearch12">USEARCH</a> are great examples of fast and high performance implementations.</p>
 
                     </main>
@@ -352,7 +352,7 @@ fn main() {
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../../main/practicals/introduction.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../../main/amplicon/classification.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -366,7 +366,7 @@ fn main() {
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../../main/practicals/introduction.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../../main/amplicon/classification.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

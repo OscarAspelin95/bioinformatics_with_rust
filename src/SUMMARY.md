@@ -88,7 +88,7 @@
 - [Amplicon](./main/amplicon/introduction.md)
     - [In Silico PCR](./main/amplicon/in_silico_pcr.md)
     - [Clustering](./main/amplicon/clustering.md)
-    - [Classification]()
+    - [Classification](./main/amplicon/classification.md)
 
 ---
 

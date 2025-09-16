@@ -64,7 +64,7 @@ fn main() {
 }
 ```
 
-`while` - create a loop (similar to `loop`) that terminates when a `break` statement is encountered. E.g.,
+`while` - creates a loop (similar to `loop`) that terminates when a `break` statement is encountered. E.g.,
 ```rust
 fn main() {
     let mut x: usize = 0;
