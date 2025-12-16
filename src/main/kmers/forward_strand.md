@@ -27,8 +27,6 @@ fn main() {
 ```
 **Note** - it seems like new digits magically appear in our test cases. However, when we print the full u32, we see the leading zeros.
 
-
-
 ## Handling the kmer size
 Our approach kinda works, but it has a fundamental flaw. We want our storage variable to only contain k nucleotides at one time, all other leading bits should be zero. As as example:
 
@@ -134,5 +132,53 @@ fn main() {
 
     // We expect AAA, AAT, ATT, TTT.
     kmerize(3, b"AAATTT");
+}
+```
+
+## Converting kmer to string
+Finally, it would also be nice to be able to convert an encoded kmer to a string. We can do this by leveraging the `kmer_size` and a suitable bitmask.
+
+Consider the kmer `0b00111010`. Here, we are using an `u8` as storage and `kmer_size = 3`. We have inserted nucleotides in the following order: `T`, `G`, `G` and would like to get the same order back. Even though there are multiple ways to do this, one is to extract the nucleotides in the order they appear in the kmer, which is the reverse of how they were inserted, and then reverse the result. We would like to:
+- Find the lowest two bits (latest inserted nucleotide).
+- Convert these to a stringified nucleotide and append it to something like a `Vec` or `String`.
+- Eject these bits from the kmer by a left shift.
+- Continue until we have processed all nucleotides (which is `kmer_size` number of times).
+
+We need a suitable bitmask for this. To only keep the lowest two bits, we'll use `0b11` with and `&` operator. This roughly looks like:
+```
+0b00111010
+&
+0b00000011
+---
+0b00000010
+```
+
+The result can subsequently be matched against, and converted to the appropriate nucleotide. `0b10` in this case would translate to `G`. The code below is one way of achieving this:
+
+```rust
+fn extract_nucleotides(mut kmer: u8, kmer_size: u8) -> String {
+    let mut s = String::with_capacity(kmer_size as usize);
+    let mask: u8 = 0b11;
+
+    for _ in 0..kmer_size {
+        let lowest_two_nts = kmer & mask;
+
+        match lowest_two_nts {
+            0b00 => s.push('A'),
+            0b01 => s.push('C'),
+            0b10 => s.push('G'),
+            0b11 => s.push('T'),
+            _ => unreachable!(),
+        }
+        kmer >>= 2;
+    }
+
+    s.chars().rev().collect()
+}
+
+fn main(){
+	assert!(extract_nucleotides(0b00111010, 3) == "TGG");
+	assert!(extract_nucleotides(0b00000010, 3) == "AAG");
+	assert!(extract_nucleotides(0b00000011, 1) == "T");	
 }
 ```

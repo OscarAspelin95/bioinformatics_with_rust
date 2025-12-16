@@ -44,6 +44,7 @@
             const path_to_root = "../../";
             const default_light_theme = "coal";
             const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../../toc.js"></script>
@@ -100,10 +101,13 @@
                 sidebar = sidebar || 'visible';
             } else {
                 sidebar = 'hidden';
+                sidebar_toggle.checked = false;
             }
-            sidebar_toggle.checked = sidebar === 'visible';
-            html.classList.remove('sidebar-visible');
-            html.classList.add("sidebar-" + sidebar);
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
         </script>
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
@@ -154,7 +158,12 @@
 
                 <div id="search-wrapper" class="hidden">
                     <form id="searchbar-outer" class="searchbar-outer">
-                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
                     </form>
                     <div id="searchresults-outer" class="searchresults-outer hidden">
                         <div id="searchresults-header" class="searchresults-header"></div>
@@ -301,6 +310,48 @@ fn main() {
     // We expect AAA, AAT, ATT, TTT.
     kmerize(3, b"AAATTT");
 }</code></pre></pre>
+<h2 id="converting-kmer-to-string"><a class="header" href="#converting-kmer-to-string">Converting kmer to string</a></h2>
+<p>Finally, it would also be nice to be able to convert an encoded kmer to a string. We can do this by leveraging the <code>kmer_size</code> and a suitable bitmask.</p>
+<p>Consider the kmer <code>0b00111010</code>. Here, we are using an <code>u8</code> as storage and <code>kmer_size = 3</code>. We have inserted nucleotides in the following order: <code>T</code>, <code>G</code>, <code>G</code> and would like to get the same order back. Even though there are multiple ways to do this, one is to extract the nucleotides in the order they appear in the kmer, which is the reverse of how they were inserted, and then reverse the result. We would like to:</p>
+<ul>
+<li>Find the lowest two bits (latest inserted nucleotide).</li>
+<li>Convert these to a stringified nucleotide and append it to something like a <code>Vec</code> or <code>String</code>.</li>
+<li>Eject these bits from the kmer by a left shift.</li>
+<li>Continue until we have processed all nucleotides (which is <code>kmer_size</code> number of times).</li>
+</ul>
+<p>We need a suitable bitmask for this. To only keep the lowest two bits, we'll use <code>0b11</code> with and <code>&amp;</code> operator. This roughly looks like:</p>
+<pre><code>0b00111010
+&amp;
+0b00000011
+---
+0b00000010
+</code></pre>
+<p>The result can subsequently be matched against, and converted to the appropriate nucleotide. <code>0b10</code> in this case would translate to <code>G</code>. The code below is one way of achieving this:</p>
+<pre><pre class="playground"><code class="language-rust edition2021">fn extract_nucleotides(mut kmer: u8, kmer_size: u8) -&gt; String {
+    let mut s = String::with_capacity(kmer_size as usize);
+    let mask: u8 = 0b11;
+
+    for _ in 0..kmer_size {
+        let lowest_two_nts = kmer &amp; mask;
+
+        match lowest_two_nts {
+            0b00 =&gt; s.push('A'),
+            0b01 =&gt; s.push('C'),
+            0b10 =&gt; s.push('G'),
+            0b11 =&gt; s.push('T'),
+            _ =&gt; unreachable!(),
+        }
+        kmer &gt;&gt;= 2;
+    }
+
+    s.chars().rev().collect()
+}
+
+fn main(){
+	assert!(extract_nucleotides(0b00111010, 3) == "TGG");
+	assert!(extract_nucleotides(0b00000010, 3) == "AAG");
+	assert!(extract_nucleotides(0b00000011, 1) == "T");	
+}</code></pre></pre>
 
                     </main>
 
@@ -369,6 +420,7 @@ fn main() {
         <script src="../../book.js"></script>
 
         <!-- Custom JS scripts -->
+
 
 
     </div>
