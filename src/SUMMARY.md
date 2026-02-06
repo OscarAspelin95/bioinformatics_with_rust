@@ -82,6 +82,7 @@
 
 - [Aminoacids](./main/aminoacids/aminoacids.md)
     - [Translation](./main/aminoacids/translation.md)
+    - [Accounting For Frames](./main/aminoacids/accounting_for_frames.md)
 
 ---
 
