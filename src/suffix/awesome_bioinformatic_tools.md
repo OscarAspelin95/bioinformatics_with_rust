@@ -12,6 +12,7 @@ Assembly related:
 - [Flye](https://github.com/mikolmogorov/Flye) [C/C++] - Genome assembler for Oxford Nanopore or PacBio data.
 - [IDBA](https://github.com/loneknightpy/idba) [C++] - Illumina specific genome assembler.
 - [SPAdes](https://github.com/ablab/spades) [C++] - Genome assembler suitable for Illumina or IonTorrent data.
+- [Myloasm](https://github.com/bluenote-1577/myloasm) [Rust] - Longread metagenome assembler.
 
 Variant calling related:
 - [Clair3](https://github.com/HKU-BAL/Clair3) [Python] - Variant caller suitable for Illumina, Oxford Nanopore or PacBio data.

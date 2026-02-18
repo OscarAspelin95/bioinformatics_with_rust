@@ -205,13 +205,13 @@ GGG
 <li><code>A</code> =&gt; <code>0b10</code></li>
 <li><code>G</code> =&gt; <code>0b11</code></li>
 </ul>
-<p>Each nucleotide occupies 2 bits and since we need three of them to form a codon, we need 6 bits in total (we'll use <code>usize</code> for convenience though). We have a total of <code>4^3 = 64</code> combinations of triplets than can form codons. In addition, using a 6 bit encoding, we cover numbers up to <code>0b111111 = 2^6 = 64</code>. The formula we'll use to pack the nucleotides is <code>(base_1 &lt;&lt; 4) | (base_2 &lt;&lt; 2) | base_3</code>.</p>
+<p>Each nucleotide occupies 2 bits and since we need three of them to form a codon, we need 6 bits in total (we'll use <code>usize</code> for convenience though). We have a total of <code>4^3 = 64</code> combinations of triplets than can form codons. In addition, using a 6 bit encoding, we cover numbers up to <code>0b111111 = 2⁵ + 2⁴ ... + 2⁰ = 63</code>. The formula we'll use to pack the nucleotides is <code>(base_1 &lt;&lt; 4) | (base_2 &lt;&lt; 2) | base_3</code>.</p>
 <p>Consider the case of <code>b"GGG"</code>, which gives us <code>base_1 = b'G' =&gt; 0b11</code>, <code>base_2 = b'G' =&gt; 0b11</code> and <code>base_3 = b'G' =&gt; 0b11</code>. Doing the bit-shifts (without the ORs) gives:</p>
 <pre><code>0b...000011 &lt;&lt; 4 = 0b...110000	# base_1
 0b...000011 &lt;&lt; 2 = 0b...001100	# base_2
 0b...000011 	 = 0b...000011	# base_3
 </code></pre>
-<p>Now, including the ORs, we get <code>0b...110000 | 0b...001100 | 0b...000011 = 0b...111111</code>, which is the number <code>64</code> in base 10. This is the highest number we allow (if using 6 bit encoding) and also the last amino acid in our <code>aa</code> slice. You can visually check that <code>b"GGG"</code> maps to the amino acid <code>G</code>. Similarly, using the 6 bit encoding for <code>b"TTT"</code> results in <code>0b...000000</code>, which is the number <code>0</code> in base 10. We can also visually check that <code>b"TTT"</code> corresponds to the first amino acid.</p>
+<p>Now, including the ORs, we get <code>0b...110000 | 0b...001100 | 0b...000011 = 0b...111111</code>, which is the number <code>63</code> in base 10. You can visually check that <code>b"GGG"</code> maps to the amino acid <code>G</code>. Similarly, using the 6 bit encoding for <code>b"TTT"</code> results in <code>0b...000000</code>, which is the number <code>0</code> in base 10. We can also visually check that <code>b"TTT"</code> corresponds to the first amino acid.</p>
 <p>Putting all of this into code, it would look something like this</p>
 <pre><pre class="playground"><code class="language-rust edition2021">const CODON_STANDARD: &amp;[u8; 64] =
     b"FFLLSSSSYY**CC*WLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG";
@@ -292,7 +292,6 @@ fn translate(codon_table_type: CodonTable, frame: &amp;Frame, seq: &amp;[u8]) -&
     translated
 }
 
-
 fn main(){
 	let seq = b"ATG";
 	let translated = translate(CodonTable::Standard, &amp;Frame::First, seq);
@@ -301,8 +300,8 @@ fn main(){
 	let seq = b"ATGTGA";
 	let translated = translate(CodonTable::Standard, &amp;Frame::First, seq);
 	assert_eq!(&amp;translated[..], b"M*");	
-}
-</code></pre></pre>
+}</code></pre></pre>
+<p>A possible improvement here would be to handle ambiguous nucleotides and not just map them to ´T´.</p>
 
                     </main>
 
