@@ -63,3 +63,5 @@ fn main() {
     assert_eq!(translate(b"", &codon_table), b"");
 }
 ```
+
+There is lots of room for improvement here, such as accouting for frames and also ending the iteration when we encounter a stop codon.

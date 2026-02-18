@@ -80,3 +80,5 @@ fn main() {
     );
 }
 ```
+
+There is still room for improvement. First, we end the iteration when we enconter a stop codon, but don't actually include it in the return value. Second, using a `HashMap` is not ideal.

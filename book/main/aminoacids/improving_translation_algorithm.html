@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Amplicon - Bioinformatics with Rust</title>
+        <title>Improving Translation Algorithm - Bioinformatics with Rust</title>
 
 
         <!-- Custom HTML head -->
@@ -183,36 +183,136 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="amplicon"><a class="header" href="#amplicon">Amplicon</a></h1>
-<p>As we all know, there are multiple different approaches to genome sequencing. I'll list my interpretation of the different approaches below:</p>
+                        <h1 id="improving-translation-algorithm"><a class="header" href="#improving-translation-algorithm">Improving Translation Algorithm</a></h1>
+<p>The previous approach for mapping codons to amino acids works, but it is not the most efficient. Mainly because of the <code>HashMap</code>. There is a performance penalty involved in having to hash input keys and find them.</p>
+<p>There is a more brilliant approach, which (you guessed it) involved bit shifts. Let's look again at our codon table:</p>
+<pre><code class="language-rust noplayground">    let aa = b"FFLLSSSSYY**CC*WLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG";
+
+    let base1 = b"TTTTTTTTTTTTTTTTCCCCCCCCCCCCCCCCAAAAAAAAAAAAAAAAGGGGGGGGGGGGGGGG";
+    let base2 = b"TTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGG";
+    let base3 = b"TCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAG";</code></pre>
+<p>The order is not random, but rather deliberate. The order of the codons is:</p>
+<pre><code>TTT, TTC, TTA, TTG, ...,
+CTT, CTC, CTA, CTG, ..., 
+ATT, ATC, ATA, ATG, ...,
+GTT, GTC, GTA, GTG, ...,
+GGG 
+</code></pre>
+<p>From this, we can derive an order where <code>T &lt; C &lt; A &lt; G</code>. We have a total of 64 amino acids, so we need a way to map <code>TTT -&gt; index 0</code> and <code>GGG -&gt; index 63</code>. Recall that a codon is essentially a kmer of length 3, so we can take inspiration from the bit shift encoding we did in section 6.3. Here, however, we need to map nucleotides accordingly:</p>
 <ul>
-<li><code>WGS</code> - Is a rather broad term, but generally refers to single isolate sequencing. This could be for example sequencing the entire genome from a single bacterial colony.</li>
-<li><code>Shotgun</code> - Generally refers to sequencing the entire genomes from multiple taxa (metagenomic sample). For example, sequencing a gut sample from a patient.</li>
-<li><code>Amplicon</code> - Is a targeted approach, commonly used with PCR. The goal here is to sequence a part of the target genome. One example is amplicon sequencing of the 16S bacterial rRNA region.</li>
+<li><code>T</code> =&gt; <code>0b00</code></li>
+<li><code>C</code> =&gt; <code>0b01</code></li>
+<li><code>A</code> =&gt; <code>0b10</code></li>
+<li><code>G</code> =&gt; <code>0b11</code></li>
 </ul>
-<p>Amplicon sequencing has several advantages compared to other sequencing protocols:</p>
-<ul>
-<li>Reduced costs per sample due to sequencing less DNA for a shorter period of time.</li>
-<li>Enables sequencing more samples in parallel due to smalles sample sizes.</li>
-<li>The bioinformatic analysis is generally less computationally heavy.</li>
-</ul>
-<p>However, this does not come without disadvantages:</p>
-<ul>
-<li>PCR can introduce artifacts.</li>
-<li>Off targets, depending on the primer design.</li>
-<li>Reduced genomic resolution.</li>
-</ul>
-<p>In the following chapters, we'll go through some very basic Rust implementations of common amplicon based analyses.</p>
+<p>Each nucleotide occupies 2 bits and since we need three of them to form a codon, we need 6 bits in total (we'll use <code>usize</code> for convenience though). We have a total of <code>4^3 = 64</code> combinations of triplets than can form codons. In addition, using a 6 bit encoding, we cover numbers up to <code>0b111111 = 2^6 = 64</code>. The formula we'll use to pack the nucleotides is <code>(base_1 &lt;&lt; 4) | (base_2 &lt;&lt; 2) | base_3</code>.</p>
+<p>Consider the case of <code>b"GGG"</code>, which gives us <code>base_1 = b'G' =&gt; 0b11</code>, <code>base_2 = b'G' =&gt; 0b11</code> and <code>base_3 = b'G' =&gt; 0b11</code>. Doing the bit-shifts (without the ORs) gives:</p>
+<pre><code>0b...000011 &lt;&lt; 4 = 0b...110000	# base_1
+0b...000011 &lt;&lt; 2 = 0b...001100	# base_2
+0b...000011 	 = 0b...000011	# base_3
+</code></pre>
+<p>Now, including the ORs, we get <code>0b...110000 | 0b...001100 | 0b...000011 = 0b...111111</code>, which is the number <code>64</code> in base 10. This is the highest number we allow (if using 6 bit encoding) and also the last amino acid in our <code>aa</code> slice. You can visually check that <code>b"GGG"</code> maps to the amino acid <code>G</code>. Similarly, using the 6 bit encoding for <code>b"TTT"</code> results in <code>0b...000000</code>, which is the number <code>0</code> in base 10. We can also visually check that <code>b"TTT"</code> corresponds to the first amino acid.</p>
+<p>Putting all of this into code, it would look something like this</p>
+<pre><pre class="playground"><code class="language-rust edition2021">const CODON_STANDARD: &amp;[u8; 64] =
+    b"FFLLSSSSYY**CC*WLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG";
+
+const NT_CODON_MAP: [u8; 256] = {
+    let mut map = [0u8; 256];
+    map[b'T' as usize] = 0;
+    map[b'C' as usize] = 1;
+    map[b'A' as usize] = 2;
+    map[b'G' as usize] = 3;
+    // softmask
+    map[b't' as usize] = 0;
+    map[b'c' as usize] = 1;
+    map[b'a' as usize] = 2;
+    map[b'g' as usize] = 3;
+
+    map[b'U' as usize] = 0;
+
+    map
+};
+
+pub enum CodonTable {
+    Standard,
+}
+
+impl CodonTable {
+    pub fn table(&amp;self) -&gt; &amp;[u8; 64] {
+        match self {
+            CodonTable::Standard =&gt; CODON_STANDARD,
+        }
+    }
+}
+
+enum Frame {
+    First,
+    Second,
+    Third,
+}
+
+impl Frame {
+    pub fn start_pos(&amp;self) -&gt; usize {
+        match self {
+            Frame::First =&gt; 0,
+            Frame::Second =&gt; 1,
+            Frame::Third =&gt; 2,
+        }
+    }
+}
+
+
+fn translate(codon_table_type: CodonTable, frame: &amp;Frame, seq: &amp;[u8]) -&gt; Vec&lt;u8&gt; {
+    let start_pos = frame.start_pos();
+
+    if seq.len() &lt; 3 {
+        return vec![];
+    }
+
+    let codon_table = codon_table_type.table();
+
+    let mut translated: Vec&lt;u8&gt; = Vec::with_capacity(seq.len() / 3);
+
+    for codon in seq[start_pos..].chunks_exact(3) {
+        let b1 = NT_CODON_MAP[codon[0] as usize] as usize;
+        let b2 = NT_CODON_MAP[codon[1] as usize] as usize;
+        let b3 = NT_CODON_MAP[codon[2] as usize] as usize;
+
+        let index = (b1 &lt;&lt; 4) | (b2 &lt;&lt; 2) | b3;
+
+        let aa = codon_table[index];
+
+        translated.push(aa);
+
+        if aa == b'*' {
+            break;
+        }
+    }
+
+    translated
+}
+
+
+fn main(){
+	let seq = b"ATG";
+	let translated = translate(CodonTable::Standard, &amp;Frame::First, seq);
+	assert_eq!(&amp;translated[..], b"M");	
+	
+	let seq = b"ATGTGA";
+	let translated = translate(CodonTable::Standard, &amp;Frame::First, seq);
+	assert_eq!(&amp;translated[..], b"M*");	
+}
+</code></pre></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../../main/aminoacids/improving_translation_algorithm.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../../main/aminoacids/accounting_for_frames.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../../main/amplicon/in_silico_pcr.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../../main/amplicon/introduction.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -222,11 +322,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../../main/aminoacids/improving_translation_algorithm.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../../main/aminoacids/accounting_for_frames.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../../main/amplicon/in_silico_pcr.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../../main/amplicon/introduction.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
