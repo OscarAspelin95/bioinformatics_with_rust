@@ -200,7 +200,7 @@ subject ggATCGgg
 <ul>
 <li>A match increases the score by 1.</li>
 <li>A mismatch decreases the score by 1.</li>
-<li>A insertion/deletion decreases the score by 1.</li>
+<li>An insertion/deletion decreases the score by 1.</li>
 </ul>
 </li>
 <li>
@@ -212,7 +212,7 @@ subject ggATCGgg
 </ul>
 </li>
 </ul>
-<p>An local alignment array for aligning <code>TTATCGTT</code> to <code>GGATCGGG</code> would look like:</p>
+<p>A local alignment array for aligning <code>TTATCGTT</code> to <code>GGATCGGG</code> would look like:</p>
 <pre>
             T   T   A   T   C   G   T   T   (query)
 
@@ -312,7 +312,7 @@ fn levenshtein_distance(
     // We move in the i direction (down), subject is consumed and query is deleted.
     for i in 1..m + 1 {
         array[i][0] = 0;
-        // Remeber to add trace.
+        // Remember to add trace.
         traceback.insert((i, 0), ((i - 1, 0), AlignmentType::DeletionQuery));
     }
     // We move in the j direction (right), query is consumed and subject is deleted.

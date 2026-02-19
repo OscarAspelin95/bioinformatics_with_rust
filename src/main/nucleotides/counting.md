@@ -1,5 +1,5 @@
 # Counting nucleotides
-We'll start of with something relatively easy - counting nucleotides. We'll create a `HashMap` for storing the counts of the nucleotides we encounter in the sequence.
+We'll start off with something relatively easy - counting nucleotides. We'll create a `HashMap` for storing the counts of the nucleotides we encounter in the sequence.
 
 ```rust
 use std::collections::HashMap;

@@ -184,7 +184,7 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="macros"><a class="header" href="#macros">Macros</a></h1>
-<p>Macros should have a decicated book to themselves. Rust supports both declarative and procedural <a href="https://doc.rust-lang.org/book/ch20-05-macros.html">macros</a>, which are either built-in or user created. In this book, we'll cover some of the most common build-in macros.</p>
+<p>Macros should have a dedicated book to themselves. Rust supports both declarative and procedural <a href="https://doc.rust-lang.org/book/ch20-05-macros.html">macros</a>, which are either built-in or user created. In this book, we'll cover some of the most common built-in macros.</p>
 <p>For more information about Rust macros, also see <a href="https://lukaswirth.dev/tlborm/">The Little Book of Rust Macros</a></p>
 <h2 id="declarative-macros"><a class="header" href="#declarative-macros">Declarative macros</a></h2>
 <p><a href="https://doc.rust-lang.org/std/macro.println.html"><code>println!</code></a> - prints to stdout. Requires a formatter depending on the data type. E.g.,</p>
@@ -248,7 +248,7 @@ fn main(){
 }</code></pre></pre>
 <p>The point with the simple example above is not to generate a bullet proof, production ready macro but rather showcase that declarative macros can be very handy for defining custom behaviors. If we'd try to implement <code>file_path</code> as a function, we'd probably have to handle the variable number of sub-directories through a <code>Vec</code> or similar.</p>
 <h2 id="procedural-macros"><a class="header" href="#procedural-macros">Procedural macros</a></h2>
-<p>Are divided into three categories, all of which are outside the scope of this book. Regardless, they are very handy for deriving traits, such as <code>Debug</code>. As an example, assume we've created a <code>Struct</code> that we'd want to be able to print to stdout using <code>println!</code>. In this case, we need use derive the <code>Debug</code> trait through <code>#[derive(Debug)]</code>.</p>
+<p>Are divided into three categories, all of which are outside the scope of this book. Regardless, they are very handy for deriving traits, such as <code>Debug</code>. As an example, assume we've created a <code>Struct</code> that we'd want to be able to print to stdout using <code>println!</code>. In this case, we need to derive the <code>Debug</code> trait through <code>#[derive(Debug)]</code>.</p>
 <pre><pre class="playground"><code class="language-rust editable edition2021">#[derive(Debug)] // Try commenting out this line!
 struct MyStruct{
     my_vec: Vec&lt;usize&gt;,

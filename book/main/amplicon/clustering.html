@@ -186,7 +186,7 @@
                         <h1 id="clustering"><a class="header" href="#clustering">Clustering</a></h1>
 <p>Within amplicon analysis, read clustering is commonly applied as a type of dimensionality reduction. A typical example of this is prior to taxonomic classification. Usually, it is redundant and computationally expensive to classify every single read in a sample. Especially if multiple reads belong to the same taxa.</p>
 <p>Consider a theoretical example with a known prior taxonomic distribution where we have 100,000 reads, half of which belong to <em>Escherichia coli</em> and the rest belong to <em>Staphylococcus aureus</em>. Instead of classifying all reads, we apply read clustering and get two distinct clusters, each containing 50,000 reads. From each cluster, we pick one representative sequence (E.g., the read with the highest quality) and classify only that one. Pretend that our two representatives (one for each cluster) classifies as <em>Escherichia coli</em> and <em>Staphylococcus aureus</em> respectively. We then extrapolate the classification for both clusters and say that 50,000 reads belong to <em>Escherichia coli</em> and 50,000 reads belong to <em>Staphylococcus aureus</em>, even though we only classified two sequences.</p>
-<p>Obviously, we don't always know the taxonomic distribution beforehand. Maybe if we use a mock sample, otherwise generally we don't. There are also several questions that need to be adressed regarding our theoretical example:</p>
+<p>Obviously, we don't always know the taxonomic distribution beforehand. Maybe if we use a mock sample, otherwise generally we don't. There are also several questions that need to be addressed regarding our theoretical example:</p>
 <ul>
 <li>What algorithm should we use for read clustering?</li>
 <li>What thresholds are suitable for considering a read part of a cluster?</li>
@@ -222,7 +222,7 @@
 <p><strong>Least intercluster distance</strong>. For each cluster, we choose the sequence that has the least total distance to all other sequences in the cluster. This approach uses some kind of concept of a <q>mean</q> and is a bit more robust towards accidentally picking outliers, but might be a bit more computationally heavy.</p>
 </li>
 <li>
-<p><strong>Generating a consensus sequence</strong>. If we expect the sequences in a cluster to be highly similar, we could generate a consensus sequence. This essentially mean we generate a new sequence, based on some kind of multiple sequence alignment of all reads in the cluster, and take the majority vote in each position.</p>
+<p><strong>Generating a consensus sequence</strong>. If we expect the sequences in a cluster to be highly similar, we could generate a consensus sequence. This essentially means we generate a new sequence, based on some kind of multiple sequence alignment of all reads in the cluster, and take the majority vote in each position.</p>
 </li>
 </ul>
 <h2 id="code-example"><a class="header" href="#code-example">Code example</a></h2>
@@ -270,7 +270,7 @@
 </span><span class="boring">    let sliding_window_size = window_size + kmer_size - 1;
 </span><span class="boring">    assert!(sliding_window_size &lt;= seq.len());
 </span><span class="boring">
-</span><span class="boring">    // We'll store the minimizers as strings convenience.
+</span><span class="boring">    // We'll store the minimizers as strings for convenience.
 </span><span class="boring">    let mut h: HashSet&lt;String&gt; = HashSet::new();
 </span><span class="boring">
 </span><span class="boring">    let rev_comp: Vec&lt;u8&gt; = seq.iter().rev().map(|nt| reverse(nt)).collect();

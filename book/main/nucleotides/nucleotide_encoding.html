@@ -184,7 +184,7 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="encoding"><a class="header" href="#encoding">Encoding</a></h1>
-<p>Being able to encode and decode nucletides is a vital part of writing high performance bioinformatic code. What it means is essentially converting nucleotides into a more compact form. There are multiple ways of doing nucleotide encoding. However if we assume we only have to deal with <code>{A,C,G,T}</code> then there is a straightforward way for this:</p>
+<p>Being able to encode and decode nucleotides is a vital part of writing high performance bioinformatic code. What it means is essentially converting nucleotides into a more compact form. There are multiple ways of doing nucleotide encoding. However if we assume we only have to deal with <code>{A,C,G,T}</code> then there is a straightforward way for this:</p>
 <ul>
 <li><code>A</code> is encoded as <code>0</code> (binary <code>00</code>).</li>
 <li><code>C</code> is encoded as <code>1</code> (binary <code>01</code>).</li>
@@ -193,7 +193,7 @@
 </ul>
 <p>The advantages of this approach are:</p>
 <ul>
-<li>Each nucleotides only takes up 2 bits.</li>
+<li>Each nucleotide only takes up 2 bits.</li>
 <li>Reverse complementing a base is as easy as:
 <ul>
 <li><code>rev_nt = 3 - nt</code></li>
@@ -275,7 +275,7 @@ fn main() {
         }
     });
 }</code></pre></pre>
-<p>Run the code and inspect the output. Using a lookup table, we are able to map <code>{A,C,T,U,a,c,g,t,u}</code> to their corresponding encodings. This means we handle both upper and lowercase nucleotides, and also get U/u for free, meaning that we can now handle RNA as well.</p>
+<p>Run the code and inspect the output. Using a lookup table, we are able to map <code>{A,C,G,T,U,a,c,g,t,u}</code> to their corresponding encodings. This means we handle both upper and lowercase nucleotides, and also get U/u for free, meaning that we can now handle RNA as well.</p>
 <p>However, we see that the first four values at index <code>[0], [1], [2], [3]</code> map to some weird characters. ASCII characters less than 32 are not actually printable characters, but rather control characters where <code>0, 1, 2, 3</code> correspond to null, start of heading, start of text and end of text respectively.</p>
 <p>That does not make any sense. However, it does enable us to map already encoded nucleotides to themselves, which could serve as some kind of redundancy if we ever would have a mix of encoded and non-encoded nucleotides.</p>
 <pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">const LOOKUP_TABLE: [u8; 256] = [

@@ -9,7 +9,7 @@
 
 ## Viewing References
 - [Jon Gjengset](https://www.youtube.com/@jonhoo)
-- [Bogdan from Let's Get Rusty](https://www.youtube.com/@jonhoo)
+- [Bogdan from Let's Get Rusty](https://www.youtube.com/@letsgetrusty)
 - [Dave from You Suck at Programming](https://www.youtube.com/@yousuckatprogramming)
 - [Max Taylor](https://www.youtube.com/@maxtaylordev)
 - [Rust Curious](https://www.youtube.com/@RustCurious)

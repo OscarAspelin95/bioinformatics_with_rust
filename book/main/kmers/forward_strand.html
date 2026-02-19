@@ -209,7 +209,7 @@
 }</code></pre></pre>
 <p><strong>Note</strong> - it seems like new digits magically appear in our test cases. However, when we print the full u32, we see the leading zeros.</p>
 <h2 id="handling-the-kmer-size"><a class="header" href="#handling-the-kmer-size">Handling the kmer size</a></h2>
-<p>Our approach kinda works, but it has a fundamental flaw. We want our storage variable to only contain k nucleotides at one time, all other leading bits should be zero. As as example:</p>
+<p>Our approach kinda works, but it has a fundamental flaw. We want our storage variable to only contain k nucleotides at one time, all other leading bits should be zero. As an example:</p>
 <pre><code>nt_string = "GTGT"
 kmer_size = 2
 

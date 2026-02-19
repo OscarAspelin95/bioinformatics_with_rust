@@ -1,7 +1,7 @@
 # Commands
 In Python, commands can easily be run with `subprocess` or through the very neat [`sh`](https://github.com/amoffat/sh) module.
 
-In Rust, we can use `std::process::Command` to achieve something similar to `subprocess`. The example below shows how to call `minimap2` to align reads against a genome. We'll use `thiserror` to create two custom errors, the last of which will capture stderr if the command exits with a non-zero exitcode.
+In Rust, we can use `std::process::Command` to achieve something similar to `subprocess`. The example below shows how to call `minimap2` to align reads against a genome. We'll use `thiserror` to create two custom errors, the last of which will capture stderr if the command exits with a non-zero exit code.
 
 For reproducibility purposes, the code example uses the following Cargo.toml dependency:
 
@@ -26,8 +26,8 @@ enum RunCommandError {
 
 fn minimap2_align(fastq: PathBuf, fasta: PathBuf, outfile: PathBuf) -> Result<(), RunCommandError> {
     let result = Command::new("minimap2")
-        .arg(fastq)
         .arg(fasta)
+        .arg(fastq)
         .arg("-o")
         .arg(outfile)
         .arg("-a")

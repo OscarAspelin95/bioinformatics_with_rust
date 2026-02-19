@@ -213,10 +213,10 @@ subject A-CGACTCGAGCTCGAGCTT
 <p><code>Percent identity</code> - <code>100 * (num_matches / alignment_length)</code>. Here, we also need to be a bit careful since this metric only considers the aligned part of the query and subject. Theoretically, if our query and subject are of length 100, but they align only in the first 10 bases with no mismatches, this would be <code>percent identity</code> = <code>100</code> * (<code>10</code> / <code>10</code>) = <code>100</code>.</p>
 </li>
 <li>
-<p><code>Fraction aligned (query)</code> - <code>query_length / alignment_length</code> (how much of the query is aligned). Here, we use the original query length.</p>
+<p><code>Fraction aligned (query)</code> - <code>alignment_length / query_length</code> (how much of the query is aligned). Here, we use the original query length.</p>
 </li>
 <li>
-<p><code>Fraction aligned (subject)</code> - <code>subject_length / alignment_length</code> (how much of the subject is aligned). Here, we use the original subject length.</p>
+<p><code>Fraction aligned (subject)</code> - <code>alignment_length / subject_length</code> (how much of the subject is aligned). Here, we use the original subject length.</p>
 </li>
 </ul>
 <p>In the example below, we have the following alignment metrics:</p>

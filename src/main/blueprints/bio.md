@@ -1,5 +1,5 @@
 # Bio
-An alternative needletail is the [bio](https://docs.rs/bio/latest/bio/) crate. This fastq reader is not as fast as needletail and does not natively handle both gzipped files. It is however easily parallelized with [rayon](https://docs.rs/rayon/latest/rayon/) using `par_bridge()`. In the following example, we use [flate2](https://docs.rs/flate2/latest/flate2/) together with rayon and `bio::io::fastq::Reader` to enable multi-thread support for gzipped fastq files. For a FASTA equivalent reader, checkout `bio::io::fasta::Reader`.
+An alternative needletail is the [bio](https://docs.rs/bio/latest/bio/) crate. This fastq reader is not as fast as needletail and does not natively handle both gzipped files. It is however easily parallelized with [rayon](https://docs.rs/rayon/latest/rayon/) using `par_bridge()`. In the following example, we use [flate2](https://docs.rs/flate2/latest/flate2/) together with rayon and `bio::io::fastq::Reader` to enable multi-thread support for gzipped fastq files. For a FASTA equivalent reader, check out `bio::io::fasta::Reader`.
 
 For reproducibility purposes, the code example uses the following Cargo.toml dependencies:
 

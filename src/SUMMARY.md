@@ -50,7 +50,6 @@
         - [Entropy](./main/nucleotides/entropy.md)
     - [Manipulating](./main/nucleotides/manipulating.md)
         - [Compression](./main/nucleotides/compression.md)
-        - [Trimming]()
         - [Reverse Complement](./main/nucleotides/reverse_complement.md)
     - [Encoding](./main/nucleotides/nucleotide_encoding.md)
 

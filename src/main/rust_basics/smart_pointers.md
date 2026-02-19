@@ -138,9 +138,9 @@ fn main() {
 ```
 
 ## Cow
-The Clone-On-Write smart pointer provides immutable access to borrowed data with the ability to lazy-clone data when mutability or ownership is required. `Cow` is usable for cases where most of the time, we don't need to mutate data.
+The Clone-On-Write smart pointer provides immutable access to borrowed data with the ability to lazily clone data when mutability or ownership is required. `Cow` is usable for cases where most of the time, we don't need to mutate data.
 
-Consider the example below, where we want to convert a `&str` to lowercase. If we expect that most of the time our `&str` is already lowercase, we can return it as is most of the times with `Cow::Borrow()`. However, for those rare cases when we need to modify it, we use `Cow::Owned()`.
+Consider the example below, where we want to convert a `&str` to lowercase. If we expect that most of the time our `&str` is already lowercase, we can return it as is most of the time with `Cow::Borrowed()`. However, for those rare cases when we need to modify it, we use `Cow::Owned()`.
 
 
 ```rust

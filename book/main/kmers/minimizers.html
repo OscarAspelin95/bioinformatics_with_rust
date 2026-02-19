@@ -185,11 +185,11 @@
                     <main>
                         <h1 id="minimizers"><a class="header" href="#minimizers">Minimizers</a></h1>
 <p>We saw earlier how FracMinHash could be used to downsample the number of kmers generated from our sequences. Another approach is to use so called minimizers. First introduced in 2004, <a href="https://doi.org/10.1093/bioinformatics/bth408">minimizers</a> are very commonly used in bioinformatic applications to reduce storage requirements for DNA sequences.</p>
-<p>The basic idea is to use a sliding window of w consecutive kmers a sequence and in each window identify one representative kmer to keep. Since we choose a reduced set of kmers, these will act as an approximate representation for the original sequence. There are multiple ways to choose a representative kmer inside the sliding window, but typically the lexicographically smallest kmer is chosen. We need to define some terms to make things more clear:</p>
+<p>The basic idea is to use a sliding window of w consecutive kmers in a sequence and in each window identify one representative kmer to keep. Since we choose a reduced set of kmers, these will act as an approximate representation for the original sequence. There are multiple ways to choose a representative kmer inside the sliding window, but typically the lexicographically smallest kmer is chosen. We need to define some terms to make things more clear:</p>
 <ul>
 <li><code>k</code> - length of a kmer.</li>
 <li><code>w</code> - number of consecutive kmers to check for minimizers in.</li>
-<li><code>|w|</code> - The actual length (in nucleotides) we need for our sliding window to accomodate <code>w</code> consecutive kmers of length <code>k</code>.</li>
+<li><code>|w|</code> - The actual length (in nucleotides) we need for our sliding window to accommodate <code>w</code> consecutive kmers of length <code>k</code>.</li>
 </ul>
 <p>We can calculate |<em>w</em>| since we know how many kmers we can generate from a given sequence.<br>
 <code>w = |w| - k + 1</code></p>
@@ -230,7 +230,7 @@ fn minimizer_from_windows&lt;'a&gt;(
 }
 
 fn get_minimizers(seq: &amp;[u8], window_size: usize, kmer_size: usize) -&gt; Vec&lt;String&gt; {
-    // This is the actual length (in nucleoties) of the sliding
+    // This is the actual length (in nucleotides) of the sliding
     // window we need for w consecutive kmers of length k.
     let sliding_window_size = window_size + kmer_size - 1;
     assert!(sliding_window_size &lt;= seq.len());

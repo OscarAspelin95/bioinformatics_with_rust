@@ -295,8 +295,8 @@ fn main() {
     }
 }</code></pre></pre>
 <h2 id="cow"><a class="header" href="#cow">Cow</a></h2>
-<p>The Clone-On-Write smart pointer provides immutable access to borrowed data with the ability to lazy-clone data when mutability or ownership is required. <code>Cow</code> is usable for cases where most of the time, we don't need to mutate data.</p>
-<p>Consider the example below, where we want to convert a <code>&amp;str</code> to lowercase. If we expect that most of the time our <code>&amp;str</code> is already lowercase, we can return it as is most of the times with <code>Cow::Borrow()</code>. However, for those rare cases when we need to modify it, we use <code>Cow::Owned()</code>.</p>
+<p>The Clone-On-Write smart pointer provides immutable access to borrowed data with the ability to lazily clone data when mutability or ownership is required. <code>Cow</code> is usable for cases where most of the time, we don't need to mutate data.</p>
+<p>Consider the example below, where we want to convert a <code>&amp;str</code> to lowercase. If we expect that most of the time our <code>&amp;str</code> is already lowercase, we can return it as is most of the time with <code>Cow::Borrowed()</code>. However, for those rare cases when we need to modify it, we use <code>Cow::Owned()</code>.</p>
 <pre><pre class="playground"><code class="language-rust edition2021">use std::borrow::Cow;
 
 fn convert_to_lowercase(x: &amp;str) -&gt; Cow&lt;'_, str&gt; {

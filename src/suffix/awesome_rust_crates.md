@@ -15,9 +15,9 @@ For a mega list of even more crates, see [Awesome Rust](https://github.com/rust-
 - [Polars](https://docs.rs/polars/latest/polars/) - Blazingly fast dataframes. **NOTE** - Using polars with native Rust can be a bit cumbersome. An alternative is to use the [Python bindings](https://docs.pola.rs/api/Python/stable/reference/index.html).
 - [Pyo3](https://docs.rs/pyo3/latest/pyo3/) - Generate Rust bindings to Python or vice versa.
 - [Plotly-rs](https://github.com/plotly/plotly.rs) - Rust bindings for the popular Plotly plotting library.
-- [Linfa](https://docs.rs/linfa/latest/linfa/) - Closely resembles Pythons scikit-learn for Machine Learning applications.
+- [Linfa](https://docs.rs/linfa/latest/linfa/) - Closely resembles Python's scikit-learn for Machine Learning applications.
 - [Statrs](https://github.com/statrs-dev/statrs) - Statistical utilities such as distributions, etc.
 - [Validator](https://docs.rs/validator/latest/validator/) - Struct validation.
-- [Dioxus](https://github.com/DioxusLabs/dioxus) - Fullstack framework in Rust that resembles React. Build you own (bioinformatic) web or desktop applications!
+- [Dioxus](https://github.com/DioxusLabs/dioxus) - Fullstack framework in Rust that resembles React. Build your own (bioinformatic) web or desktop applications!
 - [Ratatui](https://ratatui.rs/) - Build TUI applications in Rust.
 - [Iced](https://iced.rs/) - Build GUI applications in Rust.

@@ -1,7 +1,7 @@
 # Ownership and Borrowing
-Ownership can initially be a rather tricky topic to understand. The reader is adviced to read the official [reference](https://doc.rust-lang.org/book/ch04-00-understanding-ownership.html) on ownership.
+Ownership can initially be a rather tricky topic to understand. The reader is advised to read the official [reference](https://doc.rust-lang.org/book/ch04-00-understanding-ownership.html) on ownership.
 
-I like to think of ownership in terms of scopes. A variable is valid when it inside the scope it was defined in. When the scope ends, the variable is dropped from memory. This might not always be true, but this way of thinking simplified the ownership concept for me quite a lot. Consider the following example:
+I like to think of ownership in terms of scopes. A variable is valid when it is inside the scope it was defined in. When the scope ends, the variable is dropped from memory. This might not always be true, but this way of thinking simplified the ownership concept for me quite a lot. Consider the following example:
 
 ```rust
 fn main() {

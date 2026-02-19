@@ -9,7 +9,7 @@ In our case, we'll use 2-bit encoding for our nucleotides:
 - `T` => `0b11` (3 in base 10)
 
 ### Bit shift
-A `left shift` is defined as an operation in which the bits in a binary number are shifted to the left. The most significant bit (leftmost) is lost, and the least significant bit (righmost) is shifted after which a zero is added.
+A `left shift` is defined as an operation in which the bits in a binary number are shifted to the left. The most significant bit (leftmost) is lost, and the least significant bit (rightmost) is shifted after which a zero is added.
 
 - Example: `0010 << 1 = 0100`
 
@@ -28,7 +28,7 @@ fn main() {
 }
 ```
 
-A left shift by one is equivalent to multiplying by 2. It make sense by considering 10-based numbers. Left shifting the number 10 by one results in 100, which is equivalent to multiplying by 10. The same is true for binary numbers.
+A left shift by one is equivalent to multiplying by 2. It makes sense by considering 10-based numbers. Left shifting the number 10 by one results in 100, which is equivalent to multiplying by 10. The same is true for binary numbers.
 
 ### BitOR
 The bitor operation (usually denoted with a pipe character `|`) applies the OR operation to two binary numbers. Assume we want to insert a `T` (`0b11`) into an integer with value `0b00`. We apply the bitor operation for this:
@@ -77,13 +77,13 @@ fn main() {
     // Kmer size.
     let k = 2;
 
-    // Eqivalent to multiplying by 2.
+    // Equivalent to multiplying by 2.
     let nbits = k << 1;
     assert_eq!(nbits, 4);
 
     // We start with a 1 (0b000001) and shifts it nbits to the left.
     // this results in 0b010000, hence we overshoot since we wanted 0b001111.
-    // This is why we substract one, because 0b010000 - 0b000001 = 0b001111.
+    // This is why we subtract one, because 0b010000 - 0b000001 = 0b001111.
     let mask: u64 = (1 << nbits) - 1;
 
     assert_eq!(mask, 0b1111);
@@ -98,4 +98,4 @@ We use unsigned integers to store our kmers. Remember that each nucleotide, with
 - `u64` - can store kmers of max size 64/2 = 32.
 - `u128` - can store kmers of max size 128/2 = 64.
 
-Can we store a kmer size of length 2 in, say a `u16`? Yes we can, but we'll waste space. Unfortunately, Rust does not yet provide arbitrary integer size, so these are the choices.
+Can we store a kmer of size 2 in, say, a `u16`? Yes we can, but we'll waste space. Unfortunately, Rust does not yet provide arbitrary integer size, so these are the choices.

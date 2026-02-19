@@ -1,10 +1,10 @@
 # Minimizers
 We saw earlier how FracMinHash could be used to downsample the number of kmers generated from our sequences. Another approach is to use so called minimizers. First introduced in 2004, [minimizers](https://doi.org/10.1093/bioinformatics/bth408) are very commonly used in bioinformatic applications to reduce storage requirements for DNA sequences.
 
-The basic idea is to use a sliding window of w consecutive kmers a sequence and in each window identify one representative kmer to keep. Since we choose a reduced set of kmers, these will act as an approximate representation for the original sequence. There are multiple ways to choose a representative kmer inside the sliding window, but typically the lexicographically smallest kmer is chosen. We need to define some terms to make things more clear:
+The basic idea is to use a sliding window of w consecutive kmers in a sequence and in each window identify one representative kmer to keep. Since we choose a reduced set of kmers, these will act as an approximate representation for the original sequence. There are multiple ways to choose a representative kmer inside the sliding window, but typically the lexicographically smallest kmer is chosen. We need to define some terms to make things more clear:
 - `k` - length of a kmer.
 - `w` - number of consecutive kmers to check for minimizers in.
-- `|w|` - The actual length (in nucleotides) we need for our sliding window to accomodate `w` consecutive kmers of length `k`.
+- `|w|` - The actual length (in nucleotides) we need for our sliding window to accommodate `w` consecutive kmers of length `k`.
 
 We can calculate |*w*| since we know how many kmers we can generate from a given sequence.<br>
 `w = |w| - k + 1`
@@ -52,7 +52,7 @@ fn minimizer_from_windows<'a>(
 }
 
 fn get_minimizers(seq: &[u8], window_size: usize, kmer_size: usize) -> Vec<String> {
-    // This is the actual length (in nucleoties) of the sliding
+    // This is the actual length (in nucleotides) of the sliding
     // window we need for w consecutive kmers of length k.
     let sliding_window_size = window_size + kmer_size - 1;
     assert!(sliding_window_size <= seq.len());

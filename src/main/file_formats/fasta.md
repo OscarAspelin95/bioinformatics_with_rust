@@ -12,7 +12,7 @@ ATCG
 which tells us that there is a record called `sequence_1` with the sequence `ATCG`. In this particular example, we actually do not know if these are nucleotides or aminoacids.
 
 ## Multi FASTA format
-There is an alternative to the canonical FASTA format that is commonly refered to as multi FASTA format. Essentially what this means is distributing the sequence over multiple lines of a defined width. E.g., 60 characters per line.
+There is an alternative to the canonical FASTA format that is commonly referred to as multi FASTA format. Essentially what this means is distributing the sequence over multiple lines of a defined width. E.g., 60 characters per line.
 
 For example, assume we have an arbitrary sequence of length 180. With width 60, it would look something like this.
 

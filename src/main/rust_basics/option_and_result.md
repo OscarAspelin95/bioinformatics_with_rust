@@ -23,7 +23,7 @@ fn main() {
 ```
 
 ## Result
-Similarly for errors, there is `Result`, which is of type `Result<T, Err>`. A `Result<T, Err>` can be either `Ok(T)` or `Err`, which we can pattern match against.
+Similarly for errors, there is `Result`, which is of type `Result<T, E>`. A `Result<T, E>` can be either `Ok(T)` or `Err(E)`, which we can pattern match against.
 
 ```rust
 use std::num::ParseIntError;

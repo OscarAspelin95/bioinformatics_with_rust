@@ -21,7 +21,7 @@ which tells us that there is a record called `sequence_1` with the nucleotide se
 There are three concepts we need to understand before proceeding:
 - `Quality` - The ASCII character associated with a particular nucleotide. This is what is found in the actual FASTQ file. Can be converted to a `phred score` by taking the ASCII value and subtracting the phred offset (which is usually `33`). For example, `?` in ASCII corresponds to the value `63`. If the phred offset is `33` (depends on the sequencing machine), then our phred score is `63` - `33` = `30`.
 
-- `Phred Score` - A logarithmically encoded error probability. These are integers that can be converted to errror probabilities. E.g., a phred score of `30` corresponds to an error probability of `0.001`.
+- `Phred Score` - A logarithmically encoded error probability. These are integers that can be converted to error probabilities. E.g., a phred score of `30` corresponds to an error probability of `0.001`.
 
 - `Error probabilities` - The probability that a particular nucleotide was called incorrectly by the sequencing machine. For example, a nucleotide `A` with error probability `0.001` means there is a 0.1% likelihood that this `A` is actually something else, like a `C`, `G` or `T`.
 

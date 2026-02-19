@@ -13,7 +13,7 @@ We won't go through the entire implementation from scratch. Instead:
 - Enter the `alignment_rs` directory and run `dx serve`.
 - It might take several minutes to compile, but when done the desktop app should launch.
 
-Inspect the code to familarize yourself with Dioxus. If you have used React before, the syntax might look familiar. Think of Dioxus as React for Rust. In short, the code:
+Inspect the code to familiarize yourself with Dioxus. If you have used React before, the syntax might look familiar. Think of Dioxus as React for Rust. In short, the code:
 - Checks the input for updates to the query and the subject.
 - Calls the aligner when Dioxus detects that the query or subject has changed.
 - Renders the alignment in real time.

@@ -9,7 +9,6 @@ Second, we need a code editor. If you want to make your life a living hell, you 
 
 If using VScode, there are some handy plugins that will make your Rust programming journey more pleasant:
 - [Rust-analyzer](https://github.com/rust-lang/rust-analyzer) - Trust me, you want this.
-- [Ruff](https://github.com/astral-sh/ruff) - Code formatter and linter written in Rust.
 - [Even Better TOML](https://marketplace.visualstudio.com/items?itemName=tamasfe.even-better-toml) - TOML file support.
 - [GitHub Copilot](https://github.com/features/copilot) - Copilot is *relatively* good at Rust, but use with caution and be aware of hallucinations.
 - [Rainbow CSV](https://marketplace.visualstudio.com/items?itemName=mechatroner.rainbow-csv) - If working with CSV files, this plugin provides highlighting and interactive querying.

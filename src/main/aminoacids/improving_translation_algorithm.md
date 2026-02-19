@@ -1,7 +1,7 @@
 # Improving Translation Algorithm
 The previous approach for mapping codons to amino acids works, but it is not the most efficient. Mainly because of the `HashMap`. There is a performance penalty involved in having to hash input keys and find them.
 
-There is a more brilliant approach, which (you guessed it) involved bit shifts. Let's look again at our codon table:
+There is a more brilliant approach, which (you guessed it) involves bit shifts. Let's look again at our codon table:
 ```rust,noplayground
     let aa = b"FFLLSSSSYY**CC*WLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG";
 
@@ -129,4 +129,4 @@ fn main(){
 }
 ```
 
-A possible improvement here would be to handle ambiguous nucleotides and not just map them to ´T´.
+A possible improvement here would be to handle ambiguous nucleotides and not just map them to `T`.

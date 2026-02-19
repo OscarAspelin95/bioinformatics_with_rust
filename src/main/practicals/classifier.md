@@ -1,5 +1,5 @@
 # Classifier
-In this excercise, a lot of concepts will come together to form a basic classifier.
+In this exercise, a lot of concepts will come together to form a basic classifier.
 
 ## Problem Description
 Build a CLI tool `classifier` for sequence classification of reads against a database. The output should be a .tsv file, containing the classification in sorted order. E.g., the database sequence with the best classification should be first in the list.

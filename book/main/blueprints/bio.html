@@ -184,7 +184,7 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="bio"><a class="header" href="#bio">Bio</a></h1>
-<p>An alternative needletail is the <a href="https://docs.rs/bio/latest/bio/">bio</a> crate. This fastq reader is not as fast as needletail and does not natively handle both gzipped files. It is however easily parallelized with <a href="https://docs.rs/rayon/latest/rayon/">rayon</a> using <code>par_bridge()</code>. In the following example, we use <a href="https://docs.rs/flate2/latest/flate2/">flate2</a> together with rayon and <code>bio::io::fastq::Reader</code> to enable multi-thread support for gzipped fastq files. For a FASTA equivalent reader, checkout <code>bio::io::fasta::Reader</code>.</p>
+<p>An alternative needletail is the <a href="https://docs.rs/bio/latest/bio/">bio</a> crate. This fastq reader is not as fast as needletail and does not natively handle both gzipped files. It is however easily parallelized with <a href="https://docs.rs/rayon/latest/rayon/">rayon</a> using <code>par_bridge()</code>. In the following example, we use <a href="https://docs.rs/flate2/latest/flate2/">flate2</a> together with rayon and <code>bio::io::fastq::Reader</code> to enable multi-thread support for gzipped fastq files. For a FASTA equivalent reader, check out <code>bio::io::fasta::Reader</code>.</p>
 <p>For reproducibility purposes, the code example uses the following Cargo.toml dependencies:</p>
 <pre><code class="language-toml">[dependencies]
 bio = { version = "2.3.0" }

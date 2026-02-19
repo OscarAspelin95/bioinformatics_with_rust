@@ -90,7 +90,7 @@ fn levenshtein_distance(
     // We move in the i direction (down), subject is consumed and query is deleted.
     for i in 1..m + 1 {
         array[i][0] = i * get_alignment_cost(AlignmentType::DeletionQuery);
-        // Remeber to add trace.
+        // Remember to add trace.
         traceback.insert((i, 0), ((i - 1, 0), AlignmentType::DeletionQuery));
     }
     // We move in the j direction (right), query is consumed and subject is deleted.
@@ -224,7 +224,7 @@ fn main() {
     align("TTTTTTTTTTTTTTTTA", "ATTTTTTTTTTTTT");
 }
 ```
-This is awesome! We have created a basic aligner that uses the Levenshtein distance and supports non-equal length strings. Some good excercises (left up to the reader) would be:
+This is awesome! We have created a basic aligner that uses the Levenshtein distance and supports non-equal length strings. Some good exercises (left up to the reader) would be:
 - Calculating percent identity and other relevant alignment metrics.
 - Thinking about how the code can be optimized (trust me, it is not).
     - For example, do we really need to keep track of all rows and columns at the same time?

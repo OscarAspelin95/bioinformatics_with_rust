@@ -1,5 +1,5 @@
 # Macros
-Macros should have a decicated book to themselves. Rust supports both declarative and procedural [macros](https://doc.rust-lang.org/book/ch20-05-macros.html), which are either built-in or user created. In this book, we'll cover some of the most common build-in macros.
+Macros should have a dedicated book to themselves. Rust supports both declarative and procedural [macros](https://doc.rust-lang.org/book/ch20-05-macros.html), which are either built-in or user created. In this book, we'll cover some of the most common built-in macros.
 
 For more information about Rust macros, also see [The Little Book of Rust Macros](https://lukaswirth.dev/tlborm/)
 
@@ -93,7 +93,7 @@ fn main(){
 The point with the simple example above is not to generate a bullet proof, production ready macro but rather showcase that declarative macros can be very handy for defining custom behaviors. If we'd try to implement `file_path` as a function, we'd probably have to handle the variable number of sub-directories through a `Vec` or similar.
 
 ## Procedural macros
-Are divided into three categories, all of which are outside the scope of this book. Regardless, they are very handy for deriving traits, such as `Debug`. As an example, assume we've created a `Struct` that we'd want to be able to print to stdout using `println!`. In this case, we need use derive the `Debug` trait through `#[derive(Debug)]`.
+Are divided into three categories, all of which are outside the scope of this book. Regardless, they are very handy for deriving traits, such as `Debug`. As an example, assume we've created a `Struct` that we'd want to be able to print to stdout using `println!`. In this case, we need to derive the `Debug` trait through `#[derive(Debug)]`.
 
 ```rust,editable
 #[derive(Debug)] // Try commenting out this line!

@@ -1,7 +1,7 @@
 # Error Handling
-It took a while for me to understand errors in Rust. However, one day, I came across the concept of [recoverable and non-recoverable](https://doc.rust-lang.org/book/ch09-00-error-handling.html) errors and that is when everything start making sense.
+It took a while for me to understand errors in Rust. However, one day, I came across the concept of [recoverable and non-recoverable](https://doc.rust-lang.org/book/ch09-00-error-handling.html) errors and that is when everything started making sense.
 
-An `unrecoverable` error occurs when it makes sense to terminate the code. One example would be failing to read a file because it is corrupt. If our only goal is to parse the file and print its contents, but we cannot even read it, then we'd classify this as a unrecoverable error.
+An `unrecoverable` error occurs when it makes sense to terminate the code. One example would be failing to read a file because it is corrupt. If our only goal is to parse the file and print its contents, but we cannot even read it, then we'd classify this as an unrecoverable error.
 
 
 A `recoverable` error you can think of as when it is still safe or okay to proceed executing code. One example would be parsing lines from a file and one line has an unexpected structure. If we are okay with this, we can just skip this line and proceed to the next.
@@ -14,7 +14,7 @@ There are different ways of handling errors, some of which are listed below:
 
 - [`expect`](https://doc.rust-lang.org/std/result/enum.Result.html#method.expect) - Is similar to `unwrap` but also displays a provided error message on panic.
 
-- [`?`](https://doc.rust-lang.org/rust-by-example/std/result/question_mark.html) - Is used for error propagation and can be handled by e.g., upstream functions. This is a very elegant way of handling errors and is preferred over `unwrap` and `expect` in real world appilcations. `?` must always be inside a function that returns the `Result` type.
+- [`?`](https://doc.rust-lang.org/rust-by-example/std/result/question_mark.html) - Is used for error propagation and can be handled by e.g., upstream functions. This is a very elegant way of handling errors and is preferred over `unwrap` and `expect` in real world applications. `?` must always be inside a function that returns the `Result` type.
 
 ## Unrecoverable errors
 
@@ -80,6 +80,6 @@ fn main() {
 }
 ```
 
-The takehome message here is that by handling recoverable errors, we avoid crashing our program when it does not need to.
+The takeaway here is that by handling recoverable errors, we avoid crashing our program when it does not need to.
 
 Visit the [official documentation](https://doc.rust-lang.org/book/ch09-00-error-handling.html) for error handling to learn more. In addition, there are crates such as [anyhow](https://docs.rs/anyhow/latest/anyhow/) and [thiserror](https://docs.rs/thiserror/latest/thiserror/) that simplifies the generation of custom error types.

@@ -6,7 +6,7 @@ As we all know, there are multiple different approaches to genome sequencing. I'
 
 Amplicon sequencing has several advantages compared to other sequencing protocols:
 - Reduced costs per sample due to sequencing less DNA for a shorter period of time.
-- Enables sequencing more samples in parallel due to smalles sample sizes.
+- Enables sequencing more samples in parallel due to smaller sample sizes.
 - The bioinformatic analysis is generally less computationally heavy.
 
 However, this does not come without disadvantages:

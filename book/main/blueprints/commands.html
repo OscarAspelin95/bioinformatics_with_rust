@@ -185,7 +185,7 @@
                     <main>
                         <h1 id="commands"><a class="header" href="#commands">Commands</a></h1>
 <p>In Python, commands can easily be run with <code>subprocess</code> or through the very neat <a href="https://github.com/amoffat/sh"><code>sh</code></a> module.</p>
-<p>In Rust, we can use <code>std::process::Command</code> to achieve something similar to <code>subprocess</code>. The example below shows how to call <code>minimap2</code> to align reads against a genome. We'll use <code>thiserror</code> to create two custom errors, the last of which will capture stderr if the command exits with a non-zero exitcode.</p>
+<p>In Rust, we can use <code>std::process::Command</code> to achieve something similar to <code>subprocess</code>. The example below shows how to call <code>minimap2</code> to align reads against a genome. We'll use <code>thiserror</code> to create two custom errors, the last of which will capture stderr if the command exits with a non-zero exit code.</p>
 <p>For reproducibility purposes, the code example uses the following Cargo.toml dependency:</p>
 <pre><code class="language-toml">[dependencies]
 thiserror = { version = "2.0.16" }
@@ -205,8 +205,8 @@ enum RunCommandError {
 
 fn minimap2_align(fastq: PathBuf, fasta: PathBuf, outfile: PathBuf) -&gt; Result&lt;(), RunCommandError&gt; {
     let result = Command::new("minimap2")
-        .arg(fastq)
         .arg(fasta)
+        .arg(fastq)
         .arg("-o")
         .arg(outfile)
         .arg("-a")

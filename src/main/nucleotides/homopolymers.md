@@ -1,5 +1,5 @@
 # Homopolymers
-A *homopolymer* is defined stretch of consecutive, identical nucleotides. One example is the sequence below, in which there is a A-homopolymer of length 7.
+A *homopolymer* is a defined stretch of consecutive, identical nucleotides. One example is the sequence below, in which there is a A-homopolymer of length 7.
 
 <pre>
 ...ATCG<u>AAAAAAA</u>CACA...

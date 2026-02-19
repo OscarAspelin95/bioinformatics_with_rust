@@ -205,7 +205,7 @@ ATCG
 <p><code>Quality</code> - The ASCII character associated with a particular nucleotide. This is what is found in the actual FASTQ file. Can be converted to a <code>phred score</code> by taking the ASCII value and subtracting the phred offset (which is usually <code>33</code>). For example, <code>?</code> in ASCII corresponds to the value <code>63</code>. If the phred offset is <code>33</code> (depends on the sequencing machine), then our phred score is <code>63</code> - <code>33</code> = <code>30</code>.</p>
 </li>
 <li>
-<p><code>Phred Score</code> - A logarithmically encoded error probability. These are integers that can be converted to errror probabilities. E.g., a phred score of <code>30</code> corresponds to an error probability of <code>0.001</code>.</p>
+<p><code>Phred Score</code> - A logarithmically encoded error probability. These are integers that can be converted to error probabilities. E.g., a phred score of <code>30</code> corresponds to an error probability of <code>0.001</code>.</p>
 </li>
 <li>
 <p><code>Error probabilities</code> - The probability that a particular nucleotide was called incorrectly by the sequencing machine. For example, a nucleotide <code>A</code> with error probability <code>0.001</code> means there is a 0.1% likelihood that this <code>A</code> is actually something else, like a <code>C</code>, <code>G</code> or <code>T</code>.</p>

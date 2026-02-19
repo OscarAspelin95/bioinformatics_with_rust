@@ -1,6 +1,6 @@
 # Nucleotides
 When dealing with DNA sequences, nucleotides are everything. Fundamentally, we are usually dealing with four canonical bases:
-- `A` - Adenosine.
+- `A` - Adenine.
 - `C` - Cytosine.
 - `G` - Guanine.
 - `T` - Thymine.

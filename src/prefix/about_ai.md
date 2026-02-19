@@ -8,8 +8,8 @@ With that said, I <em>have</em> used AI as a tool for the following:
 - Sometimes to check for spelling and grammar as well as fixing logical and factual inconsistencies.
 
 ## The Future of AI
-My take on AI is that we are in a hype at the moment. I think that the hype might not live up to the expectations. In recent time, we have seem multiple disappointing releases of models and agents from companies that drive the AI train.
+My take on AI is that we are in a hype at the moment. I think that the hype might not live up to the expectations. In recent time, we have seen multiple disappointing releases of models and agents from companies that drive the AI train.
 
-Ultimately, I don't think AI is bad. It can be incredibly useful. What I do think is that people are using it incorrectly. Multiple news channels have reported a MIT report, showing that 95% of organizations gain zero return using tools such as ChatGTP and Copilot. The report also shows that the primary productivity gain is on the individual level and not necessarily on large scale.
+Ultimately, I don't think AI is bad. It can be incredibly useful. What I do think is that people are using it incorrectly. Multiple news channels have reported a MIT report, showing that 95% of organizations gain zero return using tools such as ChatGPT and Copilot. The report also shows that the primary productivity gain is on the individual level and not necessarily on large scale.
 
 With that said, Claude is very, very good at writing lots of code.

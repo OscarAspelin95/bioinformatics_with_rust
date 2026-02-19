@@ -1,5 +1,5 @@
 # Concurrency
-In bioinformatics, concurrency can be vital and has the potential decrease runtimes. Sometimes even by several magnitudes. The Rust [documentation](https://doc.rust-lang.org/book/ch16-00-concurrency.html) covers concurrency in detail and there are also several crates that make concurrency easier to implement. Below is a list of Rust crates that work very well for creating fast, concurrent and memory-safe bioinformatic applications:
+In bioinformatics, concurrency can be vital and has the potential to decrease runtimes. Sometimes even by several magnitudes. The Rust [documentation](https://doc.rust-lang.org/book/ch16-00-concurrency.html) covers concurrency in detail and there are also several crates that make concurrency easier to implement. Below is a list of Rust crates that work very well for creating fast, concurrent and memory-safe bioinformatic applications:
 - [Bio](https://docs.rs/bio/latest/bio/) - General purpose bioinformatic tool for e.g., parsing fastq/fasta files.
 - [Rayon](https://docs.rs/rayon/latest/rayon/) - Data parallelism library that works well together with the Bio crate. Enables parallel processing of sequences through [par_bridge()](https://docs.rs/rayon/latest/rayon/iter/trait.ParallelBridge.html#tymethod.par_bridge).
 - [DashMap](https://docs.rs/dashmap/latest/dashmap/) - Concurrent HashMaps and HashSets.

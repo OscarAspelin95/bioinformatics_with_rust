@@ -1,5 +1,5 @@
 # Fastx Toolkit
-It is suggested that both excercises `Fasta Parser` and `Fastq Filter` are completed before proceeding.
+It is suggested that both exercises `Fasta Parser` and `Fastq Filter` are completed before proceeding.
 
 ## Problem Description
 Build a CLI tool `fastx_toolkit` for parsing and manipulating both fasta and fastq files.

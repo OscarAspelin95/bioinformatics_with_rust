@@ -200,7 +200,7 @@ fn main() {
 
     print_a_vec(&amp;my_vec[..]);
 }</code></pre></pre>
-<p>There is an important rule when it comes to references, which I'll quote from the official Rust <a href="http://127.0.0.1:3000/main/rust_basics/references.html">book</a>:</p>
+<p>There is an important rule when it comes to references, which I'll quote from the official Rust <a href="https://doc.rust-lang.org/book/ch04-02-references-and-borrowing.html">book</a>:</p>
 <p><q><em>At any given time, you can have either one mutable reference or any number of immutable references.</em></q></p>
 <p>This makes perfect sense when you think about it. If we are able to mutate a variable, we do not want a bunch of read-only references with unpredictable values when read.</p>
 

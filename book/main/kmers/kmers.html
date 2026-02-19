@@ -184,7 +184,7 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="kmers"><a class="header" href="#kmers">Kmers</a></h1>
-<p>The concept of kmers is widely used in bioinformatics and is applied is concepts such as alignment and genome assembly. Here, we'll just go through the basics.</p>
+<p>The concept of kmers is widely used in bioinformatics and is applied in concepts such as alignment and genome assembly. Here, we'll just go through the basics.</p>
 <p>Basically, kmers are just subsequences of a specific length. For example, in the following sequence we generate all consecutive kmers of length 3:</p>
 <pre>
 5' ATCGATCGATCG 3'
@@ -198,7 +198,7 @@
 <p>If we had <code>kmer_size = 1</code>, the number of kmers would be equal to the sequence length. We just slide along the sequence with a window size of 1. We are losing out on <em>zero</em> nucleotides.</p>
 <p>If we had <code>kmer_size = 2</code>, we use a sliding window of length 2. However, we cannot use the last nucleotide in the sequence, because we need two nucleotides for our sliding window. We are losing out on <em>one</em> nucleotide.</p>
 <p>We see a pattern here, which is that the number of kmers we can generate is the length of our sequence minus how many nucleotides in the end we are missing out on (which is one less than our kmer size).</p>
-<p><code>num_kmers = len(sequence) - (kmer_size - 1) = len(sequence) + kmer_size - 1.</code></p>
+<p><code>num_kmers = len(sequence) - (kmer_size - 1) = len(sequence) - kmer_size + 1.</code></p>
 
                     </main>
 

@@ -12,7 +12,7 @@ But before this, what even is a "forward" index? Imagine you have a FASTA file, 
 	"seq_n": [6672914039128457702, 14184540469240097163, ...],
 }
 ```
- Remember, a kmer hash is simply a kmer (e.g., `b"AAA"`) that is u64 encoded and that has been fed into a hash function to generate a new u64.
+Remember, a kmer hash is simply a kmer (e.g., `b"AAA"`) that is u64 encoded and that has been fed into a hash function to generate a new u64.
 
 Why would we store information like this? One reason is that if we have a bunch of kmer hashes from a query sequence, we can check which database sequence matches and how well. One way would be to loop over each (key, value) pair in the index (possibly in parallel) and check how many of the query kmer hashes are identical. This gives us an approximate sequence similarity.
 

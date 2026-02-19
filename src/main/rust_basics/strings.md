@@ -1,5 +1,5 @@
 # Strings
-There are multiple string types in Rust. Two of the ones I use mostly are `String` and `&str`.
+There are multiple string types in Rust. Two of the ones I use most often are `String` and `&str`.
 
 `String` is an owned, mutable and heap-allocated type. We can allow it to be mutable with the `mut` keyword. E.g.,
 

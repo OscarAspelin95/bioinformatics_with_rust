@@ -1,12 +1,12 @@
 # Encoding
-Being able to encode and decode nucletides is a vital part of writing high performance bioinformatic code. What it means is essentially converting nucleotides into a more compact form. There are multiple ways of doing nucleotide encoding. However if we assume we only have to deal with `{A,C,G,T}` then there is a straightforward way for this:
+Being able to encode and decode nucleotides is a vital part of writing high performance bioinformatic code. What it means is essentially converting nucleotides into a more compact form. There are multiple ways of doing nucleotide encoding. However if we assume we only have to deal with `{A,C,G,T}` then there is a straightforward way for this:
 - `A` is encoded as `0` (binary `00`).
 - `C` is encoded as `1` (binary `01`).
 - `G` is encoded as `2` (binary `10`).
 - `T` is encoded as `3` (binary `11`).
 
 The advantages of this approach are:
-- Each nucleotides only takes up 2 bits.
+- Each nucleotide only takes up 2 bits.
 - Reverse complementing a base is as easy as:
     - `rev_nt = 3 - nt`
 - With some bit-shifting, we can very efficiently generate kmers from our sequences (covered in a later topic).
@@ -95,7 +95,7 @@ fn main() {
 }
 ```
 
-Run the code and inspect the output. Using a lookup table, we are able to map `{A,C,T,U,a,c,g,t,u}` to their corresponding encodings. This means we handle both upper and lowercase nucleotides, and also get U/u for free, meaning that we can now handle RNA as well.
+Run the code and inspect the output. Using a lookup table, we are able to map `{A,C,G,T,U,a,c,g,t,u}` to their corresponding encodings. This means we handle both upper and lowercase nucleotides, and also get U/u for free, meaning that we can now handle RNA as well.
 
 However, we see that the first four values at index `[0], [1], [2], [3]` map to some weird characters. ASCII characters less than 32 are not actually printable characters, but rather control characters where `0, 1, 2, 3` correspond to null, start of heading, start of text and end of text respectively.
 

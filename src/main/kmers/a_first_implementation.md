@@ -26,5 +26,5 @@ fn main() {
 This naive implementation has several flaws that we need to handle:
 - We currently don't consider the reverse complement.
 - Once the reverse complement is handled, should we use all forward and all reverse kmers, or can we be smart about which kmers to pick?
-- We still use ASCII encoding, which takes up unecessary amounts of storage.
+- We still use ASCII encoding, which takes up unnecessary amounts of storage.
 - Using a window function is not feasible when dealing with huge amounts of data. We need another approach.

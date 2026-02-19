@@ -184,8 +184,8 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="error-handling"><a class="header" href="#error-handling">Error Handling</a></h1>
-<p>It took a while for me to understand errors in Rust. However, one day, I came across the concept of <a href="https://doc.rust-lang.org/book/ch09-00-error-handling.html">recoverable and non-recoverable</a> errors and that is when everything start making sense.</p>
-<p>An <code>unrecoverable</code> error occurs when it makes sense to terminate the code. One example would be failing to read a file because it is corrupt. If our only goal is to parse the file and print its contents, but we cannot even read it, then we'd classify this as a unrecoverable error.</p>
+<p>It took a while for me to understand errors in Rust. However, one day, I came across the concept of <a href="https://doc.rust-lang.org/book/ch09-00-error-handling.html">recoverable and non-recoverable</a> errors and that is when everything started making sense.</p>
+<p>An <code>unrecoverable</code> error occurs when it makes sense to terminate the code. One example would be failing to read a file because it is corrupt. If our only goal is to parse the file and print its contents, but we cannot even read it, then we'd classify this as an unrecoverable error.</p>
 <p>A <code>recoverable</code> error you can think of as when it is still safe or okay to proceed executing code. One example would be parsing lines from a file and one line has an unexpected structure. If we are okay with this, we can just skip this line and proceed to the next.</p>
 <p>There are different ways of handling errors, some of which are listed below:</p>
 <ul>
@@ -199,7 +199,7 @@
 <p><a href="https://doc.rust-lang.org/std/result/enum.Result.html#method.expect"><code>expect</code></a> - Is similar to <code>unwrap</code> but also displays a provided error message on panic.</p>
 </li>
 <li>
-<p><a href="https://doc.rust-lang.org/rust-by-example/std/result/question_mark.html"><code>?</code></a> - Is used for error propagation and can be handled by e.g., upstream functions. This is a very elegant way of handling errors and is preferred over <code>unwrap</code> and <code>expect</code> in real world appilcations. <code>?</code> must always be inside a function that returns the <code>Result</code> type.</p>
+<p><a href="https://doc.rust-lang.org/rust-by-example/std/result/question_mark.html"><code>?</code></a> - Is used for error propagation and can be handled by e.g., upstream functions. This is a very elegant way of handling errors and is preferred over <code>unwrap</code> and <code>expect</code> in real world applications. <code>?</code> must always be inside a function that returns the <code>Result</code> type.</p>
 </li>
 </ul>
 <h2 id="unrecoverable-errors"><a class="header" href="#unrecoverable-errors">Unrecoverable errors</a></h2>
@@ -264,7 +264,7 @@ fn main() {
         }
     }
 }</code></pre></pre>
-<p>The takehome message here is that by handling recoverable errors, we avoid crashing our program when it does not need to.</p>
+<p>The takeaway here is that by handling recoverable errors, we avoid crashing our program when it does not need to.</p>
 <p>Visit the <a href="https://doc.rust-lang.org/book/ch09-00-error-handling.html">official documentation</a> for error handling to learn more. In addition, there are crates such as <a href="https://docs.rs/anyhow/latest/anyhow/">anyhow</a> and <a href="https://docs.rs/thiserror/latest/thiserror/">thiserror</a> that simplifies the generation of custom error types.</p>
 
                     </main>

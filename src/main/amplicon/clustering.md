@@ -3,7 +3,7 @@ Within amplicon analysis, read clustering is commonly applied as a type of dimen
 
 Consider a theoretical example with a known prior taxonomic distribution where we have 100,000 reads, half of which belong to *Escherichia coli* and the rest belong to *Staphylococcus aureus*. Instead of classifying all reads, we apply read clustering and get two distinct clusters, each containing 50,000 reads. From each cluster, we pick one representative sequence (E.g., the read with the highest quality) and classify only that one. Pretend that our two representatives (one for each cluster) classifies as *Escherichia coli* and *Staphylococcus aureus* respectively. We then extrapolate the classification for both clusters and say that 50,000 reads belong to *Escherichia coli* and 50,000 reads belong to *Staphylococcus aureus*, even though we only classified two sequences.
 
-Obviously, we don't always know the taxonomic distribution beforehand. Maybe if we use a mock sample, otherwise generally we don't. There are also several questions that need to be adressed regarding our theoretical example:
+Obviously, we don't always know the taxonomic distribution beforehand. Maybe if we use a mock sample, otherwise generally we don't. There are also several questions that need to be addressed regarding our theoretical example:
 - What algorithm should we use for read clustering?
 - What thresholds are suitable for considering a read part of a cluster?
 - How do we pick a suitable representative sequence from each cluster?
@@ -40,7 +40,7 @@ How to choose a representative sequence from a cluster varies across bioinformat
 
 - **Least intercluster distance**. For each cluster, we choose the sequence that has the least total distance to all other sequences in the cluster. This approach uses some kind of concept of a <q>mean</q> and is a bit more robust towards accidentally picking outliers, but might be a bit more computationally heavy.
 
-- **Generating a consensus sequence**. If we expect the sequences in a cluster to be highly similar, we could generate a consensus sequence. This essentially mean we generate a new sequence, based on some kind of multiple sequence alignment of all reads in the cluster, and take the majority vote in each position.
+- **Generating a consensus sequence**. If we expect the sequences in a cluster to be highly similar, we could generate a consensus sequence. This essentially means we generate a new sequence, based on some kind of multiple sequence alignment of all reads in the cluster, and take the majority vote in each position.
 
 ## Code example
 Clustering algorithms can be quite complex so we'll create a *very* basic native Rust implementation here, which uses minimizers (using code from our sloppy, earlier implementation). We won't bother with sorting sequences or choosing representatives but rather just keeping track of how many clusters we generate and their members.
@@ -82,7 +82,7 @@ Conceptually what we do is:
 #     let sliding_window_size = window_size + kmer_size - 1;
 #     assert!(sliding_window_size <= seq.len());
 #
-#     // We'll store the minimizers as strings convenience.
+#     // We'll store the minimizers as strings for convenience.
 #     let mut h: HashSet<String> = HashSet::new();
 #
 #     let rev_comp: Vec<u8> = seq.iter().rev().map(|nt| reverse(nt)).collect();

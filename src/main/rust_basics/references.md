@@ -23,7 +23,7 @@ fn main() {
 }
 ```
 
-There is an important rule when it comes to references, which I'll quote from the official Rust [book](http://127.0.0.1:3000/main/rust_basics/references.html):
+There is an important rule when it comes to references, which I'll quote from the official Rust [book](https://doc.rust-lang.org/book/ch04-02-references-and-borrowing.html):
 
 <q><em>At any given time, you can have either one mutable reference or any number of immutable references.</em></q>
 

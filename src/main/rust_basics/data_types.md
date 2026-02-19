@@ -14,8 +14,8 @@ Rust has a lot of [data types](https://doc.rust-lang.org/book/ch03-02-data-types
 | unsigned 32-bit int              |   `u32`       | `let x: u32 = 0;`                                |
 | unsigned 64-bit int              |   `u64`       | `let x: u64 = 0;`                                |
 | unsigned (32 or 64)[^note]-bit int      |   `usize`     | `let x: usize = 0;`                       |
-| 32-bit float                     | `f32`         | `let x: f32 = 0.0`;                                |
-| 64-bit float                     | `f64`         | `let x: f64 = 0.0`;                                |
+| 32-bit float                     | `f32`         | `let x: f32 = 0.0;`                                |
+| 64-bit float                     | `f64`         | `let x: f64 = 0.0;`                                |
 
 [^note]: Depends on computer architecture.
 

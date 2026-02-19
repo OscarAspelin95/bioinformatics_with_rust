@@ -5,7 +5,7 @@
 
 `mut` - makes something mutable. E.g., `let mut x: usize = 10;`
 
-`fn` - defines a function. This is analogous to Pythons `def` keyword. E.g.,
+`fn` - defines a function. This is analogous to Python's `def` keyword. E.g.,
 ```rust
 fn main() {
     println!("Hello, world!");
@@ -29,7 +29,7 @@ enum MyEnum {
 }
 ```
 
-`pub` - makes something like a function or struct public, meaning that other rust files can access then. E.g.,
+`pub` - makes something like a function or struct public, meaning that other Rust files can access them. E.g.,
 ```rust,noplayground
 pub struct MyStruct {
     field1: usize,
@@ -64,7 +64,7 @@ fn main() {
 }
 ```
 
-`while` - creates a loop (similar to `loop`) that terminates when a `break` statement is encountered. E.g.,
+`while` - creates a loop that keeps running as long as its condition is true. E.g.,
 ```rust
 fn main() {
     let mut x: usize = 0;

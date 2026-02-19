@@ -24,7 +24,7 @@ There is a fundamental problem with manual memory management - it is easy to int
 
 What is different about Rust? It prioritizes [memory safety](https://doc.rust-lang.org/nomicon/meet-safe-and-unsafe.html) in order to reduce the accidental introduction of bugs and security vulnerabilities, whilst maintaining high performance. In my opinion (coming from a Python background), this comes with a cost of added complexity. I would like to reference my favorite quote from some random person on the internet:
 
-<q><em>The Rust compiler is stricter than my highschool chemistry teacher".</em></q>
+<q><em>The Rust compiler is stricter than my high school chemistry teacher.</em></q>
 
 When I started learning Rust, I'd agree with this statement. However, today I'd say it is a blessing rather than a curse.
 
@@ -35,7 +35,7 @@ To conclude, use Rust for bioinformatics if:
 
 
 ## Why Not Python?
-Traditionally, Python has been used as a wrapper around bioinformatic software to generate capable pipelines with great success. It this is your only intent, it makes sense to stick to Python. It is easy to learn and has a straighforward syntax.
+Traditionally, Python has been used as a wrapper around bioinformatic software to generate capable pipelines with great success. If this is your only intent, it makes sense to stick to Python. It is easy to learn and has a straightforward syntax.
 
 However, as soon as one diverges from this and aims for implementing any sort of high-performance library, Python is not your friend. It is usually too slow, even though libraries such as pandas (which is basically C in disguise) improve runtimes. Sure, one can use the C interoperability interface but this is a bit cumbersome and not inherently memory safe.
 
@@ -46,15 +46,15 @@ Finally, I just want to give a quick shoutout to some awesome bioinformatic tool
 - [Sylph](https://github.com/bluenote-1577/sylph) - Metagenomic classification tool.
 - [NextClade](https://github.com/nextstrain/nextclade) - Virus specific tool for alignment, SNP calling, clade assignment and more.
 
-For a more exhaustive list, see [resources](../suffix/3_awesome_bioinformatic_tools.md).
+For a more exhaustive list, see [resources](../suffix/awesome_bioinformatic_tools.md).
 
 
 ## Alternatives To Rust
 We'll finish this chapter off with listing some alternative programming languages, outside of Rust, that have been shown to work well within bioinformatics.
-- `C/C++` - Lots of bioinformatic software (dare I say the majority?) is written is C and C++. Some examples that come to mind are [Minimap2](https://github.com/lh3/minimap2), [Freebayes](https://github.com/freebayes/freebayes) and [Flye](https://github.com/mikolmogorov/Flye).
+- `C/C++` - Lots of bioinformatic software (dare I say the majority?) is written in C and C++. Some examples that come to mind are [Minimap2](https://github.com/lh3/minimap2), [Freebayes](https://github.com/freebayes/freebayes) and [Flye](https://github.com/mikolmogorov/Flye).
 - `Go` - Believe it or not, the fastx toolkit [Seqkit](https://github.com/shenwei356/seqkit) is actually written in Go.
 - `Python` - Despite its downsides, there are some high performance bioinformatic applications written in Python (with C interoperability) such as [Cutadapt](https://github.com/marcelm/cutadapt/). This also includes machine learning modules such as [Medaka](https://github.com/nanoporetech/medaka).
-- `Perl` - Yes you read that right. Perl might have been voted one of ugliest programming languages, regardless there is at least one awesome tool [SAMclip](https://github.com/tseemann/samclip) that makes the list.
+- `Perl` - Yes you read that right. Perl might have been voted one of the ugliest programming languages; regardless, there is at least one awesome tool [SAMclip](https://github.com/tseemann/samclip) that makes the list.
 - `Zig` - There might not be many existing bioinformatic tools written in Zig (yet), but due to its cross compilation functionality with C, I expect we'll see much more of this language in the coming years.
 - `Mojo` - If I were to bet my money on any programming language becoming the go-to for bioinformatics, Mojo would be it. Designed to be a superset of Python (similar to what TypeScript is to JavaScript) whilst having similar performance to C and Rust, but with an intuitive GPU acceleration support, Mojo seems particularly promising within the field of bioinformatics.
 - `R` - If you want a slow language, R is the way to go. With that said, there are seemingly endless R-packages for various bioinformatic applications, such as transcriptomics and metabolomics. In addition, it is actually awesome for generating beautiful plots with [ggplot2](https://ggplot2.tidyverse.org/).

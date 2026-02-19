@@ -185,7 +185,7 @@
                     <main>
                         <h1 id="improving-translation-algorithm"><a class="header" href="#improving-translation-algorithm">Improving Translation Algorithm</a></h1>
 <p>The previous approach for mapping codons to amino acids works, but it is not the most efficient. Mainly because of the <code>HashMap</code>. There is a performance penalty involved in having to hash input keys and find them.</p>
-<p>There is a more brilliant approach, which (you guessed it) involved bit shifts. Let's look again at our codon table:</p>
+<p>There is a more brilliant approach, which (you guessed it) involves bit shifts. Let's look again at our codon table:</p>
 <pre><code class="language-rust noplayground">    let aa = b"FFLLSSSSYY**CC*WLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG";
 
     let base1 = b"TTTTTTTTTTTTTTTTCCCCCCCCCCCCCCCCAAAAAAAAAAAAAAAAGGGGGGGGGGGGGGGG";
@@ -301,7 +301,7 @@ fn main(){
 	let translated = translate(CodonTable::Standard, &amp;Frame::First, seq);
 	assert_eq!(&amp;translated[..], b"M*");	
 }</code></pre></pre>
-<p>A possible improvement here would be to handle ambiguous nucleotides and not just map them to ´T´.</p>
+<p>A possible improvement here would be to handle ambiguous nucleotides and not just map them to <code>T</code>.</p>
 
                     </main>
 

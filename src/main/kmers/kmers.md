@@ -1,5 +1,5 @@
 # Kmers
-The concept of kmers is widely used in bioinformatics and is applied is concepts such as alignment and genome assembly. Here, we'll just go through the basics.
+The concept of kmers is widely used in bioinformatics and is applied in concepts such as alignment and genome assembly. Here, we'll just go through the basics.
 
 Basically, kmers are just subsequences of a specific length. For example, in the following sequence we generate all consecutive kmers of length 3:
 
@@ -20,4 +20,4 @@ If we had `kmer_size = 2`, we use a sliding window of length 2. However, we cann
 
 We see a pattern here, which is that the number of kmers we can generate is the length of our sequence minus how many nucleotides in the end we are missing out on (which is one less than our kmer size).
 
-`num_kmers = len(sequence) - (kmer_size - 1) = len(sequence) + kmer_size - 1.`
+`num_kmers = len(sequence) - (kmer_size - 1) = len(sequence) - kmer_size + 1.`

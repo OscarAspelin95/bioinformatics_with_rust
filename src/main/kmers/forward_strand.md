@@ -28,7 +28,7 @@ fn main() {
 **Note** - it seems like new digits magically appear in our test cases. However, when we print the full u32, we see the leading zeros.
 
 ## Handling the kmer size
-Our approach kinda works, but it has a fundamental flaw. We want our storage variable to only contain k nucleotides at one time, all other leading bits should be zero. As as example:
+Our approach kinda works, but it has a fundamental flaw. We want our storage variable to only contain k nucleotides at one time, all other leading bits should be zero. As an example:
 
 ```
 nt_string = "GTGT"

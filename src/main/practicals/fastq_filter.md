@@ -8,7 +8,7 @@ Expected command:
 
 ## Checklist
 - [ ] Figure out how to read a gzipped file using `Flate2`.
-- [ ] Figure out out how write a needletail `SequenceRecord` to a target `output.fastq.gz` file.
+- [ ] Figure out how to write a needletail `SequenceRecord` to a target `output.fastq.gz` file.
 
 ## Suggested Rust Crates
 - [Clap](https://docs.rs/clap/latest/clap/) - argument parsing.

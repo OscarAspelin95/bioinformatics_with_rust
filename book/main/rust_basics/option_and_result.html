@@ -203,7 +203,7 @@ fn main() {
     print_value_if_exist(x);
 }</code></pre></pre>
 <h2 id="result"><a class="header" href="#result">Result</a></h2>
-<p>Similarly for errors, there is <code>Result</code>, which is of type <code>Result&lt;T, Err&gt;</code>. A <code>Result&lt;T, Err&gt;</code> can be either <code>Ok(T)</code> or <code>Err</code>, which we can pattern match against.</p>
+<p>Similarly for errors, there is <code>Result</code>, which is of type <code>Result&lt;T, E&gt;</code>. A <code>Result&lt;T, E&gt;</code> can be either <code>Ok(T)</code> or <code>Err(E)</code>, which we can pattern match against.</p>
 <pre><pre class="playground"><code class="language-rust edition2021">use std::num::ParseIntError;
 
 fn parse_to_usize(x: &amp;str) {

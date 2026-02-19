@@ -16,14 +16,14 @@ We need to make some changes to our global aligner in order for it to handle loc
 - We define the scoring procedure as:
     - A match increases the score by 1.
     - A mismatch decreases the score by 1.
-    - A insertion/deletion decreases the score by 1.
+    - An insertion/deletion decreases the score by 1.
 
 - We also make the following changes:
     - A score value must be non-negative (>= 0).
     - All cells (i, 0) and (0, j) are initialized to 0.
     - Traceback starts at the cell with the highest score and ends when we reach a 0.
 
-An local alignment array for aligning `TTATCGTT` to `GGATCGGG` would look like:
+A local alignment array for aligning `TTATCGTT` to `GGATCGGG` would look like:
 <pre>
             T   T   A   T   C   G   T   T   (query)
 
@@ -126,7 +126,7 @@ fn levenshtein_distance(
     // We move in the i direction (down), subject is consumed and query is deleted.
     for i in 1..m + 1 {
         array[i][0] = 0;
-        // Remeber to add trace.
+        // Remember to add trace.
         traceback.insert((i, 0), ((i - 1, 0), AlignmentType::DeletionQuery));
     }
     // We move in the j direction (right), query is consumed and subject is deleted.

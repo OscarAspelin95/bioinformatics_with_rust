@@ -1,5 +1,5 @@
 # Trait Bounds and Generics
-Rust supports generic types, but due to the its strict type checker we need to put some restrictions on the generic type. In Python, we can use unions to signify that a variable or argument can be of different types.
+Rust supports generic types, but due to its strict type checker we need to put some restrictions on the generic type. In Python, we can use unions to signify that a variable or argument can be of different types.
 
 ```Python
 def display(s: str | int | list[str]):

@@ -1,5 +1,5 @@
 # Syntax
-The Rust syntax is similar to other languages such as C and C++. However, here is a briew overview.
+The Rust syntax is similar to other languages such as C and C++. However, here is a brief overview.
 
 ### Variable declaration
 Rust is a statically typed language, which means that the type of a variable needs to be known, either explicitly or implicitly. The basic syntax for variable declaration is `let name: type = value;`. E.g.,
@@ -33,8 +33,8 @@ fn main() {
 ```
 Scopes are important for ownership and lifetimes, which will be covered later on.
 
-### Statement deliminators
-`;` is used for statement deliminators. E.g.,
+### Statement delimiters
+`;` is used for statement delimiters. E.g.,
 ```rust
 fn main() {
     println!("Hello, world!"); // Defines the println! statement.
