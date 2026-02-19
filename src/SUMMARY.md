@@ -73,13 +73,17 @@
         - [Forward Strand](./main/kmers/forward_strand.md)
         - [Reverse Strand](./main/kmers/reverse_strand.md)
         - [Final Implementation](./main/kmers/final_implementation.md)
-    - [SIMD Vectorization]() [comment]: <> (./main/kmers/simd_vectorization.md)
     - [FracMinHash](./main/kmers/min_frac_hash.md)
     - [Minimizers](./main/kmers/minimizers.md)
     - [Syncmers](./main/kmers/syncmers.md)
 
 ---
 
+- [Advanced Topics](./main/advanced_topics/kmers.md)
+    - [SIMD Vectorization](./main/advanced_topics/simd_vectorization.md)
+    - [Building a Reverse Index](./main/kmers/building_a_reverse_index.md)
+
+---
 - [Aminoacids](./main/aminoacids/aminoacids.md)
     - [Translation](./main/aminoacids/translation.md)
     - [Accounting For Frames](./main/aminoacids/accounting_for_frames.md)
