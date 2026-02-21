@@ -121,7 +121,3 @@
 ---
 
 - [Thank You](./suffix/thank_you.md)
-
----
-
-- [TODO](./suffix/todo.md)

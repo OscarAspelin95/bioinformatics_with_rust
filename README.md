@@ -1,90 +1,42 @@
 <img src="https://github.com/OscarAspelin95/bioinformatics_with_rust/blob/main/src/assets/rust-bio-gray.png" style="width: 200px; border-radius: 2em;"></img>
 
+# Bioinformatics with Rust
 
-Welcome to [Bioinformatics with Rust](https://oscaraspelin95.github.io/bioinformatics_with_rust/), an introduction on how to write fast and memory safe bioinformatic applications! The project was created with [mdbook](https://github.com/rust-lang/mdBook), which enables the reader to run and edit Rust code interactively.
+An introduction to writing fast and memory-safe bioinformatic applications in Rust. The book is built with [mdBook](https://github.com/rust-lang/mdBook), which lets readers run and edit Rust code interactively in the browser.
 
-The purpose of this book is **not** to be an official introduction to neither Rust nor bioinformatics, but rather a resource for passionate bioinformaticians who are curious about the Rust programming language.
+**Read it online:** [oscaraspelin95.github.io/bioinformatics_with_rust](https://oscaraspelin95.github.io/bioinformatics_with_rust/)
 
-The book is structured into different chapters that cover both programmatic and bioinformatic concepts, along with interative Rust code where these concepts are implemented from scratch. These chapters are covered so far:
+---
 
-<div style="display:flex; flex-wrap: wrap;">
-    <p style="margin: 10px;">
-        🪄 Rust Basics:<br>
-        &emsp;&emsp; ✔ Create a Project.<br>
-        &emsp;&emsp; ✔ Syntax.<br>
-        &emsp;&emsp; ✔ Keywords.<br>
-        &emsp;&emsp; ✔ Common Macros.<br>
-        &emsp;&emsp; ✔ Data Types.<br>
-        &emsp;&emsp; ✔ Strings.<br>
-        &emsp;&emsp; ✔ Array.<br>
-        &emsp;&emsp; ✔ Vec.<br>
-        &emsp;&emsp; ✔ Control Flow.<br>
-        &emsp;&emsp; ✔ References.<br>
-        &emsp;&emsp; ✔ Functions.<br>
-        &emsp;&emsp; ✔ Enums.<br>
-        &emsp;&emsp; ✔ Structs.<br>
-        &emsp;&emsp; ✔ Option and Result.<br>
-        &emsp;&emsp; ✔ Error Handling.<br>
-        &emsp;&emsp; ✔ Ownership and Borrowing.<br>
-        &emsp;&emsp; ✔ Lifetimes.<br>
-        &emsp;&emsp; ✔ Iterator Chaining.<br>
-        &emsp;&emsp; ✔ Concurrency.<br>
-        &emsp;&emsp; ✔ Trait Bounds and Generics.<br>
-        &emsp;&emsp; ✔ Smart pointers.<br>
-    </p>
-    <p style="margin: 10px;">
-        🧬 File Formats:<br>
-        &emsp;&emsp; ✔ FASTA.<br>
-        &emsp;&emsp; ✔ FASTQ.<br>
-    </p>
-    <p style="margin: 10px;">
-        🧬 The Basics of Nucleotides:<br>
-        &emsp;&emsp; ✔ GC content.<br>
-        &emsp;&emsp; ✔ Homopolymers.<br>
-        &emsp;&emsp; ✔ Entropy.<br>
-        &emsp;&emsp; ✔ Compression.<br>
-        &emsp;&emsp; 🚧 Trimming.<br>
-        &emsp;&emsp; ✔ Reverse Complement.<br>
-        &emsp;&emsp; ✔ Encoding.<br>
-    </p>
-    <p style="margin: 10px;">
-        🧬 The Basics of Alignment:<br>
-        &emsp;&emsp; ✔ Hamming Distance.<br>
-        &emsp;&emsp; ✔ Edit Distance.<br>
-        &emsp;&emsp; ✔ Smith-Waterman.<br>
-    </p>
-    <p style="margin: 10px;">
-        🧬 The Basics of Kmers:<br>
-        &emsp;&emsp; ✔ Naive Implementation.<br>
-        &emsp;&emsp; ✔ Bit Shift Encoding.<br>
-        &emsp;&emsp; ✔ FracMinHash.<br>
-        &emsp;&emsp; 🚧 SIMD vectorization.<br>
-        &emsp;&emsp; ✔ Minimizers.<br>
-        &emsp;&emsp; ✔ Syncmers.<br>
-    </p>
-    <p style="margin: 10px;">
-        🧬 Aminoacids:<br>
-        &emsp;&emsp; ✔ Translation.<br>
-    </p>
-    <p style="margin: 10px;">
-        🧬 Amplicon:<br>
-        &emsp;&emsp; ✔ In Silico PCR.<br>
-        &emsp;&emsp; ✔ Clustering.<br>
-        &emsp;&emsp; 🚧 Classification.<br>
-    </p>
-    <p style="margin: 10px;">
-        🖋️ Practical Excercises:<br>
-        &emsp;&emsp; ✔ Create a basic fasta parser CLI.<br>
-        &emsp;&emsp; ✔ Create a basic fastq filter CLI.<br>
-        &emsp;&emsp; ✔ Create a basic fastx toolkit CLI.<br>
-        &emsp;&emsp; ✔ Create a basic classifier CLI.<br>
-    </p>
-</div>
+This is not an official introduction to Rust or bioinformatics. It is a resource for bioinformaticians who are curious about Rust and want to see how common bioinformatic concepts translate into idiomatic, performant Rust code — implemented from scratch.
 
-### Contributions
-I'm currently a single person working on this project, so contributions are welcome! There are several things that can be improved, including but not limited to:
-- Reworking some parts of the text for better clarity.
-- Adding and improving on tests.
-- Improving the actual Rust code.
-- Adding entire new chapters.
-- Enable using external crates for better code examples.
+---
+
+## Contents
+
+| Chapter | Topics |
+|---|---|
+| **Getting Started** | Setting up your environment |
+| **Rust Basics** | Create a Project, Syntax, Keywords, Macros, Data Types, Strings, Array, Vec, Control Flow, References, Functions, Enums, Structs, Option and Result, Error Handling, Ownership and Borrowing, Lifetimes, Iterator Chaining, Concurrency, Trait Bounds and Generics, Smart Pointers |
+| **File Formats** | FASTA, FASTQ |
+| **Nucleotides** | Representations, Counting (GC Content, Homopolymers, Entropy), Manipulating (Compression, Reverse Complement), Encoding |
+| **Alignment** | Hamming Distance, Edit Distance (with Traceback), Smith-Waterman, Creating a Desktop App, Resources |
+| **Kmers** | A First Implementation, Using Phred Scores, Bit Shift Encoding, FracMinHash, Minimizers, Syncmers |
+| **Advanced Topics** | SIMD Vectorization, Building a Reverse Index |
+| **Aminoacids** | Translation, Accounting for Frames, Improving the Translation Algorithm |
+| **Amplicon** | In Silico PCR, Clustering, Classification |
+| **Practicals** | Fasta Parser CLI, Fastq Filter CLI, Fastx Toolkit CLI, Classifier CLI |
+| **Blueprints** | Argument Parsing, Commands, DataFrames, Needletail, Bio |
+| **Resources** | Awesome Rust Crates, Awesome Bioinformatic Tools |
+
+---
+
+## Contributions
+
+This is a solo project and contributions are very welcome. Areas where help is particularly appreciated:
+
+- Improving text clarity and fixing typos
+- Adding and improving tests
+- Improving Rust code quality and idioms
+- Adding new chapters or expanding existing ones
+- Enabling external crate usage for richer code examples
