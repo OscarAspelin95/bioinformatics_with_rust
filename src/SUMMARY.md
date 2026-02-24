@@ -42,6 +42,12 @@
     - [FASTQ](./main/file_formats/fastq.md)
 
 ---
+
+- [Phred Score](./main/phred_score/introduction.md)
+    - [Calculating Average Errors](./main/phred_score/calculating_mean.md)
+
+---
+
 - [Nucleotides](./main/nucleotides/nucleotides.md)
     - [Representations](./main/nucleotides/representations.md)
     - [Counting](./main/nucleotides/counting.md)

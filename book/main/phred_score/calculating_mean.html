@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>FASTQ - Bioinformatics with Rust</title>
+        <title>Calculating Average Errors - Bioinformatics with Rust</title>
 
 
         <!-- Custom HTML head -->
@@ -183,32 +183,83 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="fastq"><a class="header" href="#fastq">FASTQ</a></h1>
-<p>The <a href="https://en.wikipedia.org/wiki/FASTQ_format">FASTQ</a> format is similar to FASTA, but also associates each nucleotide with an error probability. This is relevant because it enables us to do things such as trimming, filtering and estimating sample quality. Each record takes up four lines:</p>
-<ol>
-<li>Sequence id with an optional description. Must start with the <code>@</code> character.</li>
-<li>Actual sequence.</li>
-<li><code>+</code>.</li>
-<li>Quality (<a href="https://www.ascii-code.com/">ASCII</a> encoded <a href="https://en.wikipedia.org/wiki/Phred_quality_score">phred scores</a>).</li>
-</ol>
-<p>In addition, the sequence and quality lines must contain the same number of characters. One simple example of a FASTQ record is:</p>
-<pre><code>@sequence_1
-ATCG
-+
-????
-</code></pre>
-<p>which tells us that there is a record called <code>sequence_1</code> with the nucleotide sequence <code>ATCG</code> and associated qualities <code>????</code>. How do we know that these are nucleotides and not aminoacids? Strictly, we don't. However, the FASTQ format is almost exclusively used for nucleotides.</p>
-<p>In the next chapter, we will learn how to convert the seemingly non-sensical qualities <code>????</code> to error probabilities.</p>
+                        <h1 id="calculating-average-errors"><a class="header" href="#calculating-average-errors">Calculating Average Errors</a></h1>
+<p>This is (at least according to me) actually a surprisingly interesting topic.</p>
+<p>Assume we have a FASTQ record with only three nucleotides with the corresponding ASCII qualities <code>???</code>. How do we calculate the mean error probability across these nucleotides? There are basically two different options:</p>
+<ul>
+<li>Convert to phred scores <code>[30, 30, 30]</code>, calculate the mean <code>(30 + 30 + 30) / 3 = 30</code> and convert to error probability <code>10^(-30/10) = 10^(-3) = 0.001</code>.</li>
+<li>Convert all the way to error probabilities first <code>[0.001, 0.001, 0.001]</code> and then calculate the mean <code>(0.001 + 0.001 + 0.001) / 3 = 0.001</code>.</li>
+</ul>
+<p>In this example, we get the same result. This is, however, not always the case. Consider an alternative sequence of only two nucleotides with ASCII qualities <code>+5</code>. Our two options give:</p>
+<ul>
+<li><code>[10, 20]</code> -&gt; mean is <code>(10 + 20) / 2 = 15</code> which gives an error probability of <code>10^(-15/10) ≈ 0.0316</code>.</li>
+<li><code>[0.1, 0.01]</code> -&gt; mean is <code>(0.1 + 0.01) / 2 = 0.055</code>.</li>
+</ul>
+<p>All of a sudden, the results are quite different based on the method we choose. How do we know which is correct?</p>
+<h2 id="different-kinds-of-means"><a class="header" href="#different-kinds-of-means">Different Kinds Of Means</a></h2>
+<p>To investigate this, we need to understand that there are different ways of calculating means, neither of which is incorrect.</p>
+<h3 id="arithmetic-mean"><a class="header" href="#arithmetic-mean">Arithmetic Mean</a></h3>
+<p>The most common way is the <code>arithmetic mean</code>, which has the famous formula
+\[\bar{x} = \frac{1}{n} \sum_{i=1}^{n} x_i\]</p>
+<p>E.g., for <code>n=2</code> this would give <code>1/2 * (1 + 2) = 3/2 = 1.5</code>.</p>
+<h3 id="geometric-mean"><a class="header" href="#geometric-mean">Geometric Mean</a></h3>
+<p>A less common, but equally valid way to calculate means is the <code>geometric mean</code>:
+\[
+\bar{x} = \sqrt[n]{\prod_{i=1}^{n} x_i} = {\prod_{i=1}^{n} x_i}^{1/n}
+\]</p>
+<p>E.g., for <code>n=2</code> this would give <code>(1 * 2)^(1/2) = √2 ≈ 1.414</code>.</p>
+<h2 id="putting-it-all-together"><a class="header" href="#putting-it-all-together">Putting It All Together</a></h2>
+<p>Our two approaches for calculating mean error probabilities, as defined in the start of this chapter, both use the <code>arithmetic mean</code>. However, the first approach has a fundamental flaw. We are calculating the <code>arithmetic mean</code> of log-encoded values that are not equidistant from each other with respect to error probabilities. As an example, the difference between phred scores <code>10</code> and <code>20</code> (with respect to error probabilities) is <code>0.1 - 0.01 = 0.09</code> whilst the difference between <code>20</code> and <code>30</code> is <code>0.01 - 0.001 = 0.009</code>.</p>
+<p>Mathematically, we can derive the following formulas for our two approaches. Assume we have a set of phred scores \[{ps_{1}, ps_{2}, ..., ps_{n}}\]</p>
+<ul>
+<li>
+<p>In the first method, we calculate a mean phred score and finally convert to an error probability.
+\[
+\text{mean_error_probability} = 10^{-\bar{ps} / 10}
+\]</p>
+<p>where
+\[
+\bar{ps} = \frac{1}{n} \sum_{i=1}^{n} ps_i
+\]</p>
+<p>which gives
+\[
+\text{mean_error_probability} = 10^{-\frac{1}{n} \sum_{i=1}^{n} ps_i / 10} = \left(10^{\sum_{i=1}^{n} -ps_i / 10}\right)^{1/n} = \left(10^{-ps_{1} / 10} \times \text{...} \times 10^{-ps_{n} / 10}\right)^{1/n} = \left(\prod_{i=1}^{n} 10^{-ps_i/10}\right)^{1/n}
+\]</p>
+<p>This is the <strong>geometric mean</strong> of the individual error probabilities!</p>
+</li>
+<li>
+<p>In the second method, we first convert each phred score to an error probability and then calculate the arithmetic mean.</p>
+<p>\[
+\text{mean_error_probability} = \frac{1}{n} \sum_{i=1}^{n} 10^{-ps_i / 10}
+\]</p>
+<p>This is simply the <strong>arithmetic mean</strong> of the individual error probabilities.</p>
+</li>
+</ul>
+<h2 id="which-mean-to-choose"><a class="header" href="#which-mean-to-choose">Which Mean To Choose</a></h2>
+<p>The natural question is which mean to choose. I'd argue that the arithmetic mean is correct, and here's why.</p>
+<p>One way to think about this is: the <strong>expected number of errors</strong> in a read is the sum of all individual error probabilities.</p>
+<p>To illustrate with a concrete example, consider a read of length <code>100</code> where <code>50</code> bases have phred score <code>20</code> and the other <code>50</code> have phred score <code>30</code>:
+\[   \underbrace{20, \text{...}, 20}_{50}, \underbrace{30, \text{...}, 30}_{50} \]</p>
+<p>Converting to error probabilities:
+\[   \underbrace{0.01, \text{...}, 0.01}_{50}, \underbrace{0.001, \text{...}, 0.001}_{50} \]</p>
+<p>The expected number of errors in this read is:
+\[   50 \times 0.01 + 50 \times 0.001 = 0.5 + 0.05 = 0.55 \]</p>
+<p>So the mean error probability per base should be <code>0.55 / 100 = 0.0055</code>. Now let's see what our two methods give:</p>
+<ul>
+<li><strong>Geometric mean (method 1):</strong> <code>mean_phred = (20 * 50 + 30 * 50) / 100 = 25</code>, so <code>mean_error_probability = 10^(-25/10) ≈ 0.0032</code>. This predicts <code>0.32</code> expected errors — an <strong>underestimate</strong>.</li>
+<li><strong>Arithmetic mean (method 2):</strong> <code>mean_error_probability = (0.01 * 50 + 0.001 * 50) / 100 = 0.0055</code>. This predicts <code>0.55</code> expected errors.</li>
+</ul>
+<p>The geometric mean systematically underestimates the error rate because it is always less than or equal to the arithmetic mean (this is known as the <a href="https://en.wikipedia.org/wiki/AM%E2%80%93GM_inequality">AM-GM inequality</a>). In practice, this means that if you average phred scores directly, you will be overly optimistic about your data quality.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../../main/file_formats/fasta.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../../main/phred_score/introduction.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../../main/phred_score/introduction.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../../main/nucleotides/nucleotides.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -218,11 +269,11 @@ ATCG
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../../main/file_formats/fasta.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../../main/phred_score/introduction.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../../main/phred_score/introduction.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../../main/nucleotides/nucleotides.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

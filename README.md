@@ -19,6 +19,7 @@ This is not an official introduction to Rust or bioinformatics. It is a resource
 | **Getting Started** | Setting up your environment |
 | **Rust Basics** | Create a Project, Syntax, Keywords, Macros, Data Types, Strings, Array, Vec, Control Flow, References, Functions, Enums, Structs, Option and Result, Error Handling, Ownership and Borrowing, Lifetimes, Iterator Chaining, Concurrency, Trait Bounds and Generics, Smart Pointers |
 | **File Formats** | FASTA, FASTQ |
+| **Phred Score** | A background to error probability encoding and how to properly calculate mean errors |
 | **Nucleotides** | Representations, Counting (GC Content, Homopolymers, Entropy), Manipulating (Compression, Reverse Complement), Encoding |
 | **Alignment** | Hamming Distance, Edit Distance (with Traceback), Smith-Waterman, Creating a Desktop App, Resources |
 | **Kmers** | A First Implementation, Using Phred Scores, Bit Shift Encoding, FracMinHash, Minimizers, Syncmers |
