@@ -71,7 +71,7 @@
             const path_to_root = "";
             const default_light_theme = "coal";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-af22f595.js";
+            window.path_to_searchindex_js = "searchindex-6ebb59bf.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-07a46225.js"></script>
@@ -4298,14 +4298,53 @@ lazy_static! {
 <p>Multithreading enables us to literally run code in parallel, which is sometimes advantageous within bioinformatics. However, we should also be a bit careful about when multithreading helps and also when it hurts.</p>
 <h2 id="ideal-use-cases"><a class="header" href="#ideal-use-cases">Ideal Use Cases</a></h2>
 <p>Multithreading shines during CPU-heavy workloads when the outputs are independent of each other. A good example of this is calculating stats for multiple FASTQ files in parallel. Since the files (and their outputs) are completely independent, adding multithreading can be a huge win.</p>
+<pre class="mermaid">graph TD
+    S1["sample_1.fastq.gz"] --&gt;  E["process *n_thread* files in parallel"] 
+    S["..."] --&gt; E
+    SN["sample_N.fastq.gz"] --&gt; E
+    
+    E --&gt; O1["sample_1.json"]
+    E --&gt; O["..."]
+    E --&gt; ON["sample_N.json"]
+    
+    style E fill:#2a2,color:#fff
+
+</pre>
+
 <h2 id="conditional-benefits"><a class="header" href="#conditional-benefits">Conditional Benefits</a></h2>
-<p>There are cases when multithreading might help, but the benefit depends on the specifics of the workload. Consider a single FASTA file, for which we’d like to process individual sequences in parallel. Maybe we’d like to calculate the <code>GC</code> content for each contig. Here, we have a tradeoff between the time it takes to calculate the GC content for each contig vs the overhead of maintaining the logistics of a threadpool.</p>
-<p>If the contigs are very short, the bottleneck probably isn’t calculating GC content but rather the overhead of distributing nucleotide sequences to each thread. In this case, multithreading adds more overhead than it saves.</p>
-<p>If the contigs are very long, the bottleneck might actually be the GC calculation itself. In this case, multithreading can provide a meaningful speedup.</p>
-<p>The takeaway is to consider the ratio of useful computation to coordination overhead. When the work per unit is small relative to the cost of dispatching it to a thread, you won’t see a benefit.</p>
+<p>There are cases when multithreading might help, but the benefit depends on the specifics of the workload. Consider a single FASTA file, for which we’d like to process individual sequences in parallel. Maybe we’d like to calculate the <code>GC</code> content for each contig and collect the result in to a <code>Vec</code>. Here, we have a tradeoff between the time it takes to calculate the GC content for each contig vs the overhead of maintaining the logistics of a threadpool.</p>
+<pre class="mermaid">graph TD
+    S1["ATCG...AGA"] --&gt;  E["process *n_thread* contigs in parallel"] 
+    S["..."] --&gt; E
+    SN["CGAT...AGT"] --&gt; E
+    
+    E --&gt; F["::collect()"]
+    F --&gt; O1["[0.52, ..., 0.49]"]
+    
+    style E fill:#f80,color:#fff
+
+</pre>
+
+<p>If the contigs are very short, the bottleneck probably isn’t calculating GC content but rather the overhead of distributing nucleotide sequences to each thread. We also need to wait for every calculation to finish before we can access the resulting <code>Vec</code>. In this case, multithreading adds more overhead than it saves.</p>
+<p>If the contigs are very long, e.g., if the FASTA file contains multiple large single contig genomes, the bottleneck might actually be the GC calculation itself. In this case, multithreading can provide a meaningful speedup.</p>
+<p>The takeaway is to consider the ratio of useful computation to coordination overhead. When the work per unit is small relative to the cost of dispatching it to a thread, you might not see a benefit.</p>
 <h2 id="when-to-avoid-multithreading"><a class="header" href="#when-to-avoid-multithreading">When To Avoid Multithreading</a></h2>
 <p>A rather questionable example of using multithreading would be trying to convert a FASTQ ASCII quality string to error probabilities. E.g., trying to map <code>b"????????"</code> to <code>[0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001]</code>. In theory, we could use <code>8</code> threads to attempt to do this in parallel. However, the arithmetic operation of converting <code>b'?'</code> to <code>0.001</code> is very fast and the bottleneck here is most likely maintaining the logistics around the threadpool we need to run this operation in parallel.</p>
 <p>As a general rule, if the per-item computation takes less time than the overhead of scheduling work onto a thread, multithreading will make things slower, not faster. For cheap operations like arithmetic conversions or table lookups, a simple sequential loop will outperform a parallel one.</p>
+<pre class="mermaid">graph TD
+    S1["? ? ? ? ? ? ? ?"] --&gt;  Q1["?"]
+    S1 --&gt; Q["..."]
+    S1 --&gt; Q8["?"]
+    
+    Q1 --&gt; P1["process *n_thread* quality values in parallel"]
+    Q --&gt; P1
+    Q8 --&gt; P1
+    
+    P1 --&gt; R["[0.001, ..., 0.001]"]
+    
+    style P1 fill:#d44,color:#fff
+</pre>
+
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="aminoacids"><a class="header" href="#aminoacids">Aminoacids</a></h1>
 <p>In the past chapters, we have gone through some fundamental ways to analyze and manipulate nucleotide sequences. Now, we’ll take a brief look at aminoacid sequences. Luckily, some of the concepts we have implemented for nucleotides also apply to aminoacids, with some minor tweaking of the code. Examples are:</p>
@@ -4609,7 +4648,7 @@ fn main(){
 	let translated = translate(CodonTable::Standard, &amp;Frame::First, seq);
 	assert_eq!(&amp;translated[..], b"M*");	
 }</code></pre>
-<p>A possible improvement here would be to handle ambiguous nucleotides and not just map them to <code>T</code>.</p>
+<p>A possible improvement here would be to handle ambiguous nucleotides and not just map them to <code>0</code> (which is done implicitly since we initialize <code>[0_u8; 256]</code> before overwriting with the nucleotide specific encodings).</p>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="amplicon"><a class="header" href="#amplicon">Amplicon</a></h1>
 <p>As we all know, there are multiple different approaches to genome sequencing. I’ll list my interpretation of the different approaches below:</p>
@@ -5175,6 +5214,22 @@ For a mega list of even more crates, see <a href="https://github.com/rust-unoffi
         <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
         <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
 
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
 
 
         <script>

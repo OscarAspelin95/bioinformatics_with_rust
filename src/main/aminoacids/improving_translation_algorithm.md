@@ -129,4 +129,4 @@ fn main(){
 }
 ```
 
-A possible improvement here would be to handle ambiguous nucleotides and not just map them to `T`.
+A possible improvement here would be to handle ambiguous nucleotides and not just map them to `0` (which is done implicitly since we initialize `[0_u8; 256]` before overwriting with the nucleotide specific encodings).
