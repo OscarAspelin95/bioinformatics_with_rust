@@ -128,9 +128,112 @@ TTCC -> TTC, TCC
 ```
 Which is 6 out of the 7 kmers we wanted. We are missing one kmer because the last `C` was excluded from the chunking. But since we know this, we can easily generate the last kmer.
 
-Regardless, with some clever maths (of which the formula I still find hard to derive) we can design our chunks and residual so that all kmers can be easily extracted.
+Regardless, with some clever maths (see a semi-clever example below) we can ensure that the residual is kmerizable as well.
+
+## Deriving A Mathematical formula
+In order to derive a proper formula, we need to investigate the behavior of chunking. Assume we have the 34 length sequence `AAAATTTTGGGGCCCCAAAATTTTGGGGCCCCTT`. Also assume we are running on `AVX-512`, which means we can have (at most) a 512-bit SIMD register. Since we use `u64` as storage for each kmer, we can have at most `512 / 64 = 8` SIMD lanes. With `kmer_size = 3` we need each chunk to overlap by `kmer_size - 1 = 2 nucleotides`. Manually chopping this sequence into `8` equal length chunks gives the following:
+
+```
+AAAATTTTGGGGCCCCAAAATTTTGGGGCCCCTT (len = 34)
+
+AAAAT
+   ATTTT
+      TTGGG
+         GGGCC
+            CCCCA
+               CAAAA
+                  AATTT
+                     TTTGG
+                        GGGGCCCCTT (residual, len = 10)
+             
+```
+
+Observe that:
+- We have a chunk size of 5 (of which the formula we'll derive soon).
+- We have 7 points of overlap between the 8 chunks (not including the residual).
+- For each overlap, we only add 3 new nucleotides to the effective length. We derive 3 as `num_new_nucleotides = chunk_size - overlap = 5 - 2 = 3`.
+- The effective length of all 8 chunks gives room for a residual with a length `10` that is greater than our kmer size `3`. This is good, because we need to kmerize the residual as well.
+
+We can formulate the constraint as <q>*the effective length of all chunks must be less than or equal to `sequence_length - residual_length`*</q> with an additional constraint that `residual_length >= kmer_size`.
+
+Mathematically, we can formulate this as
+
+\\[
+  C + (N - 1) \cdot \bigl(C - (k - 1)\bigr) \leq L - R
+\\]
+
+where \\( C \\) is the chunk size, \\( N \\) is the number of SIMD lanes, \\( k \\) is the kmer size, \\( L \\) is the sequence length, and \\( R \\) is the residual length.
+
+Here, \\( L - R \\) is the maximum effective length we allow for the chunks, leaving at least \\( R \\) positions for the residual.
+
+Re-arranging the expression, and substituting \\( R = k \\) (since the residual must be at least kmer-sized) we get
+
+\\[
+  C \leq \frac{L - k + (N - 1)(k - 1)}{N}
+\\]
+
+Because we need an even length for the chunk size, we'll use integer division (rounded down), which finally gives us
+
+\\[
+  C = \left\lfloor \frac{L - k + (N - 1)(k - 1)}{N} \right\rfloor
+\\]
+
+We can now test this formula. We'll plug in \\( L = 34 \\), \\( k = 3 \\) and \\( N = 8 \\):
+
+\\[
+  C = \left\lfloor \frac{34 - 3 + 7 \cdot 2}{8} \right\rfloor = \left\lfloor \frac{45}{8} \right\rfloor = 5
+\\]
+
+Since we used integer division, we can re-calculate the residual to check its length. The effective length covered by 8 chunks is \\( 5 + 7 \cdot 3 = 26 \\), so the residual starts at position \\( 26 - (k - 1) = 24 \\) and has length \\( 34 - 24 = 10 \\), which is greater than our kmer size of 3.
+
+## Using The Formula
+We can codify this formula to generate SIMD chunks for the example sequence discussed above. In the code example below, we've also added a constraint for the chunk size to be larger than the kmer size. 
+
+```rust
+fn get_chunk_size(kmer_size: usize, seq_len: usize, num_lanes: usize) -> Option<usize> {
+    let chunk_size = (seq_len - kmer_size + ((num_lanes - 1) * (kmer_size - 1))) / num_lanes;
+
+    if chunk_size <= kmer_size {
+        return None;
+    }
+
+    Some(chunk_size)
+}
+
+fn chunk_seq<'a>(seq: &'a [u8], kmer_size: usize, num_lanes: usize) -> (Vec<&'a [u8]>, &'a [u8]) {
+    let chunk_size = get_chunk_size(kmer_size, seq.len(), num_lanes).expect("sequence not long enough for kmer size {kmer_size}");
+
+    let mut start = 0;
+    let mut chunks: Vec<&[u8]> = Vec::new();
+
+    for _ in 0..num_lanes {
+        let end = start + chunk_size;
+        chunks.push(&seq[start..end]);
+
+        start += chunk_size - (kmer_size - 1);
+    }
+
+    let residual = &seq[start..];
+
+    (chunks, residual)
+}
+
+fn main() {
+    let seq = b"AAAATTTTGGGGCCCCAAAATTTTGGGGCCCCTT";
+    let kmer_size = 3;
+    let num_lanes = 8;
+
+    let (chunks, residual) = chunk_seq(seq, kmer_size, num_lanes);
+
+    assert_eq!(
+        chunks,
+        vec![
+            b"AAAAT", b"ATTTT", b"TTGGG", b"GGGCC", b"CCCCA", b"CAAAA", b"AATTT", b"TTTGG"
+        ]
+    );
+    assert_eq!(residual, b"GGGGCCCCTT");
+}
+```
 
 ## In Practice
-Assume we are running on `AVX-512`, which means we can have (at most) a 512-bit SIMD register. Since we use `u64` as storage for each kmer, we can have at most `512 / 64 = 8` SIMD lanes. If we chop our sequence into 8 equal-length chunks, we can process them in parallel and then handle the residual separately.
-
-In practice though, one would typically use a crate that fully supports all of this out of the box. One example is [simd-minimizers](https://docs.rs/simd-minimizers/latest/simd_minimizers/).
+From a practical aspect, one would typically use a crate that fully supports all of this out of the box. One example is [simd-minimizers](https://docs.rs/simd-minimizers/latest/simd_minimizers/) which I've personally used for a few projects.
