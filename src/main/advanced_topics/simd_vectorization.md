@@ -93,7 +93,18 @@ for i in 0..4{
 Our implementation has a fundamental flaw. What if the sequences don't have the same length? We have to rethink our approach.
 
 ## Chunking
-Instead of trying to process separate, unrelated sequences at once, what if we can process a single sequence at once? 
+Instead of trying to process separate, unrelated sequences at once, what if we can process a single sequence at once?
+
+```mermaid
+graph TD
+    A["Long sequence"] --> B["Split into N overlapping chunks<br/>(overlap = k - 1)"]
+    B --> C["Load one nucleotide per chunk<br/>into SIMD vector"]
+    C --> D["Parallel bit-shift encoding<br/>across all N lanes"]
+    D --> E["Collect kmers<br/>from each lane"]
+    B --> F["Handle residual<br/>separately"]
+    E --> G["All kmers"]
+    F --> G
+```
 
 What if we can cleverly chop our sequence into N equal size chunks (where N is the number of SIMD lanes available) and process them in parallel? We can, with some requirements:
 - The sequence has to be reasonably long for this to make sense.

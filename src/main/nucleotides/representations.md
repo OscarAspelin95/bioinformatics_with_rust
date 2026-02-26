@@ -31,7 +31,11 @@ fn main() {
 }
 ```
 ## Binary
-Will be covered in a later section. In short, using 8-bits is overkill for representing only four nucleotides. Instead, we can map `A/C/G/T` to the corresponding binary representation:
+
+> [!TIP]
+> Binary encoding of nucleotides is covered in detail in the [Encoding](./nucleotide_encoding.md) chapter, and becomes essential for the [Kmer](../kmers/kmers.md) chapters where bit-shift operations enable extremely efficient kmer generation.
+
+In short, using 8-bits is overkill for representing only four nucleotides. Instead, we can map `A/C/G/T` to the corresponding binary representation:
 
 - `A` => `00`
 - `C` => `01`

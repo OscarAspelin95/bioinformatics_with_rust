@@ -22,4 +22,4 @@ Note that calling the aligner every time either the query or subject has changed
 
 Below is a preview of what the desktop app looks like.
 
-<img src="../../assets/alignment.gif" style="border-radius: 2em;"></img>
+<img src="../../assets/alignment.gif" style="border-radius: 2em;">

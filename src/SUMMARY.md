@@ -31,7 +31,7 @@
     - [Ownership and Borrowing](./main/rust_basics/ownership_and_borrowing.md)
     - [Lifetimes](./main/rust_basics/lifetimes.md)
     - [Iterator Chaining](./main/rust_basics/iterator_chaining.md)
-    - [Concurrency](./main/rust_basics/concurrency.md)
+    - [Multi Threading](./main/rust_basics/multi_threading.md)
     - [Trait Bounds and Generics](./main/rust_basics/trait_bounds_and_generics.md)
     - [Smart Pointers](./main/rust_basics/smart_pointers.md)
 
@@ -89,6 +89,14 @@
     - [Building a Reverse Index](./main/kmers/building_a_reverse_index.md)
 
 ---
+
+- [Increasing Performance](./main/increasing_performance/introduction.md)
+    - [Using Appropriate Data Structures](./main/increasing_performance/using_appropriate_data_structures.md)
+    - [Favor Compile Time](./main/increasing_performance/favor_compile_time.md)
+    - [Multithreading](./main/increasing_performance/multi_threading.md)
+
+---
+
 - [Aminoacids](./main/aminoacids/aminoacids.md)
     - [Translation](./main/aminoacids/translation.md)
     - [Accounting For Frames](./main/aminoacids/accounting_for_frames.md)
@@ -100,14 +108,6 @@
     - [In Silico PCR](./main/amplicon/in_silico_pcr.md)
     - [Clustering](./main/amplicon/clustering.md)
     - [Classification](./main/amplicon/classification.md)
-
----
-
-- [Practicals](./main/practicals/introduction.md)
-    - [Fasta parser](./main/practicals/fasta_parser.md)
-    - [Fastq filter](./main/practicals/fastq_filter.md)
-    - [Fastx toolkit](./main/practicals/fastx_toolkit.md)
-    - [Classifier](./main/practicals/classifier.md)
 
 ---
 

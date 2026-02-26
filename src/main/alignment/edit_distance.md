@@ -22,6 +22,13 @@ G   -   -   -   -
 </pre>
 
 We want to traverse this array from the start, until we have used up the entire query and subject. We can do this in three different ways:
+
+```mermaid
+graph LR
+    A["(i-1, j-1)"] -- "Diagonal<br/>Match / Mismatch<br/>consume both" --> D["(i, j)"]
+    B["(i, j-1)"] -- "Right →<br/>Deletion in subject<br/>consume query" --> D
+    C["(i-1, j)"] -- "Down ↓<br/>Deletion in query<br/>consume subject" --> D
+```
 - A diagonal step means we take a step in both the query and subject (we "consume" both the query and the subject). Depending on the nucleotide we have in the current column (query) and row (subject), this is either a *match* or a *mismatch*.
 - A step to the right means we take a step only in the query direction (we "consume" the query). This signifies a *deletion* in the subject sequence (we don't consume it).
 - A step downwards means we take a step only in the subject direction (we "consume" the subject). This signifies a *deletion* in the query sequence (we don't consume it).

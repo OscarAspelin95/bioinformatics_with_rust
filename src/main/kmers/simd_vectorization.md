@@ -1,2 +1,0 @@
-# SIMD Vectorization
-🚧

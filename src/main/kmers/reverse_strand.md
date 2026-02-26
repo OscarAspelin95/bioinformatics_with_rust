@@ -48,6 +48,9 @@ fn main() {
 
     // Print the full u32-bit.
     println!("{:032b}", &storage);
+
+    // Verify: reverse complement of AGT is ACT, encoded as 00 01 11.
+    assert_eq!(storage, 0b000111);
 }
 ```
 

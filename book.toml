@@ -5,18 +5,23 @@ src = "src"
 title = "Bioinformatics with Rust"
 
 [rust]
-edition = "2021"
+edition = "2024"
 
 [output.html]
 git-repository-url = "https://github.com/OscarAspelin95/bioinformatics_with_rust"
-git-repository-icon = "fa-github"
 mathjax-support = true
 default-theme = "coal"
 additional-css = ["src/assets/custom.css"]
-additional-head = ["theme/head.hbs"]
+additional-js = ["mermaid.min.js", "mermaid-init.js"]
 
 [output.html.playground]
 editable = true
 
 [output.html.print]
-enable = false
+enable = true
+
+[output.pdf]
+optional = true
+
+[preprocessor.mermaid]
+command = "mdbook-mermaid"

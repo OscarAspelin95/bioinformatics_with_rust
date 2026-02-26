@@ -5,6 +5,20 @@ Assume we have a FASTQ record with only three nucleotides with the corresponding
 - Convert to phred scores `[30, 30, 30]`, calculate the mean `(30 + 30 + 30) / 3 = 30` and convert to error probability `10^(-30/10) = 10^(-3) = 0.001`.
 - Convert all the way to error probabilities first `[0.001, 0.001, 0.001]` and then calculate the mean `(0.001 + 0.001 + 0.001) / 3 = 0.001`.
 
+```mermaid
+graph TD
+    A["ASCII Qualities"] --> B["Phred Scores"]
+    B --> C1["Method 1:<br/>Arithmetic mean of phred scores"]
+    B --> C2["Method 2:<br/>Convert each to error probability"]
+    C1 --> D1["Convert mean phred<br/>to error probability"]
+    C2 --> D2["Arithmetic mean of<br/>error probabilities"]
+    D1 --> E1["= Geometric mean<br/>of error probabilities"]
+    D2 --> E2["= Arithmetic mean<br/>of error probabilities"]
+
+    style E1 fill:#d44,color:#fff
+    style E2 fill:#2a2,color:#fff
+```
+
 In this example, we get the same result. This is, however, not always the case. Consider an alternative sequence of only two nucleotides with ASCII qualities `+5`. Our two options give:
 - `[10, 20]` -> mean is `(10 + 20) / 2 = 15` which gives an error probability of `10^(-15/10) ≈ 0.0316`.
 - `[0.1, 0.01]` -> mean is `(0.1 + 0.01) / 2 = 0.055`.

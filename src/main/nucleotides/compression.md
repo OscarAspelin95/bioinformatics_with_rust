@@ -6,6 +6,10 @@ One very straightforward way to implement nucleotide compression would be to sav
 Another way of compression is nucleotide encoding, which is covered in more detail later on. It turns out that if we only allow `{A, C, G, T, a, c, g, t}`, we can map each base to 2 bits. E.g., `ATCG` -> `00110110`, which is extremely efficient when generating kmers.
 
 ## Homopolymer Compression
+
+> [!TIP]
+> Homopolymers are discussed in more detail in the dedicated [Homopolymers](./homopolymers.md) chapter, which covers identification and why they matter for sequencing technologies like Oxford Nanopore.
+
 A similar, non reversible approach is homopolymer compression. We define a length `k`, at which we cap the maximum number of allowed adjacent identical nucleotides. E.g., with `k=3` we get `ATAAAAAGGCGCTTTA` -> `ATAAAGGCGCTTTA` and with `k=1` we get `ATAAAGGCGCTTTA` -> `ATAGCGCTA`. If we also store positional information, we can make this compression reversible.
 
 In the code example below, we implement the non-reversible version of homopolymer compression for `k=1`, inspired by [isONclust3](https://github.com/aljpetri/isONclust3).

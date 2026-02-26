@@ -28,3 +28,6 @@ This naive implementation has several flaws that we need to handle:
 - Once the reverse complement is handled, should we use all forward and all reverse kmers, or can we be smart about which kmers to pick?
 - We still use ASCII encoding, which takes up unnecessary amounts of storage.
 - Using a window function is not feasible when dealing with huge amounts of data. We need another approach.
+
+> [!TIP]
+> These flaws are addressed in the following chapters: [Bit Shift Encoding](./bit_shift_encoding.md) replaces ASCII with 2-bit encoding, [Forward Strand](./forward_strand.md) and [Reverse Strand](./reverse_strand.md) handle both strands, and the [Final Implementation](./final_implementation.md) combines everything into a canonical kmer generator.

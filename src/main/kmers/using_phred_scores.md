@@ -66,9 +66,21 @@ fn exp_error_free_kmers(qual: &[u8], kmer_size: usize) -> f64 {
 }
 
 fn main() {
-    println!("{}", exp_error_free_kmers(b"??????????", 5));
-    println!("{}", exp_error_free_kmers(b"5555555555", 5));
-    println!("{}", exp_error_free_kmers(b"++++++++++", 5));
+    let high_qual = exp_error_free_kmers(b"??????????", 5);
+    let mid_qual = exp_error_free_kmers(b"5555555555", 5);
+    let low_qual = exp_error_free_kmers(b"++++++++++", 5);
+
+    println!("{}", high_qual);
+    println!("{}", mid_qual);
+    println!("{}", low_qual);
+
+    // Higher quality scores should yield more expected error-free kmers.
+    assert!(high_qual > mid_qual);
+    assert!(mid_qual > low_qual);
+
+    // All values should be between 0 and the maximum possible kmers (10 - 5 + 1 = 6).
+    assert!(high_qual > 0.0 && high_qual <= 6.0);
+    assert!(low_qual > 0.0 && low_qual <= 6.0);
 }
 ```
 

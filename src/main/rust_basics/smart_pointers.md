@@ -84,13 +84,16 @@ use std::rc::Rc;
 fn main() {
     let x: Rc<usize> = Rc::new(0);
 
+    assert_eq!(Rc::strong_count(&x), 1);
     println!("{}", Rc::strong_count(&x));
 
     {
         let x_clone = x.clone();
+        assert_eq!(Rc::strong_count(&x), 2);
         println!("{}", Rc::strong_count(&x));
     } // x_clone is dropped here, reference count to x will decrease by one.
 
+    assert_eq!(Rc::strong_count(&x), 1);
     println!("{}", Rc::strong_count(&x));
 }
 ```

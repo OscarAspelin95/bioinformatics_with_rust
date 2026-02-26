@@ -46,13 +46,21 @@ How to choose a representative sequence from a cluster varies across bioinformat
 Clustering algorithms can be quite complex so we'll create a *very* basic native Rust implementation here, which uses minimizers (using code from our sloppy, earlier implementation). We won't bother with sorting sequences or choosing representatives but rather just keeping track of how many clusters we generate and their members.
 
 Conceptually what we do is:
-- Start with zero clusters.
-- Iterate over the sequences.
-    - Extract minimizers for sequence.
-    - Iterate over each cluster.
-        - Calculate the jaccard index.
-        - If jaccard index is larger than threshold, assign the read to this cluster.
-    - If sequence has not been assigned, initiate a new cluster.
+
+```mermaid
+graph TD
+    A["Start with 0 clusters"] --> B["For each sequence"]
+    B --> C["Extract minimizers"]
+    C --> D["For each existing cluster"]
+    D --> E["Calculate Jaccard index"]
+    E --> F{"Jaccard >= threshold?"}
+    F -- "Yes" --> G["Assign to cluster"]
+    F -- "No" --> H{"More clusters?"}
+    H -- "Yes" --> D
+    H -- "No" --> I["Create new cluster"]
+    G --> B
+    I --> B
+```
 
 ```rust
 # use std::{cmp::min, collections::HashSet, vec};

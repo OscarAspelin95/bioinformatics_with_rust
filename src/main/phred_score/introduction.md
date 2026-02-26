@@ -7,14 +7,23 @@ There are three concepts we need to understand before proceeding:
 
 	- Error probabilities are a bit incomplete. For example, how do we estimate a deleted nucleotide? It won't be present in the FASTQ file (because it is deleted) so we cannot assign an error probability to this. To be honest, I'm not sure how this is handled (if it even is) by the sequencing machine.
 
-- `Phred Score` - Is a logarithmically encoded error probability, expressed as an integer. E.g., a phred score of `30` corresponds to an error probability of `0.001`. Why do we care about phred scores? We don't want to include a bunch of floating point numbers in our FASTQ file because we'll run issues such as rounding, etc.
+> [!NOTE]
+> Error probabilities are statistical estimates across many sequencing events, not absolute truths about individual bases. A base with error probability 0.001 is either correct or incorrect — the probability reflects how often similar bases are miscalled across many reads. Additionally, phred scores only capture substitution errors. Deletion and insertion errors are not represented in the FASTQ quality line, since deleted bases are absent from the read entirely.
+
+- `Phred Score` - Is a logarithmically encoded error probability, expressed as an integer. E.g., a phred score of `30` corresponds to an error probability of `0.001`. Why do we care about phred scores? We don't want to include a bunch of floating point numbers in our FASTQ file because we'll run into issues such as rounding, etc.
 
 - `ASCII Quality` - The ASCII character associated with the error probability, and hence, the phred score of a particular nucleotide. This is what is found in the actual FASTQ file. Why an ASCII character? Because they are fixed length characters (of length 1). This gives a very nice mapping of `one nucleotide` -> `one ASCII` quality value. The conversion between `ASCII` and `phred score` uses a phred score offset. The reason is that the first 31 ASCII characters are non-printable and the 32nd is the space character `' '`. To account for the fact that our <q>zero</q> or lowest quality value starts as ASCII character 33, an offset of 33 is commonly used. E.g., the ASCII character `!` has value 33 equates to a phred score of `33 - 33 = 0`.
 
 
 Since ASCII, phred scores and error probabilities are related, we can convert between them.
 
-\\[ ASCII(char) \iff phred (int) \iff error (float) \\]
+```mermaid
+graph LR
+    A["ASCII Character<br/>(e.g. '?' = 63)"] -- "subtract 33" --> B["Phred Score<br/>(e.g. 30)"]
+    B -- "10<sup>-ps/10</sup>" --> C["Error Probability<br/>(e.g. 0.001)"]
+    C -- "-10 * log<sub>10</sub>(p)" --> B
+    B -- "add 33" --> A
+```
 
 
 ## A Quick Look At The Maths
@@ -43,3 +52,6 @@ E.g., for an error probability of 0.001, we get
 \\[ \text{phred_score} = -10 * log_{10}(0.001) = 30 \\]
 
 which would give an ASCII value of `30 + 33 = 63`, or `?`
+
+> [!TIP]
+> Now that we understand the relationship between ASCII, phred scores, and error probabilities, the next chapter covers a surprisingly subtle topic: [how to correctly calculate mean error probabilities](./calculating_mean.md).

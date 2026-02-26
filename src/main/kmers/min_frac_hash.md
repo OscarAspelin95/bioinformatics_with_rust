@@ -121,12 +121,18 @@ fn print_canonical_hashes(canonical_hashes: &HashSet<u64>) {
 /// In these examples, we don't downsample because our
 /// nucleotide strings are very short and have low complexity.
 fn main(){
-    let canonical_hashes = kmerize(5, 1, b"AAAAAAAAAA");
-    print_canonical_hashes(&canonical_hashes);
+    let canonical_hashes_a = kmerize(5, 1, b"AAAAAAAAAA");
+    print_canonical_hashes(&canonical_hashes_a);
 
-    let canonical_hashes = kmerize(5, 1, b"TTTTTTTTTT");
-    print_canonical_hashes(&canonical_hashes);
+    let canonical_hashes_t = kmerize(5, 1, b"TTTTTTTTTT");
+    print_canonical_hashes(&canonical_hashes_t);
 
+    // Both should produce non-empty hash sets.
+    assert!(!canonical_hashes_a.is_empty());
+    assert!(!canonical_hashes_t.is_empty());
+
+    // Reverse complements should produce the same canonical hashes.
+    assert_eq!(canonical_hashes_a, canonical_hashes_t);
 }
 ```
 The result is a seemingly nonsensical number for each sequence. However, we note two important things:

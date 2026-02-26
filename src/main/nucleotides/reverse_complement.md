@@ -46,3 +46,6 @@ fn main() {
     assert_eq!(reverse_complement(b"ACACGT"), b"ACGTGT");
 }
 ```
+
+> [!TIP]
+> A more elegant approach to reverse complementing uses 2-bit nucleotide encoding, where the complement of a base is simply `3 - encoded_value`. This is covered in the [Encoding](./nucleotide_encoding.md) chapter and becomes critical for efficient kmer generation.

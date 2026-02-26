@@ -5,6 +5,8 @@ We'll start off with something relatively easy - counting nucleotides. We'll cre
 use std::collections::HashMap;
 
 fn count_nucleotides(seq: &[u8]) {
+    // Note: HashMap::with_capacity(4) would be better here since we know
+    // there are at most 4 canonical nucleotides. See the Increasing Performance chapter.
     let mut map: HashMap<&u8, usize> = HashMap::new();
 
     // Iterate over each nucleotide.
@@ -36,3 +38,6 @@ fn main() {
 Run the code and inspect the output. The resulting HashMap will have the ASCII encoded nucleotides as keys.
 
 Note that there are lots of alternative solutions and further optimizations we can do. For example, when we input `b"AAAA"` we see that our `HashMap` only contains one key, `b'A'`. One alternative here would be to initialize the `HashMap` with empty counts for A, T, C and G.
+
+> [!TIP]
+> For a more efficient approach to nucleotide counting using fixed-size arrays instead of HashMaps, see the [Using Appropriate Data Structures](../increasing_performance/using_appropriate_data_structures.md) chapter.

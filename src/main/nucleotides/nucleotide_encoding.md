@@ -12,6 +12,17 @@ The advantages of this approach are:
 - With some bit-shifting, we can very efficiently generate kmers from our sequences (covered in a later topic).
 
 
+```mermaid
+graph LR
+    A["ASCII character<br/>(e.g. 'A' = 65)"] --> B["Lookup table<br/>(256 entries)"]
+    B --> C["2-bit encoding<br/>(e.g. 0b00)"]
+    D["Lowercase<br/>(e.g. 'a' = 97)"] --> B
+    E["Already encoded<br/>(e.g. 0)"] --> B
+    B --> F["Unknown → 4"]
+
+    style F fill:#d44,color:#fff
+```
+
 The following code is just a very straightforward encoding/decoding protocol. However, this enables us to do some more advanced stuff in future topics.
 ```rust
 /// Convert ASCII to our own 2-bit encoded nt.

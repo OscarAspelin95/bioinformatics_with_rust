@@ -16,4 +16,5 @@ ATCG
 
 which tells us that there is a record called `sequence_1` with the nucleotide sequence `ATCG` and associated qualities `????`. How do we know that these are nucleotides and not aminoacids? Strictly, we don't. However, the FASTQ format is almost exclusively used for nucleotides.
 
-In the next chapter, we will learn how to convert the seemingly non-sensical qualities `????` to error probabilities.
+> [!TIP]
+> The quality line in a FASTQ file uses ASCII-encoded phred scores. To understand how to convert characters like `?` to error probabilities, see the [Phred Score](../phred_score/introduction.md) chapter.
