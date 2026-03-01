@@ -136,7 +136,7 @@ In order to derive a proper formula, we need to investigate the behavior of chun
 ```
 AAAATTTTGGGGCCCCAAAATTTTGGGGCCCCTT (len = 34)
 
-AAAAT
+AAAAT 
    ATTTT
       TTGGG
          GGGCC
@@ -200,6 +200,8 @@ fn get_chunk_size(kmer_size: usize, seq_len: usize, num_lanes: usize) -> Option<
     Some(chunk_size)
 }
 
+/// We can most likely make this very much nicer with some built in iterable method.
+/// e.g., stride or something?
 fn chunk_seq<'a>(seq: &'a [u8], kmer_size: usize, num_lanes: usize) -> (Vec<&'a [u8]>, &'a [u8]) {
     let chunk_size = get_chunk_size(kmer_size, seq.len(), num_lanes).expect("sequence not long enough for kmer size {kmer_size}");
 

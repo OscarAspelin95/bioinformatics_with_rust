@@ -71,7 +71,7 @@
             const path_to_root = "";
             const default_light_theme = "coal";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-815983b3.js";
+            window.path_to_searchindex_js = "searchindex-6abc6ecd.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-07a46225.js"></script>
@@ -217,35 +217,16 @@
 <p>Welcome to Bioinformatics with Rust! An unofficial book aimed at introducing the Rust programming language for bioinformatic applications.</p>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
-<ul>
-<li>
-<p>This book is <strong>not</strong> in any way, shape or form, an official introduction to neither the Rust programming language, nor bioinformatics.</p>
-<ul>
-<li>For a comprehensive introduction to Rust, please visit <a href="#resources-1">resources</a>.</li>
-<li>For learning bioinformatics, please visit your favorite university.</li>
-</ul>
-</li>
-<li>
+<p>This book is <strong>not</strong> in any way, shape or form, an official introduction to neither the Rust programming language, nor bioinformatics. For a comprehensive introduction to Rust, please visit <a href="#resources-1">resources</a>. For learning bioinformatics, please visit your favorite university.</p>
 <p>The <strong>purpose</strong> of this book is trifold:</p>
 <ul>
 <li>Explain common bioinformatic concepts in a (hopefully) clear way.</li>
 <li>Showcase some basic Rust implementations from scratch.</li>
 <li>Provide examples of awesome open-source Rust crates for bioinformatics.</li>
 </ul>
-</li>
-<li>
-<p>Since <code>mdbook</code> is not easily integrated with external Rust crates, the code examples are minimally viable and built with native Rust. Throughout the book, however, examples of GitHub repositories and external Rust crates are provided as a way to showcase more real life applications.</p>
-</li>
-<li>
+<p>Throughout the book, there are a lot of code examples. It is important to note that these examples are not necessarily optimized for performance (some are). Rather, the goal is to showcase how we can codify common bioinformatic concepts into a working prototype. Since <code>mdbook</code> is not easily integrated with external Rust crates, the code examples are minimally viable and built with native Rust. Throughout the book, however, examples of GitHub repositories and external Rust crates are provided as a way to showcase more real life applications.</p>
 <p>We’ll mostly deal with DNA sequences and canonical nucleotides. However, feel free to request additional topics.</p>
-</li>
-<li>
-<p>For any issues related to this book, please file a <a href="https://github.com/OscarAspelin95/bioinformatics_with_rust/issues">GitHub issue</a>.</p>
-</li>
-<li>
-<p>Currently, I’m a single person working on this project. If this project grows, I most likely need help from other people. Contributions are welcome!</p>
-</li>
-</ul>
+<p>For any issues related to this book, please file a <a href="https://github.com/OscarAspelin95/bioinformatics_with_rust/issues">GitHub issue</a>. Currently, I’m a single person working on this project. If this project grows, I most likely need help from other people. Contributions are welcome!</p>
 <img src="assets/rust-bio-gray.png" class="logo-gray" style="margin-top: 20px; border-radius: 5em;" />
 <img src="assets/rust-bio-blue.png" class="logo-blue" style="margin-top: 20px; border-radius: 5em;" />
 <div style="break-before: page; page-break-before: always;"></div>
@@ -4136,7 +4117,7 @@ TTCC -&gt; TTC, TCC
 <p>In order to derive a proper formula, we need to investigate the behavior of chunking. Assume we have the 34 length sequence <code>AAAATTTTGGGGCCCCAAAATTTTGGGGCCCCTT</code>. Also assume we are running on <code>AVX-512</code>, which means we can have (at most) a 512-bit SIMD register. Since we use <code>u64</code> as storage for each kmer, we can have at most <code>512 / 64 = 8</code> SIMD lanes. With <code>kmer_size = 3</code> we need each chunk to overlap by <code>kmer_size - 1 = 2 nucleotides</code>. Manually chopping this sequence into <code>8</code> equal length chunks gives the following:</p>
 <pre><code>AAAATTTTGGGGCCCCAAAATTTTGGGGCCCCTT (len = 34)
 
-AAAAT
+AAAAT 
    ATTTT
       TTGGG
          GGGCC
@@ -4186,6 +4167,8 @@ C = \left\lfloor \frac{34 - 3 + 7 \cdot 2}{8} \right\rfloor = \left\lfloor \frac
     Some(chunk_size)
 }
 
+/// We can most likely make this very much nicer with some built in iterable method.
+/// e.g., stride or something?
 fn chunk_seq&lt;'a&gt;(seq: &amp;'a [u8], kmer_size: usize, num_lanes: usize) -&gt; (Vec&lt;&amp;'a [u8]&gt;, &amp;'a [u8]) {
     let chunk_size = get_chunk_size(kmer_size, seq.len(), num_lanes).expect("sequence not long enough for kmer size {kmer_size}");
 

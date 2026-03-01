@@ -44,7 +44,7 @@
             const path_to_root = "../../";
             const default_light_theme = "coal";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../../searchindex-815983b3.js";
+            window.path_to_searchindex_js = "../../searchindex-6abc6ecd.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../../toc-07a46225.js"></script>
@@ -306,7 +306,7 @@ TTCC -&gt; TTC, TCC
 <p>In order to derive a proper formula, we need to investigate the behavior of chunking. Assume we have the 34 length sequence <code>AAAATTTTGGGGCCCCAAAATTTTGGGGCCCCTT</code>. Also assume we are running on <code>AVX-512</code>, which means we can have (at most) a 512-bit SIMD register. Since we use <code>u64</code> as storage for each kmer, we can have at most <code>512 / 64 = 8</code> SIMD lanes. With <code>kmer_size = 3</code> we need each chunk to overlap by <code>kmer_size - 1 = 2 nucleotides</code>. Manually chopping this sequence into <code>8</code> equal length chunks gives the following:</p>
 <pre><code>AAAATTTTGGGGCCCCAAAATTTTGGGGCCCCTT (len = 34)
 
-AAAAT
+AAAAT 
    ATTTT
       TTGGG
          GGGCC
@@ -356,6 +356,8 @@ C = \left\lfloor \frac{34 - 3 + 7 \cdot 2}{8} \right\rfloor = \left\lfloor \frac
     Some(chunk_size)
 }
 
+/// We can most likely make this very much nicer with some built in iterable method.
+/// e.g., stride or something?
 fn chunk_seq&lt;'a&gt;(seq: &amp;'a [u8], kmer_size: usize, num_lanes: usize) -&gt; (Vec&lt;&amp;'a [u8]&gt;, &amp;'a [u8]) {
     let chunk_size = get_chunk_size(kmer_size, seq.len(), num_lanes).expect("sequence not long enough for kmer size {kmer_size}");
 
