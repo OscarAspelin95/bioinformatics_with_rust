@@ -71,7 +71,7 @@
             const path_to_root = "";
             const default_light_theme = "coal";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-6abc6ecd.js";
+            window.path_to_searchindex_js = "searchindex-42291927.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-07a46225.js"></script>
@@ -4966,24 +4966,65 @@ fn main() {
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="classification"><a class="header" href="#classification">Classification</a></h1>
 <p>The final part of the amplicon chapter is classification. In essence, classification means we have some kind of confidence that a sequence originates from a specific taxon</p>
-<h2 id="alignment-based-methods"><a class="header" href="#alignment-based-methods">Alignment based methods</a></h2>
+<h2 id="alignment-based-methods"><a class="header" href="#alignment-based-methods">Alignment Based Methods</a></h2>
 <p>Usually, we’d use a global, semi-global or local aligner. The advantage of alignment based methods is that we can easily extract alignment metrics, such as the number of mismatches and indels, as well as alignment length, percent identity and other metrics. This is relevant if we not only want to find the best database hit, but also know how and where this database hit differs from our sequence.</p>
 <p>The downside to alignment based methods is that they are slow when the number of sequences and database entries grow. Another downside, not commonly talked about, is the fundamental issue with choosing only the best database hit. Pretend that our sequence matches to a particular database entry (taxa X) with 99.9% identity, but also matches to another database entry (taxa Y) with 99.85% identity. Can we really be sure that our sequence belongs to taxa X? The difference in identities between the hits could be as little as a single nucleotide. We better make sure our sequence does not contain any errors, since a single sequencing error theoretically could flip the classification from taxa Y to taxa X. If taxa X and taxa Y are different species from the same genus, maybe it makes sense to classify this sequence on genus level. This is especially true for Nanopore data, where sequencing errors can reach several percent.</p>
 <p>One algorithm that is worth mentioning here is <a href="https://github.com/treangenlab/emu">EMU</a>, which uses minimap2 to align Nanopore reads to the entire database. Through an iterative maximum likelihood algorithm, based on alignment metrics, it can accurately estimate taxonomic abundances in the sample.</p>
-<h2 id="alignment-free-methods"><a class="header" href="#alignment-free-methods">Alignment free methods</a></h2>
-<p>These typically use kmers and are based on exact matches. There are numerous ways to use kmers for classification, but one algorithm in particular is worth mentioning. <a href="https://doi.org/10.1101/074161">SINTAX</a> from the <a href="https://github.com/rcedgar/usearch12">USEARCH</a> toolkit uses a rather interesting kmer based classification approach that relies on bootstrapped subsampling of kmers to generate a classification confidence score for each sequence.</p>
-<p>In the code example below, we’ll implement our own working prototype of a kmer based classifier. To keep things simple, we’ll just compare and extract common kmers between our sequences and database entries. For each sequence, we keep the database hit that had the highest match to our sequence.</p>
-<pre class="playground"><code class="language-rust edition2024">fn main() {
-    println!("");
-
-    // Define some mock sequences.
-
-    // Define some mock database entries.
-
-    // Extract kmers from both sequences and database entries.
-
-    // For each sequence, return the database entry that had the most number of common kmers.
+<h2 id="alignment-free-methods"><a class="header" href="#alignment-free-methods">Alignment Free Methods</a></h2>
+<p>These typically use kmers and are based on exact matches. There are numerous ways to use kmers for classification, but one algorithm in particular is worth mentioning. <a href="https://doi.org/10.1101/074161">SINTAX</a> from the <a href="https://github.com/rcedgar/usearch12">USEARCH</a> toolkit uses a rather interesting kmer based classification approach that relies on bootstrapped subsampling of kmers to generate a classification confidence score for each sequence. Typically, one first builds a <a href="#building-a-reverse-index">reverse index</a> of the database. Subsequently, the asvs are classified individually (preferably in parallel):</p>
+<p>The following pseudo-code shows an example of how to do this in Rust.</p>
+<pre><code class="language-rust noplayground">fn main(){
+	// config
+	let kmer_size: usize = 15;
+	let num_bootstraps: usize = 100;
+	let num_query_hashes: usize = 32;
+	
+	let index = build_reverse_index(db_fasta, kmer_size);
+	
+	for asv in asv_sequences{
+		let asv_kmers = kmerize_asv(asv, kmer_size);
+			
+		// Pick a suitable data structure for storing results
+		let asv_result;
+		
+		for i in (0..num_bootstraps){
+			let random_asv_kmers = pick_random_kmers(asv_kmers, num_query_hashes);
+			let asv_bootstrap_result = query_reverse_index(random_asv_kmers, index);
+			add_to(asv_result, asv_bootstrap_result);
+		}
+		
+		aggregate_results(asv_result);
+	}
 }</code></pre>
+<p>The advantage of alignment free methods is that they have the potential to be much faster than alignment based methods. The reason is partly because the use of exact kmer matches over approximate matches.</p>
+<h2 id="hybrid-approaches"><a class="header" href="#hybrid-approaches">Hybrid approaches</a></h2>
+<p>It is easy to think that classification has to be either alignment based or alignment free. This is not true. Combining them actually provides some value. For instance, SINTAX outputs a single confidence score of how often an asv matches a particular database sequence. This is metric is a proxy for how well they match but does not give us any alignment metrics such as percent identity. What if we also add an alignment step here? Once we have the identified the best hit(s) for an asv, we run a more exact aligner to quantify the actual alignment between the sequences.</p>
+<pre class="mermaid">graph TD
+
+ASV["asv_1"]
+
+ASV -- "kmer screen" --&gt; D1["db_seq_1"]
+ASV -- "kmer screen" --&gt; D2["db_seq_2"]
+ASV -- "kmer screen" --&gt; DM["..."]
+ASV -- "kmer screen" --&gt; DN1["db_seq_N-1"]
+ASV -- "kmer screen" --&gt; DN["db_seq_N"]
+
+D1 -. "filtered" .-&gt; FAIL["discarded"]
+DM -. "filtered" .-&gt; FAIL
+DN -. "filtered" .-&gt; FAIL
+
+D2 -- "alignment" --&gt; R2["db_seq_2 + metrics"]
+DN1 -- "alignment" --&gt; RN1["db_seq_N-1 + metrics"]
+</pre>
+
+<p>This is a very common approach in bioinformatics. Initially using a fast, approximate matching algorithm to filter out potential candidates followed by a more exact method enables accurate classification whilst reducing computational burden.</p>
+<h2 id="implementing-a-classifier"><a class="header" href="#implementing-a-classifier">Implementing A Classifier</a></h2>
+<p>This section won’t actually cover working Rust code that implements a classifier. We, however, have all components in place. The following crates can be used for inspiration:</p>
+<ul>
+<li><a href="https://github.com/OscarAspelin95/sintax_rs">sintax_rs</a> - Rust implementation of the SINTAX algorithm.</li>
+<li><a href="https://github.com/OscarAspelin95/bio_utils_rs">bio_utils_rs</a> - A collection of bioinformatic utilities.</li>
+<li><a href="https://docs.rs/simd-minimizers/latest/simd_minimizers/">simd_minimizers</a> - SIMD accelerated minimizer generation.</li>
+</ul>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="blueprints"><a class="header" href="#blueprints">Blueprints</a></h1>
 <p>This section acts as a collection of templates that can be used to build bioinformatic applications in Rust. Each chapter contains a brief introduction, followed by non-runnable template code that can be used as inspiration for building your own application.</p>
