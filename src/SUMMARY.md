@@ -111,6 +111,14 @@
 
 ---
 
+- [Assembly](./main/assembly/introduction.md)
+	- [The Problem](./main/assembly/the_problem.md)
+	- [Graphs](./main/assembly/graphs.md)
+		- [De Bruijn](./main/assembly/de_bruijn_graph.md)
+		- [Overlap](./main/assembly_overlap_graph.md)
+
+---
+
 - [Blueprints](./main/blueprints/introduction.md)
     - [Argument Parsing](./main/blueprints/argument_parsing.md)
     - [Commands](./main/blueprints/commands.md)
