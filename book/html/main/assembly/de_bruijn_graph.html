@@ -44,10 +44,10 @@
             const path_to_root = "../../";
             const default_light_theme = "coal";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../../searchindex-5ce089e1.js";
+            window.path_to_searchindex_js = "../../searchindex-88b5b64b.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../../toc-cfadb0c4.js"></script>
+        <script src="../../toc-53761665.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -186,17 +186,99 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h1 id="de-bruijn"><a class="header" href="#de-bruijn">De Bruijn</a></h1>
+                        <h1 id="de-bruijn-graph"><a class="header" href="#de-bruijn-graph">De Bruijn Graph</a></h1>
+<p>As we saw in the previous section, the overlap graph approach requires visiting every read (vertex) exactly once, which is an NP-hard problem. De Bruijn graphs reformulate the problem so that we visit every <em>edge</em> exactly once instead. This is an <strong>Eulerian path problem</strong>, which can be solved in linear time.</p>
+<p>The key shift: instead of whole reads being vertices, we’ll use <strong>kmers as edges</strong>.</p>
+<h2 id="construction"><a class="header" href="#construction">Construction</a></h2>
+<p>Given a read and a kmer size <code>k</code>, we first extract every kmer. Each kmer becomes an edge, with its (k-1)-mer prefix as the <code>source</code> node and its (k-1)-mer suffix as the <code>destination</code> node.</p>
+<p>For example, take the sequence <code>ATCGATCG</code> with <code>k = 3</code>. We can create a total of <code>8 - 3 + 1 = 6</code> kmers. For each kmer we also divide it into two overlapping prefix/suffix kmers of length <code>3 - 1 = 2</code>.</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>k-mer</th><th>source</th><th>destination</th></tr>
+</thead>
+<tbody>
+<tr><td><code>ATC</code></td><td><code>AT</code></td><td><code>TC</code></td></tr>
+<tr><td><code>TCG</code></td><td><code>TC</code></td><td><code>CG</code></td></tr>
+<tr><td><code>CGA</code></td><td><code>CG</code></td><td><code>GA</code></td></tr>
+<tr><td><code>GAT</code></td><td><code>GA</code></td><td><code>AT</code></td></tr>
+<tr><td><code>ATC</code></td><td><code>AT</code></td><td><code>TC</code></td></tr>
+<tr><td><code>TCG</code></td><td><code>TC</code></td><td><code>CG</code></td></tr>
+</tbody>
+</table>
+</div>
+<p>Note that <code>ATC</code> and <code>TCG</code> each appear twice because <code>ATCG</code> is repeated in the sequence. We’ll now construct a graph with the kmer as edge and the prefix/suffix as vertices. It’ll look something like:</p>
+<pre class="mermaid">graph LR
+AT --&gt;|ATC| TC
+TC --&gt;|TCG| CG
+CG --&gt;|CGA| GA
+GA --&gt;|GAT| AT
+AT --&gt;|ATC| TC
+TC --&gt;|TCG| CG
+</pre>
+
+<h2 id="eulerian-path"><a class="header" href="#eulerian-path">Eulerian Path</a></h2>
+<p>To reconstruct the genome we find a path that traverses every edge exactly once (defined as an Eulerian walk). In a directed multigraph, such a path mathematically exists only when:</p>
+<ul>
+<li>For all but two nodes: in-degree equals out-degree</li>
+<li>The <strong>start node</strong>: out-degree = in-degree + 1</li>
+<li>The <strong>end node</strong>: in-degree = out-degree + 1</li>
+</ul>
+<p>Checking degrees for our example, counting the parallel edges:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>node</th><th>in</th><th>out</th></tr>
+</thead>
+<tbody>
+<tr><td><code>AT</code></td><td>1</td><td>2</td></tr>
+<tr><td><code>TC</code></td><td>2</td><td>2</td></tr>
+<tr><td><code>CG</code></td><td>2</td><td>1</td></tr>
+<tr><td><code>GA</code></td><td>1</td><td>1</td></tr>
+</tbody>
+</table>
+</div>
+<p><code>AT</code> has one more out-edge than in-edges (out=2, in=1), so by the rule above it must be the start node. <code>CG</code> has one more in-edge than out-edges (in=2, out=1), making it the end node. <code>TC</code> and <code>GA</code> are balanced and can appear anywhere in between. A valid Eulerian path would be:</p>
+<p>\[ \texttt{AT} \to \texttt{TC} \to \texttt{CG} \to \texttt{GA} \to \texttt{AT} \to \texttt{TC} \to \texttt{CG} \]</p>
+<p>To reconstruct the sequence, take the first node and append the last character of each subsequent node:</p>
+<p>\[ \texttt{AT} + C + G + A + T + C + G = \texttt{ATCGATCG} \]</p>
+<p>Which is exactly our original sequence.</p>
+<h2 id="repeats"><a class="header" href="#repeats">Repeats</a></h2>
+<p>Repeats cause the same fundamental problem they did for the overlap graph. When the same sequence appears multiple times in the genome, its k-mers are identical regardless of which copy they came from. These k-mers collapse into the same edges, merging paths that should stay separate — creating a structure known as a <strong>bubble</strong>.</p>
+<p>Recall the inexact repeat from the previous section. Both copies share a long middle region but differ at their first and last characters (highlighted in red). The shared k-mers collapse into a single path through the graph, while the divergent ends branch off on either side:</p>
+<pre class="mermaid">graph LR
+    A["&lt;font color=red&gt;A&lt;/font&gt;TC"] --&gt; shared["shared&lt;br&gt;k-mers"]
+    T["&lt;font color=red&gt;T&lt;/font&gt;TC"] --&gt; shared
+
+    shared --&gt; TTTT["TTT&lt;font color=red&gt;T&lt;/font&gt;"]
+    shared --&gt; TTTG["TTT&lt;font color=red&gt;G&lt;/font&gt;"]
+</pre>
+
+<p>Just as before, both possible pairings produce valid Eulerian paths. Without prior knowledge of the genome, we cannot determine which entry connects to which exit.</p>
+<h2 id="choosing-kmer-size"><a class="header" href="#choosing-kmer-size">Choosing kmer size</a></h2>
+<p>The choice of kmer size has a large effect on the graph structure:</p>
+<ul>
+<li><strong>Small k</strong>: short k-mers occur frequently by chance, potentially creating a highly tangled graph.</li>
+<li><strong>Large k</strong>: long k-mers are more unique, but are more sensitive to sequencing errors.</li>
+</ul>
+<p>There is no universally optimal kmer size. In practice, assemblers like SPAdes construct graphs for multiple values of <code>k</code> simultaneously and combine the results.</p>
+<h2 id="de-bruijn-graphs-in-practice"><a class="header" href="#de-bruijn-graphs-in-practice">De Bruijn Graphs In Practice</a></h2>
+<p>For a real sample, the graph won’t look like the example above:</p>
+<ul>
+<li>It’ll be huge due to the number of generated kmers and their respective overlaps.</li>
+<li>Sequencing errors will cause lots of issues such as dead ends in the graph.</li>
+<li>We have not even considered ploidy yet. For haploid genomes such as bacteria, we don’t have to worry that much. However, for polyploid organisms this quickly becomes messy.</li>
+</ul>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../../main/assembly/graphs.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../../main/assembly/overlap.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
-                            <a rel="next prefetch" href="../../main/assembly_overlap_graph.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../../main/blueprints/introduction.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
@@ -206,11 +288,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../../main/assembly/graphs.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../../main/assembly/overlap.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
-                    <a rel="next prefetch" href="../../main/assembly_overlap_graph.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../../main/blueprints/introduction.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>

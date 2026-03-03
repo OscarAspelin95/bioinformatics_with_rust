@@ -44,10 +44,10 @@
             const path_to_root = "../../";
             const default_light_theme = "coal";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../../searchindex-5ce089e1.js";
+            window.path_to_searchindex_js = "../../searchindex-88b5b64b.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../../toc-cfadb0c4.js"></script>
+        <script src="../../toc-53761665.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -187,91 +187,32 @@
                 <div id="mdbook-content" class="content">
                     <main>
                         <h1 id="graphs"><a class="header" href="#graphs">Graphs</a></h1>
-<p>Fundamentally, a graph is a structure that shows relationship between objects. Since graph theory is an entire separate branch of mathematics, we’ll merely scratch the surface here.</p>
+<p>Fundamentally, a graph is a structure that shows relationships between objects. Since graph theory is an entire separate branch of mathematics, we’ll merely scratch the surface here.</p>
+<h2 id="introduction"><a class="header" href="#introduction">Introduction</a></h2>
 <p>Since we are dealing with bioinformatics, consider two sequences <code>S1</code> and <code>S2</code> that share some characteristic. We can visualize this relationship with a graph</p>
 <pre class="mermaid">graph LR
 
 S1["ATCGATCG"] --&gt; S2["ATCGTTTT"]
 </pre>
 
-<p>We’ll call <code>S1</code> and <code>S2</code> <em>vertices</em> and the connection between them an <em>edge</em>. The graph above is an example of a <em>directed acyclic</em> graph because:</p>
-<ul>
-<li>We have an explicit direction <code>ATCGATCG -&gt; ATCGTTTT</code>.</li>
-<li>There are no cycles or loops.</li>
-</ul>
-<p>Mathematically, we describe the graph as</p>
+<p>We’ll call <code>S1</code> and <code>S2</code> <em>vertices</em> and the connection between them an <em>edge</em>. Mathematically, we describe the graph as</p>
 <p>\[
 Graph = G(V, E)
 \]</p>
 <p>Where <em>G</em> signifies a graph and <em>V</em> and <em>E</em> are vertices and edges respectively.</p>
-<p>A natural question now arises, what does the edge mean? What characteristic is shared between the sequences that makes us draw an edge? In theory, I guess we could choose any arbitrary characteristic such as sequence length, GC content or entropy. In our example, <code>S1</code> and <code>S2</code> share a more important characteristic that is the key to genome assembly - they overlap. Specifically, the suffix of <code>S1</code> overlaps with the prefix of <code>S2</code>.</p>
-<pre class="mermaid">graph LR
-
-S1["&lt;font color=gray&gt;ATCG&lt;/font&gt;ATCG"] --&gt; S2["ATCG&lt;font color=gray&gt;TTTT&lt;/font&gt;"]
-</pre>
-
-<p>Stacking the sequences vertically further illustrates this</p>
-<pre><code>....ATCG
-    ATCG....
-</code></pre>
-<p>How come reads overlap to begin with?</p>
-<p>One possibility is that the reads originate from the same unique part of the genome. If we sequence deep enough, we <q>cover</q> the genome several times and the possibility for the relevant reads to overlap increases. These are the overlaps we are interested in.</p>
-<pre><code>		  ATCGATCG		 # S1
-			  ATCGTTTT		 # S2
-..........ATCGATCGTTTT.......... # True genome
-</code></pre>
-<p>Another possibility is that the genome contains an exact repeat. Imagine that the sequence <code>ATCGATCGTTTT</code> occurs two or more times somewhere in the genome. All of a sudden, we don’t know if <code>S1</code> and <code>S2</code> have a valid overlap, because we don’t know from which region <code>S1</code> and <code>S2</code> originate (might be from different repeats).</p>
-<pre><code>..........ATCGATCGTTTT..........ATCGATCGTTTT.......... # True genome
-</code></pre>
-<p>In our silly example above, it might not matter that much since both repeats are identical. However, this is practically extremely important for two reasons:</p>
+<h2 id="directed-graphs"><a class="header" href="#directed-graphs">Directed Graphs</a></h2>
+<p>The graph above is <em>directed</em> — the edge explicitly goes from <code>S1</code> to <code>S2</code>, not the other way around. In assembly, direction matters because we care about which sequence comes first (i.e., whose suffix overlaps whose prefix). All assembly graphs we’ll discuss are directed.</p>
+<h2 id="two-paradigms"><a class="header" href="#two-paradigms">Two Paradigms</a></h2>
+<p>There are two main graph-based approaches to genome assembly:</p>
 <ul>
-<li>The genome can contain in-exact repeats.</li>
-<li>The reads contain sequencing errors which means we cannot use exact overlaps.</li>
+<li>
+<p><strong>Overlap graphs</strong>: each <em>read</em> is a vertex, and edges connect reads that share a suffix/prefix overlap. Reconstructing the genome means finding a path that visits every vertex exactly once. This is called a <strong>Hamiltonian walk</strong> and is an NP-hard problem.</p>
+</li>
+<li>
+<p><strong>De Bruijn graphs</strong>: each <em>k-mer</em> is an edge, and the (k-1)-mer prefix and suffix of each k-mer are the vertices. Reconstructing the genome means finding a path that visits every edge exactly once. This is called a <strong>Eulerian walk</strong> and can be solved in linear time.</p>
+</li>
 </ul>
-<p>As an example, assume the true genome looks something like this</p>
-<pre>..........<span style="color:red">A</span>TCGATCGTTT<span style="color:red">T</span>..........<span style="color:red">T</span>TCGATCGTTT<span style="color:red">G</span>.......... # True genome</pre>
-
-<p>which contains two very similar but not identical sequences. We’ll consider this an in-exact repeat. The different sequences we’d get would look something like</p>
-<div class="table-wrapper">
-<table>
-<thead>
-<tr><th>repeat</th><th>S1</th><th>S2</th></tr>
-</thead>
-<tbody>
-<tr><td>[1] <font color="red">A</font>TCGATCGTTT<font color="red">T</font></td><td><font color="red">A</font>TCG<strong>ATCG</strong></td><td><strong>ATCG</strong>TTT<font color="red">T</font></td></tr>
-<tr><td>[2] <font color="red">T</font>TCGATCGTTT<font color="red">G</font></td><td><font color="red">T</font>TCG<strong>ATCG</strong></td><td><strong>ATCG</strong>TTT<font color="red">G</font></td></tr>
-</tbody>
-</table>
-</div>
-<p>Now we start to see the problem - <code>S1 [1]</code> and <code>S1 [2]</code> both overlap with <code>S2 [1]</code> and <code>S2 [2]</code>. We’d get a graph that looks something like this:</p>
-<pre class="mermaid">graph TD
-
-
-S11["&lt;font color=red&gt;A&lt;/font&gt;TCG**ATCG**"]
-S12["&lt;font color=red&gt;T&lt;/font&gt;TCG**ATCG**"]
-
-S21["**ATCG**TTT&lt;font color=red&gt;T&lt;/font&gt;"]
-S22["**ATCG**TTT&lt;font color=red&gt;G&lt;/font&gt;"]
-
-S11 --&gt; S21
-S11 --&gt; S22
-S12 --&gt; S21
-S12 --&gt; S22
-</pre>
-
-<p>How do we know what the true genome sequences are?</p>
-<div class="table-wrapper">
-<table>
-<thead>
-<tr><th>pairing</th><th>repeat 1</th><th>repeat 2</th></tr>
-</thead>
-<tbody>
-<tr><td>S1[1]→S2[1], S1[2]→S2[2]</td><td><font color="red">A</font>TCGATCGTTT<font color="red">T</font></td><td><font color="red">T</font>TCGATCGTTT<font color="red">G</font></td></tr>
-<tr><td>S1[1]→S2[2], S1[2]→S2[1]</td><td><font color="red">A</font>TCGATCGTTT<font color="red">G</font></td><td><font color="red">T</font>TCGATCGTTT<font color="red">T</font></td></tr>
-</tbody>
-</table>
-</div>
-<p>Again, remember that if we do a de-novo assembly we have <strong>no</strong> prior knowledge about what the genome looks like. We only have the graph to rely on.</p>
+<p>This difference — Hamiltonian (NP-hard) vs. Eulerian (linear time) — is the key reason why de Bruijn graphs became the dominant approach for short-read assembly. The next two sections cover each approach in detail.</p>
 
                     </main>
 
@@ -281,7 +222,7 @@ S12 --&gt; S22
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
-                            <a rel="next prefetch" href="../../main/assembly/de_bruijn_graph.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../../main/assembly/overlap.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
@@ -295,7 +236,7 @@ S12 --&gt; S22
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
-                    <a rel="next prefetch" href="../../main/assembly/de_bruijn_graph.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../../main/assembly/overlap.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>

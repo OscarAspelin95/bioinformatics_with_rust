@@ -27,6 +27,7 @@ This is not an official introduction to Rust or bioinformatics. It is a resource
 | **Aminoacids** | Translation, Accounting for Frames, Improving the Translation Algorithm |
 | **Amplicon** | In Silico PCR, Clustering, Classification |
 | **Increasing Performance** | Tips and tricks for maximizing runtime performance |
+| **Assembly** | Fundamentals of graphs, assemblers and methods |
 | **Blueprints** | Argument Parsing, Commands, DataFrames, Needletail, Bio |
 | **Resources** | Awesome Rust Crates, Awesome Bioinformatic Tools |
 

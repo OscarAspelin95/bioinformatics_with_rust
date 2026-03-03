@@ -44,10 +44,10 @@
             const path_to_root = "../../";
             const default_light_theme = "coal";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../../searchindex-5ce089e1.js";
+            window.path_to_searchindex_js = "../../searchindex-88b5b64b.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../../toc-cfadb0c4.js"></script>
+        <script src="../../toc-53761665.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -189,9 +189,9 @@
                         <h1 id="the-problem"><a class="header" href="#the-problem">The Problem</a></h1>
 <p>Before we start, we need to understand the actual problem that genome assembly is trying to solve. In the subsequent paragraphs, assume we are dealing with a whole genome sample of a single organism.</p>
 <h2 id="dna-is-fragile"><a class="header" href="#dna-is-fragile">DNA Is Fragile</a></h2>
-<p>Inside a cell, we have biological DNA usually in the form of chromosomes. The goal with DNA sequencing is to convert biological DNA into digital form. This means using some kind of instrument to read the chemical bases  <code>Adenine</code>, <code>Cytosine</code>, <code>Guanine</code> and <code>Thymine</code> and converting them to a digital representation <code>A</code>, <code>C</code>, <code>G</code> and <code>T</code>, which is stored in a data file.</p>
-<p>The problem with biological DNA is its fragility. It is very, very difficult to conserve the entire chromosome during the different laboratory steps needed for e.g., extraction and ligation. The result is a (still biological) fragmentation of the genome. In other words, we’ll have many, many fragments of the genome to deal with during sequencing. Not a single continuous chromosome. In addition, sequencing platforms such as Illumina can’t even theoretically sequence an entire chromosome in one singular read due to read length restrictions. This is partially the reason why your FASTQ file contains thousands or millions of shorter reads instead of a few, extremely long reads (although advances in Oxford Nanopore sequencing is approaching this).</p>
-<p>In practice, it a bit more nuanced. E.g., for bacteria we typically don’t just sequence DNA from a single cell since this would give us a maximum genome coverage of 1x. We sequence multiple cells from a given colony and treat all this DNA as the <q>genome</q>.</p>
+<p>Inside a cell, we have biological DNA usually in the form of chromosomes. The goal with DNA sequencing is to convert biological DNA into digital form. This means using some kind of instrument to read the chemical bases <code>Adenine</code>, <code>Cytosine</code>, <code>Guanine</code> and <code>Thymine</code> and converting them to a digital representation <code>A</code>, <code>C</code>, <code>G</code> and <code>T</code>, which is stored in a data file.</p>
+<p>The problem with biological DNA is its fragility. It is very, very difficult to conserve the entire chromosome during the different laboratory steps needed for e.g., extraction and ligation. The result is a (still biological) fragmentation of the genome. In other words, we’ll have many, many fragments of the genome to deal with during sequencing. Not a single continuous chromosome. In addition, sequencing platforms such as Illumina can’t even theoretically sequence an entire chromosome in one singular read due to read length restrictions. This is partially the reason why your FASTQ file contains thousands or millions of shorter reads instead of a few, extremely long reads (although advances in Oxford Nanopore sequencing are approaching this).</p>
+<p>In practice, it is a bit more nuanced. E.g., for bacteria we typically don’t just sequence DNA from a single cell since this would give us a maximum genome coverage of 1x. We sequence multiple cells from a given colony and treat all this DNA as the <q>genome</q>.</p>
 <pre class="mermaid">flowchart TD
     A["[biological]" Intact genome] --&gt;|Extraction &amp; ligation| B[Fragmentation]
     B -- "biological" --&gt; R1[Fragment 1]
@@ -214,7 +214,7 @@
 <p>We now have a FASTQ file with thousands or millions of fragments, which are digital representations of the original, biological genome. Now what?</p>
 <p>The goal with genome assembly is to computationally re-create the biological genome, using the digital fragments in the FASTQ file. There are several reasons why, such as:</p>
 <ul>
-<li>In bacteria, separating chromosomes from plasmids enable us to investigate plasmid-driven outbreaks.</li>
+<li>In bacteria, separating chromosomes from plasmids enables us to investigate plasmid-driven outbreaks.</li>
 <li>Accurately identifying genomic features (such as genes, mobile genetic elements, etc) and their relative distances to each other.</li>
 <li>Large scale characterization of an entire genome (e.g., the <a href="https://en.wikipedia.org/wiki/Human_Genome_Project">human genome project</a>).</li>
 <li>Comprehensive comparisons between genomes.</li>
