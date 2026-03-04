@@ -117,6 +117,7 @@
 	- [Graphs](./main/assembly/graphs.md)
 		- [Overlap](./main/assembly/overlap.md)
 		- [De Bruijn](./main/assembly/de_bruijn_graph.md)
+	- [Using Minimizers](./main/assembly/using_minimizers.md)
 
 ---
 
