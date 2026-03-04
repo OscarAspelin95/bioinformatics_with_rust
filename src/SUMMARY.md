@@ -57,6 +57,7 @@
     - [Manipulating](./main/nucleotides/manipulating.md)
         - [Compression](./main/nucleotides/compression.md)
         - [Reverse Complement](./main/nucleotides/reverse_complement.md)
+        - [Trimming](./main/nucleotides/trimming.md)
     - [Encoding](./main/nucleotides/nucleotide_encoding.md)
 
 ---
