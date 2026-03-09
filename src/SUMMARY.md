@@ -88,7 +88,7 @@
 - [Advanced Topics](./main/advanced_topics/kmers.md)
     - [SIMD Vectorization](./main/advanced_topics/simd_vectorization.md)
     - [Building a Reverse Index](./main/kmers/building_a_reverse_index.md)
-
+    - [Bit Shift Storage](./main/advanced_topics/bit_shift_storage.md)
 ---
 
 - [Increasing Performance](./main/increasing_performance/introduction.md)
@@ -118,6 +118,7 @@
 		- [Overlap](./main/assembly/overlap.md)
 		- [De Bruijn](./main/assembly/de_bruijn_graph.md)
 	- [Using Minimizers](./main/assembly/using_minimizers.md)
+	- [Building An Index](./main/assembly/building_an_index.md)
 
 ---
 
