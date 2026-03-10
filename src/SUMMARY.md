@@ -87,7 +87,7 @@
 
 - [Advanced Topics](./main/advanced_topics/kmers.md)
     - [SIMD Vectorization](./main/advanced_topics/simd_vectorization.md)
-    - [Building a Reverse Index](./main/kmers/building_a_reverse_index.md)
+    - [Building a Reverse Index](./main/advanced_topics/building_a_reverse_index.md)
     - [Bit Shift Storage](./main/advanced_topics/bit_shift_storage.md)
 ---
 
@@ -95,6 +95,7 @@
     - [Using Appropriate Data Structures](./main/increasing_performance/using_appropriate_data_structures.md)
     - [Favor Compile Time](./main/increasing_performance/favor_compile_time.md)
     - [Multithreading](./main/increasing_performance/multi_threading.md)
+    - [Optimizing Bottlenecks](./main/increasing_performance/optimizing_bottle_necks.md)
 
 ---
 

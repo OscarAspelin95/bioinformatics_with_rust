@@ -16,6 +16,7 @@ A `HashMap` is a very convenient way of storing data as key-value pairs. For exa
 Performance wise, a `HashMap` might provide some overhead due to:
 - The need of hashing the key.
 - Potential memory re-allocation when it reaches its maximum capacity.
+- Potential hash collisions (occurs relatively rarely).
 
 These are not really of concern in the example above because the sequence is short and we are only concerned with four unique keys. In other instances however, it might be more relevant.
 
@@ -58,7 +59,7 @@ fn main(){
 }
 ```
 
-It is not elegant to just skip unexpected characters. In practise, we could use a lookup table to map:
+It is not elegant to just skip unexpected characters. In practice, we could use a lookup table to map:
 - canonical bases `{A, C, G, T}` (and possibly `{a, c, g, t}`) to `{0, 1, 2, 3}`.
 - ambiguous bases `N` to `4`.
 - everything else to `5`.

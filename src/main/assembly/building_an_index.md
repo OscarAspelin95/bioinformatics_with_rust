@@ -1,10 +1,10 @@
 # Building An Index
 The next step would be to build some kind of index to keep track of all minimizers. Intuitively, one might think that the [reverse index](../kmers/building_a_reverse_index.md) works (with some tweaks). We have several issues we have to address for our reverse index approach:
-- We are using a `HashMap`, which won't scale well.
 - We only store *what* contig contains a minimizer, not *where* in the contig it originates from.
 - We have to consider that a minimizer can exist in multiple different locations in a single contig.
+- We are using a `HashMap`, which has both pros and cons. Even though `FxHasher` is incredibly fast, and the fact that a `HashMap` can access values in `O(1)` time, there is a risk of hash collisions when we have many, many different minimizers. We should consider another data structure, but still keep in mind that `HashMap`s are still very good. 
 
-The solution, inspired by tools such as [minimap2](https://github.com/lh3/minimap2) is to use three different arrays (`Vec` in our case).
+One solution, inspired by tools such as [minimap2](https://github.com/lh3/minimap2) is to use three different arrays (`Vec` in our case).
 - One to store deduplicated, sorted minimizers.
 - One to store offsets. This is used to identify which tuples `(contig_id, contig_location)` belong to a certain minimizer.
 - One to store the actual contig information. This will be a `Vec<(usize, usize)>`.
@@ -72,4 +72,11 @@ We check the next hash, which is `20`. The binary search returns index `0`. We n
 Now, we also see why we needed to add `6`, which is the total number of `(contig_id, contig_location)` tuples. If we were to query hash `90`, we'd get index `2` in `kmer_hashes`, which is the value `5` in offset. Without adding the total number of tuples, we would not be able to access `(offset[2], offset[3])` because `offset[2] = 5` is the last element in `offset`. Technically, we could do `entries[offset[2]..]`, but we'd need to know that `offset[2]` is the last element in `offset`.
 
 ## In Practice
-We've, in theory, built an index that is free of a `HashMap`. This is huge in terms of performance because we can skip any overhead related to hashing (even though [fxhash](https://docs.rs/fxhash/latest/fxhash/) is pretty fast) and use plain indexing. I honestly don't know of any Rust crate that implements this kind of index. There probably is one somewhere. Otherwise, we could build one ourselves using crates such as [bio](https://docs.rs/bio/latest/bio/) and [rayon](https://docs.rs/rayon/latest/rayon/).
+We've, in theory, built an index that is free of a `HashMap`. This has good potential in terms of performance because we can skip any overhead related to hashing and potential hash collisions. Instead, we index directly into contiguous memory segments which is incredibly fast. I honestly don't know of any Rust crate that implements this kind of index. There probably is one somewhere. Otherwise, we could build one ourselves using crates such as [bio](https://docs.rs/bio/latest/bio/) and [rayon](https://docs.rs/rayon/latest/rayon/).
+
+Are there any disadvantages to our `HashMap`-free approach? Sure there are:
+- We now have three different `Vec` instances to keep track of, instead of a single `HashMap`.
+- We have to manually deduplicate kmer hashes. In a `HashMap`, this is a bit easier.
+- The sorting step has a time complexity of `O(n log(n))`. We can, however, probably speed this up with Rayons `par_sort_by_key` function.
+
+Honestly, I'm not sure which method is best. It probably depends factors such as the number of minimizers, their distribution and also each methods own bottlenecks.

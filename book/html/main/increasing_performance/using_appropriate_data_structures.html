@@ -44,10 +44,10 @@
             const path_to_root = "../../";
             const default_light_theme = "coal";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../../searchindex-971ba804.js";
+            window.path_to_searchindex_js = "../../searchindex-245580a7.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../../toc-7b74947e.js"></script>
+        <script src="../../toc-9dbe6fef.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -201,6 +201,7 @@
 <ul>
 <li>The need of hashing the key.</li>
 <li>Potential memory re-allocation when it reaches its maximum capacity.</li>
+<li>Potential hash collisions (occurs relatively rarely).</li>
 </ul>
 <p>These are not really of concern in the example above because the sequence is short and we are only concerned with four unique keys. In other instances however, it might be more relevant.</p>
 <p>We can improve our <code>HashMap</code> by:</p>
@@ -238,7 +239,7 @@
 	
 	assert_eq!(counts, [2, 1, 1, 1]);
 }</code></pre>
-<p>It is not elegant to just skip unexpected characters. In practise, we could use a lookup table to map:</p>
+<p>It is not elegant to just skip unexpected characters. In practice, we could use a lookup table to map:</p>
 <ul>
 <li>canonical bases <code>{A, C, G, T}</code> (and possibly <code>{a, c, g, t}</code>) to <code>{0, 1, 2, 3}</code>.</li>
 <li>ambiguous bases <code>N</code> to <code>4</code>.</li>
