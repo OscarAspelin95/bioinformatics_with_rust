@@ -44,7 +44,7 @@
             const path_to_root = "../../";
             const default_light_theme = "coal";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../../searchindex-cbe7c910.js";
+            window.path_to_searchindex_js = "../../searchindex-13824efb.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../../toc-9dbe6fef.js"></script>
@@ -210,7 +210,7 @@
 <p><code>Phred Score</code> - Is a logarithmically encoded error probability, expressed as an integer. E.g., a phred score of <code>30</code> corresponds to an error probability of <code>0.001</code>. Why do we care about phred scores? We don’t want to include a bunch of floating point numbers in our FASTQ file because we’ll run into issues such as rounding, etc.</p>
 </li>
 <li>
-<p><code>ASCII Quality</code> - The ASCII character associated with the error probability, and hence, the phred score of a particular nucleotide. This is what is found in the actual FASTQ file. Why an ASCII character? Because they are fixed length characters (of length 1). This gives a very nice mapping of <code>one nucleotide</code> -&gt; <code>one ASCII</code> quality value. The conversion between <code>ASCII</code> and <code>phred score</code> uses a phred score offset. The reason is that the first 31 ASCII characters are non-printable and the 32nd is the space character <code>' '</code>. To account for the fact that our <q>zero</q> or lowest quality value starts as ASCII character 33, an offset of 33 is commonly used. E.g., the ASCII character <code>!</code> has value 33 equates to a phred score of <code>33 - 33 = 0</code>.</p>
+<p><code>ASCII Quality</code> - The ASCII character associated with the error probability, and hence, the phred score of a particular nucleotide. This is what is found in the actual FASTQ file. Why an ASCII character? Because they are fixed length characters (of length 1). This gives a very nice mapping of <code>one nucleotide</code> -&gt; <code>one ASCII</code> quality value. The conversion between <code>ASCII</code> and <code>phred score</code> uses a phred score offset. The reason is that the first 31 ASCII characters are non-printable and the 32nd is the space character <code>' '</code>. To account for the fact that our <q>zero</q> or lowest quality value starts as ASCII character 33, an offset of 33 is commonly used. E.g., the ASCII character <code>!</code> has value 33 and equates to a phred score of <code>33 - 33 = 0</code>.</p>
 </li>
 </ul>
 <p>Since ASCII, phred scores and error probabilities are related, we can convert between them.</p>
@@ -225,7 +225,7 @@
 <h3 id="error-probability"><a class="header" href="#error-probability">Error Probability</a></h3>
 <p>We won’t go through the details about the <a href="https://en.wikipedia.org/wiki/Phred_quality_score">maths</a> regarding phred scores and error probabilities, but the equality looks something like this:</p>
 <p>\[ error\_probability = 10^{-(ASCII - \text{phred_offset})/10} \]</p>
-<p>where</p>
+<p>where we define <code>phred_score</code> as</p>
 <p>\[ phred\_score = ASCII - \text{phred_offset} = ASCII - 33 \]</p>
 <p>We can now test this formula. Assume we’d want to convert <code>?</code> to an error probability using <code>phred_offset = 33</code>. Since the ASCII value of <code>?</code> is <code>63</code>, this would equate to:</p>
 <p>\[ error\_probability = 10^{-(63 - 33)/10}  = 10^{-3} = 0.001 \]</p>

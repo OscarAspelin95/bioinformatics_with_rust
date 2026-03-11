@@ -44,7 +44,7 @@
             const path_to_root = "../../";
             const default_light_theme = "coal";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../../searchindex-cbe7c910.js";
+            window.path_to_searchindex_js = "../../searchindex-13824efb.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../../toc-9dbe6fef.js"></script>
@@ -190,9 +190,9 @@
 <p>Typically, one associates entropy with the physical term for the measure of disorder. In bioinformatics, entropy can be used for quantifying the diversity or randomness of nucleotide sequences.</p>
 <p>Although there are different kinds of entropies, the <em>Shannon</em> entropy is probably the most famous one. It is defined by the following equation:</p>
 <p>\[ -\sum_{i=\{A,T,C,G\}} p_i \cdot log_2(p_i) \quad log_2(p_i) = \begin{cases} log_2(p_i) \; if \; p_i &gt; 0 \\ 0 \; if \; p_i \; == \; 0 \end{cases} \ \]</p>
-<p>That is, we calculate the proportions of each nucleotide {A, T, C, G} and calculate the sum of the probability times its logarithm. For example, consider the sequence “AAAAA”. Calculating the Shannon entropy would result in:</p>
+<p>That is, we calculate the proportions of each nucleotide {A, T, C, G} and calculate the sum of the probability times its logarithm. For example, consider the sequence <code>AAAAAAA</code>. Calculating the Shannon entropy would result in:</p>
 <p>\[ -(1 \cdot log_2(1) + 0 + 0 + 0) = 0\]</p>
-<p>Which tells us there is very little disorder or randomness. This makes sense, because we have the same nucleotide repeated five times. The code snippet below implements the Shannon entropy for a given nucleotide sequence. We’ll reuse the previous code for counting nucleotides (with a few modifications) and add the entropy calculation.</p>
+<p>Which tells us there is very little disorder or randomness. This makes sense, because we have the same nucleotide repeated seven times. The code snippet below implements the Shannon entropy for a given nucleotide sequence. We’ll reuse the previous code for counting nucleotides (with a few modifications) and add the entropy calculation.</p>
 <pre class="playground"><code class="language-rust edition2024"><span class="boring">use std::collections::HashMap;
 </span><span class="boring">
 </span><span class="boring">fn count_nucleotides(seq: &amp;[u8]) -&gt; HashMap&lt;u8, usize&gt; {

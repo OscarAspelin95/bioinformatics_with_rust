@@ -44,7 +44,7 @@
             const path_to_root = "../../";
             const default_light_theme = "coal";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../../searchindex-cbe7c910.js";
+            window.path_to_searchindex_js = "../../searchindex-13824efb.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../../toc-9dbe6fef.js"></script>
@@ -298,6 +298,23 @@ e2@{ animate: true, animation: slow}
 <h2 id="conclusions"><a class="header" href="#conclusions">Conclusions</a></h2>
 <p>There is a lot of stuff to consider when it comes to read trimming. For example, if we are dealing with Illumina data we have to keep track of the number of reads in <code>pe1</code> and <code>pe2</code>. If we discard a read in <code>pe1</code> we also want to remove it in <code>pe2</code>.</p>
 <p>For barcodes, we’d preferably want to enable approximate matches to account for sequencing errors (we could use the <code>Myers</code> module from the <code>bio</code> crate). <a href="https://cutadapt.readthedocs.io/en/stable/">Cutadapt</a> is otherwise a very viable cli tool for trimming barcodes.</p>
+<p>Finally, when trimming DNA we never want to trim the middle part of the read, only the start and/or end. This is obvious when visualizing the read alignment against a reference sequence. Trimming the middle of the read is only justified when also chopping the read into two new reads.</p>
+<pre class="mermaid">graph TD
+
+A["&lt;pre&gt;ATCGTTTT&lt;/pre&gt;&lt;pre&gt;||||||||&lt;/pre&gt;&lt;pre&gt;&lt;font color=gray&gt;ATCG&lt;/font&gt;ATCGTTTT&lt;font color=gray&gt;TTTT&lt;/font&gt;&lt;/pre&gt;"]
+
+A e1@-- "trim first and last 2 bases &lt;font color=green&gt;✔&lt;/font&gt;" --&gt; B["&lt;pre&gt;CGTT&lt;/pre&gt;&lt;pre&gt;||||&lt;/pre&gt;&lt;pre&gt;&lt;font color=gray&gt;ATCGAT&lt;/font&gt;CGTT&lt;font color=gray&gt;TTTTTT&lt;/font&gt;&lt;/pre&gt;"]
+
+A e2@-- "trim middle 2 bases &lt;font color=red&gt;✘&lt;/font&gt;" --&gt; D["&lt;pre&gt; ATC&lt;font color=red&gt;--&lt;/font&gt;TTT&lt;/pre&gt;&lt;pre&gt; |||  |||&lt;/pre&gt;&lt;pre&gt;&lt;font color=gray&gt;ATCG&lt;/font&gt;ATC&lt;font&gt;&lt;font color=gray&gt;GT&lt;/font&gt;&lt;/font&gt;TTT&lt;font color=gray&gt;TTT&lt;/font&gt;&lt;/pre&gt;"]
+
+A e3@-- "trim and chop &lt;font color=green&gt;✔&lt;/font&gt;" --&gt; F["&lt;pre&gt; ATC&lt;font color=red&gt;  &lt;/font&gt;TTT&lt;/pre&gt;&lt;pre&gt; |||  |||&lt;/pre&gt;&lt;pre&gt;&lt;font color=gray&gt;ATCG&lt;/font&gt;ATC&lt;font&gt;&lt;font color=gray&gt;GT&lt;/font&gt;&lt;/font&gt;TTT&lt;font color=gray&gt;TTT&lt;/font&gt;&lt;/pre&gt;"]
+
+e1@{ animate: true, animation: slow }
+e2@{ animate: true, animation: slow }
+e3@{ animate: true, animation: slow }
+</pre>
+
+<p>Clearly, trimming the middle of the read can cause issues if trying to re-align the read back a reference sequence. If using kmer coverage, this effect if even worse. There are some cases where one might want to trim the middle of the read, such as if identifying barcodes. In these instances, it makes sense to chop the read into two separate reads.</p>
 
                     </main>
 

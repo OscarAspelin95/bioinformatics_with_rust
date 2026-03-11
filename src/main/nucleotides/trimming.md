@@ -112,3 +112,23 @@ e2@{ animate: true, animation: slow}
 There is a lot of stuff to consider when it comes to read trimming. For example, if we are dealing with Illumina data we have to keep track of the number of reads in `pe1` and `pe2`. If we discard a read in `pe1` we also want to remove it in `pe2`.
 
 For barcodes, we'd preferably want to enable approximate matches to account for sequencing errors (we could use the `Myers` module from the `bio` crate). [Cutadapt](https://cutadapt.readthedocs.io/en/stable/) is otherwise a very viable cli tool for trimming barcodes.
+
+Finally, when trimming DNA we never want to trim the middle part of the read, only the start and/or end. This is obvious when visualizing the read alignment against a reference sequence. Trimming the middle of the read is only justified when also chopping the read into two new reads.
+
+```mermaid
+graph TD
+
+A["<pre>ATCGTTTT</pre><pre>||||||||</pre><pre><font color=gray>ATCG</font>ATCGTTTT<font color=gray>TTTT</font></pre>"]
+
+A e1@-- "trim first and last 2 bases <font color=green>✔</font>" --> B["<pre>CGTT</pre><pre>||||</pre><pre><font color=gray>ATCGAT</font>CGTT<font color=gray>TTTTTT</font></pre>"]
+
+A e2@-- "trim middle 2 bases <font color=red>✘</font>" --> D["<pre> ATC<font color=red>--</font>TTT</pre><pre> |||  |||</pre><pre><font color=gray>ATCG</font>ATC<font><font color=gray>GT</font></font>TTT<font color=gray>TTT</font></pre>"]
+
+A e3@-- "trim and chop <font color=green>✔</font>" --> F["<pre> ATC<font color=red>  </font>TTT</pre><pre> |||  |||</pre><pre><font color=gray>ATCG</font>ATC<font><font color=gray>GT</font></font>TTT<font color=gray>TTT</font></pre>"]
+
+e1@{ animate: true, animation: slow }
+e2@{ animate: true, animation: slow }
+e3@{ animate: true, animation: slow }
+```
+
+Clearly, trimming the middle of the read can cause issues if trying to re-align the read back a reference sequence. If using kmer coverage, this effect if even worse. There are some cases where one might want to trim the middle of the read, such as if identifying barcodes. In these instances, it makes sense to chop the read into two separate reads.

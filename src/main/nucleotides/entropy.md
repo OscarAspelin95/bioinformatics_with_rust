@@ -5,11 +5,11 @@ Although there are different kinds of entropies, the *Shannon* entropy is probab
 
 \\[ -\sum_{i=\\{A,T,C,G\\}} p_i \cdot log_2(p_i) \quad log_2(p_i) = \begin{cases} log_2(p_i) \\; if \\; p_i > 0 \\\\ 0 \\; if \\; p_i \\; == \\; 0 \end{cases} \\ \\]
 
-That is, we calculate the proportions of each nucleotide {A, T, C, G} and calculate the sum of the probability times its logarithm. For example, consider the sequence "AAAAA". Calculating the Shannon entropy would result in:
+That is, we calculate the proportions of each nucleotide {A, T, C, G} and calculate the sum of the probability times its logarithm. For example, consider the sequence `AAAAAAA`. Calculating the Shannon entropy would result in:
 
 \\[ -(1 \cdot log_2(1) + 0 + 0 + 0) = 0\\]
 
-Which tells us there is very little disorder or randomness. This makes sense, because we have the same nucleotide repeated five times. The code snippet below implements the Shannon entropy for a given nucleotide sequence. We'll reuse the previous code for counting nucleotides (with a few modifications) and add the entropy calculation.
+Which tells us there is very little disorder or randomness. This makes sense, because we have the same nucleotide repeated seven times. The code snippet below implements the Shannon entropy for a given nucleotide sequence. We'll reuse the previous code for counting nucleotides (with a few modifications) and add the entropy calculation.
 
 ```rust
 # use std::collections::HashMap;

@@ -35,9 +35,11 @@ fn main() {
 > [!TIP]
 > Binary encoding of nucleotides is covered in detail in the [Encoding](./nucleotide_encoding.md) chapter, and becomes essential for the [Kmer](../kmers/kmers.md) chapters where bit-shift operations enable extremely efficient kmer generation.
 
-In short, using 8-bits is overkill for representing only four nucleotides. Instead, we can map `A/C/G/T` to the corresponding binary representation:
+In short, using the ASCII values `65, 67, 71 and 84` for `A, C, G and T` respectively is a waste of space. Instead, we can map `A/C/G/T` to the corresponding lowest possible binary representation. Since we have four distinct nucleotides, this only requires 2 bits.
 
-- `A` => `00`
-- `C` => `01`
-- `G` => `10`
-- `T` => `11`
+- `A` => `0` = `b00`
+- `C` => `1` = `b01`
+- `G` => `2` = `b10`
+- `T` => `3` = `b11`
+
+As we'll see later on, the specific order `A, C, G, T` is not random. It is very deliberate and makes reverse complementing extremely convenient.

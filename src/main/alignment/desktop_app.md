@@ -8,7 +8,7 @@ What we need to build it from scratch:
 
 We won't go through the entire implementation from scratch. Instead:
 - Make sure you are using a Linux operating system.
-- Install the Dioxus cli version `v0.7.0-alpha.3`.
+- Install the Dioxus cli version `v0.7.2`.
 - Clone the [repository](https://github.com/OscarAspelin95/alignment_rs).
 - Enter the `alignment_rs` directory and run `dx serve`.
 - It might take several minutes to compile, but when done the desktop app should launch.

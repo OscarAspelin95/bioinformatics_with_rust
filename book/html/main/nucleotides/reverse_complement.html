@@ -44,7 +44,7 @@
             const path_to_root = "../../";
             const default_light_theme = "coal";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../../searchindex-cbe7c910.js";
+            window.path_to_searchindex_js = "../../searchindex-13824efb.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../../toc-9dbe6fef.js"></script>
@@ -195,7 +195,7 @@
 </ul>
 <p>5’ <code>[...]ACGAGCTTTGTGACGCGATGCGACGAGCTGCAGCGT[...]</code> 3’<br>
 3’ <code>[...]TGCTCGAAACACTGCGCTACGCTGCTCGACGTCGCA[...]</code> 5’</p>
-<p>Pretend this is a bacterial genome we want to sequence. Before sequencing, we need to separate the strands and break this molecule into smaller pieces. When doing this, we don’t know which pieces are from which strand.</p>
+<p>Pretend this is a bacterial genome we want to sequence. Before sequencing, we need to separate the strands and break this molecule into smaller pieces. When doing this, we don’t know which pieces are from which strand. This information is simply lost.</p>
 <p>When we want to align the pieces back to a reference sequence (which is defined in the 5’ to 3’ direction), we need to take both strands into consideration. Otherwise, we lose out on information. We do this by reverse complementing, in which we first reverse the sequence, and then replace each base with the corresponding matching base.</p>
 <pre class="playground"><code class="language-rust edition2024">fn reverse(nt: &amp;u8) -&gt; u8 {
     match nt {

@@ -10,7 +10,7 @@ DNA is (generally) double stranded, where bases are paired:
 3' `[...]TGCTCGAAACACTGCGCTACGCTGCTCGACGTCGCA[...]` 5'
 
 
-Pretend this is a bacterial genome we want to sequence. Before sequencing, we need to separate the strands and break this molecule into smaller pieces. When doing this, we don't know which pieces are from which strand.
+Pretend this is a bacterial genome we want to sequence. Before sequencing, we need to separate the strands and break this molecule into smaller pieces. When doing this, we don't know which pieces are from which strand. This information is simply lost.
 
 When we want to align the pieces back to a reference sequence (which is defined in the 5' to 3' direction), we need to take both strands into consideration. Otherwise, we lose out on information. We do this by reverse complementing, in which we first reverse the sequence, and then replace each base with the corresponding matching base.
 
