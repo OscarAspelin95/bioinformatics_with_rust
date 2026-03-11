@@ -1,15 +1,54 @@
 # About AI
-I want to start this section by stating that I strongly opted out of vibe-coding this project. If I did, I'd probably been done in a day or two. Instead, I chose the proper (and difficult) path of trying things out, failing, swearing, reading documentation and finally (somewhat) understanding. This probably means there are some text and code-snippets in this book that are not 100% correct. I'm okay with that, because it means there is room for improvement.
+I want to start this section by stating that I strongly opted out of vibe-coding this project. If I did, I'd probably have been done in a day or two. Instead, I chose the proper (and difficult) path of trying things out, failing, swearing, reading documentation and finally (somewhat) understanding. This probably means there are some text and code-snippets in this book that are not 100% correct. I'm okay with that, because it means there is room for improvement.
 
 With that said, I <em>have</em> used AI as a tool for the following:
 - Asking questions about my code to find potential bugs, weaknesses and edge cases.
-- Explain Rust concepts that I did not fully understand (such as declarative macros).
+- Explaining Rust concepts that I did not fully understand (such as declarative macros).
 - Asking for suggestions on performance improvements and implemented them only if I can understand why it makes the code more performant.
 - Sometimes to check for spelling and grammar as well as fixing logical and factual inconsistencies.
+- Chapter and text re-structuring, after which I've read through it.
 
 ## The Future of AI
-My take on AI is that we are in a hype at the moment. I think that the hype might not live up to the expectations. In recent time, we have seen multiple disappointing releases of models and agents from companies that drive the AI train.
+I don't think AI is inherently bad. It can be incredibly useful and I think developers are fools not to use AI in some shape or form. What I do think is that people are using it incorrectly. Large Language Models are good at language. AI agents are fast. We should use it for that. For example - writing text, documentation or summarizing large amounts of text. Personally, I've found AI incredibly useful in bioinformatics with respect to brainstorming ideas and explaining concepts. The problem is that we need to be aware of hallucinations. Because of this, we can't just use a <q>fire and forget</q> approach. It requires supervision, revision and fact checking.
 
-Ultimately, I don't think AI is bad. It can be incredibly useful. What I do think is that people are using it incorrectly. Multiple news channels have reported a MIT report, showing that 95% of organizations gain zero return using tools such as ChatGPT and Copilot. The report also shows that the primary productivity gain is on the individual level and not necessarily on large scale.
+With that said, here are some of AI's greatest hits:
 
-With that said, Claude is very, very good at writing lots of code.
+| one-liner | description | year | source(s) |
+|--|--|--|--|
+| GPT-5 launch bar charts | During the launch of OpenAIs GPT-5 model, more than one bar chart supposedly showing the improvements compared to older models contained non-sensical information. Things such as 52.8% is larger than 69.1%. | 2025 | [Reddit](https://www.reddit.com/r/dataisugly/comments/1mk5wdb/this_chart_from_openais_official_gpt5_release/), [Hackernews](https://news.ycombinator.com/item?id=44827179) |
+| Klarna re-hires after AI layoffs | After a round of customer service layoffs due to AI, Klarna decided to re-hire humans because apparently "customers like talking to humans". | 2025 | [Forbes](https://www.forbes.com/sites/quickerbettertech/2025/05/18/business-tech-news-klarna-reverses-on-ai-says-customers-like-talking-to-people/)|
+| MIT report shows AI falls short | An MIT report published in 2025 came to the conclusions that in 95% of the companies in the dataset, AI implementations fall short. | 2025 | [Fortune](https://fortune.com/2025/08/18/mit-report-95-percent-generative-ai-pilots-at-companies-failing-cfo/) |
+| AI slop lawyer | A lawyer supposedly submitted AI hallucinated cases to a court in Australia. | 2024 | [The Guardian](https://www.theguardian.com/law/2025/sep/03/lawyer-caught-using-ai-generated-false-citations-in-court-case-penalised-in-australian-first) |
+| McDonald's ends AI drive-thru | McDonald's terminated its AI drive-thru ordering pilot with IBM after viral failures—including orders for bizarre quantities of food—due to the AI struggling with accents and dialects. | 2024 | [CNN](https://www.cnn.com/2024/06/17/tech/mcdonalds-ai-drive-thru-program/index.html), [CNBC](https://www.cnbc.com/2024/06/17/mcdonalds-to-end-ibm-ai-drive-thru-test.html) |
+| Chicago Sun-Times fake book list | The Chicago Sun-Times published a summer reading list where 10 out of 15 recommended books were entirely AI-fabricated—fake titles attributed to real authors, including a Pulitzer Prize winner. | 2025 | [NPR](https://www.npr.org/2025/05/20/nx-s1-5405022/fake-summer-reading-list-ai), [404 Media](https://www.404media.co/chicago-sun-times-prints-ai-generated-summer-reading-list-with-books-that-dont-exist/) |
+| Grok's antisemitic rant | After an update instructing Grok to "not shy away from politically incorrect claims", the chatbot began posting antisemitic content. xAI later blamed an "unauthorized modification". | 2025 | [NPR](https://www.npr.org/2025/07/09/nx-s1-5462609/grok-elon-musk-antisemitic-racist-content), [Washington Post](https://www.washingtonpost.com/technology/2025/07/11/grok-ai-elon-musk-antisemitism/) |
+
+Lastly, I just want to share one encounter with Claude `Haiku` that is too good to leave out. This specific example is about Rust versions. To be clear, this was in **2026** and I used Rust version **2024**
+```
+[Me] Claude, investigate why my Rust code does not compile.
+
+[Claude]
+  This is invalid. The valid Rust editions are:
+  - 2015
+  - 2018
+  - 2021
+
+  The 2024 edition doesn't exist. This is likely causing rust-analyzer to fail parsing your project configuration, which
+  explains why:
+  
+[Me] *Calls out Claude, saying that version 2024 does exist*
+
+[Claude]
+You're absolutely right, and I apologize for the misinformation! The Rust 2024 edition was just stabilized with Rust 1.85.0 on February 20, 2025 — literally last week. My knowledge was out of date.
+
+[Me] *Calling out Claude on the fact that February 20, 2025 was not last week but rather almost a year ago*
+
+[Claude]
+You're right to call me out—I made a ridiculous error. Today is February 11, 2026. February 20, 2025 was almost a year ago, not last week!
+```
+
+Could I have used `Sonnet` or `Opus` instead? Yes. Could I have used something like RAG or an MCP server to improve accuracy? Also yes.
+
+Should I need to? Absolutely. Not.
+
+If we are to believe that AI soon will replace software engineers, these types of mistakes should not happen. Using AI should just work without requiring lots of specialized tools to <q>cover</q> for the model's shortcomings.
