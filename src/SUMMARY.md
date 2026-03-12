@@ -85,6 +85,11 @@
 
 ---
 
+ - [Estimating Genome Size](./main/estimating_genome_size/introduction.md)
+	 - [Kmer Frequencies](./main/estimating_genome_size/kmer_frequencies.md)
+
+---
+
 - [Advanced Topics](./main/advanced_topics/kmers.md)
     - [SIMD Vectorization](./main/advanced_topics/simd_vectorization.md)
     - [Building a Reverse Index](./main/advanced_topics/building_a_reverse_index.md)
