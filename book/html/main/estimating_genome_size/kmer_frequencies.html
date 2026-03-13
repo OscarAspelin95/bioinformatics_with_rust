@@ -44,10 +44,10 @@
             const path_to_root = "../../";
             const default_light_theme = "coal";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../../searchindex-15ac2e1d.js";
+            window.path_to_searchindex_js = "../../searchindex-7ad20ebf.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../../toc-112c2d49.js"></script>
+        <script src="../../toc-d37203b7.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -187,7 +187,7 @@
                 <div id="mdbook-content" class="content">
                     <main>
                         <h1 id="kmer-frequencies"><a class="header" href="#kmer-frequencies">Kmer Frequencies</a></h1>
-<p>We know what kmers are. We don’t really know that the term <q>frequencies</q> mean in this particular context. To clarify this, we need to understand what a <em>kmer histogram</em> is.</p>
+<p>We know what kmers are. We don’t really know what the term <q>frequencies</q> means in this particular context. To clarify this, we need to understand what a <em>kmer histogram</em> is.</p>
 <h2 id="kmer-histogram"><a class="header" href="#kmer-histogram">Kmer Histogram</a></h2>
 <p>A kmer histogram (also called a kmer frequency spectrum) is a clever, but initially rather confusing way of summarizing the kmer content. Usually, this is visualized as a histogram where:</p>
 <ul>
@@ -215,8 +215,7 @@
 [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, ...]		x-value (kmer_count)
 </code></pre>
 <p>Note that since we disregard <code>kmer_count = 0</code>, there is a -1 offset between the actual array index and the <code>kmer_count</code> values. E.g., <code>kmer_count = 1</code> is located at index <code>0</code>.</p>
-<pre class="mermaid">%%{init: {'xychart': {'height': 600}}}%%
-xychart-beta
+<pre class="mermaid">xychart-beta
 
 title "Kmer Frequencies"
 x-axis [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
@@ -224,6 +223,41 @@ y-axis "Frequency" 0 --&gt; 10
 bar [-1, -1, -1, -1, 1, -1, 1, -1, -1, 3, -1]
 </pre>
 
+<h2 id="the-reality"><a class="header" href="#the-reality">The Reality</a></h2>
+<p>The truth is, sequencing data is messy. We have to deal with things such as:</p>
+<ul>
+<li>Biases in GC rich regions.</li>
+<li>Sequencing errors.</li>
+<li>Genomic repeat regions.</li>
+<li>Poly ploidy.</li>
+</ul>
+<p>Because of this, the maths (I think) becomes a bit complex and I don’t fully understand every aspect of it. The good news is that there is a lot of good reading resources available:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>paper</th><th>year</th><th>link</th></tr>
+</thead>
+<tbody>
+<tr><td>Genomic mapping by fingerprinting random clones: A mathematical analysis</td><td>1988</td><td><a href="https://doi.org/10.1016/0888-7543(88)90007-9">doi</a></td></tr>
+<tr><td>GenomeScope: fast reference free genome profiling tool</td><td>2017</td><td><a href="https://doi.org/10.1093/bioinformatics/btx153">doi</a></td></tr>
+<tr><td>GenomeScope 2.0 and Smudgeplot for reference-free profiling of polyploid genomes</td><td>2020</td><td><a href="https://doi.org/10.1038/s41467-020-14998-3">doi</a></td></tr>
+<tr><td>A fast, lock-free approach for efficient parallel counting of occurrences of k-mers</td><td>2011</td><td><a href="https://doi.org/10.1093/bioinformatics/btr011">doi</a></td></tr>
+</tbody>
+</table>
+</div>
+<p>Anyways - it turns out that if we have a reasonable well-behaved sample with relatively low coverage of a haploid genome that contains some sequencing errors and negligible repeats, our kmer histogram could look something like the plot below. Keep in mind that this is not real data but rather just a made up example to illustrate the concepts.</p>
+<pre class="mermaid">xychart-beta
+
+title "Kmer Frequencies"
+x-axis [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+y-axis "Frequency" 0 --&gt; 100
+bar [90, 40, 1, 5, 10, 20, 30, 20, 10, 5, 1]
+</pre>
+
+<p>We see two distinct patterns - a <em>spike</em> for low kmer counts, followed by a <em>bell curve</em> like shape.</p>
+<p>The <em>spike</em> can be attributed to sequencing errors. If errors are random and relatively rare, the sample will contain lots of erroneous kmers of count 1. For example, assume the genome contains a completely unique region <code>...AAAAA...</code> that we sequence to a depth of 50x. If we count the kmers in the FASTQ file, we’d assume to find <code>AAAAA</code> 50 times if there are no sequencing errors. With random sequencing errors, we all of a sudden have one or a few erroneous kmers. Maybe one <code>AAAAT</code> (erroneous) and fourty-nine <code>AAAAA</code> (correct). If we extrapolate this concept across the entire genome, these one-count or low-count kmers accumulate into the spike we see in the histogram above. Can we attribute only sequencing errors to the spike? Absolutely not. For example, Illumina data is notoriously uneven coverage wise. If we, by chance, correctly sequence the region <code>...AAAAA...</code> with a coverage of 1, it will also end up in the spike.</p>
+<p>The <em>bell curve</em> can be attributed to the <a href="https://en.wikipedia.org/wiki/Central_limit_theorem">central limit theorem</a>. If we assume the sequencing process to be random and the sequencing reads to be independent, the coverage at any position in the genome follows the poisson distribution (see reading resources in the table above). The problem with kmers is that they are not independent, at least not within a single read. If we know the first kmer of length <code>k</code>, we know the <code>k-1</code> bases of the next kmer and so on. This non-independence, however, is <em>local</em> to the read. In the histogram, we aggregate kmers from many, many independent reads. The result is something that resembles the normal distribution. I’m sure there is some paper out there that has shown this to be mathematically valid.</p>
+<p>To refer back to the beginning - sequencing data is messy. We have more things to worry about in addition to sequencing errors. For this reason, many excellent tools for genome size estimation exist out there. For the sake of simplicity however, we’ll continue to assume that our data is relatively well behaved.</p>
 
                     </main>
 
@@ -233,7 +267,7 @@ bar [-1, -1, -1, -1, 1, -1, 1, -1, -1, 3, -1]
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
-                            <a rel="next prefetch" href="../../main/advanced_topics/kmers.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../../main/estimating_genome_size/deriving_the_genome_size.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
@@ -247,7 +281,7 @@ bar [-1, -1, -1, -1, 1, -1, 1, -1, -1, 3, -1]
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
-                    <a rel="next prefetch" href="../../main/advanced_topics/kmers.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../../main/estimating_genome_size/deriving_the_genome_size.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>

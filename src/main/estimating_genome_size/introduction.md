@@ -30,15 +30,15 @@ If we have too low coverage, there is not much we can do other than to re-sequen
 We can calculate the *downsampling factor* as:
 
 \\[ 
-	DS = \frac{G * \bar{C}}{N}
+	DS = \frac{G \times \bar{C}}{N}
 \\]
 
 Where `G` is the genome size, `C` is the target mean genome coverage and `N` is the number of bases.
 
-As an example - with a genome size of 4Mbp, a target coverage of 100x and 4 billion bases in the FASTQ file, we'd calculate the downsampling factors as
+As an example - with a genome size of 4Mbp, a target coverage of 100x and 4 billion bases in the FASTQ file, we'd calculate the downsampling factor as
 
-\\[ 
-	DS = \frac{4*{10^6} * 100}{4*10^9} = 10^2 * 10^{-3} = 0.1
+\\[
+	DS = \frac{4 \times 10^6 \times 100}{4 \times 10^9} = \frac{4 \times 10^8}{4 \times 10^9} = 10^{-1} = 0.1
 \\]
 
 And we'd need to remove 90% of all reads, quite a heavy downsample.

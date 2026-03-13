@@ -87,6 +87,7 @@
 
  - [Estimating Genome Size](./main/estimating_genome_size/introduction.md)
 	 - [Kmer Frequencies](./main/estimating_genome_size/kmer_frequencies.md)
+	 - [Deriving The Genome Size](./main/estimating_genome_size/deriving_the_genome_size.md)
 
 ---
 
