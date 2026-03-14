@@ -10,13 +10,13 @@ y-axis "Frequency" 0 --> 100
 bar [90, 40, 1, 5, 10, 20, 30, 20, 10, 5, 1]
 ```
 
-Ignoring the sequencing error peak, we see another peak at `(7, 30)`. Assuming a normal distribution, this would be the mean value *μ*. What does this actually mean? It means that a kmer count of `7` is the average kmer count in our sample. We now have an estimate of the *mean genome coverage*. Following the equation defined previously, we get
+Ignoring the sequencing error peak, we see another peak at `(7, 30)`. Assuming a roughly symmetric distribution, the peak is the mode, which approximates the mean *μ*. This means the most common kmer count is `7`, giving us an estimate of the *mean genome coverage* C̄ ≈ 7. Rearranging the equation defined previously, we get
 
 \\[
 	\bar{G} = \frac{N}{\bar{C}}
 \\]
 
-Where `G` is the estimated genome size, `C` is our estimated mean genome coverage and `N` is the number of bases. What we do know is the total number of kmers. For example, the point `(7, 30)` means we have `30` observations of distinct kmers that appear `7` times (a total of `210`). We can therefore derive the formula:
+Where `\bar{G}` is the estimated genome size, `\bar{C}` is our estimated mean genome coverage and `N` is the number of bases. What we do know is the total number of kmer observations. Note that this approximates the total number of bases when the read length is much greater than `k` — a reasonable assumption in practice. For example, the point `(7, 30)` means we have `30` observations of distinct kmers that appear `7` times (a total of `210`). We can therefore derive the formula:
 
 \\[
 	\bar{G} = \frac{\sum_{i=i_{min}}^{\infty} i \cdot f_i}{\bar{C}}

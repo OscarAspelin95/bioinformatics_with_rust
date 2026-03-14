@@ -44,10 +44,10 @@
             const path_to_root = "../../";
             const default_light_theme = "coal";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../../searchindex-7ad20ebf.js";
+            window.path_to_searchindex_js = "../../searchindex-934b43ea.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../../toc-d37203b7.js"></script>
+        <script src="../../toc-331d030b.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -255,7 +255,7 @@ bar [90, 40, 1, 5, 10, 20, 30, 20, 10, 5, 1]
 </pre>
 
 <p>We see two distinct patterns - a <em>spike</em> for low kmer counts, followed by a <em>bell curve</em> like shape.</p>
-<p>The <em>spike</em> can be attributed to sequencing errors. If errors are random and relatively rare, the sample will contain lots of erroneous kmers of count 1. For example, assume the genome contains a completely unique region <code>...AAAAA...</code> that we sequence to a depth of 50x. If we count the kmers in the FASTQ file, we’d assume to find <code>AAAAA</code> 50 times if there are no sequencing errors. With random sequencing errors, we all of a sudden have one or a few erroneous kmers. Maybe one <code>AAAAT</code> (erroneous) and fourty-nine <code>AAAAA</code> (correct). If we extrapolate this concept across the entire genome, these one-count or low-count kmers accumulate into the spike we see in the histogram above. Can we attribute only sequencing errors to the spike? Absolutely not. For example, Illumina data is notoriously uneven coverage wise. If we, by chance, correctly sequence the region <code>...AAAAA...</code> with a coverage of 1, it will also end up in the spike.</p>
+<p>The <em>spike</em> can be attributed to sequencing errors. If errors are random and relatively rare, the sample will contain lots of erroneous kmers of count 1. For example, assume the genome contains a completely unique region <code>...AAAAA...</code> that we sequence to a depth of 50x. If we count the kmers in the FASTQ file, we’d assume to find <code>AAAAA</code> 50 times if there are no sequencing errors. With random sequencing errors, we all of a sudden have one or a few erroneous kmers. Maybe one <code>AAAAT</code> (erroneous) and forty-nine <code>AAAAA</code> (correct). If we extrapolate this concept across the entire genome, these one-count or low-count kmers accumulate into the spike we see in the histogram above. Can we attribute only sequencing errors to the spike? Absolutely not. For example, Illumina data is notoriously uneven coverage wise. If we, by chance, correctly sequence the region <code>...AAAAA...</code> with a coverage of 1, it will also end up in the spike.</p>
 <p>The <em>bell curve</em> can be attributed to the <a href="https://en.wikipedia.org/wiki/Central_limit_theorem">central limit theorem</a>. If we assume the sequencing process to be random and the sequencing reads to be independent, the coverage at any position in the genome follows the poisson distribution (see reading resources in the table above). The problem with kmers is that they are not independent, at least not within a single read. If we know the first kmer of length <code>k</code>, we know the <code>k-1</code> bases of the next kmer and so on. This non-independence, however, is <em>local</em> to the read. In the histogram, we aggregate kmers from many, many independent reads. The result is something that resembles the normal distribution. I’m sure there is some paper out there that has shown this to be mathematically valid.</p>
 <p>To refer back to the beginning - sequencing data is messy. We have more things to worry about in addition to sequencing errors. For this reason, many excellent tools for genome size estimation exist out there. For the sake of simplicity however, we’ll continue to assume that our data is relatively well behaved.</p>
 

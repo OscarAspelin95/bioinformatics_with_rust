@@ -44,10 +44,10 @@
             const path_to_root = "../../";
             const default_light_theme = "coal";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../../searchindex-7ad20ebf.js";
+            window.path_to_searchindex_js = "../../searchindex-934b43ea.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../../toc-d37203b7.js"></script>
+        <script src="../../toc-331d030b.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -198,7 +198,7 @@
 <p>If the file contains 4 billion bases, we’d have a mean coverage of 1000x. This might be a bit too much because:</p>
 <ul>
 <li>Our genome assembly will take forever to run.</li>
-<li>At a certain point, higher coverage does not provide any new biological information but the sequencing errors start to stack up.</li>
+<li>At a certain point, higher coverage no longer provides new biological information — the returns diminish rapidly.</li>
 </ul>
 <p>We define the <em>mean genome coverage</em> as</p>
 <p>\[
@@ -216,7 +216,7 @@
 <p>\[
 DS = \frac{G \times \bar{C}}{N}
 \]</p>
-<p>Where <code>G</code> is the genome size, <code>C</code> is the target mean genome coverage and <code>N</code> is the number of bases.</p>
+<p>Where <code>G</code> is the genome size, <code>\bar{C}</code> is the target mean genome coverage and <code>N</code> is the number of bases.</p>
 <p>As an example - with a genome size of 4Mbp, a target coverage of 100x and 4 billion bases in the FASTQ file, we’d calculate the downsampling factor as</p>
 <p>\[
 DS = \frac{4 \times 10^6 \times 100}{4 \times 10^9} = \frac{4 \times 10^8}{4 \times 10^9} = 10^{-1} = 0.1

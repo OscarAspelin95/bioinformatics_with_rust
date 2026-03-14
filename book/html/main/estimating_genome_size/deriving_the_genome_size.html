@@ -44,10 +44,10 @@
             const path_to_root = "../../";
             const default_light_theme = "coal";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../../searchindex-7ad20ebf.js";
+            window.path_to_searchindex_js = "../../searchindex-934b43ea.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../../toc-d37203b7.js"></script>
+        <script src="../../toc-331d030b.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -196,11 +196,11 @@ y-axis "Frequency" 0 --&gt; 100
 bar [90, 40, 1, 5, 10, 20, 30, 20, 10, 5, 1]
 </pre>
 
-<p>Ignoring the sequencing error peak, we see another peak at <code>(7, 30)</code>. Assuming a normal distribution, this would be the mean value <em>μ</em>. What does this actually mean? It means that a kmer count of <code>7</code> is the average kmer count in our sample. We now have an estimate of the <em>mean genome coverage</em>. Following the equation defined previously, we get</p>
+<p>Ignoring the sequencing error peak, we see another peak at <code>(7, 30)</code>. Assuming a roughly symmetric distribution, the peak is the mode, which approximates the mean <em>μ</em>. This means the most common kmer count is <code>7</code>, giving us an estimate of the <em>mean genome coverage</em> C̄ ≈ 7. Rearranging the equation defined previously, we get</p>
 <p>\[
 \bar{G} = \frac{N}{\bar{C}}
 \]</p>
-<p>Where <code>G</code> is the estimated genome size, <code>C</code> is our estimated mean genome coverage and <code>N</code> is the number of bases. What we do know is the total number of kmers. For example, the point <code>(7, 30)</code> means we have <code>30</code> observations of distinct kmers that appear <code>7</code> times (a total of <code>210</code>). We can therefore derive the formula:</p>
+<p>Where <code>\bar{G}</code> is the estimated genome size, <code>\bar{C}</code> is our estimated mean genome coverage and <code>N</code> is the number of bases. What we do know is the total number of kmer observations. Note that this approximates the total number of bases when the read length is much greater than <code>k</code> — a reasonable assumption in practice. For example, the point <code>(7, 30)</code> means we have <code>30</code> observations of distinct kmers that appear <code>7</code> times (a total of <code>210</code>). We can therefore derive the formula:</p>
 <p>\[
 \bar{G} = \frac{\sum_{i=i_{min}}^{\infty} i \cdot f_i}{\bar{C}}
 \]</p>
@@ -219,7 +219,7 @@ bar [90, 40, 1, 5, 10, 20, 30, 20, 10, 5, 1]
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
-                            <a rel="next prefetch" href="../../main/advanced_topics/kmers.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../../main/estimating_genome_size/implementation.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
@@ -233,7 +233,7 @@ bar [90, 40, 1, 5, 10, 20, 30, 20, 10, 5, 1]
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
-                    <a rel="next prefetch" href="../../main/advanced_topics/kmers.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../../main/estimating_genome_size/implementation.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>

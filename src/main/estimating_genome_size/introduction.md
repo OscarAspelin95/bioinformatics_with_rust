@@ -10,7 +10,7 @@ If the file contains a total of 4 million bases, we'd have a mean genome coverag
 
 If the file contains 4 billion bases, we'd have a mean coverage of 1000x. This might be a bit too much because:
 - Our genome assembly will take forever to run.
-- At a certain point, higher coverage does not provide any new biological information but the sequencing errors start to stack up.
+- At a certain point, higher coverage no longer provides new biological information — the returns diminish rapidly.
 
 
 We define the *mean genome coverage* as
@@ -33,7 +33,7 @@ We can calculate the *downsampling factor* as:
 	DS = \frac{G \times \bar{C}}{N}
 \\]
 
-Where `G` is the genome size, `C` is the target mean genome coverage and `N` is the number of bases.
+Where `G` is the genome size, `\bar{C}` is the target mean genome coverage and `N` is the number of bases.
 
 As an example - with a genome size of 4Mbp, a target coverage of 100x and 4 billion bases in the FASTQ file, we'd calculate the downsampling factor as
 
