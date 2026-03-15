@@ -127,6 +127,7 @@
 		- [De Bruijn](./main/assembly/de_bruijn_graph.md)
 	- [Using Minimizers](./main/assembly/using_minimizers.md)
 	- [Building An Index](./main/assembly/building_an_index.md)
+	- [Finding Read Overlaps](./main/assembly/finding_read_overlaps.md)
 
 ---
 
