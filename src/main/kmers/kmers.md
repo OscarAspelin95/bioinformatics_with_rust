@@ -21,3 +21,9 @@ If we had `kmer_size = 2`, we use a sliding window of length 2. However, we cann
 We see a pattern here, which is that the number of kmers we can generate is the length of our sequence minus how many nucleotides in the end we are missing out on (which is one less than our kmer size).
 
 `num_kmers = len(sequence) - (kmer_size - 1) = len(sequence) - kmer_size + 1.`
+
+
+> [!NOTE]
+> It is very common (and good practice) to use an odd kmer size. The reason is that a kmer with an odd length cannot be its own reverse complement. Consider the kmer `AATT` (k=4). Its reverse complement is `AATT`. With an odd kmer length `AAGTT` (k=5) its reverse complement is `AACTT` which is different. The single, middle base in an odd length kmer can never have its reverse complement being itself.
+>
+> Why do we care about this? In some cases we probably don't, but it *can* help in situations where we strand information is important.
