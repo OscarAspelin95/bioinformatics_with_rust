@@ -37,9 +37,9 @@
 
 ---
 
-- [File Formats](./main/file_formats/introduction.md)
-    - [FASTA](./main/file_formats/fasta.md)
-    - [FASTQ](./main/file_formats/fastq.md)
+- [File Formats Part 1](./main/file_formats/pt1/introduction.md)
+    - [FASTA](./main/file_formats/pt1/fasta.md)
+    - [FASTQ](./main/file_formats/pt1/fastq.md)
 
 ---
 
@@ -130,7 +130,14 @@
 	- [Finding Read Overlaps](./main/assembly/finding_read_overlaps.md)
 	- [The Impact of Read Length](./main/assembly/the_impact_of_read_length.md)
 
+
 ---
+
+- [File Formats Part 2](./main/file_formats/pt2/introduction.md)
+    - [SAM](./main/file_formats/pt2/sam.md)
+    - [BAM](./main/file_formats/pt2/bam.md)
+
+--- 
 
 - [Blueprints](./main/blueprints/introduction.md)
     - [Argument Parsing](./main/blueprints/argument_parsing.md)
