@@ -44,7 +44,7 @@
             const path_to_root = "../";
             const default_light_theme = "coal";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-edf4db91.js";
+            window.path_to_searchindex_js = "../searchindex-176e0ed9.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-5d0330d5.js"></script>
@@ -192,12 +192,41 @@
 <ul>
 <li>Asking questions about my code to find potential bugs, weaknesses and edge cases.</li>
 <li>Explaining Rust concepts that I did not fully understand (such as declarative macros).</li>
-<li>Asking for suggestions on performance improvements and implemented them only if I can understand why it makes the code more performant.</li>
+<li>Asking for suggestions on performance improvements and implementing them only if I can understand why they make the code more performant.</li>
 <li>Sometimes to check for spelling and grammar as well as fixing logical and factual inconsistencies.</li>
 <li>Chapter and text re-structuring, after which I’ve read through it.</li>
 </ul>
+<h2 id="why-i-dislike-ai"><a class="header" href="#why-i-dislike-ai">Why I Dislike AI</a></h2>
+<p>I’ve found AI to be both profoundly impressive and profoundly stupid at the same time. This means it is unreliable and I don’t like that because it means I need to act as a babysitter.</p>
+<p>In addition, I want to understand my codebase. I don’t if AI writes it for me. What happens when there is a bug that the AI cannot fix? I have to fix it <strong>after</strong> spending lots of time first understanding my own codebase. If that is the case, I might as well just have written the code myself from the start. AI cannot fix every bug in every system. It is enough with one bug in a relatively complex system for an engineer having to spend hours or days to understand the codebase. Is this really what we want?</p>
+<p>It does not necessarily make me smarter. Imagine if I’d vibe coded this entire book, with perfect paragraphs explaining a wide variety of bioinformatic concepts. That does not make me good at bioinformatics, it makes me good at AI prompting. I want to take pride in my work, and refine it when I find errors. I’ve spent countless hours reading and understanding different concepts, sometimes whilst writing the chapters. Writing and updating text goes in parallel with increased knowledge.</p>
 <h2 id="the-future-of-ai"><a class="header" href="#the-future-of-ai">The Future of AI</a></h2>
 <p>I don’t think AI is inherently bad. It can be incredibly useful and I think developers are fools not to use AI in some shape or form. What I do think is that people are using it incorrectly. Large Language Models are good at language. AI agents are fast. We should use it for that. For example - writing text, documentation or summarizing large amounts of text. Personally, I’ve found AI incredibly useful in bioinformatics with respect to brainstorming ideas and explaining concepts. The problem is that we need to be aware of hallucinations. Because of this, we can’t just use a <q>fire and forget</q> approach. It requires supervision, revision and fact checking.</p>
+<p>Regarding the future, my prediction is that we’ll see an AI recession. I’m not sure how big, but I think it is coming. The reasons are:</p>
+<ul>
+<li>
+<p>Software developers like to write code. Personally, I love the feeling of taking pride in the code I’ve written myself. Even better when fixing bugs and improving performance. This confirms that I <em>understand</em> what I’m doing.</p>
+</li>
+<li>
+<p>The idea that <q>AI will replace junior engineers</q> does not make sense. Exactly from where are we getting the new senior engineers? After all, we need some engineer to babysit AI. In addition, software <em>engineering</em> is not about just writing code. It is about systems design, testing, human interaction and a lot more. The only way this makes sense is betting on AI becoming so good that ultimately, we don’t need <em>any</em> software engineers anymore. You think this is the case?</p>
+</li>
+<li>
+<p>If AI takes over, who is going to sign off on the code quality and functionality? With the current state of AI, if you are a manager - would you honestly take responsibility for the quality of AI generated code? I sure would not and I’m pretty sure senior engineers wouldn’t either.</p>
+</li>
+<li>
+<p>LLM based AI is not <q>smart</q> and does not <q>think</q>. It does not understand in the way humans do. What it does is predicting the next token in a sequence. The token concept is also not waterproof, which is why LLMs have issues with basic prompts such as <q>how many Rs are in the word strawberry?</q> and <q>is the word oreo a palindrome?</q>. Another aspect is that it usually goes from A to B without considering the way there. I’ve seen countless posts of AI <q>fixing</q> code by modifying or completely removing tests. Is this what we call intelligence? Really?</p>
+</li>
+<li>
+<p>The amount of money that is poured into AI is <strong>insane</strong>. We are talking hundreds of billions of dollars. Not to mention the electricity required to power the data centers. I’m not necessarily saying this is a bad thing, but it is insane. With these amounts of resources, we expect AI to carry its weight. Is this really what we have seen?</p>
+</li>
+<li>
+<p>I would not trust the visionary statements by people such as Elon Musk, Sam Altman and Dario Amodei. Are they smart people? Yes. Do they have incentives to make AI appear more capable than it actually is in practice? Also yes, because they are dependent on shareholders and investors. Personally, I’d listen to people who don’t have a financial motive to promote AI.</p>
+</li>
+<li>
+<p>Commercial AI is probably over-valued. I would not under-estimate the open source community and its capabilities.</p>
+</li>
+</ul>
+<h2 id="ais-greatest-hits"><a class="header" href="#ais-greatest-hits">AI’s Greatest Hits</a></h2>
 <p>With that said, here are some of AI’s greatest hits:</p>
 <div class="table-wrapper">
 <table>
@@ -205,7 +234,7 @@
 <tr><th>one-liner</th><th>description</th><th>year</th><th>source(s)</th></tr>
 </thead>
 <tbody>
-<tr><td>GPT-5 launch bar charts</td><td>During the launch of OpenAIs GPT-5 model, more than one bar chart supposedly showing the improvements compared to older models contained non-sensical information. Things such as 52.8% is larger than 69.1%.</td><td>2025</td><td><a href="https://www.reddit.com/r/dataisugly/comments/1mk5wdb/this_chart_from_openais_official_gpt5_release/">Reddit</a>, <a href="https://news.ycombinator.com/item?id=44827179">Hackernews</a></td></tr>
+<tr><td>GPT-5 launch bar charts</td><td>During the launch of OpenAI’s GPT-5 model, more than one bar chart supposedly showing the improvements compared to older models contained non-sensical information. Things such as 52.8% is larger than 69.1%.</td><td>2025</td><td><a href="https://www.reddit.com/r/dataisugly/comments/1mk5wdb/this_chart_from_openais_official_gpt5_release/">Reddit</a>, <a href="https://news.ycombinator.com/item?id=44827179">Hackernews</a></td></tr>
 <tr><td>Klarna re-hires after AI layoffs</td><td>After a round of customer service layoffs due to AI, Klarna decided to re-hire humans because apparently “customers like talking to humans”.</td><td>2025</td><td><a href="https://www.forbes.com/sites/quickerbettertech/2025/05/18/business-tech-news-klarna-reverses-on-ai-says-customers-like-talking-to-people/">Forbes</a></td></tr>
 <tr><td>MIT report shows AI falls short</td><td>An MIT report published in 2025 came to the conclusions that in 95% of the companies in the dataset, AI implementations fall short.</td><td>2025</td><td><a href="https://fortune.com/2025/08/18/mit-report-95-percent-generative-ai-pilots-at-companies-failing-cfo/">Fortune</a></td></tr>
 <tr><td>AI slop lawyer</td><td>A lawyer supposedly submitted AI hallucinated cases to a court in Australia.</td><td>2024</td><td><a href="https://www.theguardian.com/law/2025/sep/03/lawyer-caught-using-ai-generated-false-citations-in-court-case-penalised-in-australian-first">The Guardian</a></td></tr>
