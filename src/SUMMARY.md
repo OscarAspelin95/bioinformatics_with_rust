@@ -134,7 +134,9 @@
 ---
 
 - [File Formats Part 2](./main/file_formats/pt2/introduction.md)
-    - [SAM](./main/file_formats/pt2/sam.md)
+    - [SAM](./main/file_formats/pt2/sam/introduction.md)
+	    - [Format](./main/file_formats/pt2/sam/format.md)
+	    - [Code Implementation](./main/file_formats/pt2/sam/code_implementation.md)
     - [BAM](./main/file_formats/pt2/bam.md)
 
 --- 
