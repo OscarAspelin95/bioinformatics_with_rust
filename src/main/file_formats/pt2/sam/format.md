@@ -88,13 +88,13 @@ style F fill:#888,color:#fff
 The alignment flag is a single value, but encodes multiple pieces of information. The idea behind it is rather brilliant and requires a bit of explanation. There are a total of 12 <q>properties</q> that we can encode, such as `primary alignment`, `supplementary alignment`, `unmapped`, etc. We don't want 12 different fields for this, so everything is encoded into a single flag. Imagine we have 12 different bits, each of which can have a value of 0 or 1 indicating a property that is either false or true:
 
 <pre>
-	0b000000000000	# 1
-	0b000000000001	# 2
-	0b000000000010	# 3
-	0b000000000100 	# 4
-	0b000000001000  # 5
+	0b000000000001	# 1
+	0b000000000010	# 2
+	0b000000000100	# 3
+	0b000000001000	# 4
+	0b000000010000	# 5
 	...
-	0b100000000000 # 12
+	0b100000000000	# 12
 </pre>
 
 For example, `0b000000000001` means that only property 1 is valid (which happens to mean that the read is paired).
@@ -155,8 +155,8 @@ So far, we've talked about alignment characteristics but not really about the al
 |Operator| Description| Note |
 | :--- | :--- | :--- |
 |M| Alignment match| Is either a sequence match or mismatch, but does not specify which.|
-|I| Reference insertion| An insertion into the reference (read deletion).|
-|D|Reference deletion| A deletion into the reference (read insertion).|
+|I| Insertion with respect to the reference| Read insertion.|
+|D|Deletion with respect from the reference| Read deletion.|
 |N|Reference region skipped||
 |S| Soft clipping||
 |H| Hard clipping||
@@ -202,24 +202,26 @@ C -- "read perspective" --> D["<pre>ATCGATCG<br>ATCG<font color=red>-</font>TCG<
 C -- "reference perspective"--> E["<pre>ATCG<font color=red>A</font>TCG<br>ATCG TCG</pre>"]
 ```
 
-Anyway, let's go back to the CIGAR string. The entire string could look something like this `5M1I2D2M`, which tells us exactly how many of each operation we have. The alignment, based on the CIGAR string could look something like:
+The process of inserting these spaces in order to <q>normalize</q> the sequences with respect to the alignment is called *padding*. E.g., `ATCG TCG` is the padded version of `ATCGTCG`.
+
+Anyway, let's go back to the CIGAR string. The entire string could look something like this `5M1D2I2M`, which tells us exactly how many of each operation we have. The alignment, based on the CIGAR string could look something like:
 
 <pre>
-ATA<font color=red>T</font>C<font color=red>-</font>TTAG
+ATA<font color=red>T</font>C<font color=red>-</font>TTAG	read
 |||*|   ||
-ATAGCG<font color=red>-</font><font color=red>-</font>AG
+ATAGCG<font color=red>-</font><font color=red>-</font>AG	reference
 </pre>
 
-We can break down the CIGAR string into `5M`, `1I`, `2D` and `2M`, which tells us that:
+We can break down the CIGAR string into `5M`, `1D`, `2I` and `2M`, which tells us that:
 * We have 5 alignment matches (but the bases might not agree).
-* We have 1 insertion in the reference (deletion in the read).
-* We have 2 deletions in the reference (insertions in the read).
-* We have 2 alignment matches (but the bases might not agree).
+* We have 1 deletion in the read (the read has a gap where the reference has `G`).
+* We have 2 insertions in the read (the read has `TT` where the reference has gaps).
+* We have 2 alignment matches (but the bases might not agree, in this case they do).
 
 <pre>
 ATA<font color=red>T</font>C	<font color=red>-</font>	TT	AG	read
 |||*|   		||
 ATAGC	G	<font color=red>-</font><font color=red>-</font>	AG	reference
 
-5M	1I	2D	2M
+5M	1D	2I	2M
 </pre>

@@ -136,6 +136,8 @@ For this code implementation, we'll just create a basic SAM parser from some moc
 // [...]
 
 fn main() -> Result<(), SamError> {
+
+	// Note that we use mock data here. The values don't make much sense.
     let sam = "\
 read_1\t0\tchr1\t100\t60\t5M1D3M\t*\t0\t0\tACGTN\tIIIII\n\
 read_2\t16\tchr1\t200\t30\t4M2I2M\t*\t0\t0\tTGCAT\tHHHHH";

@@ -71,7 +71,7 @@
             const path_to_root = "";
             const default_light_theme = "coal";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-f378ad6c.js";
+            window.path_to_searchindex_js = "searchindex-aa5caefd.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-2336d393.js"></script>
@@ -6213,13 +6213,13 @@ style F fill:#888,color:#fff
 
 <p>The alignment flag is a single value, but encodes multiple pieces of information. The idea behind it is rather brilliant and requires a bit of explanation. There are a total of 12 <q>properties</q> that we can encode, such as <code>primary alignment</code>, <code>supplementary alignment</code>, <code>unmapped</code>, etc. We don’t want 12 different fields for this, so everything is encoded into a single flag. Imagine we have 12 different bits, each of which can have a value of 0 or 1 indicating a property that is either false or true:</p>
 <pre>
-	0b000000000000	# 1
-	0b000000000001	# 2
-	0b000000000010	# 3
-	0b000000000100 	# 4
-	0b000000001000  # 5
+	0b000000000001	# 1
+	0b000000000010	# 2
+	0b000000000100	# 3
+	0b000000001000	# 4
+	0b000000010000	# 5
 	...
-	0b100000000000 # 12
+	0b100000000000	# 12
 </pre>
 
 <p>For example, <code>0b000000000001</code> means that only property 1 is valid (which happens to mean that the read is paired).</p>
@@ -6280,8 +6280,8 @@ style C fill:#2a2,color:#fff
 </thead>
 <tbody>
 <tr><td style="text-align: left">M</td><td style="text-align: left">Alignment match</td><td style="text-align: left">Is either a sequence match or mismatch, but does not specify which.</td></tr>
-<tr><td style="text-align: left">I</td><td style="text-align: left">Reference insertion</td><td style="text-align: left">An insertion into the reference (read deletion).</td></tr>
-<tr><td style="text-align: left">D</td><td style="text-align: left">Reference deletion</td><td style="text-align: left">A deletion into the reference (read insertion).</td></tr>
+<tr><td style="text-align: left">I</td><td style="text-align: left">Insertion with respect to the reference</td><td style="text-align: left">Read insertion.</td></tr>
+<tr><td style="text-align: left">D</td><td style="text-align: left">Deletion with respect from the reference</td><td style="text-align: left">Read deletion.</td></tr>
 <tr><td style="text-align: left">N</td><td style="text-align: left">Reference region skipped</td><td style="text-align: left"></td></tr>
 <tr><td style="text-align: left">S</td><td style="text-align: left">Soft clipping</td><td style="text-align: left"></td></tr>
 <tr><td style="text-align: left">H</td><td style="text-align: left">Hard clipping</td><td style="text-align: left"></td></tr>
@@ -6324,26 +6324,27 @@ C -- "read perspective" --&gt; D["&lt;pre&gt;ATCGATCG&lt;br&gt;ATCG&lt;font colo
 C -- "reference perspective"--&gt; E["&lt;pre&gt;ATCG&lt;font color=red&gt;A&lt;/font&gt;TCG&lt;br&gt;ATCG TCG&lt;/pre&gt;"]
 </pre>
 
-<p>Anyway, let’s go back to the CIGAR string. The entire string could look something like this <code>5M1I2D2M</code>, which tells us exactly how many of each operation we have. The alignment, based on the CIGAR string could look something like:</p>
+<p>The process of inserting these spaces in order to <q>normalize</q> the sequences with respect to the alignment is called <em>padding</em>. E.g., <code>ATCG TCG</code> is the padded version of <code>ATCGTCG</code>.</p>
+<p>Anyway, let’s go back to the CIGAR string. The entire string could look something like this <code>5M1D2I2M</code>, which tells us exactly how many of each operation we have. The alignment, based on the CIGAR string could look something like:</p>
 <pre>
-ATA<font color="red">T</font>C<font color="red">-</font>TTAG
+ATA<font color="red">T</font>C<font color="red">-</font>TTAG	read
 |||*|   ||
-ATAGCG<font color="red">-</font><font color="red">-</font>AG
+ATAGCG<font color="red">-</font><font color="red">-</font>AG	reference
 </pre>
 
-<p>We can break down the CIGAR string into <code>5M</code>, <code>1I</code>, <code>2D</code> and <code>2M</code>, which tells us that:</p>
+<p>We can break down the CIGAR string into <code>5M</code>, <code>1D</code>, <code>2I</code> and <code>2M</code>, which tells us that:</p>
 <ul>
 <li>We have 5 alignment matches (but the bases might not agree).</li>
-<li>We have 1 insertion in the reference (deletion in the read).</li>
-<li>We have 2 deletions in the reference (insertions in the read).</li>
-<li>We have 2 alignment matches (but the bases might not agree).</li>
+<li>We have 1 deletion in the read (the read has a gap where the reference has <code>G</code>).</li>
+<li>We have 2 insertions in the read (the read has <code>TT</code> where the reference has gaps).</li>
+<li>We have 2 alignment matches (but the bases might not agree, in this case they do).</li>
 </ul>
 <pre>
 ATA<font color="red">T</font>C	<font color="red">-</font>	TT	AG	read
 |||*|   		||
 ATAGC	G	<font color="red">-</font><font color="red">-</font>	AG	reference
 
-5M	1I	2D	2M
+5M	1D	2I	2M
 </pre>
 
 <div style="break-before: page; page-break-before: always;"></div>
@@ -6483,6 +6484,8 @@ ATAGC	G	<font color="red">-</font><font color="red">-</font>	AG	reference
 </span>// [...]
 
 fn main() -&gt; Result&lt;(), SamError&gt; {
+
+	// Note that we use mock data here. The values don't make much sense.
     let sam = "\
 read_1\t0\tchr1\t100\t60\t5M1D3M\t*\t0\t0\tACGTN\tIIIII\n\
 read_2\t16\tchr1\t200\t30\t4M2I2M\t*\t0\t0\tTGCAT\tHHHHH";
