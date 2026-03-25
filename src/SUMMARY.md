@@ -143,6 +143,10 @@
 		- [Code Implementation](./main/file_formats/pt2/vcf/code_implementation.md) 
 
 --- 
+- [Data Structures](./main/data_structures/introduction.md)
+	- [Bloom Filter](./main/data_structures/bloom_filter.md)
+
+--- 
 
 - [Blueprints](./main/blueprints/introduction.md)
     - [Argument Parsing](./main/blueprints/argument_parsing.md)
