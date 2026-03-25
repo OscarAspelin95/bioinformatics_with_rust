@@ -138,6 +138,8 @@
 	    - [Format](./main/file_formats/pt2/sam/format.md)
 	    - [Code Implementation](./main/file_formats/pt2/sam/code_implementation.md)
     - [BAM](./main/file_formats/pt2/bam.md)
+    - [VCF](./main/file_formats/pt2/vcf/introduction.md)
+	    - [Format](./main/file_formats/pt2/vcf/format.md)
 
 --- 
 

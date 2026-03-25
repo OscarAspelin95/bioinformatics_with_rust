@@ -44,10 +44,10 @@
             const path_to_root = "../../../";
             const default_light_theme = "coal";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../../../searchindex-aa5caefd.js";
+            window.path_to_searchindex_js = "../../../searchindex-ce1aaf92.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../../../toc-2336d393.js"></script>
+        <script src="../../../toc-ac5785e3.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -188,7 +188,7 @@
                     <main>
                         <h1 id="bam"><a class="header" href="#bam">BAM</a></h1>
 <p>The binary format of SAM is called BAM and is used to save diskspace. The SAM format contains a lot of information and the files quickly become very large. Because of this, it makes sense to use BAM format when possible.</p>
-<p>The conversion between SAM and BAM is easily carried out with <code>samtools</code>:</p>
+<p>The conversion between SAM and BAM is easily carried out with <a href="https://github.com/samtools/samtools">samtools</a>:</p>
 <pre><code class="language-bash">samtools view -o aln.bam aln.sam # SAM -&gt; BAM
 samtools view -o aln.sam aln.bam # BAM -&gt; SAM
 </code></pre>
@@ -197,6 +197,7 @@ samtools view -o aln.sam aln.bam # BAM -&gt; SAM
 samtools index aln.sorted.bam
 </code></pre>
 <p>The index is stored in a separate <code>.bai</code> file alongside the BAM. Note that most downstream tools (e.g. variant callers, genome browsers) expect a sorted, indexed BAM.</p>
+<p>As a general rule of thumb - try avoiding using plain SAM files unless absolutely necessary.</p>
 
                     </main>
 
@@ -206,7 +207,7 @@ samtools index aln.sorted.bam
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
-                            <a rel="next prefetch" href="../../../main/blueprints/introduction.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../../../main/file_formats/pt2/vcf/introduction.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
@@ -220,7 +221,7 @@ samtools index aln.sorted.bam
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
-                    <a rel="next prefetch" href="../../../main/blueprints/introduction.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../../../main/file_formats/pt2/vcf/introduction.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>

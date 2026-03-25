@@ -1,7 +1,7 @@
 # BAM
 The binary format of SAM is called BAM and is used to save diskspace. The SAM format contains a lot of information and the files quickly become very large. Because of this, it makes sense to use BAM format when possible.
 
-The conversion between SAM and BAM is easily carried out with `samtools`:
+The conversion between SAM and BAM is easily carried out with [samtools](https://github.com/samtools/samtools):
 
 ```bash
 samtools view -o aln.bam aln.sam # SAM -> BAM
@@ -16,3 +16,5 @@ samtools index aln.sorted.bam
 ```
 
 The index is stored in a separate `.bai` file alongside the BAM. Note that most downstream tools (e.g. variant callers, genome browsers) expect a sorted, indexed BAM.
+
+As a general rule of thumb - try avoiding using plain SAM files unless absolutely necessary.
