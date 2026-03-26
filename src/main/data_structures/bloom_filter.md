@@ -178,6 +178,8 @@ fn main() -> Result<(), AppError> {
     Ok(())
 }
 ```
+## Bioinformatic Applications
+In bioinformatics, we can use a bloom filter to store a kmer set instead of using a `HashSet`. The advantage is that bloom filters are relatively memory efficient and cache friendly. The disadvantage is the false positive rate and the fact that we cannot delete elements.
 
 ## Further Reading
 

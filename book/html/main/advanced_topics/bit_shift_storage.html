@@ -44,10 +44,10 @@
             const path_to_root = "../../";
             const default_light_theme = "coal";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../../searchindex-d8f46acb.js";
+            window.path_to_searchindex_js = "../../searchindex-7e53ff6a.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../../toc-2ffb7a78.js"></script>
+        <script src="../../toc-4dbc5be9.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -189,7 +189,7 @@
                         <h1 id="bit-shift-storage"><a class="header" href="#bit-shift-storage">Bit Shift Storage</a></h1>
 <p>We saw in the chapter about <a href="../kmers/bit_shift_encoding.html">bit shift encoding</a> how to efficiently generate and store kmers. We’ll shortly revisit this concept and generalize it to add a bit (pun intended) more flexibility.</p>
 <h2 id="adding-flexibility"><a class="header" href="#adding-flexibility">Adding Flexibility</a></h2>
-<p>The storage unit we have available is an <code>unsigned integer</code>. For example, consider the integer <code>1_u8</code>, which looks like <code>b00000001</code> when fully printed out. We essentially have <code>8</code> slots in which we can store either a <code>0</code> or a <code>1</code>. If our data type is of size 1 bit, e.g., a <code>bool</code>, we can store a maximum of 8 <code>bool</code>s before we run out of storage. Conversely, if our data type has a size of <code>8 bits</code>, we can store a single instance before we run out of space.</p>
+<p>The storage unit we have available is an <code>unsigned integer</code>. For example, consider the integer <code>1_u8</code>, which looks like <code>b00000001</code> when fully printed out. We essentially have <code>8</code> slots in which we can store either a <code>0</code> or a <code>1</code> (boolean value). If our data type is of size 1 bit (e.g., a <code>bool</code>), we can store a maximum of 8 <code>bool</code>s before we run out of storage. Conversely, if our data type has a size of <code>8 bits</code>, we can store a single instance before we run out of space.</p>
 <p>Given this, how can we store multiple <em>different</em> data types of <em>different</em> sizes at once? It is actually relatively straightforward, we just have to reserve different ranges of slots. Consider the example of a tuple of type <code>(nucleotide, nucleotide_count)</code> such as <code>(G, 10)</code>. How can we store these two types in, say, a <code>u8</code>? We saw earlier that we can use <code>2 bit</code> encoding for nucleotides, where <code>A, C, G, T -&gt; b00, b01, b10, b11</code>. If the nucleotide occupies <code>2 bits</code>, we have <code>6 bits</code> left to store the nucleotide count, which is equivalent to a maximum allowed value of <code>2^6 = 64</code>. This is kinda poor, but will do for now.</p>
 <p>Mentally, we can sketch out something like this</p>
 <pre class="mermaid">graph TD

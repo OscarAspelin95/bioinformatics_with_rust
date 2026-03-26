@@ -141,6 +141,10 @@
     - [VCF](./main/file_formats/pt2/vcf/introduction.md)
 	    - [Format](./main/file_formats/pt2/vcf/format.md)
 		- [Code Implementation](./main/file_formats/pt2/vcf/code_implementation.md) 
+	- [BED](./main/file_formats/pt2/bed/introduction.md)
+		- [Format](./main/file_formats/pt2/bed/format.md)
+		- [Manipulating]()
+		- [Code Implementation](./main/file_formats/pt2/bed/code_implementation.md) 
 
 --- 
 - [Data Structures](./main/data_structures/introduction.md)
