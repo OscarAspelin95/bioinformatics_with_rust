@@ -130,7 +130,6 @@
 	- [Finding Read Overlaps](./main/assembly/finding_read_overlaps.md)
 	- [The Impact of Read Length](./main/assembly/the_impact_of_read_length.md)
 
-
 ---
 
 - [File Formats Part 2](./main/file_formats/pt2/introduction.md)
@@ -143,12 +142,18 @@
 		- [Code Implementation](./main/file_formats/pt2/vcf/code_implementation.md) 
 	- [BED](./main/file_formats/pt2/bed/introduction.md)
 		- [Format](./main/file_formats/pt2/bed/format.md)
-		- [Manipulating]()
+		- [Manipulating](./main/file_formats/pt2/bed/manipulating.md)
 		- [Code Implementation](./main/file_formats/pt2/bed/code_implementation.md) 
 
---- 
+---
+
 - [Data Structures](./main/data_structures/introduction.md)
 	- [Bloom Filter](./main/data_structures/bloom_filter.md)
+
+--- 
+
+- [Additional Topics](./main/additional_topics/introduction.md)
+	- [Location Aware BLAST Parser](./main/additional_topics/blast_parser.md)
 
 --- 
 

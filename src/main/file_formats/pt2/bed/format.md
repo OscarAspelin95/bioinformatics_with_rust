@@ -43,7 +43,15 @@ A T C G T G C
 0 1 2 3 4 5 6
 </pre>
 
-The last base has `index = 6`, but since we start at `0`, we have a total of `num_bases = len({0, 1, 2, 3, 4, 5, 6}) = 7`. It might help to think of individual bases as being 0-based (first base has index `0`, second base has index `1`, ...). We usually think of ranges as **between** two bases. If we'd have `start = 0` and `end = 0` we'd mean <q>the range between the first and first base</q> which does not make much sense. The range would be empty (no base).
+The last base has `index = 6`, but since we start at `0`, we have a total of `num_bases = len({0, 1, 2, 3, 4, 5, 6}) = 7`. It might help to think of individual bases as being 0-based (first base has index `0`, second base has index `1`, ...). We usually think of ranges as **between** two bases.
+
+> [!NOTE]
+> The BED format strictly enforces `start >= end`, regardless of strand orientation.
+>
+> `start = end` represents an *insertion* before the preeeding base.
+>
+> `start = end = 0` represents a feature that occurs *before* the entire chromosome.
+
 
 ## Use Cases
 BED files are used in many different bioinformatic applications. For example:
