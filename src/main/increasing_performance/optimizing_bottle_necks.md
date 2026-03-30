@@ -33,7 +33,7 @@ One way is to add a bunch of timestamps in our code, trying to measure the funct
 A `flamegraph` is a hierarchically structured chart that (usually) shows a ridiculous amount of detail about the execution times for individual function calls. For example consider the code below, where we do both light and heavy work.
 
 > [!NOTE]
-> For educational purposes, we use `#[inline(never)]` and `std::hint::black_box` in an attempt to avoid some compiler optimizations. Without these, the compiler may inline functions entirely, causing them to vanish as distinct frames in the flamegraph and making it impossible to attribute time to individual calls. In practice though, we prefer to let the compiler optimize as possible and try to optimize our `release` build.
+> For educational purposes, we use `#[inline(never)]` and `std::hint::black_box` in an attempt to avoid some compiler optimizations. Without these, the compiler may inline functions entirely, causing them to vanish as distinct frames in the flamegraph and making it impossible to attribute time to individual calls. In practice though, we prefer to let the compiler optimize freely.
 
 ```rust
 use std::hint::black_box;

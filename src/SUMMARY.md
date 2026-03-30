@@ -130,6 +130,11 @@
 	- [Finding Read Overlaps](./main/assembly/finding_read_overlaps.md)
 	- [The Impact of Read Length](./main/assembly/the_impact_of_read_length.md)
 
+
+---
+
+- [Variant Calling](./main/variant_calling/introduction.md)
+
 ---
 
 - [File Formats Part 2](./main/file_formats/pt2/introduction.md)

@@ -52,7 +52,7 @@ Because of this, the maths (I think) becomes a bit complex and I don't fully und
 | GenomeScope 2.0 and Smudgeplot for reference-free profiling of polyploid genomes | 2020 | [doi](https://doi.org/10.1038/s41467-020-14998-3) |
 | A fast, lock-free approach for efficient parallel counting of occurrences of k-mers | 2011 | [doi](https://doi.org/10.1093/bioinformatics/btr011) |
 
-Anyways - it turns out that if we have a reasonable well-behaved sample with relatively low coverage of a haploid genome that contains some sequencing errors and negligible repeats, our kmer histogram could look something like the plot below. Keep in mind that this is not real data but rather just a made up example to illustrate the concepts.
+Anyways - it turns out that if we have a reasonably well-behaved sample with relatively low coverage of a haploid genome that contains some sequencing errors and negligible repeats, our kmer histogram could look something like the plot below. Keep in mind that this is not real data but rather just a made up example to illustrate the concepts.
 
 ```mermaid
 xychart-beta
