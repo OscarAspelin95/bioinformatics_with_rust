@@ -15,6 +15,7 @@ For the remainder of the chapter, we'll assume that we have a genome assembly fo
 |2| 3| GG<font color=red>T</font>ATATC...|
 |2| 4| GGGATATT<font color=red>G</font>...|
 |...|...|...|
+|x| y| CGTCGTATT...|
 
 
 Our goal is to use BLAST and a custom parser to identify *which* of the resistance gene variants exist in the assembly and *where* they are located. BLAST already has the ability to output a .tsv file with custom alignment metrics so why do we need our own parser?
@@ -32,83 +33,79 @@ B --> C
 C -- "Parse" ---> D["result.tsv"]
 ```
 
-## Parsing BLAST Results
-Assume we BLAST our assembly against the resistance genes and get a .tsv output file with the following metrics (we'll ignore hit locations for now). Also, for the sake of simplicity we assume all hits are located on contig 1.
+## Why Locations Matter
+Hit locations matter primarily because of two reasons.
 
-|Subject| Query| Query Coverage| Perc Identity|
-| :-- | :-- | :-- | :-- |
-|contig_1| gene_1\|variant_1| 100% | 99.8% |
-|contig_1| gene_1\|variant_2| 100% | 99.8% |
-|contig_1| gene_1\|variant_3| 100% | 99.8% |
-|contig_1| gene_1\|variant_4| 100% | 99.9% |
-|...|...|...|...|
-|contig_1| gene_2\|variant_1| 53.2% | 77.3% |
-|contig_1| gene_2\|variant_2| 53.2% | 77.2% |
-|contig_1| gene_2\|variant_3| 53.2% | 77.2% |
-|contig_1| gene_2\|variant_4| 53.2% | 77.2% |
-|...|...|...|...|
-|contig_1| gene_n\|variant_1| 99.2% | 99.9% |
-|contig_1| gene_n\|variant_2| 99.2% | 99.9% |
-|contig_1| gene_n\|variant_3| 95.2% | 99.8% |
-|contig_1| gene_n\|variant_4| 97.2% | 99.9% |
-|...|...|...|...|
+Very similar sequences match similar (or identical) coordinates in the assembly. For example, if our assembly truly contains `gene_1|variant_2`, then most likely other variants of `gene_1` will also match very well. Not as well, but well. We'd want a way to figure out which one of these matches is the best (based on some criteria) and present this one.
 
-First, we'd want to filter out low quality hits. Let's set a threshold of `90%` query coverage and `90%` identity. Filtering the results gives us something like the table below. All variants from gene 1 and gene n were kept, whilst all other variants for all other genes were discarded.
+We might have multiple hits for a particular database sequence. If our assembly contains three copies of `gene_1|variant_2`, all in different regions, we want to report all three. Not just one.  
 
-|Subject| Query| Query Coverage| Perc Identity|
-| :-- | :-- | :-- | :-- |
-|contig_1| gene_1\|variant_1| 100% | 99.8% |
-|contig_1| gene_1\|variant_2| 100% | 99.8% |
-|contig_1| gene_1\|variant_3| 100% | 99.8% |
-|contig_1| gene_1\|variant_4| 100% | 99.9% |
-|...|...|...|...|
-|contig_1| gene_n\|variant_1| 99.2% | 99.9% |
-|contig_1| gene_n\|variant_2| 99.2% | 99.9% |
-|contig_1| gene_n\|variant_3| 95.2% | 99.8% |
-|contig_1| gene_n\|variant_4| 97.2% | 99.9% |
-|...|...|...|...|
-
-In other words, it looks like gene 1 and gene n are present in our assembly, but we don't know which variant yet. Intuitively, we'd just group by `(contig, gene)` and select the best variant, based on some metric such as coverage or identity.
-
-|Subject| Query| Query Coverage| Perc Identity|
-| :-- | :-- | :-- | :-- |
-|contig_1| gene_1\|variant_4| 100% | 99.9% |
-|contig_1| gene_n\|variant_1| 99.2% | 99.9% |
-
-### Considering Multiple Hits
-In our simple, hypothetical example this works. In reality however, it is not always the case. Let's look at one example where we get multiple hits for the same gene and variant. In the table below, we have three high quality hits for `gene 1` and `variant 1`. Applying the previous logic, we'd group by `(contig, gene)` and select the best variant, which is the hit with `100%` coverage and `99.8%` identity.
-
-|Subject| Query| Query Coverage| Perc Identity|
-| :-- | :-- | :-- | :-- |
-|contig_1| gene_1\|variant_1| 100% | 99.8% |
-|contig_1| gene_1\|variant_1| 100% | 99.3% |
-|contig_1| gene_1\|variant_1| 100% | 99.6% |
-
-> [!NOTE]
-> Realistically, if we get multiple hits for variant 1, we probably get multiple hits for the other variants as well. For the educational purposes, we chose to ignore them here.
-
-Can we confidently just remove the other two hits? The answer is no, not without also consider their hit locations. What if they all are located in three completely separate regions in the contig?
-
-|Subject| Query| Query Coverage| Perc Identity| Subject Start| Subject End |
-| :-- | :-- | :-- | :-- | :-- | :-- |
-|contig_1| gene_1\|variant_1| 100% | 99.8% | 10 | 110 |
-|contig_1| gene_1\|variant_1| 100% | 99.3% | 250 | 350 |
-|contig_1| gene_1\|variant_1| 100% | 99.6% | 470 | 570 |
-
-We can't remove two out of three hits solely based on the alignment metrics, we need to consider the locations. We do this by grouping our hits by an additional variable - hit region. We define *hit region* as a genome coordinate `(start, end)`, within which there are multiple overlapping BLAST hits. This means, for a given contig (and strand which we ignore for now), overlapping hits belong to the same hit region.
+If we plot the raw BLAST results along a particular contig and strand with respect to hit coordinates, it might look something like the image below. Some sequences are co-located or grouped into specific regions `1`, `2` or `3`.
 
 <br>
+	
 <pre>
-   _______	  _______
-  _______	_______
-  _______ 	    _______
+   _______	  	_______			 _______
+  _______		_______			_______
+  _______ 	    	_______	   	   	_______
 
-|--------------------------------------------------------------------	contig					
+------------- ... ----------------- ... ---------------------- ...	contig					
 </pre>
 
 <pre>
-  ----1----     -----2------
+  ----1----     	---2---			----3----		hit regions
 </pre>
 
-### Defining Overlaps
-Text
+We define a *hit region* as a coordinate `(start, end)` within which there are one or more hits that overlap. We don't enforce every hit having to overlap with every other in the region. Instead, we enforce that any adjacent hits `h1`, `h2` must overlap. Using the hit region concept, we can extract the best hit in **each region**. The example table below highlights the best hit in each hit region based on percent identity and percent aligned.
+
+| contig | hit | region | %identity | %aligned |
+| :--- | :--- | :--- | :--- | :--- |
+| <font color=gray>contig_1</font> | <font color=gray>gene_1\|variant_1</font> | <font color=gray>1</font> | <font color=gray>99.9%</font> | <font color=gray>100%</font> |
+| contig_1 | gene_1\|variant_2 | 1 | 100% | 100% |
+| <font color=gray>contig_1</font> | <font color=gray>gene_1\|variant_3</font> | <font color=gray>1</font> | <font color=gray>99.9%</font> | <font color=gray>100%</font> |
+| <font color=gray>contig_1</font> | <font color=gray>gene_1\|variant_4</font> | <font color=gray>1</font> | <font color=gray>99.9%</font> | <font color=gray>100%</font> |
+| <font color=gray>...</font> | <font color=gray>...</font> | <font color=gray>...</font> | <font color=gray>...</font> | <font color=gray>...</font> |
+| contig_1 | gene_2\|variant_1 | 2 | 100% | 100% |
+| <font color=gray>contig_1</font> | <font color=gray>gene_2\|variant_2</font> | <font color=gray>2</font> | <font color=gray>99.9%</font> | <font color=gray>100%</font> |
+| <font color=gray>contig_1</font> | <font color=gray>gene_2\|variant_3</font> | <font color=gray>2</font> | <font color=gray>99.9%</font> | <font color=gray>100%</font> |
+| <font color=gray>contig_1</font> | <font color=gray>gene_2\|variant_4</font> | <font color=gray>2</font> | <font color=gray>99.9%</font> | <font color=gray>100%</font> |
+|...|...|...|...|...|
+| <font color=gray>contig_1</font> | <font color=gray>gene_x\|variant_(y-3)</font> | <font color=gray>3</font> | <font color=gray>99.9%</font> | <font color=gray>100%</font> |
+| <font color=gray>contig_1</font> | <font color=gray>gene_x\|variant_(y-2)</font> | <font color=gray>3</font> | <font color=gray>99.9%</font> | <font color=gray>100%</font> |
+| <font color=gray>contig_1</font> | <font color=gray>gene_x\|variant_(y-1)</font> | <font color=gray>3</font> | <font color=gray>99.9%</font> | <font color=gray>100%</font> |
+| contig_1 | gene_x\|variant_y | 3 | 100% | 100% |
+
+Obviously, we can choose whatever alignment metric(s) we think are relevant for determining the best hit. It is not clear (at least to me) that percent identity and percent aligned are the best parameters to use. Usually, there is a tradeoff between choosing a longer hit with lower identity versus a shorter hit with higher identity. Because of this, it might make sense to choose another parameter such as the e-value or score.
+
+## Assemblies Are Not Perfect
+So far we have assumed an ideal assembly without errors. There are three major problems with this assumption:
+1. Assemblies are fundamentally derived from reads. Reads can contain sequencing errors.
+2. With uneven read depth, entire genome regions migth be missing. 
+3. The assembly software is not perfect and can introduce assembly errors.
+
+This means we can't blindly trust the BLAST results. If we can't find a particular gene we don't know if it is because it is truly missing or if that region is missing due to zero coverage.
+
+Worse, we can't even trust a perfect BLAST hit. Imagine we have two variants `v1` and `v2` of the same gene
+<pre>
+v1	...ATGGGGGGGCA...
+v2	...ATGGGGGGCA...
+</pre>
+
+where `v2` is one nucleotide shorter (one less `G`). Assume that our sample truly contains `v1`. With an ideal assembly we'd get a perfect match to `v1` and a non-perfect match to `v2`. We'd correctly extract `v1` as the best hit.
+
+<pre>
+v1	    	...ATGGGGGGGCA...
+v2     		...ATGGGGGG CA...
+
+assembly	...ATGGGGGGGCA...
+</pre>
+
+Now, imagine that the non-ideal assembly contains either a sequencing error or assembly error, causing one `G` to be deleted. All of a sudden, `v2` matches perfectly and `v1` does not, even though `v1` is actually in our sample.
+<pre>
+v1	    	...ATGGGGGG<font color=red>G</font>CA...
+v2     		...ATGGGGGGCA...
+
+assembly	...ATGGGGGGCA...
+</pre>
+
+This is of real concern when we allow variants of different lengths, such as in MLST analysis.

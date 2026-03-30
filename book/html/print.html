@@ -71,7 +71,7 @@
             const path_to_root = "";
             const default_light_theme = "coal";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-7fcdfee3.js";
+            window.path_to_searchindex_js = "searchindex-56e7f626.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-9f7d7ecf.js"></script>
@@ -7040,6 +7040,7 @@ fn main(){
 	assert_eq!(true, r1.overlaps(&amp;Range{start: 110, end: 190})); // contained.
 	assert_eq!(true, r1.overlaps(&amp;Range{start: 150, end: 250})); // suffix-prefix overlap.
 	assert_eq!(true, r1.overlaps(&amp;Range{start: 50, end: 150}));  // prefix-suffix overlap.
+	assert_eq!(false, r1.overlaps(&amp;Range{start: 200, end: 300})); // overlap???
 	assert_eq!(false, r1.overlaps(&amp;Range{start: 50, end: 90}));  // no overlap.
 	assert_eq!(false, r1.overlaps(&amp;Range{start: 210, end: 300}));  // no overlap.
 }</code></pre>
@@ -7060,8 +7061,8 @@ Intersect	   |--|
 <blockquote class="blockquote-tag blockquote-tag-note">
 <p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>
 <p>In this context, set operations are only logically applicable if <code>r1</code> and <code>r2</code> overlap. Otherwise:</p>
-<p><code>Union</code> would include everything between <code>r1</code> and <code>r2</code>.
-<code>Difference</code> would be equivalent to <code>r1</code>.
+<p><code>Union</code> would include everything between <code>r1</code> and <code>r2</code>.<br>
+<code>Difference</code> would be equivalent to <code>r1</code>.<br>
 <code>Intersection</code> would be empty.</p>
 </blockquote>
 <div style="break-before: page; page-break-before: always;"></div>
@@ -7282,6 +7283,7 @@ fn main() -&gt; Result&lt;(), AppError&gt; {
 <tr><td style="text-align: left">2</td><td style="text-align: left">3</td><td style="text-align: left">GG<font color="red">T</font>ATATC…</td></tr>
 <tr><td style="text-align: left">2</td><td style="text-align: left">4</td><td style="text-align: left">GGGATATT<font color="red">G</font>…</td></tr>
 <tr><td style="text-align: left">…</td><td style="text-align: left">…</td><td style="text-align: left">…</td></tr>
+<tr><td style="text-align: left">x</td><td style="text-align: left">y</td><td style="text-align: left">CGTCGTATT…</td></tr>
 </tbody>
 </table>
 </div>
@@ -7298,109 +7300,80 @@ B --&gt; C
 C -- "Parse" ---&gt; D["result.tsv"]
 </pre>
 
-<h2 id="parsing-blast-results"><a class="header" href="#parsing-blast-results">Parsing BLAST Results</a></h2>
-<p>Assume we BLAST our assembly against the resistance genes and get a .tsv output file with the following metrics (we’ll ignore hit locations for now). Also, for the sake of simplicity we assume all hits are located on contig 1.</p>
-<div class="table-wrapper">
-<table>
-<thead>
-<tr><th style="text-align: left">Subject</th><th style="text-align: left">Query</th><th style="text-align: left">Query Coverage</th><th style="text-align: left">Perc Identity</th></tr>
-</thead>
-<tbody>
-<tr><td style="text-align: left">contig_1</td><td style="text-align: left">gene_1|variant_1</td><td style="text-align: left">100%</td><td style="text-align: left">99.8%</td></tr>
-<tr><td style="text-align: left">contig_1</td><td style="text-align: left">gene_1|variant_2</td><td style="text-align: left">100%</td><td style="text-align: left">99.8%</td></tr>
-<tr><td style="text-align: left">contig_1</td><td style="text-align: left">gene_1|variant_3</td><td style="text-align: left">100%</td><td style="text-align: left">99.8%</td></tr>
-<tr><td style="text-align: left">contig_1</td><td style="text-align: left">gene_1|variant_4</td><td style="text-align: left">100%</td><td style="text-align: left">99.9%</td></tr>
-<tr><td style="text-align: left">…</td><td style="text-align: left">…</td><td style="text-align: left">…</td><td style="text-align: left">…</td></tr>
-<tr><td style="text-align: left">contig_1</td><td style="text-align: left">gene_2|variant_1</td><td style="text-align: left">53.2%</td><td style="text-align: left">77.3%</td></tr>
-<tr><td style="text-align: left">contig_1</td><td style="text-align: left">gene_2|variant_2</td><td style="text-align: left">53.2%</td><td style="text-align: left">77.2%</td></tr>
-<tr><td style="text-align: left">contig_1</td><td style="text-align: left">gene_2|variant_3</td><td style="text-align: left">53.2%</td><td style="text-align: left">77.2%</td></tr>
-<tr><td style="text-align: left">contig_1</td><td style="text-align: left">gene_2|variant_4</td><td style="text-align: left">53.2%</td><td style="text-align: left">77.2%</td></tr>
-<tr><td style="text-align: left">…</td><td style="text-align: left">…</td><td style="text-align: left">…</td><td style="text-align: left">…</td></tr>
-<tr><td style="text-align: left">contig_1</td><td style="text-align: left">gene_n|variant_1</td><td style="text-align: left">99.2%</td><td style="text-align: left">99.9%</td></tr>
-<tr><td style="text-align: left">contig_1</td><td style="text-align: left">gene_n|variant_2</td><td style="text-align: left">99.2%</td><td style="text-align: left">99.9%</td></tr>
-<tr><td style="text-align: left">contig_1</td><td style="text-align: left">gene_n|variant_3</td><td style="text-align: left">95.2%</td><td style="text-align: left">99.8%</td></tr>
-<tr><td style="text-align: left">contig_1</td><td style="text-align: left">gene_n|variant_4</td><td style="text-align: left">97.2%</td><td style="text-align: left">99.9%</td></tr>
-<tr><td style="text-align: left">…</td><td style="text-align: left">…</td><td style="text-align: left">…</td><td style="text-align: left">…</td></tr>
-</tbody>
-</table>
-</div>
-<p>First, we’d want to filter out low quality hits. Let’s set a threshold of <code>90%</code> query coverage and <code>90%</code> identity. Filtering the results gives us something like the table below. All variants from gene 1 and gene n were kept, whilst all other variants for all other genes were discarded.</p>
-<div class="table-wrapper">
-<table>
-<thead>
-<tr><th style="text-align: left">Subject</th><th style="text-align: left">Query</th><th style="text-align: left">Query Coverage</th><th style="text-align: left">Perc Identity</th></tr>
-</thead>
-<tbody>
-<tr><td style="text-align: left">contig_1</td><td style="text-align: left">gene_1|variant_1</td><td style="text-align: left">100%</td><td style="text-align: left">99.8%</td></tr>
-<tr><td style="text-align: left">contig_1</td><td style="text-align: left">gene_1|variant_2</td><td style="text-align: left">100%</td><td style="text-align: left">99.8%</td></tr>
-<tr><td style="text-align: left">contig_1</td><td style="text-align: left">gene_1|variant_3</td><td style="text-align: left">100%</td><td style="text-align: left">99.8%</td></tr>
-<tr><td style="text-align: left">contig_1</td><td style="text-align: left">gene_1|variant_4</td><td style="text-align: left">100%</td><td style="text-align: left">99.9%</td></tr>
-<tr><td style="text-align: left">…</td><td style="text-align: left">…</td><td style="text-align: left">…</td><td style="text-align: left">…</td></tr>
-<tr><td style="text-align: left">contig_1</td><td style="text-align: left">gene_n|variant_1</td><td style="text-align: left">99.2%</td><td style="text-align: left">99.9%</td></tr>
-<tr><td style="text-align: left">contig_1</td><td style="text-align: left">gene_n|variant_2</td><td style="text-align: left">99.2%</td><td style="text-align: left">99.9%</td></tr>
-<tr><td style="text-align: left">contig_1</td><td style="text-align: left">gene_n|variant_3</td><td style="text-align: left">95.2%</td><td style="text-align: left">99.8%</td></tr>
-<tr><td style="text-align: left">contig_1</td><td style="text-align: left">gene_n|variant_4</td><td style="text-align: left">97.2%</td><td style="text-align: left">99.9%</td></tr>
-<tr><td style="text-align: left">…</td><td style="text-align: left">…</td><td style="text-align: left">…</td><td style="text-align: left">…</td></tr>
-</tbody>
-</table>
-</div>
-<p>In other words, it looks like gene 1 and gene n are present in our assembly, but we don’t know which variant yet. Intuitively, we’d just group by <code>(contig, gene)</code> and select the best variant, based on some metric such as coverage or identity.</p>
-<div class="table-wrapper">
-<table>
-<thead>
-<tr><th style="text-align: left">Subject</th><th style="text-align: left">Query</th><th style="text-align: left">Query Coverage</th><th style="text-align: left">Perc Identity</th></tr>
-</thead>
-<tbody>
-<tr><td style="text-align: left">contig_1</td><td style="text-align: left">gene_1|variant_4</td><td style="text-align: left">100%</td><td style="text-align: left">99.9%</td></tr>
-<tr><td style="text-align: left">contig_1</td><td style="text-align: left">gene_n|variant_1</td><td style="text-align: left">99.2%</td><td style="text-align: left">99.9%</td></tr>
-</tbody>
-</table>
-</div>
-<h3 id="considering-multiple-hits"><a class="header" href="#considering-multiple-hits">Considering Multiple Hits</a></h3>
-<p>In our simple, hypothetical example this works. In reality however, it is not always the case. Let’s look at one example where we get multiple hits for the same gene and variant. In the table below, we have three high quality hits for <code>gene 1</code> and <code>variant 1</code>. Applying the previous logic, we’d group by <code>(contig, gene)</code> and select the best variant, which is the hit with <code>100%</code> coverage and <code>99.8%</code> identity.</p>
-<div class="table-wrapper">
-<table>
-<thead>
-<tr><th style="text-align: left">Subject</th><th style="text-align: left">Query</th><th style="text-align: left">Query Coverage</th><th style="text-align: left">Perc Identity</th></tr>
-</thead>
-<tbody>
-<tr><td style="text-align: left">contig_1</td><td style="text-align: left">gene_1|variant_1</td><td style="text-align: left">100%</td><td style="text-align: left">99.8%</td></tr>
-<tr><td style="text-align: left">contig_1</td><td style="text-align: left">gene_1|variant_1</td><td style="text-align: left">100%</td><td style="text-align: left">99.3%</td></tr>
-<tr><td style="text-align: left">contig_1</td><td style="text-align: left">gene_1|variant_1</td><td style="text-align: left">100%</td><td style="text-align: left">99.6%</td></tr>
-</tbody>
-</table>
-</div>
-<blockquote class="blockquote-tag blockquote-tag-note">
-<p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>
-<p>Realistically, if we get multiple hits for variant 1, we probably get multiple hits for the other variants as well. For the educational purposes, we chose to ignore them here.</p>
-</blockquote>
-<p>Can we confidently just remove the other two hits? The answer is no, not without also consider their hit locations. What if they all are located in three completely separate regions in the contig?</p>
-<div class="table-wrapper">
-<table>
-<thead>
-<tr><th style="text-align: left">Subject</th><th style="text-align: left">Query</th><th style="text-align: left">Query Coverage</th><th style="text-align: left">Perc Identity</th><th style="text-align: left">Subject Start</th><th style="text-align: left">Subject End</th></tr>
-</thead>
-<tbody>
-<tr><td style="text-align: left">contig_1</td><td style="text-align: left">gene_1|variant_1</td><td style="text-align: left">100%</td><td style="text-align: left">99.8%</td><td style="text-align: left">10</td><td style="text-align: left">110</td></tr>
-<tr><td style="text-align: left">contig_1</td><td style="text-align: left">gene_1|variant_1</td><td style="text-align: left">100%</td><td style="text-align: left">99.3%</td><td style="text-align: left">250</td><td style="text-align: left">350</td></tr>
-<tr><td style="text-align: left">contig_1</td><td style="text-align: left">gene_1|variant_1</td><td style="text-align: left">100%</td><td style="text-align: left">99.6%</td><td style="text-align: left">470</td><td style="text-align: left">570</td></tr>
-</tbody>
-</table>
-</div>
-<p>We can’t remove two out of three hits solely based on the alignment metrics, we need to consider the locations. We do this by grouping our hits by an additional variable - hit region. We define <em>hit region</em> as a genome coordinate <code>(start, end)</code>, within which there are multiple overlapping BLAST hits. This means, for a given contig (and strand which we ignore for now), overlapping hits belong to the same hit region.</p>
+<h2 id="why-locations-matter"><a class="header" href="#why-locations-matter">Why Locations Matter</a></h2>
+<p>Hit locations matter primarily because of two reasons.</p>
+<p>Very similar sequences match similar (or identical) coordinates in the assembly. For example, if our assembly truly contains <code>gene_1|variant_2</code>, then most likely other variants of <code>gene_1</code> will also match very well. Not as well, but well. We’d want a way to figure out which one of these matches is the best (based on some criteria) and present this one.</p>
+<p>We might have multiple hits for a particular database sequence. If our assembly contains three copies of <code>gene_1|variant_2</code>, all in different regions, we want to report all three. Not just one.</p>
+<p>If we plot the raw BLAST results along a particular contig and strand with respect to hit coordinates, it might look something like the image below. Some sequences are co-located or grouped into specific regions <code>1</code>, <code>2</code> or <code>3</code>.</p>
 <br>
 <pre>
-   _______	  _______
-  _______	_______
-  _______ 	    _______
-<p>|––––––––––––––––––––––––––––––––––	contig<br></p>
-<pre>
-  ----1----     -----2------
+   _______	  	_______			 _______
+  _______		_______			_______
+  _______ 	    	_______	   	   	_______
+
+------------- ... ----------------- ... ---------------------- ...	contig					
 </pre>
 
-<h3 id="defining-overlaps"><a class="header" href="#defining-overlaps">Defining Overlaps</a></h3>
-<p>Text</p>
+<pre>
+  ----1----     	---2---			----3----		hit regions
 </pre>
+
+<p>We define a <em>hit region</em> as a coordinate <code>(start, end)</code> within which there are one or more hits that overlap. We don’t enforce every hit having to overlap with every other in the region. Instead, we enforce that any adjacent hits <code>h1</code>, <code>h2</code> must overlap. Using the hit region concept, we can extract the best hit in <strong>each region</strong>. The example table below highlights the best hit in each hit region based on percent identity and percent aligned.</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th style="text-align: left">contig</th><th style="text-align: left">hit</th><th style="text-align: left">region</th><th style="text-align: left">%identity</th><th style="text-align: left">%aligned</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align: left"><font color="gray">contig_1</font></td><td style="text-align: left"><font color="gray">gene_1|variant_1</font></td><td style="text-align: left"><font color="gray">1</font></td><td style="text-align: left"><font color="gray">99.9%</font></td><td style="text-align: left"><font color="gray">100%</font></td></tr>
+<tr><td style="text-align: left">contig_1</td><td style="text-align: left">gene_1|variant_2</td><td style="text-align: left">1</td><td style="text-align: left">100%</td><td style="text-align: left">100%</td></tr>
+<tr><td style="text-align: left"><font color="gray">contig_1</font></td><td style="text-align: left"><font color="gray">gene_1|variant_3</font></td><td style="text-align: left"><font color="gray">1</font></td><td style="text-align: left"><font color="gray">99.9%</font></td><td style="text-align: left"><font color="gray">100%</font></td></tr>
+<tr><td style="text-align: left"><font color="gray">contig_1</font></td><td style="text-align: left"><font color="gray">gene_1|variant_4</font></td><td style="text-align: left"><font color="gray">1</font></td><td style="text-align: left"><font color="gray">99.9%</font></td><td style="text-align: left"><font color="gray">100%</font></td></tr>
+<tr><td style="text-align: left"><font color="gray">…</font></td><td style="text-align: left"><font color="gray">…</font></td><td style="text-align: left"><font color="gray">…</font></td><td style="text-align: left"><font color="gray">…</font></td><td style="text-align: left"><font color="gray">…</font></td></tr>
+<tr><td style="text-align: left">contig_1</td><td style="text-align: left">gene_2|variant_1</td><td style="text-align: left">2</td><td style="text-align: left">100%</td><td style="text-align: left">100%</td></tr>
+<tr><td style="text-align: left"><font color="gray">contig_1</font></td><td style="text-align: left"><font color="gray">gene_2|variant_2</font></td><td style="text-align: left"><font color="gray">2</font></td><td style="text-align: left"><font color="gray">99.9%</font></td><td style="text-align: left"><font color="gray">100%</font></td></tr>
+<tr><td style="text-align: left"><font color="gray">contig_1</font></td><td style="text-align: left"><font color="gray">gene_2|variant_3</font></td><td style="text-align: left"><font color="gray">2</font></td><td style="text-align: left"><font color="gray">99.9%</font></td><td style="text-align: left"><font color="gray">100%</font></td></tr>
+<tr><td style="text-align: left"><font color="gray">contig_1</font></td><td style="text-align: left"><font color="gray">gene_2|variant_4</font></td><td style="text-align: left"><font color="gray">2</font></td><td style="text-align: left"><font color="gray">99.9%</font></td><td style="text-align: left"><font color="gray">100%</font></td></tr>
+<tr><td style="text-align: left">…</td><td style="text-align: left">…</td><td style="text-align: left">…</td><td style="text-align: left">…</td><td style="text-align: left">…</td></tr>
+<tr><td style="text-align: left"><font color="gray">contig_1</font></td><td style="text-align: left"><font color="gray">gene_x|variant_(y-3)</font></td><td style="text-align: left"><font color="gray">3</font></td><td style="text-align: left"><font color="gray">99.9%</font></td><td style="text-align: left"><font color="gray">100%</font></td></tr>
+<tr><td style="text-align: left"><font color="gray">contig_1</font></td><td style="text-align: left"><font color="gray">gene_x|variant_(y-2)</font></td><td style="text-align: left"><font color="gray">3</font></td><td style="text-align: left"><font color="gray">99.9%</font></td><td style="text-align: left"><font color="gray">100%</font></td></tr>
+<tr><td style="text-align: left"><font color="gray">contig_1</font></td><td style="text-align: left"><font color="gray">gene_x|variant_(y-1)</font></td><td style="text-align: left"><font color="gray">3</font></td><td style="text-align: left"><font color="gray">99.9%</font></td><td style="text-align: left"><font color="gray">100%</font></td></tr>
+<tr><td style="text-align: left">contig_1</td><td style="text-align: left">gene_x|variant_y</td><td style="text-align: left">3</td><td style="text-align: left">100%</td><td style="text-align: left">100%</td></tr>
+</tbody>
+</table>
+</div>
+<p>Obviously, we can choose whatever alignment metric(s) we think are relevant for determining the best hit. It is not clear (at least to me) that percent identity and percent aligned are the best parameters to use. Usually, there is a tradeoff between choosing a longer hit with lower identity versus a shorter hit with higher identity. Because of this, it might make sense to choose another parameter such as the e-value or score.</p>
+<h2 id="assemblies-are-not-perfect"><a class="header" href="#assemblies-are-not-perfect">Assemblies Are Not Perfect</a></h2>
+<p>So far we have assumed an ideal assembly without errors. There are three major problems with this assumption:</p>
+<ol>
+<li>Assemblies are fundamentally derived from reads. Reads can contain sequencing errors.</li>
+<li>With uneven read depth, entire genome regions migth be missing.</li>
+<li>The assembly software is not perfect and can introduce assembly errors.</li>
+</ol>
+<p>This means we can’t blindly trust the BLAST results. If we can’t find a particular gene we don’t know if it is because it is truly missing or if that region is missing due to zero coverage.</p>
+<p>Worse, we can’t even trust a perfect BLAST hit. Imagine we have two variants <code>v1</code> and <code>v2</code> of the same gene</p>
+<pre>
+v1	...ATGGGGGGGCA...
+v2	...ATGGGGGGCA...
+</pre>
+
+<p>where <code>v2</code> is one nucleotide shorter (one less <code>G</code>). Assume that our sample truly contains <code>v1</code>. With an ideal assembly we’d get a perfect match to <code>v1</code> and a non-perfect match to <code>v2</code>. We’d correctly extract <code>v1</code> as the best hit.</p>
+<pre>
+v1	    	...ATGGGGGGGCA...
+v2     		...ATGGGGGG CA...
+
+assembly	...ATGGGGGGGCA...
+</pre>
+
+<p>Now, imagine that the non-ideal assembly contains either a sequencing error or assembly error, causing one <code>G</code> to be deleted. All of a sudden, <code>v2</code> matches perfectly and <code>v1</code> does not, even though <code>v1</code> is actually in our sample.</p>
+<pre>
+v1	    	...ATGGGGGG<font color="red">G</font>CA...
+v2     		...ATGGGGGGCA...
+
+assembly	...ATGGGGGGCA...
+</pre>
+
+<p>This is of real concern when we allow variants of different lengths, such as in MLST analysis.</p>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="blueprints"><a class="header" href="#blueprints">Blueprints</a></h1>
 <p>This section acts as a collection of templates that can be used to build bioinformatic applications in Rust. Each chapter contains a brief introduction, followed by non-runnable template code that can be used as inspiration for building your own application.</p>

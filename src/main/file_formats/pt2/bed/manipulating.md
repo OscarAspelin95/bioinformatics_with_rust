@@ -163,6 +163,7 @@ fn main(){
 	assert_eq!(true, r1.overlaps(&Range{start: 110, end: 190})); // contained.
 	assert_eq!(true, r1.overlaps(&Range{start: 150, end: 250})); // suffix-prefix overlap.
 	assert_eq!(true, r1.overlaps(&Range{start: 50, end: 150}));  // prefix-suffix overlap.
+	assert_eq!(false, r1.overlaps(&Range{start: 200, end: 300})); // overlap???
 	assert_eq!(false, r1.overlaps(&Range{start: 50, end: 90}));  // no overlap.
 	assert_eq!(false, r1.overlaps(&Range{start: 210, end: 300}));  // no overlap.
 }
@@ -190,6 +191,6 @@ Intersect	   |--|
 > [!NOTE]
 > In this context, set operations are only logically applicable if `r1` and `r2` overlap. Otherwise:
 >
-> `Union` would include everything between `r1` and `r2`.
-> `Difference` would be equivalent to `r1`.
+> `Union` would include everything between `r1` and `r2`.<br>
+> `Difference` would be equivalent to `r1`.<br>
 > `Intersection` would be empty.
