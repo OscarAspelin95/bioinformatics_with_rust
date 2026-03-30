@@ -130,10 +130,10 @@
 	- [Finding Read Overlaps](./main/assembly/finding_read_overlaps.md)
 	- [The Impact of Read Length](./main/assembly/the_impact_of_read_length.md)
 
-
 ---
 
 - [Variant Calling](./main/variant_calling/introduction.md)
+	- [Variants](./main/variant_calling/variants.md)
 
 ---
 
