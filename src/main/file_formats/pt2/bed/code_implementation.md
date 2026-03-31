@@ -1,14 +1,19 @@
 # Code Implementation
-This code implementation won't be about parsing an entire BED file but rather just sorting and merging overlaps. The reader in encouraged to improve on this code, based on what has been discussed throughout this chapter.
+This code implementation won't be about parsing an entire BED file but rather just merging overlaps. The reader in encouraged to improve on this code, based on what has been discussed throughout this chapter.
 
 ```rust
+use std::collections::HashMap;
+
 #[derive(Debug)]
-struct Coordinate {
+struct BedError(String);
+
+#[derive(Debug)]
+struct BedRecord {
     start: usize,
     end: usize,
 }
 
-impl Coordinate {
+impl BedRecord {
     fn new(start: usize, end: usize) -> Self {
         if start > end {
             panic!("start {} must be larger than end {}", start, end);
@@ -17,36 +22,57 @@ impl Coordinate {
         Self { start, end }
     }
 }
+fn parse_bed(bed: &str) -> Result<HashMap<String, Vec<BedRecord>>, BedError> {
+    let mut bed_records: HashMap<String, Vec<BedRecord>> = HashMap::new();
 
-fn mock_coordinates() -> Vec<Coordinate> {
-    let c1 = Coordinate::new(1, 10);
-    let c2 = Coordinate::new(4, 7);
-    let c3 = Coordinate::new(8, 15);
-    let c4 = Coordinate::new(16, 30);
-    let c5 = Coordinate::new(18, 56);
+    for line in bed.lines() {
+        let v: Vec<&str> = line.split('\t').take(3).collect();
 
-    let mut coordinates = vec![c1, c2, c3, c4, c5];
-    coordinates.reverse();
+        if v.len() != 3 {
+            return Err(BedError(format!(
+                "Invalid line `{:?}`. Must be tab separated with at least three values.",
+                v
+            )));
+        }
 
-    coordinates
-}
+        match &v[..] {
+            &[chrom, start, end] => {
+                let Ok(start) = start.parse::<usize>() else {
+                    continue;
+                };
 
-fn merge_coordinates(mut coordinates: Vec<Coordinate>) -> Vec<Coordinate> {
-    coordinates.sort_by_key(|c| c.start);
+                let Ok(end) = end.parse::<usize>() else {
+                    continue;
+                };
 
-    if coordinates.len() <= 1 {
-        return coordinates;
+                bed_records
+                    .entry(chrom.to_string())
+                    .or_default()
+                    .push(BedRecord::new(start, end));
+            }
+            _ => continue,
+        }
     }
 
-    // Guaranteed to have at least two coordinates.
-    let mut iter = coordinates.into_iter();
+    Ok(bed_records)
+}
+
+fn merge_records(mut records: Vec<BedRecord>) -> Vec<BedRecord> {
+    records.sort_by_key(|c| c.start);
+
+    if records.len() <= 1 {
+        return records;
+    }
+
+    // Guaranteed to have at least two records.
+    let mut iter = records.into_iter();
     let mut current = iter.next().expect("must exist.");
 
     let mut merged = vec![];
 
     for c in iter {
         // We have an overlap, just keep extending the max end.
-        if c.start <= current.end {
+        if c.start < current.end {
             current.end = current.end.max(c.end);
         }
         // We have entered a new hit region
@@ -60,10 +86,44 @@ fn merge_coordinates(mut coordinates: Vec<Coordinate>) -> Vec<Coordinate> {
     merged
 }
 
-fn main() {
-    let coordinates = mock_coordinates();
-    let merged = merge_coordinates(coordinates);
+fn merge(bed_records: HashMap<String, Vec<BedRecord>>) -> Result<(), BedError> {
+    bed_records.into_iter().for_each(|(chr, records)| {
+        for merged_record in merge_records(records) {
+            println!("{}\t{}\t{}", &chr, merged_record.start, merged_record.end);
+        }
+    });
+    Ok(())
+}
 
-    println!("{:?}", merged);
+fn mock_bed() -> String {
+    let bed = [
+        // should yield 10->150
+        "chr1\t10\t100",
+        "chr1\t50\t150",
+        "chr1\t20\t60",
+        // should yield 25->50 and 50->100.
+        "chr2\t25\t50",
+        "chr2\t50\t100",
+        // should yield 100->500.
+        "chr3\t100\t500",
+        // should yield 5->300.
+        "chr4\t20\t50",
+        "chr4\t5\t300",
+        "chr4\t70\t150",
+    ]
+    .join("\n");
+
+    bed
+}
+fn main() -> Result<(), BedError> {
+    let bed = mock_bed();
+
+    let bed_records = parse_bed(&bed)?;
+    merge(bed_records)?;
+
+    Ok(())
 }
 ```
+
+> [!NOTE]
+> In this code, we don't merge *adjacent* regions. For example `(25, 50)` and `(50, 100)` are adjacent but not overlapping because the second region starts exactly after the first region ends.
