@@ -134,6 +134,8 @@
 
 - [Variant Calling](./main/variant_calling/introduction.md)
 	- [Variants](./main/variant_calling/variants.md)
+	- [Workflow Overview](./main/variant_calling/workflow_overview.md)
+	- [Pileup](./main/variant_calling/pileup.md)
 
 ---
 
