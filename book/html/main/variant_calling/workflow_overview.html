@@ -44,10 +44,10 @@
             const path_to_root = "../../";
             const default_light_theme = "coal";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../../searchindex-92ecfa6f.js";
+            window.path_to_searchindex_js = "../../searchindex-62b5ccd5.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../../toc-9b8fac4f.js"></script>
+        <script src="../../toc-fffa877b.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -193,7 +193,7 @@
 A["reads"]
 B["reference"]
 
-A ---&gt; Junction(( aligner ))
+A -- "preprocess" ---&gt; Junction(( aligner ))
 B ---&gt; Junction
 
 
@@ -206,8 +206,8 @@ D -- "variant caller" ---&gt; E["raw.vcf"]
 E -- "bcftools" ---&gt; F["result.vcf"]
 </pre>
 
-<p>Typically, we’d first align the reads to the reference to produce a <code>.sam</code> file. Although several good aligners exist, my personal favorite is <a href="https://github.com/lh3/minimap2">minimap2</a>.</p>
-<p>SAMtools can then be used for conversion, sorting and indexing to produce a <code>.bam</code> file. Here, we can also optionally filter our bad alignments.</p>
+<p>Typically, we’d first align the reads (after a potential preprocessing step) to the reference to produce a <code>.sam</code> file. Although several good aligners exist, my personal favorite is <a href="https://github.com/lh3/minimap2">minimap2</a>.</p>
+<p>SAMtools can then be used for conversion, sorting and indexing to produce a <code>.bam</code> file. Here, we can also optionally filter our bad alignments. We use the BAM format because it saves diskspace compared to SAM and also because most variant calling softwares expect a sorted, indexed BAM file.</p>
 <p>Next, we input the <code>.bam</code> file into our variant calling software to produce a raw <code>.vcf</code> file. The choice of variant caller depends on factors such as sequencing platform and the sample characteristics (e.g., ploidy, etc). Some examples are <a href="https://samtools.github.io/bcftools/howtos/variant-calling.html">bcftools mpileup</a>, <a href="https://github.com/freebayes/freebayes">freebayes</a> and <a href="https://github.com/HKU-BAL/Clair3">clair3</a>.</p>
 <p>Normally, we also want to process the raw <code>.vcf</code> file to e.g., filter out low quality variants. BCFtools is an excellent option here.</p>
 

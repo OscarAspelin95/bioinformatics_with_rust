@@ -7,7 +7,7 @@ graph TD
 A["reads"]
 B["reference"]
 
-A ---> Junction(( aligner ))
+A -- "preprocess" ---> Junction(( aligner ))
 B ---> Junction
 
 
@@ -20,9 +20,9 @@ D -- "variant caller" ---> E["raw.vcf"]
 E -- "bcftools" ---> F["result.vcf"]
 ```
 
-Typically, we'd first align the reads to the reference to produce a `.sam` file. Although several good aligners exist, my personal favorite is [minimap2](https://github.com/lh3/minimap2).
+Typically, we'd first align the reads (after a potential preprocessing step) to the reference to produce a `.sam` file. Although several good aligners exist, my personal favorite is [minimap2](https://github.com/lh3/minimap2).
 
-SAMtools can then be used for conversion, sorting and indexing to produce a `.bam` file. Here, we can also optionally filter our bad alignments.
+SAMtools can then be used for conversion, sorting and indexing to produce a `.bam` file. Here, we can also optionally filter our bad alignments. We use the BAM format because it saves diskspace compared to SAM and also because most variant calling softwares expect a sorted, indexed BAM file.
 
 Next, we input the `.bam` file into our variant calling software to produce a raw `.vcf` file. The choice of variant caller depends on factors such as sequencing platform and the sample characteristics (e.g., ploidy, etc). Some examples are [bcftools mpileup](https://samtools.github.io/bcftools/howtos/variant-calling.html), [freebayes](https://github.com/freebayes/freebayes) and [clair3](https://github.com/HKU-BAL/Clair3).
 
