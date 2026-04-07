@@ -130,6 +130,7 @@
 	- [Finding Read Overlaps](./main/assembly/finding_read_overlaps.md)
 	- [The Impact of Read Length](./main/assembly/the_impact_of_read_length.md)
 	- [Code Implementation](./main/assembly/code_implementation/introduction.md)
+		- [Minimizer Index](./main/assembly/code_implementation/minimizer_index.md)
 		- [Overlaps](./main/assembly/code_implementation/overlaps.md)
 
 ---
