@@ -1,5 +1,5 @@
-# Overlaps
-We need to codify the overlap graph somehow. Ideally, we'd use a crate like [petgraph](https://github.com/petgraph/petgraph) to handle most of this automatically. However, it is a good excercise to attempt to implement a graph based data structure because this forces us to deal with recursive data structures (which is a bit tricky in Rust).
+# Naive Implementation
+Before we use an external Rust crate, it is a good excercise to try implementing a graph based data structure from scratch. It does not have to be perfect, or even good for that matter. The point is to learn a bit more about recursive data structures in Rust.
 
 The code below is a quick and dirty approach to defining an unweighted graph. With <q>quick</q> I actually mean it took me quite a while to implement in relation to the relatively few lines of code. With <q>dirty</q> I mean that there are numerous improvements we can do. There a few remarks about the code that are worth mentioning.
 
@@ -122,7 +122,7 @@ fn mock_graph<'a>() -> Graph<&'a str> {
 fn main() {
     let mut graph = mock_graph();
 
-    println!("--- Overlaps nodes (before)");
+    println!("--- Overlap nodes (before)");
     graph.visualize_overlaps();
 
     // New node.
@@ -138,7 +138,7 @@ fn main() {
         a.add_overlap(d.clone());
     }
 
-    println!("--- Overlaps nodes (after)");
+    println!("--- Overlap nodes (after)");
     graph.visualize_overlaps();
 }
 ```

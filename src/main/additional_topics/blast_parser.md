@@ -80,7 +80,7 @@ Obviously, we can choose whatever alignment metric(s) we think are relevant for 
 ## Assemblies Are Not Perfect
 So far we have assumed an ideal assembly without errors. There are three major problems with this assumption:
 1. Assemblies are fundamentally derived from reads. Reads can contain sequencing errors.
-2. With uneven read depth, entire genome regions migth be missing. 
+2. With uneven read depth, entire genome regions might be missing. 
 3. The assembly software is not perfect and can introduce assembly errors.
 
 This means we can't blindly trust the BLAST results. If we can't find a particular gene we don't know if it is because it is truly missing or if that region is missing due to zero coverage.

@@ -23,10 +23,11 @@ This is not an official introduction to Rust or bioinformatics. It is a resource
 | **Nucleotides** | Representations, Counting (GC Content, Homopolymers, Entropy), Manipulating (Compression, Reverse Complement, Trimming), Encoding |
 | **Alignment** | Hamming Distance, Edit Distance (with Traceback), Smith-Waterman, Creating a Desktop App, Resources |
 | **Kmers** | A First Implementation, Using Phred Scores, Bit Shift Encoding, FracMinHash, Minimizers, Syncmers |
+| **Estimating Genome Size** | Kmer histograms, Deriving Genome Size|
 | **Advanced Topics** | SIMD Vectorization, Building a Reverse Index |
+| **Increasing Performance** | Tips and tricks for maximizing runtime performance |
 | **Aminoacids** | Translation, Accounting for Frames, Improving the Translation Algorithm |
 | **Amplicon** | In Silico PCR, Clustering, Classification |
-| **Increasing Performance** | Tips and tricks for maximizing runtime performance |
 | **Assembly** | Fundamentals of graphs, assemblers and methods |
 | **Variant Calling** | 🚧 |
 | **File Formats Part 2** | SAM, BAM, VCF, BED |
