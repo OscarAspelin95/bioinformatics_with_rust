@@ -161,6 +161,8 @@
 
 - [Data Structures](./main/data_structures/introduction.md)
 	- [Bloom Filter](./main/data_structures/bloom_filter.md)
+	- [Suffix Array](./main/data_structures/suffix_array.md)
+	- [Burrows Wheeler Transform](./main/data_structures/bwt.md)
 
 --- 
 

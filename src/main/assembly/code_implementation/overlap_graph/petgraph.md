@@ -102,4 +102,4 @@ E -- "partial" <--> B
 E -- "<font color = red>weak</font>" <--> D
 ```
 
-If our `complete` category also included what node is contained by the other, we'd see that reads `B, C, D, E` all are subsets of read `A`. In this very (very) simple example, reads `B, C, D, E` do not contribute to the assembly contiguity.
+If our `complete` category also included what node is contained by the other, we'd see that reads `B, C, D, E` all are subsets of read `A`. In this very (very) simple example we can conclude that reads `B, C, D, E` do not contribute to the assembly contiguity. We **cannot** discard them from the sample, but they aren't relevant (in this example) for this particular step in the assembly process.
