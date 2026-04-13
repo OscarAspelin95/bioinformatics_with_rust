@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Counting - Bioinformatics with Rust</title>
+        <title>Summary - Bioinformatics with Rust</title>
 
 
         <!-- Custom HTML head -->
@@ -186,56 +186,35 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h1 id="counting-nucleotides"><a class="header" href="#counting-nucleotides">Counting nucleotides</a></h1>
-<p>We’ll start off with something relatively easy - counting nucleotides. We’ll create a <code>HashMap</code> for storing the counts of the nucleotides we encounter in the sequence.</p>
-<pre class="playground"><code class="language-rust edition2024">use std::collections::HashMap;
-
-fn count_nucleotides(seq: &amp;[u8]) {
-    // Note: HashMap::with_capacity(4) would be better here since we know
-    // there are at most 4 canonical nucleotides. See the Increasing Performance chapter.
-    let mut map: HashMap&lt;&amp;u8, usize&gt; = HashMap::new();
-
-    // Iterate over each nucleotide.
-    seq.iter().for_each(|nt| match nt {
-        // If we have a canonical nucleotide, we bind it to the variable c.
-        c @ (b'A' | b'C' | b'G' | b'T') =&gt; match map.contains_key(c) {
-            // If nucleotide is already in HashMap, increment its count.
-            true =&gt; {
-                let v = map.get_mut(c).unwrap();
-                *v += 1;
-            }
-            // Otherwise, add it.
-            false =&gt; {
-                map.insert(c, 1);
-            }
-        },
-        _ =&gt; panic!("Invalid nt {nt}"),
-    });
-
-    assert_eq!(map.values().sum::&lt;usize&gt;(), seq.len());
-    println!("{:?}", map);
-}
-
-fn main() {
-    count_nucleotides(b"ATCG");
-    count_nucleotides(b"AAAA");
-}</code></pre>
-<p>Run the code and inspect the output. The resulting HashMap will have the ASCII encoded nucleotides as keys.</p>
-<p>Note that there are lots of alternative solutions and further optimizations we can do. For example, when we input <code>b"AAAA"</code> we see that our <code>HashMap</code> only contains one key, <code>b'A'</code>. One alternative here would be to initialize the <code>HashMap</code> with empty counts for A, T, C and G.</p>
-<blockquote class="blockquote-tag blockquote-tag-tip">
-<p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M8 1.5c-2.363 0-4 1.69-4 3.75 0 .984.424 1.625.984 2.304l.214.253c.223.264.47.556.673.848.284.411.537.896.621 1.49a.75.75 0 0 1-1.484.211c-.04-.282-.163-.547-.37-.847a8.456 8.456 0 0 0-.542-.68c-.084-.1-.173-.205-.268-.32C3.201 7.75 2.5 6.766 2.5 5.25 2.5 2.31 4.863 0 8 0s5.5 2.31 5.5 5.25c0 1.516-.701 2.5-1.328 3.259-.095.115-.184.22-.268.319-.207.245-.383.453-.541.681-.208.3-.33.565-.37.847a.751.751 0 0 1-1.485-.212c.084-.593.337-1.078.621-1.489.203-.292.45-.584.673-.848.075-.088.147-.173.213-.253.561-.679.985-1.32.985-2.304 0-2.06-1.637-3.75-4-3.75ZM5.75 12h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1 0-1.5ZM6 15.25a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 0 1.5h-2.5a.75.75 0 0 1-.75-.75Z"></path></svg>Tip</p>
-<p>For a more efficient approach to nucleotide counting using fixed-size arrays instead of HashMaps, see the <a href="../increasing_performance/using_appropriate_data_structures.html">Using Appropriate Data Structures</a> chapter.</p>
-</blockquote>
+                        <h1 id="summary"><a class="header" href="#summary">Summary</a></h1>
+<p>Below is a summary table of useful data structures for bioinformatic applications, a few of which have been covered in previous chapters.</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th style="text-align: left">Name</th><th style="text-align: left">Application</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align: left">Interval Tree</td><td style="text-align: left">Allows finding intervals that overlap with a particular interval.</td></tr>
+<tr><td style="text-align: left">Bloom Filter</td><td style="text-align: left">Approximate set membership.</td></tr>
+<tr><td style="text-align: left">Count-min Sketch</td><td style="text-align: left">Approximate element counts through a probalistic frequency table</td></tr>
+<tr><td style="text-align: left">Suffix Array</td><td style="text-align: left">Used for efficient text search.</td></tr>
+<tr><td style="text-align: left">Suffix Tree</td><td style="text-align: left">Enables fast string searches by representing suffixes in a tree.</td></tr>
+<tr><td style="text-align: left">Burrows Wheeler Transform</td><td style="text-align: left">Lossless transformation, commonly used in text compression.</td></tr>
+<tr><td style="text-align: left">FM Index</td><td style="text-align: left">Efficient substring search, based on the Burrows Wheeler Transform.</td></tr>
+<tr><td style="text-align: left">HyperLogLog</td><td style="text-align: left">Approximating the number of distinct members in a set.</td></tr>
+</tbody>
+</table>
+</div>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../../main/nucleotides/representations.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../../main/data_structures/hyper_log_log.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
-                            <a rel="next prefetch" href="../../main/nucleotides/gc_content.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../../main/additional_topics/introduction.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
@@ -245,11 +224,11 @@ fn main() {
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../../main/nucleotides/representations.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../../main/data_structures/hyper_log_log.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
-                    <a rel="next prefetch" href="../../main/nucleotides/gc_content.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../../main/additional_topics/introduction.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>

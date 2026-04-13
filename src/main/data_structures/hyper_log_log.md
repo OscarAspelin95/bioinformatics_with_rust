@@ -252,3 +252,5 @@ fn main() {
     // modify code here
 }
 ```
+
+As always, we'd prefer to use a high performance crate, such as [hyperloglockless](https://github.com/tomtomwombat/hyperloglockless) in real life applications.
