@@ -163,6 +163,7 @@
 	- [Bloom Filter](./main/data_structures/bloom_filter.md)
 	- [Suffix Array](./main/data_structures/suffix_array.md)
 	- [Burrows Wheeler Transform](./main/data_structures/bwt.md)
+	- [HyperLogLog](./main/data_structures/hyper_log_log.md)
 
 --- 
 
